@@ -20,7 +20,7 @@
       resultBox.innerText = "⏳ wird geprüft …";
 
       try {
-        const response = await fetch("https://achtung-live-api-final.onrender.com/analyze", {
+        const response = await fetch("https://achtung-live-api-deploy.onrender.com/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: input })
