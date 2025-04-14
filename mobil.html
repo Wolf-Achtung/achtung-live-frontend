@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>achtung.live – Demo</title>
+</head>
+<body style="font-family: sans-serif; padding: 1em; background: #f4f4f4;">
+  <h2>achtung.live – Mobile Demo</h2>
+  <textarea id="userInput" placeholder="Text hier eingeben…" rows="6" style="width: 100%;"></textarea>
+  <br/><br/>
+  <button onclick="analyzeText()" style="padding: 0.5em 1em;">Jetzt prüfen</button>
+  <p id="result" style="margin-top: 1em;"></p>
+
+  <script>
+    async function analyzeText() {
+      const input = document.getElementById("userInput").value;
+      const resultBox = document.getElementById("result");
+      resultBox.innerText = "⏳ wird geprüft …";
+
+      try {
+        const response = await fetch("https://achtung-live-api-final.onrender.com/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: input })
+        });
+        const data = await response.json();
+        if (data && data.score !== undefined) {
+          resultBox.innerHTML = `<b>Risiko: ${data.score}%</b><br>${data.message || ''}<br><br><i>${data.gpt_tip}</i>`;
+        } else {
+          resultBox.innerText = "⚠️ Fehler bei Analyse.";
+        }
+      } catch (err) {
+        resultBox.innerText = "⚠️ Fehler bei Analyse.";
+      }
+    }
+  </script>
+</body>
+</html>
