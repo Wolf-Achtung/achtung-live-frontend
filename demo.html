@@ -52,12 +52,16 @@
       margin-top: 1.5em;
       font-size: 1.1em;
       font-weight: bold;
+      color: #001d4a;
     }
     .gpt-tip {
       margin-top: 1em;
       font-size: 1em;
       font-weight: normal;
-      color: #333;
+      color: #001d4a;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .footer {
       padding: 2em 1em;
@@ -116,8 +120,9 @@
         if (!response.ok) throw new Error("Antwortfehler");
 
         const data = await response.json();
-        riskOutput.innerHTML = `${data.message}`;
-        tipOutput.innerHTML = `💡 <strong>Unser Tipp:</strong><br> ${data.gpt_tip || "Keine Empfehlung vorhanden."}`;
+        const friendlyTip = "Es sieht so aus, als ob du persönliche Daten angegeben hast – zum Beispiel deine Bankverbindung. Das kann riskant sein. Ersetze sie lieber durch etwas wie: [Bankdaten] oder lass sie ganz weg. So bleibst du auf der sicheren Seite. 👍";
+        riskOutput.innerHTML = `${data.message || "Bewertung nicht verfügbar."}`;
+        tipOutput.innerHTML = `${friendlyTip}`;
       } catch (error) {
         riskOutput.innerText = "⚠️ Fehler bei der Analyse.";
         tipOutput.innerText = "";
