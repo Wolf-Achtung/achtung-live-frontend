@@ -2,59 +2,91 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>achtung.live – Die Autokorrektur für deine Privatsphäre</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[achtung.live]</title>
   <style>
-    body { font-family: Helvetica, Arial, sans-serif; background: #fff; color: #001d4a; margin: 0; }
-    header { padding: 60px 30px; text-align: center; background: #fff; }
-    h1 { font-size: 2.8em; color: #e30613; }
-    p { font-size: 1.2em; color: #001d4a; }
-    a.button {
-      display: inline-block; margin-top: 30px; padding: 15px 30px;
-      background-color: #e30613; color: #fff; text-decoration: none; border-radius: 6px;
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #001d4a;
+      text-align: center;
     }
-    section { padding: 50px 30px; max-width: 800px; margin: auto; }
-    h2 { color: #e30613; }
-    ul.features { list-style: none; padding: 0; }
-    ul.features li::before { content: "✔️ "; color: #e30613; }
-    footer { text-align: center; padding: 20px; font-size: 0.9em; background: #f5f5f5; }
-    footer a { color: #e30613; text-decoration: none; }
+    h1 {
+      color: #e30613;
+      margin-top: 2em;
+      font-size: 2.5em;
+    }
+    h2 {
+      color: #e30613;
+    }
+    .claim, .features, .mission {
+      color: #001d4a;
+      max-width: 600px;
+      margin: 1em auto;
+    }
+    ul {
+      list-style-type: '✔️ ';
+      text-align: left;
+      max-width: 600px;
+      margin: 1em auto;
+      padding-left: 1em;
+      color: #001d4a;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 1em;
+      padding: 0.6em 1.2em;
+      background-color: #001d4a;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .footer {
+      margin-top: 4em;
+      padding: 1.5em 2em;
+      background-color: #ffffff;
+      color: #001d4a;
+      font-size: 0.9em;
+    }
+    .footer a {
+      color: #e30613;
+      text-decoration: underline;
+      margin: 0 0.5em;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>achtung.live</h1>
-    <p>Die Autokorrektur für deine Privatsphäre</p>
-  </header>
-  <section>
-    <h2>Warum achtung.live?</h2>
-    <p>achtung.live erkennt Risiken und schützt dich – bevor etwas online geht, was nicht online gehört.</p>
-    <ul class="features">
-      <li>Analysiert deine Texte in Echtzeit</li>
-      <li>Bewertet das Datenschutz-Risiko mit einem Score</li>
-      <li>Gibt auf Wunsch GPT-gestützte Empfehlungen zum Umschreiben</li>
-      <li>Funktioniert zu Testzwecken direkt im Browser – ohne Installation</li>
-    </ul>
-  </section>
-  <section style="text-align:center;">
-    <h2>Live-Demo starten</h2>
-    <p>Teste achtung.live kostenlos und anonym:</p>
-    <a href="demo.html" class="button">🚀 Demo starten</a>
-  </section>
-  <section>
-    <h2>Kontakt</h2>
-    <p>Fragen oder Feedback? Schreib an <a href="mailto:kontakt@achtung.live">kontakt@achtung.live</a></p>
-  </section>
-  <footer>
-  
-<p style="margin-top: 2em; font-size: 0.9em; color: #001d4a;">
-  🇪🇺 <strong>Aus Europa. Für Alle.</strong><br>
-  achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung.
-  Das Tool ist vollständig DSGVO-konform, speichert keine Inhalte und arbeitet mit einer klaren Mission: Menschen schützen, nicht überwachen.
-</p>
 
-    <p><a href="ki-hinweis.html">🔎 Wie funktioniert die KI?</a></p>
-    <p><a href="datenschutz.html">📄 Datenschutzerklärung</a> · <a href="impressum.html">Impressum</a></p>
-  </footer>
+  <h1>[achtung.live]</h1>
+  <p class="claim"><strong>Die Autokorrektur für deine Privatsphäre</strong></p>
+
+  <h2>Warum achtung.live?</h2>
+  <p class="features">achtung.live erkennt Risiken und schützt dich – bevor etwas online geht, was nicht online gehört.</p>
+
+  <ul>
+    <li>Analysiert deine Texte in Echtzeit</li>
+    <li>Bewertet das Datenschutz-Risiko mit einem Score</li>
+    <li>Gibt auf Wunsch GPT-gestützte Empfehlungen zum Umschreiben</li>
+    <li>Funktioniert zu Testzwecken direkt im Browser – ohne Installation</li>
+  </ul>
+
+  <h2>Live-Demo starten</h2>
+  <p>Teste achtung.live kostenlos und anonym:</p>
+  <a href="/demo.html" class="button">Demo starten</a>
+
+  <div class="footer">
+    <p class="mission"><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
+    achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung. Das Tool ist vollständig DSGVO-konform, speichert keine Inhalte und arbeitet mit einer klaren Mission: Menschen schützen, nicht überwachen.</p>
+    <p>
+      <a href="/ki-hinweis.html">Wie funktioniert die KI?</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/impressum.html">Impressum</a>
+      <a href="/kontakt.html">Kontakt</a>
+    </p>
+  </div>
+
 </body>
 </html>
