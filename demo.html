@@ -38,6 +38,13 @@
       border-radius: 4px;
       cursor: pointer;
     }
+    .result {
+      margin-top: 2em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: bold;
+    }
     .footer {
       margin-top: 4em;
       padding: 1.5em 2em;
@@ -56,8 +63,10 @@
   <h1>[achtung.live]</h1>
   <p><strong>Live-Demo</strong></p>
   <p>Teste hier deine Texte anonym und erhalte direkt eine datenschutzbezogene Einschätzung.</p>
-  <textarea placeholder="Gib hier deinen Text ein..."></textarea><br>
-  <button>Text analysieren</button>
+  <textarea id="textInput" placeholder="Gib hier deinen Text ein..."></textarea><br>
+  <button onclick="analyzeText()">Text analysieren</button>
+
+  <div class="result" id="resultBox"></div>
 
   <div class="footer">
     <p><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
@@ -70,5 +79,35 @@
       <a href="/kontakt.html">Kontakt</a>
     </p>
   </div>
+
+<script>
+  async function analyzeText() {
+    const text = document.getElementById("textInput").value;
+    const resultBox = document.getElementById("resultBox");
+    resultBox.innerText = "⏳ Analyse läuft ...";
+
+    try {
+      const response = await fetch("https://achtung-live-api-deploy.onrender.com/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text: text })
+      });
+
+      if (!response.ok) {
+        throw new Error("⚠️ Fehler bei der Analyse.");
+      }
+
+      const data = await response.json();
+      resultBox.innerHTML = `📊 Score: <strong>${data.score}%</strong><br>
+        💬 Einschätzung: ${data.message}<br>
+        💡 Empfehlung: ${data.gpt_tip}`;
+    } catch (error) {
+      resultBox.innerText = error.message;
+    }
+  }
+</script>
+
 </body>
 </html>
