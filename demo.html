@@ -120,9 +120,10 @@
         if (!response.ok) throw new Error("Antwortfehler");
 
         const data = await response.json();
-        const friendlyTip = "Es sieht so aus, als ob du persönliche Daten angegeben hast – zum Beispiel deine Bankverbindung. Das kann riskant sein. Ersetze sie lieber durch etwas wie: [Bankdaten] oder lass sie ganz weg. So bleibst du auf der sicheren Seite. 👍";
+        const userTip = "Achtung, da war wohl deine IBAN dabei – sowas gehört besser nicht ins Internet. Kein Stress: Stattdessen kannst du einfach schreiben: [Bankverbindung einfügen] oder es komplett weglassen. So bleibst du auf der sicheren Seite – und dein Konto auch.";
+
         riskOutput.innerHTML = `${data.message || "Bewertung nicht verfügbar."}`;
-        tipOutput.innerHTML = `${friendlyTip}`;
+        tipOutput.innerHTML = `${userTip}`;
       } catch (error) {
         riskOutput.innerText = "⚠️ Fehler bei der Analyse.";
         tipOutput.innerText = "";
