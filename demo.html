@@ -120,10 +120,12 @@
         if (!response.ok) throw new Error("Antwortfehler");
 
         const data = await response.json();
-        const userTip = "Achtung, da war wohl deine IBAN dabei – sowas gehört besser nicht ins Internet. Kein Stress: Stattdessen kannst du einfach schreiben: [Bankverbindung einfügen] oder es komplett weglassen. So bleibst du auf der sicheren Seite – und dein Konto auch.";
-
         riskOutput.innerHTML = `${data.message || "Bewertung nicht verfügbar."}`;
-        tipOutput.innerHTML = `${userTip}`;
+        if (data.gpt_tip) {
+          tipOutput.innerHTML = `${data.gpt_tip}`;
+        } else {
+          tipOutput.innerHTML = "";
+        }
       } catch (error) {
         riskOutput.innerText = "⚠️ Fehler bei der Analyse.";
         tipOutput.innerText = "";
