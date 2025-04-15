@@ -1,33 +1,46 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kontakt – achtung.live</title>
-  
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: sans-serif;
       margin: 0;
-      padding: 2em;
+      padding: 0;
       background: #ffffff;
       color: #001d4a;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: #ffffff;
+      padding: 2em 1em;
       text-align: center;
     }
-    h1 {
+    header h1 {
       color: #e30613;
-      font-size: 2em;
+      font-size: 2.5em;
+      margin: 0;
     }
-    p {
-      max-width: 700px;
-      margin: 1em auto;
+    main {
+      flex: 1;
+      padding: 2em;
+      text-align: center;
     }
     .footer {
-      margin-top: 4em;
-      padding: 1.5em 2em;
+      padding: 2em 1em;
       background-color: #ffffff;
       color: #001d4a;
       font-size: 0.9em;
+      text-align: center;
+      border-top: 1px solid #ccc;
     }
     .footer a {
       color: #e30613;
@@ -35,13 +48,16 @@
       margin: 0 0.5em;
     }
   </style>
-
 </head>
 <body>
-  <h1>[achtung.live]</h1><p><strong>Kontakt</strong></p><p>Fragen oder Feedback? Schreib uns an <a href='mailto:kontakt@achtung.live'>kontakt@achtung.live</a></p>
-  
+  <header>
+    <h1>[achtung.live]</h1>
+  </header>
+  <main>
+    <h2>Kontakt</h2><p>Fragen oder Feedback? Schreib an <a href='mailto:kontakt@achtung.live'>kontakt@achtung.live</a></p>
+  </main>
   <div class="footer">
-    <p class="mission"><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
+    <p><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
     achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung. Das Tool ist vollständig DSGVO-konform, speichert keine Inhalte und arbeitet mit einer klaren Mission: Menschen schützen, nicht überwachen.</p>
     <p>
       <a href="/index.html">Startseite</a>
@@ -53,4 +69,3 @@
   </div>
 </body>
 </html>
-
