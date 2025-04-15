@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -48,7 +47,7 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    .response {
+    .response, .sem-response {
       margin-top: 1.5em;
       font-size: 1.1em;
       font-weight: bold;
@@ -88,6 +87,7 @@
     <button onclick="analyzeText()">Analysieren</button>
     <div class="response" id="riskLevel"></div>
     <div class="gpt-tip" id="gptTip"></div>
+    <div class="sem-response" id="semInfo"></div>
   </main>
   <div class="footer">
     <p><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
@@ -106,9 +106,11 @@
       const text = document.getElementById('userText').value;
       const riskOutput = document.getElementById('riskLevel');
       const tipOutput = document.getElementById('gptTip');
+      const semInfo = document.getElementById('semInfo');
 
       riskOutput.innerText = "⏳ Analyse läuft...";
       tipOutput.innerText = "";
+      semInfo.innerText = "";
 
       try {
         const response = await fetch("https://achtung-live-api-deploy.onrender.com/analyze", {
@@ -121,14 +123,18 @@
 
         const data = await response.json();
         riskOutput.innerHTML = `${data.message || "Bewertung nicht verfügbar."}`;
-        if (data.gpt_tip) {
-          tipOutput.innerHTML = `${data.gpt_tip}`;
-        } else {
-          tipOutput.innerHTML = "";
+        tipOutput.innerHTML = `${data.gpt_tip || ""}`;
+
+        if (data.sem_risk_level && data.sem_einschaetzung) {
+          semInfo.innerHTML =
+            "<br><strong>📌 Semantisches Risiko:</strong> " + data.sem_risk_level.toUpperCase() + "<br>" +
+            data.sem_einschaetzung + "<br>" +
+            "<em>" + data.sem_empfehlung + "</em>";
         }
       } catch (error) {
         riskOutput.innerText = "⚠️ Fehler bei der Analyse.";
         tipOutput.innerText = "";
+        semInfo.innerText = "";
       }
     }
   </script>
