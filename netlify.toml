@@ -1,0 +1,5 @@
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Basic-Auth = "Alle Achtung"
