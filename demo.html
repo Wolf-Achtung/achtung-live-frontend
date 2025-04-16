@@ -57,13 +57,13 @@
 
       try {
         const [scoreRes, gptRes] = await Promise.all([
-          fetch("https://web-production-6239.up.railway.app/analyze", {
+          fetch("https://web-production-2e4ae.up.railway.app/analyze", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text })
           }).then(r => r.json()),
 
-          fetch("https://web-production-6239.up.railway.app/debug-gpt", {
+          fetch("https://web-production-2e4ae.up.railway.app/debug-gpt", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text })
