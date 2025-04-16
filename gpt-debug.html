@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>achtung.live GPT-Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        textarea { width: 100%; height: 100px; margin-bottom: 20px; }
+        button { padding: 10px 20px; font-size: 16px; }
+        pre { background: #f4f4f4; padding: 20px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🔍 GPT-Debug: Railway-API</h1>
+    <p>Gib hier deinen Text ein, der analysiert werden soll:</p>
+    <textarea id="textInput" placeholder="Hier deinen Testtext eingeben..."></textarea><br>
+    <button onclick="sendRequest()">🧠 Absenden & analysieren</button>
+    <h2>Antwort der API:</h2>
+    <pre id="responseOutput">Noch keine Anfrage gesendet.</pre>
+
+    <script>
+        async function sendRequest() {
+            const text = document.getElementById("textInput").value;
+            const responseElement = document.getElementById("responseOutput");
+
+            try {
+                const response = await fetch("https://web-production-06ae.up.railway.app/debug-gpt", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: text })
+                });
+
+                const result = await response.json();
+                responseElement.textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                responseElement.textContent = "⚠️ Fehler bei der Anfrage:\n" + error;
+            }
+        }
+    </script>
+</body>
+</html>
