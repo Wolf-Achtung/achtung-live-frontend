@@ -1,140 +1,87 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live-Demo – achtung.live</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>achtung.live – Demo</title>
   <style>
-    * { box-sizing: border-box; }
     body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #ffffff;
-      color: #001d4a;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      color: #03193d;
     }
-    header {
-      background: #ffffff;
-      padding: 2em 1em;
-      text-align: center;
-    }
-    header h1 {
-      color: #e30613;
-      font-size: 2.5em;
-      margin: 0;
-    }
-    main {
-      flex: 1;
-      padding: 2em;
-      text-align: center;
+    h1 {
+      color: #d0021b;
     }
     textarea {
-      width: 90%;
-      max-width: 600px;
+      width: 100%;
       height: 150px;
-      font-size: 1em;
-      margin-bottom: 1em;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
     }
     button {
-      background-color: #001d4a;
+      background-color: #03193d;
       color: white;
-      padding: 0.6em 2em;
-      font-size: 1em;
+      padding: 10px 20px;
+      font-size: 16px;
       border: none;
-      border-radius: 4px;
+      margin-top: 10px;
       cursor: pointer;
     }
-    .response, .sem-response {
-      margin-top: 1.5em;
-      font-size: 1.1em;
+    .output {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 5px;
+    }
+    .risk {
       font-weight: bold;
-      color: #001d4a;
-    }
-    .gpt-tip {
-      margin-top: 1em;
-      font-size: 1em;
-      font-weight: normal;
-      color: #001d4a;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .footer {
-      padding: 2em 1em;
-      background-color: #ffffff;
-      color: #001d4a;
-      font-size: 0.9em;
-      text-align: center;
-      border-top: 1px solid #ccc;
-    }
-    .footer a {
-      color: #e30613;
-      text-decoration: underline;
-      margin: 0 0.5em;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>[achtung.live]</h1>
-  </header>
-  <main>
-    <h2>Gib deinen Text ein und erhalte sofort eine Einschätzung:</h2>
-    <textarea id="userText" placeholder="Hier Text eingeben..."></textarea><br>
-    <button onclick="analyzeText()">Analysieren</button>
-    <div class="response" id="riskLevel"></div>
-    <div class="gpt-tip" id="gptTip"></div>
-    <div class="sem-response" id="semInfo"></div>
-  </main>
-  <div class="footer">
-    <p><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
-    achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung.</p>
-    <p>
-      <a href="/index.html">Startseite</a>
-      <a href="/ki-hinweis.html">Wie funktioniert die KI?</a>
-      <a href="/datenschutz.html">Datenschutz</a>
-      <a href="/impressum.html">Impressum</a>
-      <a href="/kontakt.html">Kontakt</a>
-    </p>
-  </div>
+  <h1>[achtung.live] – Demo</h1>
+  <p>Teste anonym: Datenschutz-Score + GPT-Tipp</p>
+  <textarea id="inputText" placeholder="Gib hier deinen Text ein..."></textarea>
+  <button onclick="analyzeText()">Analysieren</button>
+  <div class="output" id="resultArea">Hier erscheint die Einschätzung...</div>
 
   <script>
     async function analyzeText() {
-      const text = document.getElementById('userText').value;
-      const riskOutput = document.getElementById('riskLevel');
-      const tipOutput = document.getElementById('gptTip');
-      const semInfo = document.getElementById('semInfo');
-
-      riskOutput.innerText = "⏳ Analyse läuft...";
-      tipOutput.innerText = "";
-      semInfo.innerText = "";
+      const text = document.getElementById("inputText").value.trim();
+      const resultArea = document.getElementById("resultArea");
+      resultArea.innerHTML = "⏳ Analyse läuft...";
 
       try {
-        const response = await fetch("https://achtung-live-api-deploy.onrender.com/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: text })
-        });
+        const [scoreRes, gptRes] = await Promise.all([
+          fetch("https://web-production-6239.up.railway.app/analyze", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text })
+          }).then(r => r.json()),
 
-        if (!response.ok) throw new Error("Antwortfehler");
+          fetch("https://web-production-6239.up.railway.app/debug-gpt", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text })
+          }).then(r => r.json())
+        ]);
 
-        const data = await response.json();
-        riskOutput.innerHTML = `${data.message || "Bewertung nicht verfügbar."}`;
-        tipOutput.innerHTML = `${data.gpt_tip || ""}`;
+        let ampelfarbe = "🟢";
+        if (scoreRes.score >= 70) ampelfarbe = "🔴";
+        else if (scoreRes.score >= 40) ampelfarbe = "🟡";
 
-        if (data.sem_risk_level && data.sem_einschaetzung) {
-          semInfo.innerHTML =
-            "<br><strong>📌 Semantisches Risiko:</strong> " + data.sem_risk_level.toUpperCase() + "<br>" +
-            data.sem_einschaetzung + "<br>" +
-            "<em>" + data.sem_empfehlung + "</em>";
-        }
-      } catch (error) {
-        riskOutput.innerText = "⚠️ Fehler bei der Analyse.";
-        tipOutput.innerText = "";
-        semInfo.innerText = "";
+        const scoreHTML = `<div class="risk">${ampelfarbe} ${scoreRes.message}</div>`;
+
+        const gpt = gptRes?.gpt_raw || "Keine GPT-Empfehlung möglich.";
+        const gptHTML = `<div style="margin-top:10px;"><strong>GPT-Tipp:</strong><br>${gpt}</div>`;
+
+        resultArea.innerHTML = scoreHTML + gptHTML;
+      } catch (err) {
+        resultArea.innerHTML = `⚠️ Fehler bei der Analyse: ${err}`;
       }
     }
   </script>
