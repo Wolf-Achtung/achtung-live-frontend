@@ -15,20 +15,20 @@
       box-sizing: border-box;
     }
 
-    body {
+     body {
+      font-family: sans-serif;
       margin: 0;
-      font-family: "Helvetica Neue", sans-serif;
-      background-color: #ffffff;
-      color: var(--ci-blau);
       padding: 0;
+      background: #ffffff;
+      color: #001d4a;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
-
     header {
+      background: #ffffff;
+      padding: 2em 1em;
       text-align: center;
-      padding: 2rem 1rem 1rem;
     }
 
     header .logo-tag {
@@ -44,11 +44,15 @@
       margin-top: 0.3rem;
     }
 
+header h1 {
+      color: #e30613;
+      font-size: 2.5em;
+      margin: 0;
+    }
     main {
       flex: 1;
-      padding: 1rem 2rem;
-      max-width: 800px;
-      margin: 0 auto;
+      padding: 2em;
+      text-align: center;
     }
 
     textarea {
@@ -103,27 +107,25 @@
       margin-top: 1rem;
     }
 
-    footer {
+    .footer {
+      padding: 2em 1em;
       background-color: #ffffff;
-      padding: 2rem 1rem;
+      color: #001d4a;
+      font-size: 0.9em;
       text-align: center;
-      font-size: 0.9rem;
-      color: var(--ci-blau);
       border-top: 1px solid #ccc;
     }
-
-    footer a {
-      color: var(--ci-rot);
+    .footer a {
+      color: #e30613;
       text-decoration: underline;
-      margin: 0 0.5rem;
+      margin: 0 0.5em;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo-tag">[achtung.live]</div>
-    <div class="tagline">Deine empathische Datenschutzberatung</div>
+    <h1>[achtung.live]</h1>
   </header>
 
   <main>
@@ -148,21 +150,19 @@
     <div id="howto-box" class="howto-box hidden"></div>
   </main>
 
-  <footer>
-    <p>
-      achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte:
-      Datenschutz, Transparenz und digitale Selbstbestimmung. Das Tool ist vollständig DSGVO-konform,
-      speichert keine Inhalte und arbeitet mit einer klaren Mission: Menschen schützen, nicht überwachen.
-    </p>
-    <p>
-      <a href="/index.html">Startseite</a>
-      <a href="/ki-hinweis.html">Wie funktioniert die KI?</a>
-      <a href="/datenschutz.html">Datenschutz</a>
-      <a href="/impressum.html">Impressum</a>
-      <a href="/kontakt.html">Kontakt</a>
-      <a href="/demo.html" style="color: #e30613;">Demo</a>
-    </p>
-  </footer>
+  <div class="footer">
+    <p><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
+    achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung. Das Tool ist vollständig DSGVO-konform, speichert keine Inhalte und arbeitet mit einer klaren Mission: Menschen schützen, nicht überwachen.</p>
+  <p>
+  <a href="/index.html">Startseite</a>
+  <a href="/ki-hinweis.html">Wie funktioniert die KI?</a>
+  <a href="/datenschutz.html">Datenschutz</a>
+  <a href="/impressum.html">Impressum</a>
+  <a href="/kontakt.html">Kontakt</a>
+  <a href="/demo.html" style="color: #e30613;">Demo</a>
+</p>
+
+  </div>
 
   <script src="script.js"></script>
 </body>
