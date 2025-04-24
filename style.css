@@ -14,7 +14,7 @@ body {
   margin: 0;
 }
 
-/* CI Branding */
+/* CI Header */
 .ci-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -33,7 +33,7 @@ body {
   margin-top: 0.3rem;
 }
 
-/* Eingabe */
+/* Formular */
 textarea {
   width: 100%;
   height: 150px;
@@ -60,7 +60,7 @@ button:hover {
   background-color: #a00000;
 }
 
-/* Ausgabe */
+/* Ergebnisse */
 .feedback-box {
   background: var(--ci-gray);
   padding: 1rem;
@@ -92,6 +92,7 @@ button:hover {
   border-left: 4px solid var(--ci-blue);
 }
 
+/* Rewrite + Howto */
 .rewrite-box {
   margin-top: 1rem;
 }
@@ -134,4 +135,42 @@ footer a {
   color: var(--ci-primary);
   text-decoration: none;
   font-weight: bold;
+}
+.ci-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: sans-serif;
+  color: #111;
+}
+h1 {
+  color: #a40000;
+  text-align: center;
+}
+.ci-sub {
+  text-align: center;
+  color: #333;
+  font-size: 1.1rem;
+}
+.ci-button {
+  background: #a40000;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.ci-footer-eu {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 3rem;
+}
+.ci-footer-links {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+.ci-footer-links a {
+  margin: 0 0.5rem;
+  color: #a40000;
+  text-decoration: none;
 }
