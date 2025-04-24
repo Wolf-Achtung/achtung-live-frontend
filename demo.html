@@ -3,60 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>achtung.live – Datenschutz-Check</title>
+  <title>achtung.live – Demo</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- CI-Kopf -->
   <header class="ci-header">
     <div class="logo-tag">[achtung.live]</div>
     <div class="tagline">Deine empathische Datenschutzberatung</div>
   </header>
 
-  <!-- Textanalyse -->
   <main>
-    <label for="language">Sprache auswählen:</label>
-    <select id="language">
-      <option value="de">Deutsch</option>
-    </select>
-
     <textarea id="input-text" placeholder="Gib deinen Text hier ein…"></textarea>
-
-    <label>
-      <input type="checkbox" id="consent" />
-      Ich stimme der Verarbeitung meiner Eingabe zum Zweck der Analyse gemäß
-      <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> zu.
-    </label>
-
+    <label><input type="checkbox" id="consent" /> Ich stimme der Analyse gemäß <a href="/datenschutz.html">Datenschutzerklärung</a> zu.</label>
     <br />
     <input type="button" id="analyze-button" value="Sicherheit prüfen" />
-
     <div id="results" class="feedback-box"></div>
     <div id="empathy-message" class="empathy-box hidden"></div>
-
     <div class="rewrite-box">
       <button id="rewrite-button" class="hidden">Sicher umformulieren</button>
       <button id="howto-button" class="hidden">Hilfe: Nachricht verschicken</button>
     </div>
-
     <div id="rewrite-popup" class="modal-box hidden"></div>
     <div id="howto-box" class="howto-box hidden"></div>
   </main>
 
-  <!-- Footer -->
   <footer>
     <p>
-      achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte:
-      Datenschutz, Transparenz und digitale Selbstbestimmung. Das Tool ist vollständig DSGVO-konform,
-      speichert keine Inhalte und arbeitet mit einer klaren Mission: Menschen schützen, nicht überwachen.
+      achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung.
     </p>
     <p>
-      <a href="/">Startseite</a> · 
-      <a href="/ki-hinweis">Wie funktioniert die KI?</a> · 
-      <a href="/datenschutz">Datenschutz</a> · 
-      <a href="/impressum">Impressum</a> · 
-      <a href="/kontakt">Kontakt</a>
+      <a href="/index.html">Startseite</a>
+      <a href="/ki-hinweis.html">Wie funktioniert die KI?</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/impressum.html">Impressum</a>
+      <a href="/kontakt.html">Kontakt</a>
+      <a href="/demo.html" style="color: #e30613;">Demo</a>
     </p>
   </footer>
 

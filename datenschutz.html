@@ -4,47 +4,89 @@
   <meta charset="UTF-8">
   <title>Datenschutzerklärung – achtung.live</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
       background: #ffffff;
-      color: #1f2937;
+      color: #001d4a;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: #ffffff;
+      padding: 2em 1em;
+      text-align: center;
+    }
+    header h1 {
+      color: #e30613;
+      font-size: 2.5em;
+      margin: 0;
+    }
+    main {
+      flex: 1;
       padding: 2em;
+      text-align: left;
       max-width: 800px;
       margin: auto;
     }
-    h1 {
-      color: #b10000;
+    .footer {
+      padding: 2em 1em;
+      background-color: #ffffff;
+      color: #001d4a;
+      font-size: 0.9em;
+      text-align: center;
+      border-top: 1px solid #ccc;
     }
-    a {
-      color: #b10000;
+    .footer a {
+      color: #e30613;
+      text-decoration: underline;
+      margin: 0 0.5em;
     }
   </style>
 </head>
 <body>
-  <h1>Datenschutzerklärung</h1>
-  <p>Wenn du deine E-Mail-Adresse bei uns einträgst, wird sie ausschließlich verwendet, um dich über den Start von <strong>achtung.live</strong> zu informieren.</p>
+  <header>
+    <h1>[achtung.live]</h1>
+  </header>
+  <main>
+    <h2>Datenschutzerklärung</h2>
+    <p>Wenn du deine E-Mail-Adresse bei uns einträgst, wird sie ausschließlich verwendet, um dich über den Start von <strong>achtung.live</strong> zu informieren.</p>
 
-  <h2>Verantwortlich</h2>
-  <p>achtung.live<br>
-  kontakt@achtung.live</p>
+    <h3>Verantwortlich</h3>
+    <p>achtung.live<br>kontakt@achtung.live</p>
 
-  <h2>Welche Daten?</h2>
-  <p>Nur deine E-Mail-Adresse.</p>
+    <h3>Welche Daten?</h3>
+    <p>Nur deine E-Mail-Adresse.</p>
 
-  <h2>Zweck</h2>
-  <p>Benachrichtigung zum Launch, danach wird deine Adresse gelöscht oder du kannst dich jederzeit abmelden.</p>
+    <h3>Zweck</h3>
+    <p>Benachrichtigung zum Launch, danach wird deine Adresse gelöscht oder du kannst dich jederzeit abmelden.</p>
 
-  <h2>Rechtsgrundlage</h2>
-  <p>Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO.</p>
+    <h3>Rechtsgrundlage</h3>
+    <p>Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO.</p>
 
-  <h2>Deine Rechte</h2>
-  <ul>
-    <li>Auskunft</li>
-    <li>Löschung / Berichtigung</li>
-    <li>Widerruf deiner Einwilligung</li>
-  </ul>
+    <h3>Deine Rechte</h3>
+    <ul>
+      <li>Auskunft</li>
+      <li>Löschung / Berichtigung</li>
+      <li>Widerruf deiner Einwilligung</li>
+    </ul>
 
-  <p>Fragen? Schreib an <a href="mailto:kontakt@achtung.live">kontakt@achtung.live</a></p>
+    <p>Fragen? Schreib an <a href="mailto:kontakt@achtung.live">kontakt@achtung.live</a></p>
+  </main>
+  <div class="footer">
+    <p><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
+    achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung.</p>
+    <p>
+      <a href="/index.html">Startseite</a>
+      <a href="/ki-hinweis.html">Wie funktioniert die KI?</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/impressum.html">Impressum</a>
+      <a href="/kontakt.html">Kontakt</a>
+      <a href="/demo.html" style="color: #e30613;">Demo</a>
+    </p>
+  </div>
 </body>
 </html>
-
