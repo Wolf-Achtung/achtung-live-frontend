@@ -21,7 +21,7 @@ analyzeButton.addEventListener("click", async () => {
   rewriteButton.classList.add("hidden");
   howtoButton.classList.add("hidden");
 
-  const response = await fetch("https://web-production-f8648.up.railway.app/analyze", {
+  const response = await fetch("https://web-production-2e4ae.up.railway.app/analyze", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text })
