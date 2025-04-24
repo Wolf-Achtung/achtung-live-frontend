@@ -128,27 +128,29 @@ header h1 {
     <h1>[achtung.live]</h1>
   </header>
 
-  <main>
-    <textarea id="input-text" placeholder="Gib deinen Text hier ein…"></textarea>
+<!-- Teil des <main> Bereichs – ab hier anpassen -->
+<main>
+  <textarea id="input-text" placeholder="Gib deinen Text hier ein…"></textarea>
 
-    <label>
-      <input type="checkbox" id="consent" />
-      Ich stimme der Verarbeitung gemäß <a href="/datenschutz.html">Datenschutzerklärung</a> zu.
-    </label>
+  <label>
+    <input type="checkbox" id="consent" />
+    Ich stimme der Verarbeitung gemäß <a href="/datenschutz.html">Datenschutzerklärung</a> zu.
+  </label>
 
-    <input type="button" id="analyze-button" value="Sicherheit prüfen" />
+  <input type="button" id="analyze-button" value="Sicherheit prüfen" />
 
-    <div id="results" class="feedback-box"></div>
-    <div id="empathy-message" class="empathy-box hidden"></div>
+  <div id="results" class="feedback-box"></div>
+  <div id="empathy-message" class="empathy-box hidden"></div>
 
-    <div class="rewrite-box">
-      <button id="rewrite-button" class="hidden">Sicher umformulieren</button>
-      <button id="howto-button" class="hidden">Hilfe: Nachricht verschicken</button>
-    </div>
+  <div class="rewrite-box hidden" id="rewrite-tools">
+    <button id="rewrite-button">Sicher umformulieren</button>
+    <button id="howto-button">Hilfe: Nachricht verschicken</button>
+  </div>
 
-    <div id="rewrite-popup" class="modal-box hidden"></div>
-    <div id="howto-box" class="howto-box hidden"></div>
-  </main>
+  <div id="rewrite-popup" class="modal-box hidden"></div>
+  <div id="howto-box" class="howto-box hidden"></div>
+</main>
+
 
   <div class="footer">
     <p><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
