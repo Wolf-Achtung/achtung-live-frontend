@@ -3,169 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>achtung.live – Demo</title>
-  <style>
-    :root {
-      --ci-rot: #e30613;
-      --ci-blau: #001d4a;
-      --hellgrau: #f6f6f6;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-     body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #ffffff;
-      color: #001d4a;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
-      background: #ffffff;
-      padding: 2em 1em;
-      text-align: center;
-    }
-
-    header .logo-tag {
-      font-family: monospace;
-      font-weight: bold;
-      color: var(--ci-rot);
-      font-size: 2rem;
-    }
-
-    header .tagline {
-      color: var(--ci-blau);
-      font-size: 1rem;
-      margin-top: 0.3rem;
-    }
-
-header h1 {
-      color: #e30613;
-      font-size: 2.5em;
-      margin: 0;
-    }
-    main {
-      flex: 1;
-      padding: 2em;
-      text-align: center;
-    }
-
-    textarea {
-      width: 100%;
-      height: 150px;
-      padding: 1rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 1rem;
-    }
-
-    input[type="button"],
-    button {
-      background-color: var(--ci-rot);
-      color: white;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-right: 0.5rem;
-    }
-
-    input[type="button"]:hover,
-    button:hover {
-      background-color: #b8000c;
-    }
-
-    .feedback-box,
-    .howto-box,
-    .empathy-box {
-      background: var(--hellgrau);
-      padding: 1rem;
-      border-radius: 6px;
-      margin-top: 1rem;
-    }
-
-    .empathy-box.hidden,
-    .howto-box.hidden,
-    .modal-box.hidden,
-    .rewrite-box .hidden {
-      display: none;
-    }
-
-    .rewrite-box {
-      margin-top: 1rem;
-    }
-
-    .footer {
-      padding: 2em 1em;
-      background-color: #ffffff;
-      color: #001d4a;
-      font-size: 0.9em;
-      text-align: center;
-      border-top: 1px solid #ccc;
-    }
-    .footer a {
-      color: #e30613;
-      text-decoration: underline;
-      margin: 0 0.5em;
-    }
-  </style>
+  <title>Demo – achtung.live</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
 
-  <header>
-    <h1>[achtung.live]</h1>
-  </header>
+  <div class="ci-wrapper">
+    <header>
+      <h1>[achtung.live]</h1>
+      <p class="ci-sub">Deine empathische Datenschutzberatung</p>
+    </header>
 
-<!-- Teil des <main> Bereichs – ab hier anpassen -->
-<main>
-  <textarea id="input-text" placeholder="Gib deinen Text hier ein…"></textarea>
+    <main>
+      <h2>Text prüfen – einfach & sicher</h2>
+      <textarea id="user-text" rows="6" placeholder="Gib deinen Text ein…"></textarea>
 
-  <label>
-    <input type="checkbox" id="consent" />
-    Ich stimme der Verarbeitung gemäß <a href="/datenschutz.html">Datenschutzerklärung</a> zu.
-  </label>
+      <label style="display: block; margin-top: 1rem;">
+        <input type="checkbox" id="consent" />
+        Ich stimme der Analyse gemäß <a href="/datenschutz.html">Datenschutzerklärung</a> zu.
+      </label>
 
-  <input type="button" id="analyze-button" value="Sicherheit prüfen" />
+      <div style="margin-top: 1rem;">
+        <button id="analyze-button" class="ci-button">Sicherheit prüfen</button>
+      </div>
 
-  <div id="results" class="feedback-box"></div>
-  <div id="empathy-message" class="empathy-box hidden"></div>
+      <div id="result" class="feedback-box" style="margin-top: 2rem;"></div>
 
-  <div class="rewrite-box hidden" id="rewrite-tools">
-    <button id="rewrite-button">Sicher umformulieren</button>
-    <button id="howto-button">Hilfe: Nachricht verschicken</button>
+      <div id="shadow-tools" style="display: none; margin-top: 2rem;">
+        <button id="rewrite-button" class="ci-button">Sicher umformulieren</button>
+        <button id="howto-button" class="ci-button">Hilfe: Nachricht verschicken</button>
+      </div>
+
+      <div id="rewrite-result" class="feedback-box" style="display: none;"></div>
+      <div id="howto-result" class="feedback-box" style="display: none;"></div>
+    </main>
+
+    <footer>
+      <p class="ci-footer-eu">🔵 Aus Europa. Für Alle.</p>
+      <p class="ci-footer-links">
+        <a href="/index.html">Startseite</a>
+        <a href="/demo.html" style="color:#e30613;">Demo</a>
+        <a href="/hilfe.html">Hilfe</a>
+        <a href="/datenschutz.html">Datenschutz</a>
+        <a href="/impressum.html">Impressum</a>
+      </p>
+    </footer>
   </div>
 
-  <div id="rewrite-popup" class="modal-box hidden"></div>
-  <div id="howto-box" class="howto-box hidden"></div>
-</main>
-
-
-  <div class="footer">
-    <p><strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
-    achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung. Das Tool ist vollständig DSGVO-konform, speichert keine Inhalte und arbeitet mit einer klaren Mission: Menschen schützen, nicht überwachen.</p>
-  <p>
-  <a href="/index.html">Startseite</a>
-  <a href="/ki-hinweis.html">Wie funktioniert die KI?</a>
-  <a href="/datenschutz.html">Datenschutz</a>
-  <a href="/impressum.html">Impressum</a>
-  <a href="/kontakt.html">Kontakt</a>
-  <a href="/demo.html" style="color: #e30613;">Demo</a>
-</p>
-
-  </div>
-
-  <script src="script.js"></script>
 </body>
 </html>

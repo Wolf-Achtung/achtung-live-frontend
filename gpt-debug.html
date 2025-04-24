@@ -1,58 +1,36 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GPT-Debug – achtung.live</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debug – achtung.live</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    textarea {
-      width: 100%;
-      height: 120px;
-      margin-bottom: 1rem;
-    }
-    pre {
-      background: #f4f4f4;
-      padding: 1rem;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    button {
-      background-color: #e30613;
-      color: #fff;
-      border: none;
-      padding: 10px 18px;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 0.5rem;
-    }
-  </style>
 </head>
 <body>
 
-  <header class="ci-header">
-    <div class="logo-tag">[achtung.live]</div>
-    <div class="tagline">GPT-Debug Tool für Entwickler</div>
-  </header>
+  <div class="ci-wrapper">
+    <header>
+      <h1>[achtung.live]</h1>
+      <p class="ci-sub">GPT-Debug Tool für Entwickler</p>
+    </header>
 
-  <main>
-    <h1>🔍 GPT-Debug: Railway-API</h1>
-    <p>Gib hier deinen Text ein, der analysiert werden soll:</p>
-    <textarea id="textInput" placeholder="Hier deinen Testtext eingeben..."></textarea>
-    <button onclick="sendRequest()">🧠 Absenden & analysieren</button>
+    <main>
+      <h2>Test: GPT-Antwort</h2>
+      <textarea id="textInput" rows="6" placeholder="Gib deinen Testtext ein…"></textarea>
+      <button onclick="sendRequest()" class="ci-button" style="margin-top: 1rem;">Absenden & analysieren</button>
 
-    <h2>Antwort der API:</h2>
-    <pre id="responseOutput">Noch keine Anfrage gesendet.</pre>
-  </main>
+      <h3>Antwort der API:</h3>
+      <pre id="responseOutput" class="feedback-box">Noch keine Anfrage gesendet.</pre>
+    </main>
 
-  <footer>
-    <p>
-      <a href="/index.html">Startseite</a>
-      <a href="/demo.html">Demo</a>
-      <a href="/hilfe.html">Hilfe</a>
-    </p>
-  </footer>
+    <footer>
+      <p class="ci-footer-eu">🔵 Aus Europa. Für Alle.</p>
+      <p class="ci-footer-links">
+        <a href="/index.html">Startseite</a>
+        <a href="/demo.html">Demo</a>
+        <a href="/hilfe.html">Hilfe</a>
+      </p>
+    </footer>
 
   <script>
     async function sendRequest() {
@@ -65,7 +43,6 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text })
         });
-
         const result = await response.json();
         responseElement.textContent = JSON.stringify(result, null, 2);
       } catch (error) {
@@ -73,5 +50,7 @@
       }
     }
   </script>
+
+  </div>
 </body>
 </html>
