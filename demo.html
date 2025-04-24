@@ -4,32 +4,155 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>achtung.live – Demo</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --ci-rot: #e30613;
+      --ci-blau: #001d4a;
+      --hellgrau: #f6f6f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", sans-serif;
+      background-color: #ffffff;
+      color: var(--ci-blau);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+
+    header .logo-tag {
+      font-family: monospace;
+      font-weight: bold;
+      color: var(--ci-rot);
+      font-size: 2rem;
+    }
+
+    header .tagline {
+      color: var(--ci-blau);
+      font-size: 1rem;
+      margin-top: 0.3rem;
+    }
+
+    main {
+      flex: 1;
+      padding: 1rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    input[type="button"],
+    button {
+      background-color: var(--ci-rot);
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+
+    input[type="button"]:hover,
+    button:hover {
+      background-color: #b8000c;
+    }
+
+    .feedback-box,
+    .howto-box,
+    .empathy-box {
+      background: var(--hellgrau);
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+    }
+
+    .empathy-box.hidden,
+    .howto-box.hidden,
+    .modal-box.hidden,
+    .rewrite-box .hidden {
+      display: none;
+    }
+
+    .rewrite-box {
+      margin-top: 1rem;
+    }
+
+    footer {
+      background-color: #ffffff;
+      padding: 2rem 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--ci-blau);
+      border-top: 1px solid #ccc;
+    }
+
+    footer a {
+      color: var(--ci-rot);
+      text-decoration: underline;
+      margin: 0 0.5rem;
+    }
+  </style>
 </head>
 <body>
-  <header class="ci-header">
+
+  <header>
     <div class="logo-tag">[achtung.live]</div>
     <div class="tagline">Deine empathische Datenschutzberatung</div>
   </header>
 
   <main>
     <textarea id="input-text" placeholder="Gib deinen Text hier ein…"></textarea>
-    <label><input type="checkbox" id="consent" /> Ich stimme der Analyse gemäß <a href="/datenschutz.html">Datenschutzerklärung</a> zu.</label>
-    <br />
+
+    <label>
+      <input type="checkbox" id="consent" />
+      Ich stimme der Verarbeitung gemäß <a href="/datenschutz.html">Datenschutzerklärung</a> zu.
+    </label>
+
     <input type="button" id="analyze-button" value="Sicherheit prüfen" />
+
     <div id="results" class="feedback-box"></div>
     <div id="empathy-message" class="empathy-box hidden"></div>
+
     <div class="rewrite-box">
       <button id="rewrite-button" class="hidden">Sicher umformulieren</button>
       <button id="howto-button" class="hidden">Hilfe: Nachricht verschicken</button>
     </div>
+
     <div id="rewrite-popup" class="modal-box hidden"></div>
     <div id="howto-box" class="howto-box hidden"></div>
   </main>
 
   <footer>
     <p>
-      achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte: Datenschutz, Transparenz und digitale Selbstbestimmung.
+      achtung.live ist keine KI von irgendwo. Wir entwickeln aus Europa – auf Basis europäischer Werte:
+      Datenschutz, Transparenz und digitale Selbstbestimmung. Das Tool ist vollständig DSGVO-konform,
+      speichert keine Inhalte und arbeitet mit einer klaren Mission: Menschen schützen, nicht überwachen.
     </p>
     <p>
       <a href="/index.html">Startseite</a>
