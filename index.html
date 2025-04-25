@@ -21,7 +21,10 @@
   <section id="warteliste">
     <h2>achtung.live Warteliste</h2>
     <p>Bitte benachrichtige mich über den Launch!</p>
-    <form id="launchForm" style="max-width: 500px; margin: auto;">
+
+    <form name="achtung-live-warteliste" method="POST" data-netlify="true" style="max-width: 500px; margin: auto;">
+      <input type="hidden" name="form-name" value="achtung-live-warteliste" />
+
       <label for="email">E-Mail-Adresse:</label><br>
       <input type="email" id="email" name="email" required placeholder="Deine E-Mail-Adresse" style="width:100%; padding:0.5rem; margin-top:0.5rem;"><br><br>
 
@@ -29,10 +32,11 @@
       <label for="optin">Ich möchte informiert werden und akzeptiere die <a href="#" onclick="openDatenschutzModal()">Datenschutzerklärung</a>.</label><br><br>
 
       <button type="submit" class="hilfe-button">Benachrichtige mich</button>
-
-      <p id="formSuccess" style="display:none; color:green; margin-top:1rem;">Vielen Dank! Deine Anmeldung war erfolgreich.</p>
-      <p id="formError" style="display:none; color:red; margin-top:1rem;">Fehler: Bitte überprüfe deine Angaben.</p>
     </form>
+
+    <p style="margin-top: 1rem; font-size: 0.9rem; color: #223a5e;">
+      Du kannst dich jederzeit wieder abmelden.
+    </p>
   </section>
 </main>
 
@@ -52,25 +56,8 @@
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
 
-<!-- Form-Handling und Modal -->
+<!-- Modal Script -->
 <script>
-// Formular-Handling
-document.getElementById('launchForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  const email = document.getElementById('email').value;
-  const optin = document.getElementById('optin').checked;
-
-  if (email && optin) {
-    document.getElementById('formSuccess').style.display = 'block';
-    document.getElementById('formError').style.display = 'none';
-    document.getElementById('launchForm').reset();
-  } else {
-    document.getElementById('formSuccess').style.display = 'none';
-    document.getElementById('formError').style.display = 'block';
-  }
-});
-
 // Datenschutz Modal öffnen/schließen
 function openDatenschutzModal() {
   document.getElementById('datenschutzModal').style.display = 'block';
