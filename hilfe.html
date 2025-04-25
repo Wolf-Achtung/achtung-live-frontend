@@ -1,103 +1,54 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>achtung.live – Die Autokorrektur für deine Privatsphäre</title>
-  <style>
-    body {
-      font-family: Helvetica, sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      background-color: #fff;
-      color: #1c2d39;
-    }
-    h1 {
-      color: #8b0000;
-    }
-    h2 {
-      color: #1c2d39;
-      margin-top: 0;
-    }
-    .form-container {
-      max-width: 500px;
-      margin: 3em auto;
-      padding: 1.5em;
-      border: 1px solid #C0CCD9;
-      border-radius: 6px;
-      background-color: #f9f9f9;
-    }
-    input[type="email"] {
-      width: 100%;
-      padding: 12px;
-      margin: 1em 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      background-color: #8b0000;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #a30000;
-    }
-    #form-success {
-      display: none;
-      margin-top: 1em;
-      color: #085229;
-      font-weight: bold;
-    }
-    footer {
-      margin-top: 4em;
-      padding: 2em 1em;
-      font-size: 0.85em;
-      color: #1c2d39;
-      background-color: #f4f4f4;
-    }
-    footer a {
-      color: #8b0000;
-      margin: 0 0.5em;
-      text-decoration: none;
-    }
-    .eu-hinweis {
-      margin-top: 1em;
-      font-size: 0.9em;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hilfe – achtung.live</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="hilfe-modal.js"></script>
 </head>
 
 <body>
 
-  <header>
-    <h1>[achtung.live]</h1>
-    <h2>Die Autokorrektur für deine Privatsphäre</h2>
-  </header>
+<header>
+  <h1>[achtung.live]</h1>
+  <h2>Die Autokorrektur für deine Privatsphäre</h2>
+</header>
 
-  <main>
-    <div class="form-container">
-      <form name="launch-notify" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="showSuccessMessage(); return false;" id="launch-form">
-        <input type="hidden" name="form-name" value="launch-notify" />
-        <p style="display:none">
-          <label>Don’t fill this out: <input name="bot-field" /></label>
-        </p>
+<main>
+  <h3 style="margin-bottom: 1em;">Wähle ein Thema für mehr Infos</h3>
 
-        <h3 style="color: #8b0000;">Benachrichtige mich zum Launch</h3>
-        <label for="email"><strong>E-Mail-Adresse:</strong></label><br />
-        <input type="email" name="email" id="email" placeholder="dein@email.de" required /><br />
-        <button type="submit">Benachrichtige mich</button>
-      </form>
+  <div class="hilfe-buttons" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 2em auto; max-width: 800px;">
+    <button class="hilfe-button" data-hilfe="iban">Bankdaten schützen</button>
+    <button class="hilfe-button" data-hilfe="kreditkarte">Kreditkarte sichern</button>
+    <button class="hilfe-button" data-hilfe="depression">Gesundheitsdaten bewahren</button>
+    <button class="hilfe-button" data-hilfe="chef">Privates mit Kollegen/Freunden</button>
+    <button class="hilfe-button" data-hilfe="standort">Standort-Infos absichern</button>
+    <button class="hilfe-button" data-hilfe="urlaub">Urlaubsankündigungen vermeiden</button>
+    <button class="hilfe-button" data-hilfe="whatsapp">WhatsApp richtig nutzen</button>
+    <button class="hilfe-button" data-hilfe="screenshot">Screenshots bewusst teilen</button>
+    <button class="hilfe-button" data-hilfe="kind">Kinderdaten schützen</button>
+    <button class="hilfe-button" data-hilfe="passwort">Passwort-Tipps</button>
+    <button class="hilfe-button" data-hilfe="sicher-senden">Nachrichten sicher senden</button>
+    <button class="hilfe-button" data-hilfe="unternehmen">Infos über Firmen</button>
+  </div>
 
-      <div id="form-success">
-        Vielen Dank! Wir benachrichtigen dich zum Launch.
-      </div>
-    </div>
-  </main>
+  <h4 style="margin-top: 3em; color: #8b0000;">Weiterführende Infos zu sicherheitsrelevanten Themen:</h4>
+  <p style="margin-top: 1em;">
+    <a href="hilfe-iban.html">Bankdaten schützen</a> • 
+    <a href="hilfe-kreditkarte.html">Kreditkarte sichern</a> • 
+    <a href="hilfe-depression.html">Gesundheitsdaten</a> • 
+    <a href="hilfe-chef.html">Privates mit Freunden/Kollegen</a> • 
+    <a href="hilfe-standort.html">Standortdaten</a> • 
+    <a href="hilfe-urlaub.html">Urlaubsplanung</a> • 
+    <a href="hilfe-whatsapp.html">WhatsApp-Sicherheit</a> • 
+    <a href="hilfe-screenshot.html">Screenshots</a> • 
+    <a href="hilfe-kind.html">Kinderfotos</a> • 
+    <a href="hilfe-passwort.html">Passwörter</a> • 
+    <a href="hilfe-sicher-senden.html">Sichere Nachrichten</a> • 
+    <a href="hilfe-unternehmen.html">Firmen-Infos schützen</a>
+  </p>
+</main>
 
  <footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
@@ -108,21 +59,14 @@
     <a href="index.html">Start</a> •
     <a href="kontakt.html">Kontakt</a> •
     <a href="impressum.html">Impressum</a> •
-    <a href="ki-hinweis.html">KI-Hinweis</a> •
+    <a href="ki-hinweis.html" class="active">KI-Hinweis</a> •
     <a href="datenschutz.html">Datenschutz</a> •
     <a href="hilfe.html">Hilfe</a> •
-    <a href="demo.html" class="active">Demo</a>
+    <a href="demo.html">Demo</a>
   </nav>
 
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
-
-  <script>
-    function showSuccessMessage() {
-      document.getElementById("launch-form").style.display = "none";
-      document.getElementById("form-success").style.display = "block";
-    }
-  </script>
 
 </body>
 </html>
