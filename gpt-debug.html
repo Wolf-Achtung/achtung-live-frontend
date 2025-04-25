@@ -3,54 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Debug – achtung.live</title>
+  <title>achtung.live – KI-Hinweis</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="ci-wrapper">
-    <header>
-      <h1>[achtung.live]</h1>
-      <p class="ci-sub">GPT-Debug Tool für Entwickler</p>
-    </header>
+  <header>
+    <h1>[achtung.live]</h1>
+    <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+  </header>
 
-    <main>
-      <h2>Test: GPT-Antwort</h2>
-      <textarea id="textInput" rows="6" placeholder="Gib deinen Testtext ein…"></textarea>
-      <button onclick="sendRequest()" class="ci-button" style="margin-top: 1rem;">Absenden & analysieren</button>
+  <main>
+    <h2>Wie funktioniert die KI bei achtung.live?</h2>
+    <p>
+      Wir nutzen Künstliche Intelligenz (KI), um dir datenschutzgerechte Tipps zu geben und deine Texte auf Wunsch sicher umzuformulieren.
+    </p>
 
-      <h3>Antwort der API:</h3>
-      <pre id="responseOutput" class="feedback-box">Noch keine Anfrage gesendet.</pre>
-    </main>
+    <h3>Was du wissen solltest:</h3>
+    <ul>
+      <li>Dein Text wird nur temporär verarbeitet</li>
+      <li>Es erfolgt keine dauerhafte Speicherung</li>
+      <li>Die Analyse basiert auf dem Prinzip: so wenig Daten wie nötig</li>
+      <li>Du hast jederzeit die Kontrolle über deine Inhalte</li>
+    </ul>
 
-    <footer>
-      <p class="ci-footer-eu">🔵 Aus Europa. Für Alle.</p>
-      <p class="ci-footer-links">
-        <a href="/index.html">Startseite</a>
-        <a href="/demo.html">Demo</a>
-        <a href="/hilfe.html">Hilfe</a>
-      </p>
-    </footer>
+    <p>
+      Unsere KI ist kein Richter – sondern ein empathischer Begleiter. Sie gibt Hinweise, keine Urteile.
+    </p>
+  </main>
 
-  <script>
-    async function sendRequest() {
-      const text = document.getElementById("textInput").value;
-      const responseElement = document.getElementById("responseOutput");
+  <footer class="footer-eu">
+    <span class="footer-europe">🇪🇺 Aus Europa. Für Alle.</span>
+    <div class="footer-body">
+      achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br />
+      DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
+    </div>
+    <div style="margin-top: 1rem;">
+      <a href="index.html">Start</a> |
+      <a href="hilfe.html">Hilfe</a> |
+      <a href="kontakt.html">Kontakt</a> |
+      <a href="datenschutz.html">Datenschutz</a> |
+      <a href="impressum.html">Impressum</a> |
+      <a href="demo.html">Demo</a>
+    </div>
+    <div class="footer-tiny">
+      © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+    </div>
+  </footer>
 
-      try {
-        const response = await fetch("https://web-production-06ae.up.railway.app/debug-gpt", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text })
-        });
-        const result = await response.json();
-        responseElement.textContent = JSON.stringify(result, null, 2);
-      } catch (error) {
-        responseElement.textContent = "⚠️ Fehler bei der Anfrage:\n" + error;
-      }
-    }
-  </script>
-
-  </div>
 </body>
 </html>

@@ -1,55 +1,47 @@
-// hilfe-modal.js
+document.addEventListener("DOMContentLoaded", function () {
+  const hilfeContainer = document.getElementById("hilfe-container");
 
-async function loadHilfeModals() {
-  const container = document.getElementById("hilfe-container");
-  if (!container) return;
+  fetch("hilfe_config.json")
+    .then(response => response.json())
+    .then(data => {
+      data.hilfe.forEach(item => {
+        // Erstelle den Button für jedes Hilfethema
+        const button = document.createElement("button");
+        button.className = "hilfe-button";
+        button.innerText = item.button;
+        button.onclick = () => openModal(item.title, item.text);
+        hilfeContainer.appendChild(button);
+      });
+    })
+    .catch(error => console.error("Fehler beim Laden der Hilfe-Config:", error));
 
-  try {
-    const res = await fetch("hilfe_config.json");
-    const data = await res.json();
+  function openModal(title, text) {
+    // Erstelle das Modal-Overlay
+    const modal = document.createElement("div");
+    modal.className = "hilfe-modal";
+    modal.innerHTML = `
+      <div class="hilfe-modal-content">
+        <span class="hilfe-close">&times;</span>
+        <h2>${title}</h2>
+        <p>${text}</p>
+      </div>
+    `;
+    document.body.appendChild(modal);
 
-    data.hilfe.forEach(entry => {
-      // Button
-      const button = document.createElement("button");
-      button.textContent = entry.button;
-      button.className = "hilfe-button";
-      button.onclick = () => openModal(entry.id);
-      container.appendChild(button);
+    // Anzeigen
+    modal.style.display = "block";
 
-      // Modal
-      const modal = document.createElement("div");
-      modal.id = `modal-${entry.id}`;
-      modal.className = "hilfe-modal";
-      modal.innerHTML = `
-        <div class="hilfe-modal-content">
-          <span class="hilfe-close" onclick="closeModal('${entry.id}')">&times;</span>
-          <h2>${entry.title}</h2>
-          <p>${entry.text.replace(/\n/g, "<br>")}</p>
-        </div>
-      `;
-      document.body.appendChild(modal);
-    });
-  } catch (err) {
-    console.error("hilfe_config.json konnte nicht geladen werden", err);
+    // Schließen beim Klick auf das Schließen-Symbol oder außerhalb
+    modal.querySelector(".hilfe-close").onclick = () => closeModal(modal);
+    modal.onclick = (e) => {
+      if (e.target === modal) {
+        closeModal(modal);
+      }
+    };
   }
-}
 
-function openModal(id) {
-  const modal = document.getElementById(`modal-${id}`);
-  if (modal) modal.style.display = "block";
-}
-
-function closeModal(id) {
-  const modal = document.getElementById(`modal-${id}`);
-  if (modal) modal.style.display = "none";
-}
-
-// Klick außerhalb des Modals schließt es
-window.onclick = function (event) {
-  document.querySelectorAll(".hilfe-modal").forEach(modal => {
-    if (event.target === modal) modal.style.display = "none";
-  });
-};
-
-// Lade Modals nach DOM-Start
-document.addEventListener("DOMContentLoaded", loadHilfeModals);
+  function closeModal(modal) {
+    modal.style.display = "none";
+    document.body.removeChild(modal);
+  }
+});

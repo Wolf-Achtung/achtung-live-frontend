@@ -1,48 +1,61 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hilfe – achtung.live</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>achtung.live – Hilfe</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="ci-wrapper">
-    <header>
-      <h1>[achtung.live]</h1>
-      <p class="ci-sub">Deine empathische Datenschutzberatung</p>
-    </header>
+  <header>
+    <h1>[achtung.live]</h1>
+    <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+  </header>
 
-    <main>
-      <h2>Hilfe & Anleitungen</h2>
-      <p>Hier findest du einfache Schritt-für-Schritt-Hilfen zu häufigen Fragen im digitalen Alltag:</p>
+  <main>
+    <h2>Deine Hilfethemen</h2>
+    <p>Wähle ein Thema, um mehr zu erfahren:</p>
 
-      <ul>
-        <li><a href="/hilfe-iban.html">IBAN sicher weitergeben</a></li>
-        <li><a href="/hilfe-kreditkarte.html">Kreditkartendaten schützen</a></li>
-        <li><a href="/hilfe-sicher-senden.html">Verschlüsselte Mail senden</a></li>
-        <li><a href="/hilfe-whatsapp.html">Privatsphäre bei WhatsApp</a></li>
-        <li><a href="/hilfe-depression.html">Sensible Gesundheitsdaten teilen</a></li>
-        <li><a href="/hilfe-passwort.html">Sicheres Passwort erstellen</a></li>
-        <li><a href="/hilfe-screenshot.html">Screenshots & Bilddaten</a></li>
-        <li><a href="/hilfe-kind.html">Infos über Kinder schützen</a></li>
-        <li><a href="/hilfe-chef.html">Konflikte mit Vorgesetzten</a></li>
-        <li><a href="/hilfe-medikament.html">Medikamenteneinnahme</a></li>
-      </ul>
-    </main>
+    <!-- Dynamisch eingefügte Modal-Buttons -->
+    <div id="hilfe-container" style="margin-top: 2rem;"></div>
 
-    <footer>
-      <p class="ci-footer-eu">🔵 Aus Europa. Für Alle.</p>
-      <p class="ci-footer-links">
-        <a href="/index.html">Startseite</a>
-        <a href="/demo.html">Demo</a>
-        <a href="/hilfe.html">Hilfe</a>
-        <a href="/datenschutz.html">Datenschutz</a>
-        <a href="/impressum.html">Impressum</a>
-      </p>
-    </footer>
-  </div>
+    <h3 style="margin-top: 3rem;">Alternativ: Direkte Links zu einzelnen Hilfeseiten</h3>
+    <ul style="list-style: none; padding: 0;">
+      <li><a href="hilfe-iban.html">IBAN schützen</a></li>
+      <li><a href="hilfe-kreditkarte.html">Kreditkartendaten schützen</a></li>
+      <li><a href="hilfe-passwort.html">Passwort sicher gestalten</a></li>
+      <li><a href="hilfe-medikament.html">Medizinische Informationen schützen</a></li>
+      <li><a href="hilfe-kind.html">Privates über Kinder schützen</a></li>
+      <li><a href="hilfe-standort.html">Standortdaten schützen</a></li>
+      <li><a href="hilfe-urlaub.html">Urlaubsinformationen schützen</a></li>
+      <li><a href="hilfe-screenshot.html">Sensible Screenshots schützen</a></li>
+      <li><a href="hilfe-whatsapp.html">WhatsApp sicher nutzen</a></li>
+      <li><a href="hilfe-chef.html">Private Aussagen schützen</a></li>
+      <li><a href="hilfe-depression.html">Emotionale Aussagen schützen</a></li>
+      <li><a href="hilfe-sicher-senden.html">Nachricht sicher verschicken</a></li>
+    </ul>
+  </main>
 
+  <footer class="footer-eu">
+    <span class="footer-europe">🇪🇺 Aus Europa. Für Alle.</span>
+    <div class="footer-body">
+      achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br />
+      DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
+    </div>
+    <div style="margin-top: 1rem;">
+      <a href="index.html">Start</a> |
+      <a href="hilfe.html">Hilfe</a> |
+      <a href="kontakt.html">Kontakt</a> |
+      <a href="datenschutz.html">Datenschutz</a> |
+      <a href="impressum.html">Impressum</a> |
+      <a href="demo.html">Demo</a>
+    </div>
+    <div class="footer-tiny">
+      © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+    </div>
+  </footer>
+
+  <script src="hilfe-modal.js"></script>
 </body>
 </html>
