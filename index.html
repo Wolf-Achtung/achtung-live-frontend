@@ -3,67 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>achtung.live – Bald verfügbar</title>
+  <title>achtung.live – Die Autokorrektur für deine Privatsphäre</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
-  <h1><span class="logo">[achtung.live]</span></h1>
-  <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+  <h1>[achtung.live]</h1>
+  <h2>Die Autokorrektur für deine Privatsphäre</h2>
 </header>
 
 <main>
-  <h2>Wir starten bald!</h2>
-  <p>achtung.live ist bald live – und du kannst zu den Ersten gehören, die informiert werden.</p>
+  <div class="form-container">
+    <form name="launch-notify" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="launch-form" onsubmit="return handleFormSubmit(event)">
+      <input type="hidden" name="form-name" value="launch-notify" />
+      <p style="display:none">
+        <label>Don’t fill this out: <input name="bot-field" /></label>
+      </p>
 
-  <!-- Wartelisten-Formular -->
-  <section id="warteliste">
-    <h2>achtung.live Warteliste</h2>
-    <p>Bitte benachrichtige mich über den Launch!</p>
-
-    <form name="achtung-live-warteliste" method="POST" data-netlify="true" style="max-width: 500px; margin: auto;">
-      <input type="hidden" name="form-name" value="achtung-live-warteliste" />
-
-      <label for="email">E-Mail-Adresse:</label><br>
-      <input type="email" id="email" name="email" required placeholder="Deine E-Mail-Adresse" style="width:100%; padding:0.5rem; margin-top:0.5rem;"><br><br>
-
-      <input type="checkbox" id="optin" name="optin" required>
-      <label for="optin">
-        Ich möchte informiert werden und akzeptiere die 
-        <a href="#" onclick="openDatenschutzPopup()" style="color: #c42c27; text-decoration: underline;">Datenschutzerklärung</a>.
-      </label><br><br>
-
-      <button type="submit" class="hilfe-button">Benachrichtige mich</button>
+      <h3 style="color: #8b0000;">Benachrichtige mich zum Launch</h3>
+      <label for="email"><strong>E-Mail-Adresse:</strong></label><br />
+      <input type="email" name="email" id="email" placeholder="dein@email.de" required /><br />
+      <button type="submit">Benachrichtige mich</button>
     </form>
 
-    <p style="margin-top: 1rem; font-size: 0.9rem; color: #223a5e;">
-      Du kannst dich jederzeit wieder abmelden.
-    </p>
-  </section>
+    <div id="form-success" style="display:none; margin-top:20px; color:#085229; font-weight:bold;">
+      🎉 Vielen Dank! Wir benachrichtigen dich zum Launch.
+    </div>
+  </div>
 </main>
 
 <footer>
-  <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
-  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
-  DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
-  <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
+  <div class="eu-hinweis">
+    <strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
+    achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
+    DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
+  </div>
+  <div>
+    <a href="index.html">Startseite</a>
+    <a href="demo.html">Demo</a>
+    <a href="hilfe.html">Hilfe</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="impressum.html">Impressum</a>
+    <a href="kontakt.html">Kontakt</a>
+  </div>
+  <div class="fineprint">
+    © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+  </div>
 </footer>
 
-<!-- Popup Script -->
 <script>
-  function openDatenschutzPopup() {
-    const w = 600;
-    const h = 500;
-    const left = (screen.width - w) / 2;
-    const top = (screen.height - h) / 2;
+function handleFormSubmit(event) {
+  event.preventDefault();
+  const form = event.target;
 
-    window.open(
-      'datenschutz-popup.html',
-      'Datenschutz',
-      `width=${w},height=${h},top=${top},left=${left},resizable=yes,scrollbars=yes`
-    );
-  }
+  fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(new FormData(form)).toString()
+  })
+  .then(() => {
+    form.style.display = "none";
+    document.getElementById("form-success").style.display = "block";
+  })
+  .catch((error) => {
+    alert("Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.");
+    console.error(error);
+  });
+
+  return false;
+}
 </script>
 
 </body>
