@@ -5,50 +5,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hilfe – achtung.live</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="hilfe-modal.js" defer></script>
 </head>
 <body>
+  <div class="ci-wrapper">
+    <header>
+      <h1>[achtung.live]</h1>
+      <p class="ci-sub">Die Autokorrektur für deine Privatsphäre</p>
+    </header>
 
-  <header style="text-align: center; margin-top: 30px;">
-    <h1 style="color: #8b0000;">[achtung.live]</h1>
-    <p style="color: #001f3f;">Die Autokorrektur für deine Privatsphäre</p>
-  </header>
+    <main>
+      <h2>Deine Hilfethemen</h2>
+      <p>Wähle ein Thema:</p>
 
-  <main style="text-align: center; margin-top: 40px;">
-    <h2 style="color: #8b0000;">Deine Hilfethemen</h2>
-    <p style="color: #001f3f;">Wähle ein Thema:</p>
+      <div class="hilfe-buttons">
+        <button class="hilfe-btn" data-hilfe="iban">IBAN sichern</button>
+        <button class="hilfe-btn" data-hilfe="kreditkarte">Kreditkarte schützen</button>
+        <button class="hilfe-btn" data-hilfe="passwort">Passwort sichern</button>
+        <button class="hilfe-btn" data-hilfe="medizin">Medizinische Infos sichern</button>
+        <button class="hilfe-btn" data-hilfe="kind">Kind schützen</button>
+        <button class="hilfe-btn" data-hilfe="standort">Standort sichern</button>
+        <button class="hilfe-btn" data-hilfe="urlaub">Urlaubsinfos schützen</button>
+        <button class="hilfe-btn" data-hilfe="screenshot">Screenshot sichern</button>
+        <button class="hilfe-btn" data-hilfe="whatsapp">WhatsApp sicher nutzen</button>
+        <button class="hilfe-btn" data-hilfe="private">Private Aussagen sichern</button>
+        <button class="hilfe-btn" data-hilfe="emotional">Emotionale Aussagen sichern</button>
+        <button class="hilfe-btn" data-hilfe="nachricht">Nachricht sicher verschicken</button>
+      </div>
 
-    <div id="hilfe-buttons" style="margin-top: 30px;">
-      <button class="hilfe-button" data-key="iban">IBAN sichern</button>
-      <button class="hilfe-button" data-key="kreditkarte">Kreditkarte schützen</button>
-      <button class="hilfe-button" data-key="passwort">Passwort sichern</button>
-      <button class="hilfe-button" data-key="medikament">Medizinische Infos sichern</button>
-      <button class="hilfe-button" data-key="kind">Kind schützen</button>
-      <button class="hilfe-button" data-key="standort">Standort sichern</button>
-      <button class="hilfe-button" data-key="urlaub">Urlaubsinfos schützen</button>
-      <button class="hilfe-button" data-key="screenshot">Screenshot sichern</button>
-      <button class="hilfe-button" data-key="whatsapp">WhatsApp sicher nutzen</button>
-      <button class="hilfe-button" data-key="chef">Private Aussagen sichern</button>
-      <button class="hilfe-button" data-key="depression">Emotionale Aussagen sichern</button>
-      <button class="hilfe-button" data-key="sichern">Nachricht sicher verschicken</button>
+      <p style="margin-top: 2em; text-align: center;"><strong>Alternativ: Direkte Links zu einzelnen Hilfeseiten</strong></p>
+      <ul class="hilfe-direktlinks">
+        <li><a href="/hilfe-iban.html">IBAN sichern</a></li>
+        <li><a href="/hilfe-kreditkarte.html">Kreditkartendaten schützen</a></li>
+        <li><a href="/hilfe-passwort.html">Passwort sicher gestalten</a></li>
+        <li><a href="/hilfe-medikament.html">Medizinische Informationen schützen</a></li>
+        <li><a href="/hilfe-kind.html">Privates über Kinder schützen</a></li>
+        <li><a href="/hilfe-standort.html">Standortdaten schützen</a></li>
+        <li><a href="/hilfe-urlaub.html">Urlaubsinformationen schützen</a></li>
+        <li><a href="/hilfe-screenshot.html">Sensible Screenshots schützen</a></li>
+        <li><a href="/hilfe-whatsapp.html">WhatsApp sicher nutzen</a></li>
+        <li><a href="/hilfe-private.html">Private Aussagen schützen</a></li>
+        <li><a href="/hilfe-emotional.html">Emotionale Aussagen sichern</a></li>
+        <li><a href="/hilfe-sicher-senden.html">Nachricht sicher verschicken</a></li>
+      </ul>
+    </main>
+
+    <footer class="ci-footer">
+      <p class="ci-footer-eu">🔵 Aus Europa. Für Alle.</p>
+      <p class="ci-footer-mission">
+        achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
+        DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
+      </p>
+      <p class="ci-footer-links">
+        <a href="/index.html">Startseite</a>
+        <a href="/demo.html">Demo</a>
+        <a href="/hilfe.html">Hilfe</a>
+        <a href="/datenschutz.html">Datenschutz</a>
+        <a href="/impressum.html">Impressum</a>
+      </p>
+      <p class="ci-footer-legal">
+        © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+      </p>
+    </footer>
+
+    <!-- Modal Container -->
+    <div id="hilfe-modal" class="hilfe-modal">
+      <div class="hilfe-modal-content">
+        <span class="hilfe-close">&times;</span>
+        <div id="hilfe-text"></div>
+      </div>
     </div>
-  </main>
-
-  <!-- Modal-Bereich -->
-  <div id="hilfeModal" class="modal">
-    <div id="hilfeModalContent" class="modal-content"></div>
   </div>
-
-  <footer style="margin-top: 80px;">
-    <div class="footer-europa">
-      <p>🇪🇺 Aus Europa. Für Alle.<br>
-      achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
-      DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
-    </div>
-    <div class="footer-copyright">
-      <p>© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
-    </div>
-  </footer>
-
-  <script src="hilfe-modal.js"></script>
 </body>
 </html>
