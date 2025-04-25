@@ -5,104 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>achtung.live – Bald verfügbar</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Brevo Fonts & Styles -->
-  <style>
-    @font-face {
-      font-display: block;
-      font-family: Roboto;
-      src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"),
-           url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff");
-    }
-    @font-face {
-      font-display: fallback;
-      font-family: Roboto;
-      font-weight: 600;
-      src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"),
-           url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff");
-    }
-    @font-face {
-      font-display: fallback;
-      font-family: Roboto;
-      font-weight: 700;
-      src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"),
-           url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff");
-    }
-
-    #sib-container input::placeholder,
-    #sib-container textarea::placeholder {
-      font-family: Helvetica, sans-serif;
-      color: #c0ccda;
-      text-align: left;
-    }
-
-    #sib-container a {
-      color: #2BB2FC;
-      text-decoration: underline;
-    }
-  </style>
-  <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
-
 </head>
 <body>
-  <header>
-    <h1><span class="logo">[achtung.live]</span></h1>
-    <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
-  </header>
 
-  <main>
-    <h2>Wir starten bald!</h2>
-    <p>achtung.live ist bald live – und du kannst zu den Ersten gehören, die informiert werden.</p>
+<header>
+  <h1><span class="logo">[achtung.live]</span></h1>
+  <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+</header>
 
-    <!-- Brevo Formular Start -->
-    <div class="sib-form" style="text-align: center; background-color: #fff;">
-      <div id="sib-form-container" class="sib-form-container">
-        <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:#fff; max-width:540px; border-radius:3px; border: 1px solid #C0CCD9; margin: 0 auto;">
-          <form id="sib-form" method="POST" action="https://sibforms.com/serve/MUIFAB4KOgeLVPis1qqZHxuQlQyJcyT0_cIS9G1iVbgfmobb2LpgUTVIqlUxJ_RnXrMFijaMZ5A1JFsaamwz3BsIuWmBFIU_3Qrbs9LB0RB9rZUSxiIzZZsFrciVHNtgwNGZzQq2eGZ7HqEtQdZp94pjT3zRad7MuT5ibuHtyc-cBR329fVJY4gt1gz8JpQiQazQ0apSvJjm5yOA" data-type="subscription">
-            <div style="padding: 1rem;">
-              <p style="font-weight: bold; font-size: 1.3rem;">achtung.live-Warteliste</p>
-              <p>Bitte benachrichtige mich über den Launch!</p>
-              <label for="EMAIL" style="display:block; margin-top:1rem;">E-Mail-Adresse</label>
-              <input type="email" id="EMAIL" name="EMAIL" required style="padding: 0.5rem; width: 100%; max-width: 320px;">
-              <div style="margin-top: 1rem;">
-                <input type="checkbox" id="OPT_IN" name="OPT_IN" required>
-                <label for="OPT_IN">Ich möchte benachrichtigt werden und akzeptiere die <a href="datenschutz.html">Datenschutzerklärung</a>.</label>
-              </div>
-              <button type="submit" style="margin-top: 1rem;" class="hilfe-button">Benachrichtige mich</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!-- Brevo Formular Ende -->
+<main>
+  <h2>Wir starten bald!</h2>
+  <p>achtung.live ist bald live – und du kannst zu den Ersten gehören, die informiert werden.</p>
 
-  </main>
+  <!-- Wartelisten-Formular -->
+  <section id="warteliste">
+    <h2>achtung.live Warteliste</h2>
+    <p>Bitte benachrichtige mich über den Launch!</p>
+    <form id="launchForm" style="max-width: 500px; margin: auto;">
+      <label for="email">E-Mail-Adresse:</label><br>
+      <input type="email" id="email" name="email" required placeholder="Deine E-Mail-Adresse" style="width:100%; padding:0.5rem; margin-top:0.5rem;"><br><br>
 
-  <footer>
-    <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
-    <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
-    DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
-    <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
-  </footer>
+      <input type="checkbox" id="optin" name="optin" required>
+      <label for="optin">Ich möchte informiert werden und akzeptiere die <a href="#" onclick="openDatenschutzModal()">Datenschutzerklärung</a>.</label><br><br>
 
-  <!-- Brevo Script -->
-  <script>
-    window.REQUIRED_CODE_ERROR_MESSAGE = 'Wähle bitte eine Ländervorwahl aus.';
-    window.LOCALE = 'de';
-    window.EMAIL_INVALID_MESSAGE = "Ungültige E-Mail-Adresse.";
-    window.REQUIRED_ERROR_MESSAGE = "Dieses Feld darf nicht leer sein.";
-    window.GENERIC_INVALID_MESSAGE = "Bitte überprüfe deine Eingabe.";
-    window.translation = {
-      common: {
-        selectedList: '{quantity} Liste ausgewählt',
-        selectedLists: '{quantity} Listen ausgewählt',
-        selectedOption: '{quantity} ausgewählt',
-        selectedOptions: '{quantity} ausgewählt',
-      }
-    };
-    var AUTOHIDE = false;
-  </script>
-  <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+      <button type="submit" class="hilfe-button">Benachrichtige mich</button>
+
+      <p id="formSuccess" style="display:none; color:green; margin-top:1rem;">Vielen Dank! Deine Anmeldung war erfolgreich.</p>
+      <p id="formError" style="display:none; color:red; margin-top:1rem;">Fehler: Bitte überprüfe deine Angaben.</p>
+    </form>
+  </section>
+</main>
+
+<!-- Datenschutz Modal -->
+<div id="datenschutzModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeDatenschutzModal()">&times;</span>
+    <h2>Datenschutzerklärung (Warteliste)</h2>
+    <p>Wir verwenden deine E-Mail-Adresse ausschließlich, um dich über den Launch von achtung.live zu informieren. Deine Daten werden nicht an Dritte weitergegeben. Du kannst dich jederzeit wieder abmelden. Weitere Informationen findest du in unserer vollständigen <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a>.</p>
+  </div>
+</div>
+
+<footer>
+  <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
+  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
+  DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
+  <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
+</footer>
+
+<!-- Form-Handling und Modal -->
+<script>
+// Formular-Handling
+document.getElementById('launchForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('email').value;
+  const optin = document.getElementById('optin').checked;
+
+  if (email && optin) {
+    document.getElementById('formSuccess').style.display = 'block';
+    document.getElementById('formError').style.display = 'none';
+    document.getElementById('launchForm').reset();
+  } else {
+    document.getElementById('formSuccess').style.display = 'none';
+    document.getElementById('formError').style.display = 'block';
+  }
+});
+
+// Datenschutz Modal öffnen/schließen
+function openDatenschutzModal() {
+  document.getElementById('datenschutzModal').style.display = 'block';
+}
+function closeDatenschutzModal() {
+  document.getElementById('datenschutzModal').style.display = 'none';
+}
+</script>
 
 </body>
 </html>
