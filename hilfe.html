@@ -1,58 +1,51 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>achtung.live – Hilfe</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hilfe – achtung.live</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <header>
-    <h1>[achtung.live]</h1>
-    <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+  <header style="text-align: center; margin-top: 30px;">
+    <h1 style="color: #8b0000;">[achtung.live]</h1>
+    <p style="color: #001f3f;">Die Autokorrektur für deine Privatsphäre</p>
   </header>
 
-  <main>
-    <h2>Deine Hilfethemen</h2>
-    <p>Wähle ein Thema, um mehr zu erfahren:</p>
+  <main style="text-align: center; margin-top: 40px;">
+    <h2 style="color: #8b0000;">Deine Hilfethemen</h2>
+    <p style="color: #001f3f;">Wähle ein Thema:</p>
 
-    <!-- Dynamisch eingefügte Modal-Buttons -->
-    <div id="hilfe-container" style="margin-top: 2rem;"></div>
-
-    <h3 style="margin-top: 3rem;">Alternativ: Direkte Links zu einzelnen Hilfeseiten</h3>
-    <ul style="list-style: none; padding: 0;">
-      <li><a href="hilfe-iban.html">IBAN schützen</a></li>
-      <li><a href="hilfe-kreditkarte.html">Kreditkartendaten schützen</a></li>
-      <li><a href="hilfe-passwort.html">Passwort sicher gestalten</a></li>
-      <li><a href="hilfe-medikament.html">Medizinische Informationen schützen</a></li>
-      <li><a href="hilfe-kind.html">Privates über Kinder schützen</a></li>
-      <li><a href="hilfe-standort.html">Standortdaten schützen</a></li>
-      <li><a href="hilfe-urlaub.html">Urlaubsinformationen schützen</a></li>
-      <li><a href="hilfe-screenshot.html">Sensible Screenshots schützen</a></li>
-      <li><a href="hilfe-whatsapp.html">WhatsApp sicher nutzen</a></li>
-      <li><a href="hilfe-chef.html">Private Aussagen schützen</a></li>
-      <li><a href="hilfe-depression.html">Emotionale Aussagen schützen</a></li>
-      <li><a href="hilfe-sicher-senden.html">Nachricht sicher verschicken</a></li>
-    </ul>
+    <div id="hilfe-buttons" style="margin-top: 30px;">
+      <button class="hilfe-button" data-key="iban">IBAN sichern</button>
+      <button class="hilfe-button" data-key="kreditkarte">Kreditkarte schützen</button>
+      <button class="hilfe-button" data-key="passwort">Passwort sichern</button>
+      <button class="hilfe-button" data-key="medikament">Medizinische Infos sichern</button>
+      <button class="hilfe-button" data-key="kind">Kind schützen</button>
+      <button class="hilfe-button" data-key="standort">Standort sichern</button>
+      <button class="hilfe-button" data-key="urlaub">Urlaubsinfos schützen</button>
+      <button class="hilfe-button" data-key="screenshot">Screenshot sichern</button>
+      <button class="hilfe-button" data-key="whatsapp">WhatsApp sicher nutzen</button>
+      <button class="hilfe-button" data-key="chef">Private Aussagen sichern</button>
+      <button class="hilfe-button" data-key="depression">Emotionale Aussagen sichern</button>
+      <button class="hilfe-button" data-key="sichern">Nachricht sicher verschicken</button>
+    </div>
   </main>
 
-  <footer class="footer-eu">
-    <span class="footer-europe">🇪🇺 Aus Europa. Für Alle.</span>
-    <div class="footer-body">
-      achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br />
-      DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
+  <!-- Modal-Bereich -->
+  <div id="hilfeModal" class="modal">
+    <div id="hilfeModalContent" class="modal-content"></div>
+  </div>
+
+  <footer style="margin-top: 80px;">
+    <div class="footer-europa">
+      <p>🇪🇺 Aus Europa. Für Alle.<br>
+      achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
+      DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
     </div>
-    <div style="margin-top: 1rem;">
-      <a href="index.html">Start</a> |
-      <a href="hilfe.html">Hilfe</a> |
-      <a href="kontakt.html">Kontakt</a> |
-      <a href="datenschutz.html">Datenschutz</a> |
-      <a href="impressum.html">Impressum</a> |
-      <a href="demo.html">Demo</a>
-    </div>
-    <div class="footer-tiny">
-      © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+    <div class="footer-copyright">
+      <p>© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
     </div>
   </footer>
 
