@@ -1,12 +1,17 @@
-body {
+/* Grundstruktur für Sticky-Footer */
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
   background-color: #ffffff;
   color: #243a5e;
-  margin: 0;
-  padding: 0;
   text-align: center;
 }
 
+/* Header + Claim */
 h1 {
   color: #b30000;
   font-family: monospace;
@@ -20,11 +25,13 @@ h1 {
   color: #243a5e;
 }
 
+/* Standard Headings */
 h2 {
   color: #b30000;
   margin-top: 1.5rem;
 }
 
+/* Links */
 a {
   color: #b30000;
   text-decoration: none;
@@ -32,7 +39,9 @@ a {
   font-weight: bold;
 }
 
+/* Main-Container (dehnt sich bei wenig Inhalt) */
 main {
+  flex: 1;
   padding: 1rem;
 }
 
@@ -42,7 +51,7 @@ main p {
   margin: 0 auto;
 }
 
-/* Footer */
+/* Footer mit Links und Claim */
 .footer-eu {
   background-color: #f8f8f8;
   text-align: center;
@@ -72,7 +81,7 @@ main p {
   margin-top: 1rem;
 }
 
-/* Hilfemodale Buttons */
+/* Modal-Buttons */
 .hilfe-button {
   background-color: #b30000;
   color: #fff;
@@ -88,7 +97,7 @@ main p {
   background-color: #a00000;
 }
 
-/* Hilfemodale */
+/* Hilfe-Modale */
 .hilfe-modal {
   display: none;
   position: fixed;
@@ -125,6 +134,7 @@ main p {
   cursor: pointer;
 }
 
+/* Responsive Optimierung */
 @media (max-width: 600px) {
   h1 {
     font-size: 1.5rem;
