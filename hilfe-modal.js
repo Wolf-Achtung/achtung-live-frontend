@@ -1,115 +1,81 @@
-body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #fff;
-  color: #001f3f; /* Dunkelblau für Fließtext */
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const buttons = document.querySelectorAll(".hilfe-button");
 
-h1 {
-  font-size: 2em;
-  color: #8b0000; /* Achtung-Rot */
-  margin-bottom: 0;
-}
+  buttons.forEach((btn) => {
+    const topic = btn.getAttribute("data-modal");
 
-h2, h3 {
-  color: #8b0000;
-  margin-top: 1em;
-}
+    btn.addEventListener("click", () => openModal(topic));
 
-a {
-  color: #8b0000;
-  text-decoration: none;
-}
+    // Mouseover = Öffnen, Mouseout = Schließen (nach Timeout)
+    btn.addEventListener("mouseenter", () => {
+      openModal(topic, true); // true = hoverMode
+    });
+  });
+});
 
-a:hover {
-  text-decoration: underline;
-}
+let modalTimer = null;
 
-footer {
-  margin-top: 50px;
-  padding: 20px;
-  font-size: 0.9em;
-  background-color: #f8f8f8;
-  color: #001f3f;
-  border-top: 1px solid #ccc;
-}
+function openModal(topic, hoverMode = false) {
+  closeAllModals();
 
-.footer-europa p {
-  margin-bottom: 10px;
-  font-size: 0.95em;
-  line-height: 1.4;
-}
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
 
-.footer-copyright p {
-  font-size: 0.8em;
-  color: #444;
-}
+  modal.innerHTML = `
+    <h3>${getModalTitle(topic)}</h3>
+    <p>${getModalContent(topic)}</p>
+    <button class="modal-close">Schließen</button>
+  `;
 
-/* BUTTON-STIL (responsive, dezent) */
-.hilfe-button {
-  display: inline-block;
-  margin: 10px 6px;
-  padding: 10px 16px;
-  background-color: #8b0000;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  document.body.appendChild(modal);
+  modal.style.display = "block";
 
-.hilfe-button:hover {
-  background-color: #a50000;
-}
+  modal.querySelector(".modal-close").addEventListener("click", () => {
+    modal.remove();
+    clearTimeout(modalTimer);
+  });
 
-@media (max-width: 600px) {
-  .hilfe-button {
-    display: block;
-    width: 80%;
-    margin: 10px auto;
-    font-size: 1.1em;
+  if (hoverMode) {
+    modalTimer = setTimeout(() => modal.remove(), 4500);
   }
 }
 
-/* MODAL STYLES */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  padding-top: 60px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.5);
+function closeAllModals() {
+  document.querySelectorAll(".modal").forEach((m) => m.remove());
 }
 
-.modal-content {
-  background-color: #fff;
-  margin: auto;
-  padding: 30px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
-  text-align: left;
-  position: relative;
-  color: #001f3f;
+function getModalTitle(topic) {
+  const titles = {
+    iban: "IBAN sichern",
+    kreditkarte: "Kreditkartendaten schützen",
+    passwort: "Passwort sicher gestalten",
+    medizinisch: "Medizinische Infos schützen",
+    kind: "Kinder schützen",
+    standort: "Standortdaten sichern",
+    urlaub: "Urlaubsinfos schützen",
+    screenshot: "Screenshots sicher nutzen",
+    whatsapp: "WhatsApp sicher nutzen",
+    privat: "Private Aussagen schützen",
+    emotional: "Emotionale Aussagen sichern",
+    nachricht: "Nachricht sicher verschicken"
+  };
+  return titles[topic] || "Hilfe";
 }
 
-.modal-close {
-  color: #aaa;
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.modal-close:hover {
-  color: #000;
+function getModalContent(topic) {
+  const content = {
+    iban: "Gib deine IBAN nur in vertrauensvollen Kontexten weiter – am besten verschlüsselt.",
+    kreditkarte: "Teile deine Kreditkartennummer nie unverschlüsselt.",
+    passwort: "Verwende starke Passwörter und teile sie nie direkt.",
+    medizinisch: "Medizinische Angaben sollten niemals öffentlich geteilt werden.",
+    kind: "Infos über Kinder gehören nicht in öffentliche Texte.",
+    standort: "Vermeide die Nennung deines aktuellen Standorts.",
+    urlaub: "Vermeide Urlaubspläne öffentlich zu machen – Einbruchsgefahr.",
+    screenshot: "Screenshots können vertrauliche Infos enthalten.",
+    whatsapp: "Nutze Verschlüsselung und Schutzfunktionen bei WhatsApp.",
+    privat: "Persönliche Aussagen lassen sich datenschonend umformulieren.",
+    emotional: "Wähle Worte mit Bedacht bei sensiblen Inhalten.",
+    nachricht: "Sende Nachrichten über verschlüsselte Kanäle."
+  };
+  return content[topic] || "Kein Hilfetext vorhanden.";
 }
