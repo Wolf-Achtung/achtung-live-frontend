@@ -4,18 +4,12 @@ document.addEventListener("DOMContentLoaded", () => {
   buttons.forEach((btn) => {
     const topic = btn.getAttribute("data-modal");
 
-    btn.addEventListener("click", () => openModal(topic));
-
-    // Mouseover = Öffnen, Mouseout = Schließen (nach Timeout)
-    btn.addEventListener("mouseenter", () => {
-      openModal(topic, true); // true = hoverMode
-    });
+    btn.addEventListener("mouseenter", () => openModal(topic));
+    btn.addEventListener("mouseleave", closeAllModals);
   });
 });
 
-let modalTimer = null;
-
-function openModal(topic, hoverMode = false) {
+function openModal(topic) {
   closeAllModals();
 
   const modal = document.createElement("div");
@@ -24,20 +18,10 @@ function openModal(topic, hoverMode = false) {
   modal.innerHTML = `
     <h3>${getModalTitle(topic)}</h3>
     <p>${getModalContent(topic)}</p>
-    <button class="modal-close">Schließen</button>
   `;
 
   document.body.appendChild(modal);
   modal.style.display = "block";
-
-  modal.querySelector(".modal-close").addEventListener("click", () => {
-    modal.remove();
-    clearTimeout(modalTimer);
-  });
-
-  if (hoverMode) {
-    modalTimer = setTimeout(() => modal.remove(), 4500);
-  }
 }
 
 function closeAllModals() {
