@@ -1,112 +1,141 @@
-/* Grundstruktur */
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
-  text-align: center;
   background-color: #ffffff;
-  color: #1c2d39;
+  color: #102131;
+  line-height: 1.6;
 }
 
-h1 {
-  color: #8b0000;
-  font-size: 2em;
-  margin: 1em 0 0.3em;
+header {
+  text-align: center;
+  margin-top: 50px;
 }
 
-h2 {
-  font-size: 1.1em;
-  font-weight: normal;
-  margin-bottom: 2em;
-  color: #1c2d39;
+.achtung-logo {
+  color: #990000;
+  font-weight: bold;
+  font-size: 2rem;
 }
 
-h3 {
-  color: #8b0000;
-  font-size: 1.2em;
-  margin-bottom: 1em;
+.claim {
+  font-size: 1.1rem;
+  color: #1c2d41;
+  margin-top: 0.3rem;
 }
 
-/* Formularfelder */
-input[type="email"], input[type="text"], textarea {
-  padding: 12px;
-  margin: 0.5em 0;
-  width: 90%;
+main.start-container {
   max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f5f7fa;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
+}
+
+main h2 {
+  text-align: center;
+  color: #990000;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="checkbox"] {
+  width: 100%;
+  padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 1rem;
 }
 
-/* Buttons */
-button {
-  background-color: #8b0000;
-  color: white;
-  padding: 10px 20px;
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+button[type="submit"] {
+  padding: 0.9rem;
+  background-color: #990000;
+  color: #ffffff;
+  font-weight: bold;
   border: none;
   border-radius: 4px;
-  font-size: 1em;
   cursor: pointer;
-  margin-top: 0.5em;
+  transition: background 0.2s ease-in-out;
 }
 
-button:hover {
-  background-color: #a30000;
+button[type="submit"]:hover {
+  background-color: #770000;
 }
 
-/* Footer */
+form a {
+  color: #003366;
+  text-decoration: underline;
+}
+
 footer {
-  margin-top: 3em;
-  padding: 2em 1em;
-  font-size: 0.85em;
-  background-color: #f4f4f4;
-  color: #1c2d39;
+  margin-top: 4rem;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #1c2d41;
 }
 
-footer a {
-  color: #8b0000;
-  text-decoration: none;
-  margin: 0 0.5em;
-}
-
-footer .eu-hinweis {
-  margin-bottom: 1em;
-  font-size: 0.9em;
-}
-
-footer .fineprint {
-  margin-top: 1em;
-  font-size: 0.75em;
-  color: #1c2d39;
-}
-
-/* Erfolgsmeldung */
-#form-success {
-  display: none;
-  margin-top: 1em;
-  color: #085229;
+.footer-badge {
   font-weight: bold;
+  color: #003366;
+  margin-bottom: 0.5rem;
 }
 
-/* Mobile Optimierung */
+.footer-text {
+  margin: 0.5rem 0 1rem;
+  font-size: 0.95rem;
+  color: #1c2d41;
+}
+
+.footer-links {
+  margin: 0.5rem 0;
+}
+
+.footer-links a {
+  color: #990000;
+  text-decoration: none;
+  margin: 0 0.3rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-small {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 1rem;
+}
+
+/* Mobile Optimization */
 @media (max-width: 600px) {
-  h1 {
-    font-size: 1.5em;
+  main.start-container {
+    padding: 1.5rem 1rem;
   }
 
-  input[type="email"], input[type="text"], textarea {
-    width: 95%;
+  .achtung-logo {
+    font-size: 1.6rem;
   }
 
-  button {
-    width: 90%;
+  main h2 {
+    font-size: 1.2rem;
   }
 
-  footer {
-    font-size: 0.8em;
-  }
-
-  footer a {
-    display: inline-block;
-    margin: 0.3em 0.4em;
+  input[type="email"] {
+    font-size: 1rem;
   }
 }

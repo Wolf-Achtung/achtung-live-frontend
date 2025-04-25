@@ -1,79 +1,111 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>achtung.live – Die Autokorrektur für deine Privatsphäre</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* --- Modal Datenschutz Fenster --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
 
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 8px;
+      color: #102131;
+    }
+
+    .close-button {
+      color: #990000;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-button:hover {
+      color: #770000;
+    }
+  </style>
+</head>
 <body>
 
 <header>
-  <h1>[achtung.live]</h1>
-  <h2>Die Autokorrektur für deine Privatsphäre</h2>
+  <h1><span class="achtung-logo">[achtung.live]</span></h1>
+  <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
 </header>
 
-<main>
-  <div class="form-container">
-    <form name="launch-notify" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="launch-form" onsubmit="return handleFormSubmit(event)">
-      <input type="hidden" name="form-name" value="launch-notify" />
-      <p style="display:none">
-        <label>Don’t fill this out: <input name="bot-field" /></label>
-      </p>
+<main class="start-container">
+  <h2>Möchtest du benachrichtigt werden, wenn wir live gehen?</h2>
 
-      <h3 style="color: #8b0000;">Benachrichtige mich zum Launch</h3>
-      <label for="email"><strong>E-Mail-Adresse:</strong></label><br />
-      <input type="email" name="email" id="email" placeholder="dein@email.de" required /><br />
-      <button type="submit">Benachrichtigen</button>
-    </form>
-
-    <div id="form-success" style="display:none; margin-top:20px; color:#085229; font-weight:bold;">
-      🎉 Vielen Dank! Wir benachrichtigen dich zum Launch.
-    </div>
-  </div>
+  <form name="launch" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/danke.html">
+    <input type="hidden" name="form-name" value="launch" />
+    <p>
+      <label for="email">E-Mail-Adresse:<br />
+        <input type="email" name="email" id="email" required>
+      </label>
+    </p>
+    <p style="font-size: 0.9rem;">
+      <input type="checkbox" name="datenschutz" required>
+      Ich akzeptiere die <a href="#" onclick="openModal()">Datenschutzerklärung</a>.
+    </p>
+    <button type="submit">Benachrichtige mich</button>
+  </form>
 </main>
 
+<!-- MODAL Datenschutz -->
+<div id="datenschutzModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button" onclick="closeModal()">&times;</span>
+    <h3>Datenschutzerklärung</h3>
+    <p>Deine Daten werden ausschließlich zum Zweck der Benachrichtigung über den Launch von achtung.live gespeichert.  
+    Keine Weitergabe, kein Tracking, keine Werbung. Du kannst dich jederzeit austragen. Weitere Informationen findest du in unserer vollständigen Datenschutzerklärung.</p>
+  </div>
+</div>
+
 <footer>
-  <div class="eu-hinweis">
-    <strong>🇪🇺 Aus Europa. Für Alle.</strong><br>
-    achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
+  <div class="footer-badge">🇪🇺 Aus Europa. Für Alle.</div>
+  <div class="footer-text">
+    achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.  
     DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
   </div>
-  <div>
-    <a href="index.html">Startseite</a>
-    <a href="demo.html">Demo</a>
-    <a href="hilfe.html">Hilfe</a>
-    <a href="datenschutz.html">Datenschutz</a>
-    <a href="impressum.html">Impressum</a>
-    <a href="kontakt.html">Kontakt</a>
-  </div>
-  <div class="fineprint">
+  <div class="footer-small">
     © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
   </div>
 </footer>
 
 <script>
-function handleFormSubmit(event) {
-  event.preventDefault();
-  const form = event.target;
+  // Modal-Funktion
+  function openModal() {
+    document.getElementById('datenschutzModal').style.display = 'block';
+  }
 
-  fetch("/", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams(new FormData(form)).toString()
-  })
-  .then(() => {
-    form.style.display = "none";
-    document.getElementById("form-success").style.display = "block";
-  })
-  .catch((error) => {
-    alert("Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.");
-    console.error(error);
-  });
+  function closeModal() {
+    document.getElementById('datenschutzModal').style.display = 'none';
+  }
 
-  return false;
-}
+  // Modal schließen bei Klick außerhalb
+  window.onclick = function(event) {
+    var modal = document.getElementById('datenschutzModal');
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 </script>
 
 </body>
