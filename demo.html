@@ -1,39 +1,52 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo | achtung.live</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo – achtung.live</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1><span class="logo">[achtung.live]</span></h1>
-    <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
-  </header>
 
-  <main>
-    <h2>Demo</h2>
-    <p>Teste die Live-Analyse deiner Texte hier.</p>
-    <!-- Hier würde dein Analyse-Tool integriert werden -->
-  </main>
+<header>
+  <h1><span class="logo">[achtung.live]</span></h1>
+  <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+</header>
 
-  <footer>
+<main>
+  <h2>Demo: So funktioniert's</h2>
+  <p>Gib deinen Text unten ein, um Risiken zu prüfen oder sicher umzuschreiben:</p>
+
+  <form id="demo-form">
+    <textarea id="userInput" name="text" placeholder="Hier deinen Text eingeben…" rows="6"></textarea>
+    <div class="button-group">
+      <button type="button" class="button red" onclick="checkRisk()">Sicherheit prüfen</button>
+      <button type="button" class="button red-outline" onclick="rewriteText()">Sicher umformulieren</button>
+      <button type="button" class="button red-outline" onclick="sendHelp()">Hilfe: Nachricht verschicken</button>
+    </div>
+  </form>
+
+  <div id="feedback" class="feedback-box"></div>
+</main>
+
+<footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
   <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
   DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
 
   <nav class="footer-nav">
-    <a href="index.html" class="active">Start</a> •
+    <a href="index.html">Start</a> •
     <a href="kontakt.html">Kontakt</a> •
     <a href="impressum.html">Impressum</a> •
     <a href="ki-hinweis.html">KI-Hinweis</a> •
     <a href="datenschutz.html">Datenschutz</a> •
     <a href="hilfe.html">Hilfe</a> •
-    <a href="demo.html">Demo</a>
+    <a href="demo.html" class="active">Demo</a>
   </nav>
 
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,111 +1,170 @@
+/* Grundlayout */
 body {
-  font-family: 'Roboto', Helvetica, sans-serif;
-  color: #223a5e;
+  font-family: Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+  color: #0a1a2f;
   background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  text-align: center;
 }
 
 header {
-  text-align: center;
-  padding: 2rem 1rem 1rem;
+  margin: 2rem 0 1rem;
 }
 
 .logo {
-  color: #b50000;
-  font-size: 2.2rem;
+  color: #990000;
+  font-weight: bold;
+  font-size: 1.8rem;
 }
 
 .claim {
-  font-size: 1.2rem;
-  margin-top: 0.5rem;
-  color: #223a5e;
+  font-size: 1rem;
+  color: #2c3e50;
 }
 
 main {
-  flex: 1;
-  text-align: center;
+  padding: 1rem 2rem;
+}
+
+h2 {
+  color: #990000;
+  margin-bottom: 1rem;
+}
+
+textarea {
+  width: 90%;
+  max-width: 600px;
+  height: 140px;
   padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
 }
 
-h1, h2 {
-  color: #b50000;
+.button-group {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-p {
-  margin: 0.5rem 0;
+.button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  transition: 0.2s ease;
 }
 
-footer {
-  text-align: center;
-  padding: 2rem 1rem;
-  background-color: #f9f9f9;
+.button.red {
+  background-color: #990000;
+  color: white;
+}
+
+.button.red-outline {
+  background-color: #fff;
+  color: #990000;
+  border: 1px solid #990000;
+}
+
+.button:hover {
+  opacity: 0.85;
+}
+
+.feedback-box {
+  margin-top: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  padding: 1rem;
+  background-color: #f6f6f6;
+  border-left: 4px solid #990000;
+}
+
+/* Hilfe-Modal */
+.hilfe-button {
+  padding: 0.4rem 0.8rem;
+  background: white;
+  color: #990000;
+  border: 1px solid #990000;
+  border-radius: 4px;
+  margin: 0.3rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.hilfe-button:hover {
+  background: #ffeeee;
+}
+
+.hilfe-modal {
+  display: none;
+  position: absolute;
+  max-width: 300px;
+  background-color: #ffffff;
+  color: #0a1a2f;
+  border: 1px solid #990000;
+  padding: 1rem;
   font-size: 0.9rem;
-  color: #223a5e;
+  z-index: 1000;
+  border-radius: 4px;
+  text-align: left;
 }
 
-.eu {
-  color: #b50000;
+/* Footer */
+footer {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  color: #0a1a2f;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.footer-nav {
+  margin: 1rem 0;
+}
+
+.footer-nav a {
+  color: #990000;
+  margin: 0 0.5rem;
+  text-decoration: none;
   font-weight: bold;
+}
+
+.footer-nav a:hover {
+  text-decoration: underline;
 }
 
 .tiny {
   font-size: 0.75rem;
-  margin-top: 1rem;
+  color: #666;
 }
 
-.hilfe-button {
-  background-color: white;
-  color: #b50000;
-  border: 1px solid #b50000;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
+.eu {
+  color: #0a1a2f;
   font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
 }
 
-.hilfe-button:hover {
-  background-color: #b50000;
-  color: white;
-  transition: 0.3s;
-}
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .hilfe-button {
+    display: inline-block;
+    width: 90%;
+    margin: 0.5rem auto;
+  }
 
-/* Modal Styles */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
-}
+  .button-group {
+    flex-direction: column;
+  }
 
-.modal-content {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 2rem;
-  border: 1px solid #888;
-  width: 90%;
-  max-width: 500px;
-  border-radius: 5px;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
+  textarea {
+    width: 95%;
+  }
 }
