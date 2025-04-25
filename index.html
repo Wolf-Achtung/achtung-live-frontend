@@ -29,7 +29,10 @@
       <input type="email" id="email" name="email" required placeholder="Deine E-Mail-Adresse" style="width:100%; padding:0.5rem; margin-top:0.5rem;"><br><br>
 
       <input type="checkbox" id="optin" name="optin" required>
-      <label for="optin">Ich möchte informiert werden und akzeptiere die <a href="#" onclick="openDatenschutzModal()">Datenschutzerklärung</a>.</label><br><br>
+      <label for="optin">
+        Ich möchte informiert werden und akzeptiere die 
+        <a href="#" onclick="openDatenschutzPopup()" style="color: #c42c27; text-decoration: underline;">Datenschutzerklärung</a>.
+      </label><br><br>
 
       <button type="submit" class="hilfe-button">Benachrichtige mich</button>
     </form>
@@ -40,15 +43,6 @@
   </section>
 </main>
 
-<!-- Datenschutz Modal -->
-<div id="datenschutzModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeDatenschutzModal()">&times;</span>
-    <h2>Datenschutzerklärung (Warteliste)</h2>
-    <p>Wir verwenden deine E-Mail-Adresse ausschließlich, um dich über den Launch von achtung.live zu informieren. Deine Daten werden nicht an Dritte weitergegeben. Du kannst dich jederzeit wieder abmelden. Weitere Informationen findest du in unserer vollständigen <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a>.</p>
-  </div>
-</div>
-
 <footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
   <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
@@ -56,15 +50,20 @@
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
 
-<!-- Modal Script -->
+<!-- Popup Script -->
 <script>
-// Datenschutz Modal öffnen/schließen
-function openDatenschutzModal() {
-  document.getElementById('datenschutzModal').style.display = 'block';
-}
-function closeDatenschutzModal() {
-  document.getElementById('datenschutzModal').style.display = 'none';
-}
+  function openDatenschutzPopup() {
+    const w = 600;
+    const h = 500;
+    const left = (screen.width - w) / 2;
+    const top = (screen.height - h) / 2;
+
+    window.open(
+      'datenschutz-popup.html',
+      'Datenschutz',
+      `width=${w},height=${h},top=${top},left=${left},resizable=yes,scrollbars=yes`
+    );
+  }
 </script>
 
 </body>
