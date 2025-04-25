@@ -3,53 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Demo – achtung.live</title>
+  <title>achtung.live – Demo mit Modal-Hilfe</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
 </head>
 <body>
 
-  <div class="ci-wrapper">
-    <header>
-      <h1>[achtung.live]</h1>
-      <p class="ci-sub">Deine empathische Datenschutzberatung</p>
-    </header>
+  <header>
+    <h1>[achtung.live]</h1>
+    <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+  </header>
 
-    <main>
-      <h2>Text prüfen – einfach & sicher</h2>
-      <textarea id="user-text" rows="6" placeholder="Gib deinen Text ein…"></textarea>
+  <main>
+    <h2>Textschutz & Datenschutz leicht gemacht</h2>
+    <p>Wähle ein Thema, das dich interessiert oder bei dem du unsicher bist:</p>
 
-      <label style="display: block; margin-top: 1rem;">
-        <input type="checkbox" id="consent" />
-        Ich stimme der Analyse gemäß <a href="/datenschutz.html">Datenschutzerklärung</a> zu.
-      </label>
+    <!-- Hilfethemen-Buttons werden hier eingefügt -->
+    <div id="hilfe-container"></div>
+  </main>
 
-      <div style="margin-top: 1rem;">
-        <button id="analyze-button" class="ci-button">Sicherheit prüfen</button>
-      </div>
+  <footer class="footer-eu">
+    <span class="footer-europe">🇪🇺 Aus Europa. Für Alle.</span>
+    <div class="footer-body">
+      achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br />
+      DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
+    </div>
+    <div class="footer-tiny">
+      © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+    </div>
+  </footer>
 
-      <div id="result" class="feedback-box" style="margin-top: 2rem;"></div>
-
-      <div id="shadow-tools" style="display: none; margin-top: 2rem;">
-        <button id="rewrite-button" class="ci-button">Sicher umformulieren</button>
-        <button id="howto-button" class="ci-button">Hilfe: Nachricht verschicken</button>
-      </div>
-
-      <div id="rewrite-result" class="feedback-box" style="display: none;"></div>
-      <div id="howto-result" class="feedback-box" style="display: none;"></div>
-    </main>
-
-    <footer>
-      <p class="ci-footer-eu">🔵 Aus Europa. Für Alle.</p>
-      <p class="ci-footer-links">
-        <a href="/index.html">Startseite</a>
-        <a href="/demo.html" style="color:#e30613;">Demo</a>
-        <a href="/hilfe.html">Hilfe</a>
-        <a href="/datenschutz.html">Datenschutz</a>
-        <a href="/impressum.html">Impressum</a>
-      </p>
-    </footer>
-  </div>
-
+  <script src="hilfe-modal.js"></script>
 </body>
 </html>
