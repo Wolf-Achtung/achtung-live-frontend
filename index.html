@@ -5,6 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>achtung.live – Bald verfügbar</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- Brevo Fonts & Styles -->
+  <style>
+    @font-face {
+      font-display: block;
+      font-family: Roboto;
+      src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"),
+           url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff");
+    }
+    @font-face {
+      font-display: fallback;
+      font-family: Roboto;
+      font-weight: 600;
+      src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"),
+           url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff");
+    }
+    @font-face {
+      font-display: fallback;
+      font-family: Roboto;
+      font-weight: 700;
+      src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"),
+           url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff");
+    }
+
+    #sib-container input::placeholder,
+    #sib-container textarea::placeholder {
+      font-family: Helvetica, sans-serif;
+      color: #c0ccda;
+      text-align: left;
+    }
+
+    #sib-container a {
+      color: #2BB2FC;
+      text-decoration: underline;
+    }
+  </style>
+  <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
+
 </head>
 <body>
   <header>
@@ -15,17 +53,29 @@
   <main>
     <h2>Wir starten bald!</h2>
     <p>achtung.live ist bald live – und du kannst zu den Ersten gehören, die informiert werden.</p>
-    <p>Trag dich hier ein:</p>
 
-    <form action="https://sibforms.com/serve/MUIFAB4KOgeLVPis1qqZHxuQlQyJcyT0_cIS9G1iVbgfmobb2LpgUTVIqlUxJ_RnXrMFijaMZ5A1JFsaamwz3BsIuWmBFIU_3Qrbs9LB0RB9rZUSxiIzZZsFrciVHNtgwNGZzQq2eGZ7HqEtQdZp94pjT3zRad7MuT5ibuHtyc-cBR329fVJY4gt1gz8JpQiQazQ0apSvJjm5yOA" method="post" style="margin-top: 1rem;">
-      <input type="email" placeholder="Deine E-Mail-Adresse" required style="padding: 0.5rem; width: 80%; max-width: 300px; margin-bottom: 1rem;">
-      <br>
-      <button type="submit" class="hilfe-button">Benachrichtige mich</button>
-    </form>
+    <!-- Brevo Formular Start -->
+    <div class="sib-form" style="text-align: center; background-color: #fff;">
+      <div id="sib-form-container" class="sib-form-container">
+        <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:#fff; max-width:540px; border-radius:3px; border: 1px solid #C0CCD9; margin: 0 auto;">
+          <form id="sib-form" method="POST" action="https://sibforms.com/serve/MUIFAB4KOgeLVPis1qqZHxuQlQyJcyT0_cIS9G1iVbgfmobb2LpgUTVIqlUxJ_RnXrMFijaMZ5A1JFsaamwz3BsIuWmBFIU_3Qrbs9LB0RB9rZUSxiIzZZsFrciVHNtgwNGZzQq2eGZ7HqEtQdZp94pjT3zRad7MuT5ibuHtyc-cBR329fVJY4gt1gz8JpQiQazQ0apSvJjm5yOA" data-type="subscription">
+            <div style="padding: 1rem;">
+              <p style="font-weight: bold; font-size: 1.3rem;">achtung.live-Warteliste</p>
+              <p>Bitte benachrichtige mich über den Launch!</p>
+              <label for="EMAIL" style="display:block; margin-top:1rem;">E-Mail-Adresse</label>
+              <input type="email" id="EMAIL" name="EMAIL" required style="padding: 0.5rem; width: 100%; max-width: 320px;">
+              <div style="margin-top: 1rem;">
+                <input type="checkbox" id="OPT_IN" name="OPT_IN" required>
+                <label for="OPT_IN">Ich möchte benachrichtigt werden und akzeptiere die <a href="datenschutz.html">Datenschutzerklärung</a>.</label>
+              </div>
+              <button type="submit" style="margin-top: 1rem;" class="hilfe-button">Benachrichtige mich</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Brevo Formular Ende -->
 
-    <p style="font-size: 0.9rem; color: #0a1b2a; margin-top: 1rem;">
-      Deine E-Mail-Adresse wird ausschließlich für diese Benachrichtigung verwendet. Kein Spam. Kein Tracking.
-    </p>
   </main>
 
   <footer>
@@ -34,5 +84,25 @@
     DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
     <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
   </footer>
+
+  <!-- Brevo Script -->
+  <script>
+    window.REQUIRED_CODE_ERROR_MESSAGE = 'Wähle bitte eine Ländervorwahl aus.';
+    window.LOCALE = 'de';
+    window.EMAIL_INVALID_MESSAGE = "Ungültige E-Mail-Adresse.";
+    window.REQUIRED_ERROR_MESSAGE = "Dieses Feld darf nicht leer sein.";
+    window.GENERIC_INVALID_MESSAGE = "Bitte überprüfe deine Eingabe.";
+    window.translation = {
+      common: {
+        selectedList: '{quantity} Liste ausgewählt',
+        selectedLists: '{quantity} Listen ausgewählt',
+        selectedOption: '{quantity} ausgewählt',
+        selectedOptions: '{quantity} ausgewählt',
+      }
+    };
+    var AUTOHIDE = false;
+  </script>
+  <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+
 </body>
 </html>
