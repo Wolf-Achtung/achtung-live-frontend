@@ -1,0 +1,82 @@
+{
+  "hilfe": [
+    {
+      "id": "iban",
+      "button": "IBAN sicher teilen",
+      "title": "IBAN teilen – aber sicher",
+      "text": "• Die IBAN kann zwar nicht direkt zum Schaden genutzt werden – aber in Kombination mit Namen schon.\n• Teile sie nur verschlüsselt (z. B. ZIP mit Passwort oder über verschlüsselte E-Mail).\n• Öffentliche Chats oder Gruppen sind tabu."
+    },
+    {
+      "id": "kreditkarte",
+      "button": "Zahlung absichern",
+      "title": "Kreditkartendaten? Niemals öffentlich",
+      "text": "• Kreditkarten- oder Sicherheitsnummern niemals im Chat oder öffentlich posten.\n• Nutze Einmal-Kreditkarten oder Dienste wie Klarna oder Apple Pay.\n• Bei Weitergabe: Nur verschlüsselt oder per sicherem Dienst."
+    },
+    {
+      "id": "passwort",
+      "button": "Sicheres Passwort wählen",
+      "title": "Sicheres Passwort",
+      "text": "• Mindestens 12 Zeichen mit Symbolen und Groß-/Kleinschreibung.\n• Verwende nie dasselbe Passwort mehrfach.\n• Nutze einen Passwortmanager wie Bitwarden oder KeePass."
+    },
+    {
+      "id": "sicher-senden",
+      "button": "Sicher versenden",
+      "title": "Sicher verschicken",
+      "text": "• Nutze verschlüsselte Dienste wie ProtonMail oder Tutanota.\n• Dateien? Immer als verschlüsselte ZIP mit Passwort versenden.\n• Keine sensiblen Infos in Screenshots oder Messenger."
+    },
+    {
+      "id": "screenshot",
+      "button": "Vorsicht bei Screenshots",
+      "title": "Screenshots enthalten oft mehr als du denkst",
+      "text": "• Kontaktdaten, Standort, Uhrzeit – alles sichtbar.\n• Screenshots nur ohne Metadaten weitergeben.\n• Vor dem Teilen immer prüfen & ggf. schwärzen."
+    },
+    {
+      "id": "standort",
+      "button": "Standortdaten prüfen",
+      "title": "Standort schützen",
+      "text": "• Live-Standorte nur mit vertrauten Personen teilen.\n• Fotos enthalten oft Geodaten – vorher prüfen und löschen.\n• Ortungsdienste in Apps deaktivieren, die sie nicht benötigen."
+    },
+    {
+      "id": "whatsapp",
+      "button": "Messenger verantwortungsvoll nutzen",
+      "title": "Privatsphäre in Messenger-Apps",
+      "text": "• Nachrichten können weitergeleitet oder mitgelesen werden.\n• Nutze lieber Signal oder Threema.\n• Vermeide Gruppenchats für sensible Inhalte."
+    },
+    {
+      "id": "urlaub",
+      "button": "Urlaubsgrüße schützen",
+      "title": "Urlaubsgrüße? Lieber später!",
+      "text": "• Urlaubs-Posts verraten, dass du nicht zu Hause bist.\n• Fotos und Standortdaten erst nach der Rückkehr posten.\n• Keine Hotelnamen, Flugdaten oder Reiserouten teilen."
+    },
+    {
+      "id": "kind",
+      "button": "Kinderfotos im Netz",
+      "title": "Kinder schützen",
+      "text": "• Keine Kinderbilder öffentlich posten – auch keine Babyfotos.\n• Gesichter verpixeln oder verdecken.\n• Keine Infos zu Schule, Wohnort oder Gewohnheiten posten."
+    },
+    {
+      "id": "medikament",
+      "button": "Medikamentenangabe prüfen",
+      "title": "Medikament – sensible Angabe",
+      "text": "• Medikamentenangaben sind medizinische Daten.\n• Teile sie nicht öffentlich – nur vertraulich oder anonymisiert.\n• Nutze sichere Kommunikationskanäle für Gesundheitsdaten."
+    },
+    {
+      "id": "depression",
+      "button": "Psychische Gesundheit schützen",
+      "title": "Psychische Gesundheit vertraulich behandeln",
+      "text": "• Persönliche Aussagen wie 'Ich nehme ein Medikament gegen Depression' können missbraucht werden.\n• Nur verschlüsselt und gezielt teilen.\n• Achte auch auf Kontext und Tonfall."
+    },
+    {
+      "id": "umfeldpersonen",
+      "button": "Aussagen über andere Personen",
+      "title": "Kritik an Chef, Kolleg*innen, Nachbarn?",
+      "text": "• Aussagen über andere können rechtlich problematisch sein.\n• Screenshots verbreiten sich schnell.\n• Kritik nur vertraulich äußern – persönlich oder anonymisiert."
+    },
+    {
+      "id": "unternehmen",
+      "button": "Aussagen über das Unternehmen",
+      "title": "Unternehmensinterna? Bitte vertraulich!",
+      "text": "• Interne Vorgänge gehören nicht in öffentliche Texte.\n• Auch positive Inhalte können vertrauliche Daten enthalten.\n• Nutze offizielle Kanäle oder Feedbackplattformen."
+    }
+  ]
+}
