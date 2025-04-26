@@ -1,3 +1,4 @@
+/* Basis-Styles */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -7,6 +8,7 @@ body {
   line-height: 1.6;
 }
 
+/* Header */
 header {
   text-align: center;
   margin-top: 50px;
@@ -24,6 +26,7 @@ header {
   margin-top: 0.3rem;
 }
 
+/* Start-Container */
 main.start-container {
   max-width: 500px;
   margin: 2rem auto;
@@ -34,11 +37,21 @@ main.start-container {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
 }
 
+/* Main Content (z.B. für Danke-Seite, Hilfe-Seite) */
+.main-content {
+  margin: 0 auto;
+  max-width: 700px;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+/* Überschriften */
 main h2 {
   text-align: center;
   color: #990000;
 }
 
+/* Formulare */
 form {
   display: flex;
   flex-direction: column;
@@ -80,6 +93,49 @@ form a {
   text-decoration: underline;
 }
 
+/* Buttons (z.B. auf Hilfe-Seite) */
+.hilfe-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 2em auto;
+  max-width: 800px;
+}
+
+.hilfe-buttons button {
+  padding: 10px 20px;
+  background-color: #990000;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.hilfe-buttons button:hover {
+  background-color: #770000;
+}
+
+/* Link/Button zurück auf der Danke-Seite */
+.zurueck-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #990000;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.zurueck-link:hover {
+  background-color: #770000;
+}
+
+/* Footer */
 footer {
   margin-top: 4rem;
   padding: 2rem;
@@ -115,15 +171,52 @@ footer {
   text-decoration: underline;
 }
 
-.footer-small {
+.footer-small, .tiny {
   font-size: 0.75rem;
   color: #666;
   margin-top: 1rem;
 }
 
+/* Modal Styles (für Hilfe-Seite) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+  transition: opacity 0.3s ease;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.close-button {
+  color: #990000;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #770000;
+}
+
 /* Mobile Optimization */
 @media (max-width: 600px) {
-  main.start-container {
+  main.start-container, .main-content {
     padding: 1.5rem 1rem;
   }
 
@@ -137,5 +230,10 @@ footer {
 
   input[type="email"] {
     font-size: 1rem;
+  }
+
+  .hilfe-buttons button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
   }
 }
