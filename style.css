@@ -88,7 +88,7 @@ textarea:focus {
 }
 
 textarea {
-  min-height: 120px;
+  min-height: 60px; /* Jetzt halb so hoch! */
   resize: vertical;
 }
 
@@ -170,7 +170,7 @@ form a {
   background-color: #770000;
 }
 
-/* Modal Styles (weich animiert) */
+/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
