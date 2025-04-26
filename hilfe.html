@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hilfe – achtung.live</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="achtung.live – Empathische Tipps für deinen Datenschutz.">
+  <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <script defer src="hilfe-modal.js"></script> <!-- Das Modal-Skript -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Hilfe | achtung.live</title>
 </head>
 
 <body>
-
 <header>
   <h1><span class="achtung-logo">[achtung.live]</span></h1>
   <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
@@ -18,44 +22,19 @@
   <h2>Wähle ein Thema für mehr Infos</h2>
 
   <div class="hilfe-buttons">
-    <button onclick="showModal('iban')">Bankdaten schützen</button>
-    <button onclick="showModal('kreditkarte')">Kreditkarte sichern</button>
-    <button onclick="showModal('depression')">Gesundheitsdaten bewahren</button>
-    <button onclick="showModal('chef')">Privates mit Kollegen/Freunden</button>
-    <button onclick="showModal('standort')">Standort-Infos absichern</button>
-    <button onclick="showModal('urlaub')">Urlaubsankündigungen vermeiden</button>
-    <button onclick="showModal('whatsapp')">WhatsApp richtig nutzen</button>
-    <button onclick="showModal('screenshot')">Screenshots bewusst teilen</button>
-    <button onclick="showModal('kind')">Kinderdaten schützen</button>
-    <button onclick="showModal('passwort')">Passwort-Tipps</button>
-    <button onclick="showModal('sicher-senden')">Nachrichten sicher senden</button>
-    <button onclick="showModal('unternehmen')">Infos über Firmen</button>
+    <button onclick="openModal('iban')">Bankdaten schützen</button>
+    <button onclick="openModal('kreditkarte')">Kreditkarte sichern</button>
+    <button onclick="openModal('gesundheit')">Gesundheitsdaten bewahren</button>
+    <button onclick="openModal('privat')">Privates mit Kollegen/Freunden</button>
+    <button onclick="openModal('standort')">Standort-Infos absichern</button>
+    <button onclick="openModal('urlaub')">Urlaubsankündigungen vermeiden</button>
+    <button onclick="openModal('whatsapp')">WhatsApp richtig nutzen</button>
+    <button onclick="openModal('screenshot')">Screenshots bewusst teilen</button>
+    <button onclick="openModal('kind')">Kinderdaten schützen</button>
+    <button onclick="openModal('passwort')">Passwort-Tipps</button>
+    <button onclick="openModal('nachricht')">Nachrichten sicher senden</button>
+    <button onclick="openModal('chef')">Infos über Firmen</button>
   </div>
-
-  <!-- Modal -->
-  <div id="hilfeModal" class="modal">
-    <div class="modal-content">
-      <span class="close-button" onclick="closeModal()">&times;</span>
-      <div id="modal-text"></div>
-    </div>
-  </div>
-
-  <h4 style="margin-top: 3em; color: #8b0000;">Weiterführende Infos zu sicherheitsrelevanten Themen:</h4>
-  <p style="margin-top: 1em;">
-    <a href="hilfe-iban.html">Bankdaten schützen</a> • 
-    <a href="hilfe-kreditkarte.html">Kreditkarte sichern</a> • 
-    <a href="hilfe-depression.html">Gesundheitsdaten</a> • 
-    <a href="hilfe-chef.html">Privates mit Freunden/Kollegen</a> • 
-    <a href="hilfe-standort.html">Standortdaten</a> • 
-    <a href="hilfe-urlaub.html">Urlaubsplanung</a> • 
-    <a href="hilfe-whatsapp.html">WhatsApp-Sicherheit</a> • 
-    <a href="hilfe-screenshot.html">Screenshots</a> • 
-    <a href="hilfe-kind.html">Kinderfotos</a> • 
-    <a href="hilfe-passwort.html">Passwörter</a> • 
-    <a href="hilfe-sicher-senden.html">Sichere Nachrichten</a> • 
-    <a href="hilfe-unternehmen.html">Firmen-Infos schützen</a>
-  </p>
-
 </main>
 
 <footer>
@@ -76,33 +55,13 @@
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
 
-<script>
-function showModal(topic) {
-  const texts = {
-    'iban': 'Teile Bankdaten niemals unverschlüsselt!',
-    'kreditkarte': 'Kreditkartendaten niemals öffentlich posten!',
-    'depression': 'Gesundheitsdaten sind besonders schützenswert.',
-    'chef': 'Privates über Kollegen oder Chefs bewusst kommunizieren.',
-    'standort': 'Standortdaten immer gut überlegt teilen.',
-    'urlaub': 'Vorsicht mit Urlaubsankündigungen – Einbruchrisiko!',
-    'whatsapp': 'Sensible Infos in WhatsApp sparsam verwenden.',
-    'screenshot': 'Screenshots können sensible Inhalte enthalten.',
-    'kind': 'Daten von Kindern besonders sensibel behandeln.',
-    'passwort': 'Starke Passwörter wählen und regelmäßig ändern.',
-    'sicher-senden': 'Verschlüsselte Nachrichten verwenden, wenn möglich.',
-    'unternehmen': 'Firmeninterna nie ungefiltert teilen.'
-  };
-
-  const modal = document.getElementById('hilfeModal');
-  document.getElementById('modal-text').innerText = texts[topic] || 'Information folgt.';
-  modal.classList.add('show');
-}
-
-function closeModal() {
-  const modal = document.getElementById('hilfeModal');
-  modal.classList.remove('show');
-}
-</script>
+<!-- Modal-Struktur -->
+<div id="hilfeModal" class="modal">
+  <div class="modal-content" id="modalContent">
+    <span class="close-button" onclick="closeModal()">&times;</span>
+    <div id="modalText" class="modal-text"></div>
+  </div>
+</div>
 
 </body>
 </html>

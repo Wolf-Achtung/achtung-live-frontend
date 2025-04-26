@@ -7,6 +7,7 @@
   <meta name="description" content="Kontakt zu achtung.live – Wir freuen uns auf deine Nachricht.">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <script defer src="popup.js"></script> <!-- Popup-Öffner Script -->
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Kontakt | achtung.live</title>
 </head>
@@ -24,11 +25,11 @@
   <form name="contact" method="POST" data-netlify="true">
     <input type="text" name="name" placeholder="Dein Name" required>
     <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
-    <textarea name="message" placeholder="Deine Nachricht" rows="6" required></textarea>
+    <textarea name="message" placeholder="Deine Nachricht" rows="5" required></textarea>
 
     <label class="datenschutz-checkbox">
       <input type="checkbox" name="datenschutz" required>
-      Ich akzeptiere die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a>.
+      Ich akzeptiere die <a href="datenschutz.html" onclick="openPopup(event, 'datenschutz.html')">Datenschutzerklärung</a>.
     </label>
 
     <button type="submit">Nachricht senden</button>
@@ -42,15 +43,16 @@
 
   <nav class="footer-nav">
     <a href="index.html">Start</a> •
-    <a href="kontakt.html" class="active">Kontakt</a> •
+    <a href="kontakt.html">Kontakt</a> •
     <a href="impressum.html">Impressum</a> •
     <a href="ki-hinweis.html">KI-Hinweis</a> •
     <a href="datenschutz.html">Datenschutz</a> •
-    <a href="hilfe.html">Hilfe</a> •
+    <a href="hilfe.html" class="active">Hilfe</a> •
     <a href="demo.html">Demo</a>
   </nav>
 
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
+
 </body>
 </html>
