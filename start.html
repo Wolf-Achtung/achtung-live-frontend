@@ -8,6 +8,36 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Start | achtung.live</title>
+  <style>
+    .achtung-rot { color: #990000; font-weight: bold; }
+    .ellipsis-rot { color: #990000; }
+    main ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 1rem;
+    }
+    main ul li {
+      margin-bottom: 0.5rem;
+    }
+    /* Mobile Optimierung */
+    @media (max-width: 600px) {
+      body {
+        font-size: 1rem;
+      }
+      main h2 {
+        font-size: 1.4rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      main p {
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      main ul li {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -17,17 +47,28 @@
 </header>
 
 <main class="main-content">
-  <h2>achtung.live startet bald!</h2>
-  <p><strong>achtung.live</strong> ist dein stiller, smarter Begleiter, der live erkennt,<br>
-  wenn du gerade dabei bist, sensible Daten preiszugeben...<br>
-  ...und dich warnt, sie auf Wunsch verschleiert oder souverän ersetzt: <strong>BEVOR</strong> sie gesendet werden!</p>
-  
-  <p>Für alle, die keine Ahnung von Datenschutz haben – aber geschützt sein wollen.</p>
+  <h2><span class="achtung-rot">[achtung.live]</span></h2>
 
-  <p>Funktioniert wie eine Mischung aus:<br>
-  – Autokorrektur<br>
-  – Grammarly für Privatsphäre<br>
-  – digitaler Schutzengel im Hintergrund</p>
+  <p><span class="ellipsis-rot">...</span> ist dein stiller, smarter Begleiter, der live erkennt,<br>
+  wenn du gerade dabei bist, sensible Daten preiszugeben...</p>
+
+  <p><span class="ellipsis-rot">...</span> und dich warnt, sie verschleiert oder clever ersetzt:</p>
+
+  <p><span class="achtung-rot">BEVOR</span> die Daten gesendet werden!</p>
+
+  <p>Für alle, die keine Ahnung von Datenschutz haben<br>
+  – aber geschützt sein wollen.</p>
+
+  <h2><span class="achtung-rot">[achtung.live]</span></h2>
+
+  <p><span class="ellipsis-rot">...</span> funktioniert wie eine Mischung aus:</p>
+
+  <ul>
+    <li>– Autokorrektur</li>
+    <li>– Grammarly für Privatsphäre</li>
+    <li>– digitaler Schutzengel im Hintergrund</li>
+  </ul>
+
 </main>
 
 <footer>
