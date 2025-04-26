@@ -6,25 +6,33 @@
   <title>Kontakt | achtung.live</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header>
-    <h1><span class="logo">[achtung.live]</span></h1>
-    <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
-  </header>
+<header>
+  <h1><span class="achtung-logo">[achtung.live]</span></h1>
+  <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+</header>
 
-  <main>
-    <h2>Kontakt</h2>
-    <p>Schreibe uns bei Fragen oder Feedback an: kontakt@achtung.live</p>
-  </main>
+<main class="main-content">
+  <h2>Kontakt</h2>
+  <p>Fragen, Anregungen oder Feedback? Schreib uns!</p>
 
- <footer>
+  <form name="contact" method="POST" data-netlify="true">
+    <input type="text" name="name" placeholder="Dein Name" required>
+    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
+    <textarea name="message" placeholder="Deine Nachricht" rows="6" required></textarea>
+    <button type="submit">Nachricht senden</button>
+  </form>
+</main>
+
+<footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
   <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
   DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
 
   <nav class="footer-nav">
-    <a href="index.html" class="active">Start</a> •
-    <a href="kontakt.html">Kontakt</a> •
+    <a href="index.html">Start</a> •
+    <a href="kontakt.html" class="active">Kontakt</a> •
     <a href="impressum.html">Impressum</a> •
     <a href="ki-hinweis.html">KI-Hinweis</a> •
     <a href="datenschutz.html">Datenschutz</a> •

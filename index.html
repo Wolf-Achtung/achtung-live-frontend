@@ -1,112 +1,44 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>achtung.live – Die Autokorrektur für deine Privatsphäre</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    /* --- Modal Datenschutz Fenster --- */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.5);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      width: 90%;
-      max-width: 600px;
-      border-radius: 8px;
-      color: #102131;
-    }
-
-    .close-button {
-      color: #990000;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close-button:hover {
-      color: #770000;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>achtung.live – Datenschutz leicht gemacht</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
 <header>
   <h1><span class="achtung-logo">[achtung.live]</span></h1>
   <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
 </header>
 
-<main class="start-container">
-  <h2>Möchtest du benachrichtigt werden, wenn wir live gehen?</h2>
+<main class="main-content">
+  <h2>achtung.live startet bald!</h2>
+  <p>Sei unter den Ersten und sichere dir deinen Platz auf der Warteliste.</p>
 
-  <form name="launch" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/danke.html">
-    <input type="hidden" name="form-name" value="launch" />
-    <p>
-      <label for="email">E-Mail-Adresse:<br />
-        <input type="email" name="email" id="email" required>
-      </label>
-    </p>
-    <p style="font-size: 0.9rem;">
-      <input type="checkbox" name="datenschutz" required>
-      Ich akzeptiere die <a href="#" onclick="openModal()">Datenschutzerklärung</a>.
-    </p>
-    <button type="submit">Benachrichtige mich</button>
+  <form name="launchlist" method="POST" data-netlify="true">
+    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
+    <button type="submit">Jetzt eintragen</button>
   </form>
 </main>
 
-<!-- MODAL Datenschutz -->
-<div id="datenschutzModal" class="modal">
-  <div class="modal-content">
-    <span class="close-button" onclick="closeModal()">&times;</span>
-    <h3>Datenschutzerklärung</h3>
-    <p>Deine Daten werden ausschließlich zum Zweck der Benachrichtigung über den Launch von achtung.live gespeichert.  
-    Keine Weitergabe, kein Tracking, keine Werbung. Du kannst dich jederzeit austragen. Weitere Informationen findest du in unserer vollständigen Datenschutzerklärung.</p>
-  </div>
-</div>
-
 <footer>
-  <div class="footer-badge">🇪🇺 Aus Europa. Für Alle.</div>
-  <div class="footer-text">
-    achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.  
-    DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
-  </div>
-  <div class="footer-small">
-    © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
-  </div>
+  <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
+  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
+  DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
+
+  <nav class="footer-nav">
+    <a href="index.html" class="active">Start</a> •
+    <a href="kontakt.html">Kontakt</a> •
+    <a href="impressum.html">Impressum</a> •
+    <a href="ki-hinweis.html">KI-Hinweis</a> •
+    <a href="datenschutz.html">Datenschutz</a> •
+    <a href="hilfe.html">Hilfe</a> •
+    <a href="demo.html">Demo</a>
+  </nav>
+
+  <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
-
-<script>
-  // Modal-Funktion
-  function openModal() {
-    document.getElementById('datenschutzModal').style.display = 'block';
-  }
-
-  function closeModal() {
-    document.getElementById('datenschutzModal').style.display = 'none';
-  }
-
-  // Modal schließen bei Klick außerhalb
-  window.onclick = function(event) {
-    var modal = document.getElementById('datenschutzModal');
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-</script>
-
 </body>
 </html>
