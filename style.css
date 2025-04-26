@@ -6,6 +6,13 @@ body {
   background-color: #ffffff;
   color: #102131;
   line-height: 1.6;
+  animation: pageFadeIn 0.8s ease forwards;
+}
+
+/* Page Fade-In Animation */
+@keyframes pageFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 /* Header */
@@ -26,7 +33,15 @@ header {
   margin-top: 0.3rem;
 }
 
-/* Start-Container */
+/* Main Content */
+.main-content {
+  margin: 0 auto;
+  max-width: 700px;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+/* Start-Container (optional für Startseite) */
 main.start-container {
   max-width: 500px;
   margin: 2rem auto;
@@ -35,14 +50,6 @@ main.start-container {
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
-}
-
-/* Main Content (z.B. für Danke-Seite, Hilfe-Seite) */
-.main-content {
-  margin: 0 auto;
-  max-width: 700px;
-  padding: 2rem 1rem;
-  text-align: center;
 }
 
 /* Überschriften */
@@ -93,7 +100,7 @@ form a {
   text-decoration: underline;
 }
 
-/* Buttons (z.B. auf Hilfe-Seite) */
+/* Hilfe-Seite: Buttons */
 .hilfe-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -111,14 +118,15 @@ form a {
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .hilfe-buttons button:hover {
   background-color: #770000;
+  transform: scale(1.05);
 }
 
-/* Link/Button zurück auf der Danke-Seite */
+/* Danke-Seite: Zurück-Button */
 .zurueck-link {
   display: inline-block;
   margin-top: 20px;
@@ -133,6 +141,57 @@ form a {
 
 .zurueck-link:hover {
   background-color: #770000;
+}
+
+/* Modal Styles (weich animiert) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.modal.show {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  text-align: left;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+  transform: scale(1);
+}
+
+.close-button {
+  color: #990000;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #770000;
 }
 
 /* Footer */
@@ -157,17 +216,17 @@ footer {
   color: #1c2d41;
 }
 
-.footer-links {
-  margin: 0.5rem 0;
+.footer-nav {
+  margin: 1rem 0;
 }
 
-.footer-links a {
+.footer-nav a {
   color: #990000;
   text-decoration: none;
-  margin: 0 0.3rem;
+  margin: 0 0.5rem;
 }
 
-.footer-links a:hover {
+.footer-nav a:hover {
   text-decoration: underline;
 }
 
@@ -175,43 +234,6 @@ footer {
   font-size: 0.75rem;
   color: #666;
   margin-top: 1rem;
-}
-
-/* Modal Styles (für Hilfe-Seite) */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.6);
-  transition: opacity 0.3s ease;
-}
-
-.modal-content {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  width: 90%;
-  max-width: 500px;
-  border-radius: 8px;
-  text-align: left;
-}
-
-.close-button {
-  color: #990000;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  color: #770000;
 }
 
 /* Mobile Optimization */

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hilfe – achtung.live</title>
   <link rel="stylesheet" href="style.css">
-  <script defer src="hilfe-modal.js"></script>
 </head>
 
 <body>
@@ -41,9 +40,39 @@
     </div>
   </div>
 
+  <h4 style="margin-top: 3em; color: #8b0000;">Weiterführende Infos zu sicherheitsrelevanten Themen:</h4>
+  <p style="margin-top: 1em;">
+    <a href="hilfe-iban.html">Bankdaten schützen</a> • 
+    <a href="hilfe-kreditkarte.html">Kreditkarte sichern</a> • 
+    <a href="hilfe-depression.html">Gesundheitsdaten</a> • 
+    <a href="hilfe-chef.html">Privates mit Freunden/Kollegen</a> • 
+    <a href="hilfe-standort.html">Standortdaten</a> • 
+    <a href="hilfe-urlaub.html">Urlaubsplanung</a> • 
+    <a href="hilfe-whatsapp.html">WhatsApp-Sicherheit</a> • 
+    <a href="hilfe-screenshot.html">Screenshots</a> • 
+    <a href="hilfe-kind.html">Kinderfotos</a> • 
+    <a href="hilfe-passwort.html">Passwörter</a> • 
+    <a href="hilfe-sicher-senden.html">Sichere Nachrichten</a> • 
+    <a href="hilfe-unternehmen.html">Firmen-Infos schützen</a>
+  </p>
+
 </main>
 
 <footer>
+  <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
+  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
+  DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
+
+  <nav class="footer-nav">
+    <a href="index.html">Start</a> •
+    <a href="kontakt.html">Kontakt</a> •
+    <a href="impressum.html">Impressum</a> •
+    <a href="ki-hinweis.html">KI-Hinweis</a> •
+    <a href="datenschutz.html">Datenschutz</a> •
+    <a href="hilfe.html" class="active">Hilfe</a> •
+    <a href="demo.html">Demo</a>
+  </nav>
+
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
 
@@ -64,12 +93,14 @@ function showModal(topic) {
     'unternehmen': 'Firmeninterna nie ungefiltert teilen.'
   };
 
+  const modal = document.getElementById('hilfeModal');
   document.getElementById('modal-text').innerText = texts[topic] || 'Information folgt.';
-  document.getElementById('hilfeModal').style.display = 'block';
+  modal.classList.add('show');
 }
 
 function closeModal() {
-  document.getElementById('hilfeModal').style.display = 'none';
+  const modal = document.getElementById('hilfeModal');
+  modal.classList.remove('show');
 }
 </script>
 
