@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo | achtung.live</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Teste achtung.live – die empathische Autokorrektur für deine Privatsphäre.">
+  <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Demo | achtung.live</title>
 </head>
 
 <body>
@@ -14,8 +18,19 @@
 </header>
 
 <main class="main-content">
-  <h2>Demo</h2>
-  <p>Hier entsteht bald eine Live-Demo. Probier aus, wie achtung.live deine Privatsphäre schützt – automatisch.</p>
+  <h2>Live-Demo</h2>
+  <p>Teste hier, wie achtung.live deine Texte schützt – automatisch, empathisch, transparent.</p>
+
+  <form name="demo" method="POST" data-netlify="true">
+    <textarea name="demo-text" placeholder="Dein Testtext..." rows="6" required></textarea>
+
+    <label class="datenschutz-checkbox">
+      <input type="checkbox" name="datenschutz" required>
+      Ich akzeptiere die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a>.
+    </label>
+
+    <button type="submit">Text prüfen</button>
+  </form>
 </main>
 
 <footer>

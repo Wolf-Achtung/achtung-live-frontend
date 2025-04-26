@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>achtung.live – Datenschutz leicht gemacht</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="achtung.live schützt deine Privatsphäre – einfach, empathisch, transparent.">
+  <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>achtung.live – Datenschutz leicht gemacht</title>
 </head>
 
 <body>
@@ -19,6 +23,12 @@
 
   <form name="launchlist" method="POST" data-netlify="true">
     <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
+
+    <label class="datenschutz-checkbox">
+      <input type="checkbox" name="datenschutz" required>
+      Ich akzeptiere die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a>.
+    </label>
+
     <button type="submit">Jetzt eintragen</button>
   </form>
 </main>

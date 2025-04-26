@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kontakt | achtung.live</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Kontakt zu achtung.live – Wir freuen uns auf deine Nachricht.">
+  <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Kontakt | achtung.live</title>
 </head>
 
 <body>
@@ -21,6 +25,12 @@
     <input type="text" name="name" placeholder="Dein Name" required>
     <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
     <textarea name="message" placeholder="Deine Nachricht" rows="6" required></textarea>
+
+    <label class="datenschutz-checkbox">
+      <input type="checkbox" name="datenschutz" required>
+      Ich akzeptiere die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a>.
+    </label>
+
     <button type="submit">Nachricht senden</button>
   </form>
 </main>

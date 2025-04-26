@@ -63,11 +63,14 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 input[type="email"],
 input[type="text"],
-input[type="checkbox"] {
+input[type="checkbox"],
+textarea {
   width: 100%;
   padding: 0.8rem;
   border: 1px solid #ccc;
@@ -75,9 +78,25 @@ input[type="checkbox"] {
   font-size: 1rem;
 }
 
+textarea {
+  resize: vertical;
+}
+
 input[type="checkbox"] {
   width: auto;
   margin-right: 0.5rem;
+}
+
+.datenschutz-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.datenschutz-checkbox input[type="checkbox"] {
+  width: auto;
 }
 
 button[type="submit"] {
@@ -250,7 +269,9 @@ footer {
     font-size: 1.2rem;
   }
 
-  input[type="email"] {
+  input[type="email"],
+  input[type="text"],
+  textarea {
     font-size: 1rem;
   }
 
