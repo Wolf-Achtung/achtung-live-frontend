@@ -1,11 +1,22 @@
 /* Allgemeine Grundeinstellungen */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
+  display: flex;
+  flex-direction: column;
   background-color: #fafafa;
   color: #002855;
   font-family: Arial, sans-serif;
   text-align: center;
-  margin: 0;
-  padding: 0;
+}
+
+/* Main-Content-Bereich */
+main {
+  flex: 1 0 auto;
 }
 
 /* Headlines */
@@ -33,12 +44,15 @@ a:hover {
 
 /* Footer */
 footer {
+  flex-shrink: 0;
   background-color: #fafafa;
   color: #002855;
   padding: 2rem;
   font-size: 0.9rem;
+  border-top: 1px solid #002855; /* Neuer feiner dunkelblauer Trenner */
 }
 
+/* Footer-Navigation */
 .footer-nav {
   margin-top: 1rem;
 }
@@ -122,7 +136,7 @@ button:hover {
   margin-bottom: 2rem;
 }
 
-/* Spezielle Logos oder EU-Icons */
+/* Logos und EU-Icons */
 .achtung-logo {
   font-weight: bold;
 }
@@ -131,7 +145,7 @@ button:hover {
   font-weight: bold;
 }
 
-/* Listenelemente */
+/* Listen ohne Bullet Points */
 ul {
   list-style-type: none;
   padding-left: 0;

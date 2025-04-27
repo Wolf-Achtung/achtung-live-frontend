@@ -3,55 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Hilfe | achtung.live – Empathische Tipps zum Datenschutz">
+  <meta name="description" content="Hilfe | achtung.live – Schütze deine Daten besser">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Hilfe | achtung.live</title>
   <style>
-    body {
-      color: #002855;
-      text-align: center;
-      font-family: Arial, sans-serif;
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
     }
-    h1, h2, h3 {
-      color: #990000;
-    }
-    footer {
+    .modal-content {
       background-color: #fafafa;
-      color: #002855;
-      padding: 2rem;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #002855;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
       text-align: center;
     }
-    .footer-nav a {
-      color: #990000;
-      text-decoration: none;
-      margin: 0 0.5rem;
-      font-weight: bold;
-    }
-    .footer-nav a:hover {
+    .close {
       color: #002855;
-    }
-    .tiny {
-      font-size: 0.75rem;
-      color: #555;
-      margin-top: 1rem;
-    }
-    .help-buttons {
-      margin-top: 2rem;
-    }
-    .help-buttons button {
-      background-color: #990000;
-      color: #ffffff;
-      border: none;
-      padding: 10px 20px;
-      margin: 10px;
-      border-radius: 5px;
-      font-size: 1rem;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
       cursor: pointer;
     }
-    .help-buttons button:hover {
-      background-color: #cc0000;
+    .close:hover {
+      color: #990000;
     }
   </style>
 </head>
@@ -68,23 +56,37 @@
   <p>Hier findest du Tipps, wie du deine sensiblen Daten noch besser schützt.</p>
 
   <div class="help-buttons">
-    <button onclick="openHelp('hilfe-passwort')">Passwörter schützen</button>
-    <button onclick="openHelp('hilfe-iban')">IBAN & Kontodaten</button>
-    <button onclick="openHelp('hilfe-kreditkarte')">Kreditkarten-Sicherheit</button>
-    <button onclick="openHelp('hilfe-screenshot')">Screenshots vermeiden</button>
-    <button onclick="openHelp('hilfe-urlaub')">Reisepläne diskret teilen</button>
-    <button onclick="openHelp('hilfe-whatsapp')">WhatsApp sicher nutzen</button>
-    <button onclick="openHelp('hilfe-depression')">Persönliche Themen schützen</button>
-    <button onclick="openHelp('hilfe-kind')">Infos über Kinder sichern</button>
-    <button onclick="openHelp('hilfe-medikament')">Gesundheitsdaten achtsam teilen</button>
-    <button onclick="openHelp('hilfe-standort')">Standort-Daten vermeiden</button>
-    <button onclick="openHelp('hilfe-sicher-senden')">Sicherer senden</button>
+    <button onclick="openModal('Passwörter sollten einzigartig und lang sein.')">Passwörter schützen</button>
+    <button onclick="openModal('Teile IBANs nur verschlüsselt oder über sichere Kanäle.')">IBAN & Kontodaten</button>
+    <button onclick="openModal('Kreditkartendaten niemals ungeschützt weitergeben.')">Kreditkarten-Sicherheit</button>
+    <button onclick="openModal('Vermeide Screenshots sensibler Inhalte.')">Screenshots vermeiden</button>
+    <button onclick="openModal('Reisepläne privat teilen, nicht öffentlich posten.')">Reisepläne diskret teilen</button>
+    <button onclick="openModal('WhatsApp-Backup verschlüsseln und Zwei-Faktor-Authentifizierung nutzen.')">WhatsApp sicher nutzen</button>
+    <button onclick="openModal('Psychische Gesundheitsthemen lieber anonym oder geschützt teilen.')">Persönliche Themen schützen</button>
+    <button onclick="openModal('Fotos oder Infos über Kinder immer besonders sensibel behandeln.')">Infos über Kinder sichern</button>
+    <button onclick="openModal('Medikamentendaten nicht in öffentlichen Chatgruppen teilen.')">Gesundheitsdaten achtsam teilen</button>
+    <button onclick="openModal('GPS-Standortfreigaben auf das Notwendigste beschränken.')">Standort-Daten vermeiden</button>
+    <button onclick="openModal('Nutze Plattformen mit sicherem End-to-End-Transportweg.')">Sicherer senden</button>
   </div>
 </main>
 
+<!-- Modal -->
+<div id="hilfeModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <p id="hilfeText"></p>
+  </div>
+</div>
+
 <footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
-  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br> DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
+
+  <p>
+    <span style="color: #990000; font-weight: bold;">[achtung.live]</span> – entwickelt in Europa, gehostet in Europa.<br>
+    Auf Basis europäischer Werte: Datenschutz und digitale Selbstbestimmung.<br>
+    Und mit einer klaren Mission: Menschen schützen, nicht überwachen.<br>
+    DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
+  </p>
 
   <nav class="footer-nav">
     <a href="start.html">Start</a> •
@@ -100,8 +102,13 @@
 </footer>
 
 <script>
-function openHelp(topic) {
-  alert("Hier folgt der Hilfe-Text zu: " + topic);
+function openModal(text) {
+  document.getElementById("hilfeText").innerText = text;
+  document.getElementById("hilfeModal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("hilfeModal").style.display = "none";
 }
 </script>
 
