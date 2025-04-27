@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Demo | achtung.live – Teste deinen Datenschutz-Text">
+  <meta name="description" content="Live-Demo | achtung.live – Teste hier, wie dein Text geschützt wird.">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Live-Demo | achtung.live</title>
   <script>
     function openPopup(url) {
-      window.open(url, 'popup', 'width=600,height=600,scrollbars=yes');
+      window.open(url, '_blank', 'width=600,height=600,scrollbars=yes,resizable=yes');
       return false;
     }
   </script>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <title>Demo | achtung.live</title>
 </head>
 
 <body>
@@ -23,12 +23,11 @@
 </header>
 
 <main class="main-content">
-  <h2>Demo</h2>
+  <h2>Live-Demo</h2>
+  <p>Teste hier, wie achtung.live deine Texte schützt – automatisch, empathisch, transparent.</p>
 
-  <p>Teste hier live, wie achtung.live sensible Inhalte erkennt und schützt.</p>
-
-  <form name="demo" method="POST" data-netlify="true">
-    <textarea name="demo-text" placeholder="Dein Beispieltext..." rows="5" required></textarea>
+  <form name="demoformular" method="POST" data-netlify="true">
+    <textarea name="testtext" placeholder="Dein Testtext..." required></textarea>
 
     <div class="datenschutz-hinweis">
       <input type="checkbox" id="datenschutz" name="datenschutz" required>
@@ -37,7 +36,7 @@
       </label>
     </div>
 
-    <button type="submit">Text prüfen lassen</button>
+    <button type="submit">Text prüfen</button>
   </form>
 </main>
 
@@ -63,5 +62,6 @@
 
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
+
 </body>
 </html>

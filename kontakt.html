@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kontakt | achtung.live – Fragen oder Feedback?">
+  <meta name="description" content="Kontakt | achtung.live – Schreib uns deine Fragen oder Anregungen">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Kontakt | achtung.live</title>
   <script>
     function openPopup(url) {
-      window.open(url, 'popup', 'width=600,height=600,scrollbars=yes');
+      window.open(url, '_blank', 'width=600,height=600,scrollbars=yes,resizable=yes');
       return false;
     }
   </script>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <title>Kontakt | achtung.live</title>
 </head>
 
 <body>
@@ -24,13 +24,12 @@
 
 <main class="main-content">
   <h2>Kontakt</h2>
-
   <p>Fragen, Anregungen oder Feedback? Schreib uns!</p>
 
-  <form name="kontakt" method="danke2.html" data-netlify="true">
+  <form name="kontaktformular" method="/danke2.html" data-netlify="true">
     <input type="text" name="name" placeholder="Dein Name" required>
     <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
-    <textarea name="nachricht" placeholder="Deine Nachricht" rows="4" required></textarea>
+    <textarea name="nachricht" placeholder="Deine Nachricht" required></textarea>
 
     <div class="datenschutz-hinweis">
       <input type="checkbox" id="datenschutz" name="datenschutz" required>
@@ -65,5 +64,6 @@
 
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
+
 </body>
 </html>
