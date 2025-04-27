@@ -9,33 +9,33 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Start | achtung.live</title>
   <style>
-    .achtung-rot { color: #990000; font-weight: bold; }
-    .ellipsis-rot { color: #990000; }
-    main ul {
-      list-style-type: none;
-      padding-left: 0;
+    body {
+      color: #002855;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    h1, h2, h3 {
+      color: #990000;
+    }
+    footer {
+      background-color: #fafafa;
+      color: #002855;
+      padding: 2rem;
+      text-align: center;
+    }
+    .footer-nav a {
+      color: #990000;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      font-weight: bold;
+    }
+    .footer-nav a:hover {
+      color: #002855;
+    }
+    .tiny {
+      font-size: 0.75rem;
+      color: #555;
       margin-top: 1rem;
-    }
-    main ul li {
-      margin-bottom: 0.5rem;
-    }
-    /* Mobile Optimierung */
-    @media (max-width: 600px) {
-      body {
-        font-size: 1rem;
-      }
-      main h2 {
-        font-size: 1.4rem;
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-      }
-      main p {
-        font-size: 1rem;
-        line-height: 1.5;
-      }
-      main ul li {
-        font-size: 1rem;
-      }
     }
   </style>
 </head>
@@ -63,7 +63,7 @@
 
   <p><span class="ellipsis-rot">...</span> funktioniert wie eine Mischung aus:</p>
 
-  <ul>
+  <ul style="list-style-type: none; padding-left: 0;">
     <li>– Autokorrektur</li>
     <li>– Grammarly für Privatsphäre</li>
     <li>– digitaler Schutzengel im Hintergrund</li>
@@ -73,16 +73,15 @@
 
 <footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
-  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
-  DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
+  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br> DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
 
   <nav class="footer-nav">
-    <a href="start.html">Start</a> •
+    <a href="start.html" class="active">Start</a> •
     <a href="kontakt.html">Kontakt</a> •
     <a href="impressum.html">Impressum</a> •
     <a href="ki-hinweis.html">KI-Hinweis</a> •
     <a href="datenschutz.html">Datenschutz</a> •
-    <a href="hilfe.html" class="active">Hilfe</a> •
+    <a href="hilfe.html">Hilfe</a> •
     <a href="demo.html">Demo</a>
   </nav>
 

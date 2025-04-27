@@ -1,300 +1,138 @@
-/* Basis-Styles */
-html, body {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
+/* Allgemeine Grundeinstellungen */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #fafafa;
+  color: #002855;
+  font-family: Arial, sans-serif;
+  text-align: center;
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
-  color: #102131;
+}
+
+/* Headlines */
+h1, h2, h3 {
+  color: #990000;
+  margin-bottom: 1rem;
+}
+
+/* Fließtext */
+p {
+  margin: 0 auto 1rem;
+  max-width: 600px;
   line-height: 1.6;
-  animation: pageFadeIn 0.8s ease forwards;
 }
 
-/* Page Fade-In Animation */
-@keyframes pageFadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-/* Header */
-header {
-  text-align: center;
-  margin-top: 50px;
-}
-
-.achtung-logo {
+/* Links */
+a {
   color: #990000;
-  font-weight: bold;
-  font-size: 2rem;
-}
-
-.claim {
-  font-size: 1.1rem;
-  color: #1c2d41;
-  margin-top: 0.3rem;
-}
-
-/* Main Content */
-main {
-  flex: 1;
-}
-
-.main-content {
-  margin: 0 auto;
-  max-width: 700px;
-  padding: 2rem 1rem;
-  text-align: center;
-}
-
-/* Start-Container */
-main.start-container {
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #f5f7fa;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
-}
-
-/* Überschriften */
-main h2 {
-  text-align: center;
-  color: #990000;
-}
-
-/* Formulare */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-/* Eingabefelder: Underline-Only-Style */
-input[type="text"],
-input[type="email"],
-textarea {
-  border: none;
-  border-bottom: 2px solid #ccc;
-  background: transparent;
-  padding: 10px 5px;
-  font-size: 1rem;
-  width: 100%;
-  transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-textarea:focus {
-  border-bottom: 2px solid #990000;
-  outline: none;
-}
-
-textarea {
-  min-height: 60px; /* Halb so hoch */
-  resize: vertical;
-}
-
-/* Datenschutz-Checkbox */
-.datenschutz-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
-  margin-top: 1rem;
-}
-
-.datenschutz-checkbox input[type="checkbox"] {
-  width: auto;
-}
-
-/* Submit-Button */
-button[type="submit"] {
-  padding: 0.9rem;
-  background-color: #990000;
-  color: #ffffff;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
-}
-
-button[type="submit"]:hover {
-  background-color: #770000;
-  transform: scale(1.05);
-}
-
-form a {
-  color: #003366;
-  text-decoration: underline;
-}
-
-/* Hilfe-Seite: Buttons */
-.hilfe-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin: 2em auto;
-  max-width: 800px;
-}
-
-.hilfe-buttons button {
-  padding: 10px 20px;
-  background-color: #990000;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.hilfe-buttons button:hover {
-  background-color: #770000;
-  transform: scale(1.05);
-}
-
-/* Danke-Seite: Zurück-Button */
-.zurueck-link {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #990000;
-  color: #ffffff;
   text-decoration: none;
-  border-radius: 10px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
 }
 
-.zurueck-link:hover {
-  background-color: #770000;
-}
-
-/* Modal Styles */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.6);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.modal.show {
-  display: block;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.modal-content {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  width: 90%;
-  max-width: 500px;
-  border-radius: 8px;
-  text-align: left;
-  transform: scale(0.95);
-  transition: transform 0.3s ease;
-}
-
-.modal.show .modal-content {
-  transform: scale(1);
-}
-
-.close-button {
-  color: #990000;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  color: #770000;
+a:hover {
+  color: #002855;
 }
 
 /* Footer */
 footer {
-  margin-top: auto;
+  background-color: #fafafa;
+  color: #002855;
   padding: 2rem;
-  background-color: #f9f9f9;
-  text-align: center;
-  font-size: 0.95rem;
-  color: #1c2d41;
-}
-
-.footer-badge {
-  font-weight: bold;
-  color: #003366;
-  margin-bottom: 0.5rem;
-}
-
-.footer-text {
-  margin: 0.5rem 0 1rem;
-  font-size: 0.95rem;
-  color: #1c2d41;
+  font-size: 0.9rem;
 }
 
 .footer-nav {
-  margin: 1rem 0;
+  margin-top: 1rem;
 }
 
 .footer-nav a {
   color: #990000;
-  text-decoration: none;
   margin: 0 0.5rem;
+  font-weight: bold;
 }
 
 .footer-nav a:hover {
-  text-decoration: underline;
+  color: #002855;
 }
 
-.footer-small, .tiny {
+/* Formulareingabefelder */
+input[type="email"],
+input[type="text"],
+textarea {
+  width: 90%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 10px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  display: block;
+}
+
+/* Buttons */
+button {
+  background-color: #990000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #cc0000;
+}
+
+/* Kleine Hinweise */
+.tiny {
   font-size: 0.75rem;
-  color: #666;
-  margin-top: 1rem;
+  color: #555;
+  margin-top: 2rem;
 }
 
-/* Mobile Optimization */
-@media (max-width: 600px) {
-  main.start-container, .main-content {
-    padding: 1.5rem 1rem;
-  }
+/* Hilfe-Button-Styles */
+.help-buttons {
+  margin-top: 2rem;
+}
 
-  .achtung-logo {
-    font-size: 1.6rem;
-  }
+.help-buttons button {
+  background-color: #990000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
 
-  main h2 {
-    font-size: 1.2rem;
-  }
+.help-buttons button:hover {
+  background-color: #cc0000;
+}
 
-  input[type="email"],
-  input[type="text"],
-  textarea {
-    font-size: 1rem;
-  }
+/* Datenschutz-Hinweis */
+.datenschutz-hinweis {
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
 
-  .hilfe-buttons button {
-    font-size: 0.9rem;
-    padding: 8px 16px;
-  }
+/* Claim unter Logo */
+.claim {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* Spezielle Logos oder EU-Icons */
+.achtung-logo {
+  font-weight: bold;
+}
+
+.eu {
+  font-weight: bold;
+}
+
+/* Listenelemente */
+ul {
+  list-style-type: none;
+  padding-left: 0;
 }

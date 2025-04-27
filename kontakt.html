@@ -3,13 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Kontakt zu achtung.live – Wir freuen uns auf deine Nachricht.">
+  <meta name="description" content="Kontakt | achtung.live – Datenschutz leicht gemacht">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
-  <script defer src="popup.js"></script> <!-- Popup-Öffner Script -->
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Kontakt | achtung.live</title>
+  <style>
+    body {
+      color: #002855;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    h1, h2, h3 {
+      color: #990000;
+    }
+    footer {
+      background-color: #fafafa;
+      color: #002855;
+      padding: 2rem;
+      text-align: center;
+    }
+    .footer-nav a {
+      color: #990000;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      font-weight: bold;
+    }
+    .footer-nav a:hover {
+      color: #002855;
+    }
+    .tiny {
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 1rem;
+    }
+    form {
+      margin-top: 2rem;
+    }
+    input, textarea {
+      width: 90%;
+      max-width: 400px;
+      padding: 10px;
+      margin: 10px auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: Arial, sans-serif;
+    }
+    button {
+      background-color: #990000;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #cc0000;
+    }
+    .datenschutz-hinweis {
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -20,17 +77,20 @@
 
 <main class="main-content">
   <h2>Kontakt</h2>
-  <p>Fragen, Anregungen oder Feedback? Schreib uns!</p>
 
-  <form name="contact" method="POST" action="/danke2.html" data-netlify="true">
-    <input type="text" name="name" placeholder="Dein Name" required>
-    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
-    <textarea name="message" placeholder="Deine Nachricht..." required></textarea>
+  <p>Fragen, Feedback oder Anregungen? Wir freuen uns auf deine Nachricht!</p>
 
-    <label class="datenschutz-checkbox">
-      <input type="checkbox" name="datenschutz" required>
-      Ich akzeptiere die <a href="#" onclick="openPopup(event, 'datenschutz-popup2.html')">Datenschutzerklärung</a>
-    </label>
+  <form name="kontakt" method="POST" data-netlify="true">
+    <input type="text" name="name" placeholder="Dein Name" required><br>
+    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required><br>
+    <textarea name="message" rows="5" placeholder="Deine Nachricht..." required></textarea><br>
+
+    <div class="datenschutz-hinweis">
+      <input type="checkbox" id="datenschutz" name="datenschutz" required>
+      <label for="datenschutz">
+        Ich akzeptiere die <a href="datenschutz-popup2.html" target="_blank">Datenschutzerklärung</a>
+      </label>
+    </div>
 
     <button type="submit">Nachricht senden</button>
   </form>
@@ -38,21 +98,19 @@
 
 <footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
-  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
-  DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
+  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br> DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
 
   <nav class="footer-nav">
     <a href="start.html">Start</a> •
-    <a href="kontakt.html">Kontakt</a> •
+    <a href="kontakt.html" class="active">Kontakt</a> •
     <a href="impressum.html">Impressum</a> •
     <a href="ki-hinweis.html">KI-Hinweis</a> •
     <a href="datenschutz.html">Datenschutz</a> •
-    <a href="hilfe.html" class="active">Hilfe</a> •
+    <a href="hilfe.html">Hilfe</a> •
     <a href="demo.html">Demo</a>
   </nav>
 
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
-
 </body>
 </html>

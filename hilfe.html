@@ -3,13 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="achtung.live – Empathische Tipps für deinen Datenschutz.">
+  <meta name="description" content="Hilfe | achtung.live – Empathische Tipps zum Datenschutz">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
-  <script defer src="hilfe-modal.js"></script> <!-- Das Modal-Skript -->
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Hilfe | achtung.live</title>
+  <style>
+    body {
+      color: #002855;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    h1, h2, h3 {
+      color: #990000;
+    }
+    footer {
+      background-color: #fafafa;
+      color: #002855;
+      padding: 2rem;
+      text-align: center;
+    }
+    .footer-nav a {
+      color: #990000;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      font-weight: bold;
+    }
+    .footer-nav a:hover {
+      color: #002855;
+    }
+    .tiny {
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 1rem;
+    }
+    .help-buttons {
+      margin-top: 2rem;
+    }
+    .help-buttons button {
+      background-color: #990000;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .help-buttons button:hover {
+      background-color: #cc0000;
+    }
+  </style>
 </head>
 
 <body>
@@ -19,28 +63,28 @@
 </header>
 
 <main class="main-content">
-  <h2>Wähle ein Thema für mehr Infos</h2>
+  <h2>Hilfe</h2>
 
-  <div class="hilfe-buttons">
-    <button onclick="openModal('iban')">Bankdaten schützen</button>
-    <button onclick="openModal('kreditkarte')">Kreditkarte sichern</button>
-    <button onclick="openModal('gesundheit')">Gesundheitsdaten bewahren</button>
-    <button onclick="openModal('privat')">Privates mit Kollegen/Freunden</button>
-    <button onclick="openModal('standort')">Standort-Infos absichern</button>
-    <button onclick="openModal('urlaub')">Urlaubsankündigungen vermeiden</button>
-    <button onclick="openModal('whatsapp')">WhatsApp richtig nutzen</button>
-    <button onclick="openModal('screenshot')">Screenshots bewusst teilen</button>
-    <button onclick="openModal('kind')">Kinderdaten schützen</button>
-    <button onclick="openModal('passwort')">Passwort-Tipps</button>
-    <button onclick="openModal('nachricht')">Nachrichten sicher senden</button>
-    <button onclick="openModal('chef')">Infos über Firmen</button>
+  <p>Hier findest du Tipps, wie du deine sensiblen Daten noch besser schützt.</p>
+
+  <div class="help-buttons">
+    <button onclick="openHelp('hilfe-passwort')">Passwörter schützen</button>
+    <button onclick="openHelp('hilfe-iban')">IBAN & Kontodaten</button>
+    <button onclick="openHelp('hilfe-kreditkarte')">Kreditkarten-Sicherheit</button>
+    <button onclick="openHelp('hilfe-screenshot')">Screenshots vermeiden</button>
+    <button onclick="openHelp('hilfe-urlaub')">Reisepläne diskret teilen</button>
+    <button onclick="openHelp('hilfe-whatsapp')">WhatsApp sicher nutzen</button>
+    <button onclick="openHelp('hilfe-depression')">Persönliche Themen schützen</button>
+    <button onclick="openHelp('hilfe-kind')">Infos über Kinder sichern</button>
+    <button onclick="openHelp('hilfe-medikament')">Gesundheitsdaten achtsam teilen</button>
+    <button onclick="openHelp('hilfe-standort')">Standort-Daten vermeiden</button>
+    <button onclick="openHelp('hilfe-sicher-senden')">Sicherer senden</button>
   </div>
 </main>
 
 <footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
-  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br>
-  DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
+  <p>achtung.live ist die Autokorrektur für deine Privatsphäre – entwickelt in Europa, gehostet in Europa.<br> DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.</p>
 
   <nav class="footer-nav">
     <a href="start.html">Start</a> •
@@ -55,13 +99,11 @@
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
 
-<!-- Modal-Struktur -->
-<div id="hilfeModal" class="modal">
-  <div class="modal-content" id="modalContent">
-    <span class="close-button" onclick="closeModal()">&times;</span>
-    <div id="modalText" class="modal-text"></div>
-  </div>
-</div>
+<script>
+function openHelp(topic) {
+  alert("Hier folgt der Hilfe-Text zu: " + topic);
+}
+</script>
 
 </body>
 </html>
