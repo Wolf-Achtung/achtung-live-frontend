@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kontakt | achtung.live – Kontaktformular">
+  <meta name="description" content="Kontakt | achtung.live – Fragen oder Feedback?">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <script>
+    function openPopup(url) {
+      window.open(url, 'popup', 'width=600,height=600,scrollbars=yes');
+      return false;
+    }
+  </script>
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Kontakt | achtung.live</title>
 </head>
@@ -19,17 +25,17 @@
 <main class="main-content">
   <h2>Kontakt</h2>
 
-  <p>Fragen, Feedback oder Anregungen? Wir freuen uns auf deine Nachricht!</p>
+  <p>Fragen, Anregungen oder Feedback? Schreib uns!</p>
 
-  <form name="kontakt" method="POST" data-netlify="true">
-    <input type="text" name="name" placeholder="Dein Name" required><br>
-    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required><br>
-    <textarea name="message" rows="5" placeholder="Deine Nachricht..." required></textarea><br>
+  <form name="kontakt" method="danke2.html" data-netlify="true">
+    <input type="text" name="name" placeholder="Dein Name" required>
+    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
+    <textarea name="nachricht" placeholder="Deine Nachricht" rows="4" required></textarea>
 
     <div class="datenschutz-hinweis">
       <input type="checkbox" id="datenschutz" name="datenschutz" required>
       <label for="datenschutz">
-        Ich akzeptiere die <a href="datenschutz-popup2.html" target="_blank">Datenschutzerklärung</a>
+        Ich akzeptiere die <a href="datenschutz-popup2.html" onclick="return openPopup('datenschutz-popup2.html')">Datenschutzerklärung</a>
       </label>
     </div>
 
@@ -41,7 +47,7 @@
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
 
   <p>
-    <span style="color: #990000; font-weight: bold;">[achtung.live]</span> – entwickelt in Europa, gehostet in Europa<br>
+    <span style="color: #990000; font-weight: bold;">[achtung.live]</span> – entwickelt in Europa, gehostet in Europa.<br>
     Auf Basis europäischer Werte: Datenschutz und digitale Selbstbestimmung.<br>
     Und mit einer klaren Mission: Menschen schützen, nicht überwachen.<br>
     DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.

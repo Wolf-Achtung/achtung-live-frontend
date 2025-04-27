@@ -3,11 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Hilfe | achtung.live – Schütze deine Daten besser">
+  <meta name="description" content="Hilfe | achtung.live – Tipps zum besseren Schutz deiner Privatsphäre">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <title>Hilfe | achtung.live</title>
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+  </script>
   <style>
     /* Modal Styles */
     .modal {
@@ -42,6 +48,8 @@
       color: #990000;
     }
   </style>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Hilfe | achtung.live</title>
 </head>
 
 <body>
@@ -53,30 +61,102 @@
 <main class="main-content">
   <h2>Hilfe</h2>
 
-  <p>Hier findest du Tipps, wie du deine sensiblen Daten noch besser schützt.</p>
+  <p>Hier findest du Tipps, wie du deine sensiblen Daten noch besser schützt:</p>
 
   <div class="help-buttons">
-    <button onclick="openModal('Passwörter sollten einzigartig und lang sein.')">Passwörter schützen</button>
-    <button onclick="openModal('Teile IBANs nur verschlüsselt oder über sichere Kanäle.')">IBAN & Kontodaten</button>
-    <button onclick="openModal('Kreditkartendaten niemals ungeschützt weitergeben.')">Kreditkarten-Sicherheit</button>
-    <button onclick="openModal('Vermeide Screenshots sensibler Inhalte.')">Screenshots vermeiden</button>
-    <button onclick="openModal('Reisepläne privat teilen, nicht öffentlich posten.')">Reisepläne diskret teilen</button>
-    <button onclick="openModal('WhatsApp-Backup verschlüsseln und Zwei-Faktor-Authentifizierung nutzen.')">WhatsApp sicher nutzen</button>
-    <button onclick="openModal('Psychische Gesundheitsthemen lieber anonym oder geschützt teilen.')">Persönliche Themen schützen</button>
-    <button onclick="openModal('Fotos oder Infos über Kinder immer besonders sensibel behandeln.')">Infos über Kinder sichern</button>
-    <button onclick="openModal('Medikamentendaten nicht in öffentlichen Chatgruppen teilen.')">Gesundheitsdaten achtsam teilen</button>
-    <button onclick="openModal('GPS-Standortfreigaben auf das Notwendigste beschränken.')">Standort-Daten vermeiden</button>
-    <button onclick="openModal('Nutze Plattformen mit sicherem End-to-End-Transportweg.')">Sicherer senden</button>
+    <button onclick="openModal('passwort')">Passwörter schützen</button>
+    <button onclick="openModal('iban')">IBAN & Kontodaten</button>
+    <button onclick="openModal('kreditkarte')">Kreditkarten-Sicherheit</button>
+    <button onclick="openModal('screenshot')">Screenshots vermeiden</button>
+    <button onclick="openModal('urlaub')">Reisepläne diskret teilen</button>
+    <button onclick="openModal('whatsapp')">WhatsApp sicher nutzen</button>
+    <button onclick="openModal('depression')">Persönliche Themen schützen</button>
+    <button onclick="openModal('kind')">Infos über Kinder sichern</button>
+    <button onclick="openModal('medikament')">Gesundheitsdaten achtsam teilen</button>
+    <button onclick="openModal('standort')">Standort-Daten vermeiden</button>
+    <button onclick="openModal('sicher-senden')">Sicherer senden</button>
   </div>
-</main>
 
-<!-- Modal -->
-<div id="hilfeModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <p id="hilfeText"></p>
+  <!-- Modal-Fenster für alle Themen -->
+
+  <div id="passwort" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('passwort')">&times;</span>
+      <p>Verwende für jede Plattform ein eigenes, langes Passwort. Vermeide Wiederholungen. Aktiviere zusätzlich die Zwei-Faktor-Authentifizierung (2FA) überall, wo möglich.</p>
+    </div>
   </div>
-</div>
+
+  <div id="iban" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('iban')">&times;</span>
+      <p>Teile IBANs und Kontodaten nur über sichere Kommunikationswege. Verschlüssele sensible Dokumente oder nutze zertifizierte Plattformen für Zahlungen.</p>
+    </div>
+  </div>
+
+  <div id="kreditkarte" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('kreditkarte')">&times;</span>
+      <p>Gib Kreditkartendaten nur bei vertrauenswürdigen Anbietern ein. Nutze virtuelle Kreditkarten-Nummern oder Zahlungsdienste mit zusätzlicher Absicherung.</p>
+    </div>
+  </div>
+
+  <div id="screenshot" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('screenshot')">&times;</span>
+      <p>Vermeide Screenshots sensibler Inhalte. Lösche alte Bildschirmaufnahmen regelmäßig und sichere Geräte mit PIN oder Fingerabdruck.</p>
+    </div>
+  </div>
+
+  <div id="urlaub" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('urlaub')">&times;</span>
+      <p>Veröffentliche Reisepläne und Urlaubsankündigungen niemals öffentlich in sozialen Netzwerken. Teile diese Infos nur direkt mit ausgewählten Kontakten.</p>
+    </div>
+  </div>
+
+  <div id="whatsapp" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('whatsapp')">&times;</span>
+      <p>Nutze in WhatsApp die Ende-zu-Ende-Verschlüsselung und sichere deine Backups verschlüsselt. Stelle Zwei-Faktor-Authentifizierung ein.</p>
+    </div>
+  </div>
+
+  <div id="depression" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('depression')">&times;</span>
+      <p>Psychische Gesundheit ist sensibel: Teile Informationen bevorzugt anonym oder in geschützten, sicheren Räumen. Denke daran, dass Screenshots verbreitet werden können.</p>
+    </div>
+  </div>
+
+  <div id="kind" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('kind')">&times;</span>
+      <p>Fotos oder sensible Daten von Kindern sollten nicht öffentlich geteilt werden. Nutze sichere Plattformen und Datenschutzeinstellungen konsequent.</p>
+    </div>
+  </div>
+
+  <div id="medikament" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('medikament')">&times;</span>
+      <p>Informationen über Krankheiten oder Medikamente lieber diskret behandeln. Vermeide Details in öffentlichen Gruppen oder Chats.</p>
+    </div>
+  </div>
+
+  <div id="standort" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('standort')">&times;</span>
+      <p>Schalte die Standortfreigabe für Apps nur ein, wenn wirklich nötig. Nutze temporäre Standortfreigaben statt permanenter Verfolgung.</p>
+    </div>
+  </div>
+
+  <div id="sicher-senden" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('sicher-senden')">&times;</span>
+      <p>Wenn du sensible Daten senden musst, nutze sichere, verschlüsselte Plattformen wie ProtonMail oder Signal, die Datenschutz ernst nehmen.</p>
+    </div>
+  </div>
+
+</main>
 
 <footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
@@ -100,17 +180,5 @@
 
   <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
-
-<script>
-function openModal(text) {
-  document.getElementById("hilfeText").innerText = text;
-  document.getElementById("hilfeModal").style.display = "block";
-}
-
-function closeModal() {
-  document.getElementById("hilfeModal").style.display = "none";
-}
-</script>
-
 </body>
 </html>

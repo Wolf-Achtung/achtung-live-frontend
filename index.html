@@ -3,82 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="achtung.live – Launch-Ankündigung und Anmeldung">
+  <meta name="description" content="achtung.live – Autokorrektur für deine Privatsphäre">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
+  <script>
+    function openPopup(url) {
+      window.open(url, 'popup', 'width=600,height=600,scrollbars=yes');
+      return false;
+    }
+  </script>
   <link rel="icon" type="image/png" href="favicon.png">
-  <title>achtung.live – Launch bald!</title>
-  <style>
-    body {
-      color: #002855;
-      text-align: center;
-      font-family: Arial, sans-serif;
-      background-color: #fafafa;
-    }
-    h1, h2 {
-      color: #990000;
-    }
-    form {
-      margin-top: 2rem;
-    }
-    input[type="email"] {
-      width: 90%;
-      max-width: 400px;
-      padding: 10px;
-      margin: 10px auto;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-family: Arial, sans-serif;
-    }
-    button {
-      background-color: #990000;
-      color: #ffffff;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 10px;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #cc0000;
-    }
-    .datenschutz-hinweis {
-      font-size: 0.85rem;
-      margin-top: 10px;
-    }
-    .tiny {
-      font-size: 0.75rem;
-      color: #555;
-      margin-top: 2rem;
-    }
-  </style>
+  <title>achtung.live – Die Autokorrektur für deine Privatsphäre</title>
 </head>
 
 <body>
 <header>
   <h1><span class="achtung-logo">[achtung.live]</span></h1>
+  <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
 </header>
 
 <main class="main-content">
   <h2>achtung.live startet bald!</h2>
+  <p>Sei unter den Ersten und sichere dir deinen Platz auf der Warteliste.</p>
 
-  <p>Datensicherheit für alle, die keinen Bock auf Datenschutz haben.</p>
-
-  <form name="launch" method="POST" data-netlify="true">
-    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required><br>
+  <form name="waitlist" method="danke.html" data-netlify="true">
+    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
 
     <div class="datenschutz-hinweis">
       <input type="checkbox" id="datenschutz" name="datenschutz" required>
       <label for="datenschutz">
-        Ich akzeptiere die <a href="datenschutz-popup.html" target="_blank">Datenschutzerklärung</a>
+        Ich akzeptiere die <a href="datenschutz-popup.html" onclick="return openPopup('datenschutz-popup.html')">Datenschutzerklärung</a>
       </label>
     </div>
 
     <button type="submit">Jetzt eintragen</button>
   </form>
-
-  <p class="tiny">© 2025 achtung.live – Keine Speicherung. Kein Tracking. Kein Bullshit.</p>
 </main>
+
+<footer>
+  <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
+
+  <p>
+    <span style="color: #990000; font-weight: bold;">[achtung.live]</span> – entwickelt in Europa, gehostet in Europa.<br>
+    Auf Basis europäischer Werte: Datenschutz und digitale Selbstbestimmung.<br>
+    Und mit einer klaren Mission: Menschen schützen, nicht überwachen.<br>
+    DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
+  </p>
+
+  <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
+</footer>
 </body>
 </html>
