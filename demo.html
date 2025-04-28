@@ -9,11 +9,65 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Live-Demo | achtung.live</title>
   <script>
-    function openPopup(url) {
-      window.open(url, '_blank', 'width=600,height=600,scrollbars=yes,resizable=yes');
-      return false;
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
     }
   </script>
+  <style>
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fafafa;
+      margin: 8% auto;
+      padding: 25px;
+      border: 1px solid #002855;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 10px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .close {
+      color: #002855;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #990000;
+    }
+    /* Underline-Formular */
+    form textarea {
+      border: none;
+      border-bottom: 2px solid #002855;
+      background: transparent;
+      width: 100%;
+      padding: 10px 5px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #002855;
+      resize: vertical;
+      height: 120px;
+    }
+    form textarea:focus {
+      outline: none;
+      border-bottom: 2px solid #990000;
+    }
+  </style>
 </head>
 
 <body>
@@ -32,13 +86,23 @@
     <div class="datenschutz-hinweis">
       <input type="checkbox" id="datenschutz" name="datenschutz" required>
       <label for="datenschutz">
-        Ich akzeptiere die <a href="datenschutz-popup2.html" onclick="return openPopup('datenschutz-popup2.html')">Datenschutzerklärung</a>
+        Ich akzeptiere die <a href="datenschutz-popup2.html" onclick="openModalExtern('datenschutz-popup2.html'); return false;">Datenschutzerklärung</a>
       </label>
     </div>
 
     <button type="submit">Text prüfen</button>
   </form>
 </main>
+
+<!-- Modal Datenschutzerklärung -->
+
+<div id="datenschutz" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('datenschutz')">&times;</span>
+    <h3>Datenschutzerklärung</h3>
+    <p>Deine Texte werden ausschließlich temporär verarbeitet. Es erfolgt keine dauerhafte Speicherung, keine Profilbildung und keine Weitergabe an Dritte. Alles bleibt vertraulich – Privacy by Design.</p>
+  </div>
+</div>
 
 <footer>
   <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
