@@ -27,7 +27,7 @@
 <main>
   <h2>Teste achtung.live live!</h2>
 
-  <form id="demoForm" onsubmit="openModal('demoDankeModal'); return false;">
+  <form action="https://web-production-2e4ae.up.railway.app/analyze" method="POST">
     <textarea name="demoText" placeholder="Schreibe hier deinen Text..." rows="5" required></textarea>
 
     <p style="font-size: 14px;">
@@ -49,15 +49,6 @@
   </div>
 </div>
 
-<!-- Danke-Popup -->
-<div id="demoDankeModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('demoDankeModal')">&times;</span>
-    <h3>Text eingereicht!</h3>
-    <p>Dein Text wird nun analysiert. Danke für dein Vertrauen.</p>
-  </div>
-</div>
-
 <footer class="site-footer">
   <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
   
@@ -69,15 +60,16 @@
     DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.
   </div>
 
-   <nav class="footer-nav">
+  <nav class="footer-nav">
     <a href="start.html">Start</a> •
     <a href="kontakt.html">Kontakt</a> •
     <a href="impressum.html">Impressum</a> •
     <a href="ki-hinweis.html">KI-Hinweis</a> •
     <a href="datenschutz.html">Datenschutz</a> •
     <a href="hilfe.html">Hilfe</a> •
-    <a href="demo.html">Demo</a>
+    <a href="demo.html" class="active">Demo</a>
   </nav>
+
   <div class="copyright">
     © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
   </div>
