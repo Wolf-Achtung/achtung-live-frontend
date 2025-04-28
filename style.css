@@ -1,10 +1,22 @@
+/* Basis-Layout, damit Footer immer unten */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hauptinhalt */
+main {
+    flex: 1 0 auto;
+}
+
 /* Global Styles */
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #0a2b59; /* dunkelblauer CI-Farbton */
     background-color: #ffffff;
-    margin: 0;
-    padding: 0;
     text-align: center;
     line-height: 1.6;
 }
@@ -63,13 +75,14 @@ button:hover, input[type="submit"]:hover {
 
 /* Footer Styles */
 .site-footer {
+    flex-shrink: 0;
     text-align: center;
     padding: 30px 20px;
     background-color: #f9f9f9;
     font-size: 14px;
     color: #0a2b59;
     line-height: 1.6;
-    margin-top: 50px;
+    margin-top: 20px;
     border-top: 1px solid #c5c5c5;
 }
 
@@ -92,12 +105,6 @@ button:hover, input[type="submit"]:hover {
     margin: 10px 0;
 }
 
-.site-footer .copyright {
-    font-size: 12px;
-    color: #0a2b59;
-    margin-top: 15px;
-}
-
 .footer-nav {
     margin-top: 20px;
 }
@@ -114,6 +121,12 @@ button:hover, input[type="submit"]:hover {
     text-decoration: underline;
 }
 
+/* Copyright Text */
+.site-footer .copyright {
+    font-size: 12px;
+    color: #0a2b59;
+    margin-top: 15px;
+}
 
 /* Popups (Modal-Style) */
 .modal {
@@ -130,7 +143,7 @@ button:hover, input[type="submit"]:hover {
 }
 
 .modal-content {
-    background-color: #ffffff;
+    background-color: #fefefe;
     margin: auto;
     padding: 30px;
     border: 1px solid #888;
@@ -138,6 +151,13 @@ button:hover, input[type="submit"]:hover {
     max-width: 600px;
     border-radius: 8px;
     text-align: left;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
 
 .close {
