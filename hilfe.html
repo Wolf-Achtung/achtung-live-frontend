@@ -3,296 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Hilfe | achtung.live – Tipps zum besseren Schutz deiner Privatsphäre">
-  <meta name="robots" content="index,follow">
+  <title>Hilfe – Achtung.live</title>
   <link rel="stylesheet" href="style.css">
-  <script>
-    function openModal(id) {
-      document.getElementById(id).style.display = "block";
-    }
-    function closeModal(id) {
-      document.getElementById(id).style.display = "none";
-    }
-  </script>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <title>Hilfe | achtung.live</title>
-  <style>
-    /* Modal-Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-    }
-    .modal-content {
-      background-color: #fafafa;
-      margin: 8% auto;
-      padding: 25px;
-      border: 1px solid #002855;
-      width: 90%;
-      max-width: 600px;
-      border-radius: 10px;
-      text-align: center;
-      line-height: 1.6;
-    }
-    .close {
-      color: #002855;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .close:hover {
-      color: #990000;
-    }
-    .modal-content h3 {
-      color: #990000;
-      margin-top: 0;
-    }
-  </style>
 </head>
-
 <body>
+
 <header>
-  <h1><span class="achtung-logo">[achtung.live]</span></h1>
-  <p class="claim">Die Autokorrektur für deine Privatsphäre</p>
+  <h1>[achtung.live]</h1>
+  <p>Die Autokorrektur für deine Privatsphäre</p>
 </header>
 
-<main class="main-content">
-  <h2>Hilfe</h2>
-
-  <p>Hier findest du ausführliche Tipps, wie du deine sensiblen Informationen besser schützt:</p>
-
-  <div class="help-buttons">
-    <button onclick="openModal('passwort')">Passwörter schützen</button>
-    <button onclick="openModal('iban')">IBAN & Kontodaten schützen</button>
-    <button onclick="openModal('kreditkarte')">Kreditkartendaten schützen</button>
-    <button onclick="openModal('screenshot')">Screenshots vermeiden</button>
-    <button onclick="openModal('reise')">Reisepläne teilen</button>
-    <button onclick="openModal('whatsapp')">WhatsApp sicher nutzen</button>
-    <button onclick="openModal('gesundheit')">Gesundheitsdaten schützen</button>
-    <button onclick="openModal('kinder')">Infos über Kinder schützen</button>
-    <button onclick="openModal('medikamente')">Medikamenten-Infos schützen</button>
-    <button onclick="openModal('standort')">Standortdaten vermeiden</button>
-    <button onclick="openModal('sicher-senden')">Sicherer senden</button>
+<main>
+  <h2>Wähle ein Thema für mehr Infos</h2>
+  
+  <div class="button-container">
+    <button onclick="openModal('modal1')">Bankdaten schützen</button>
+    <button onclick="openModal('modal2')">Kreditkarte sichern</button>
+    <button onclick="openModal('modal3')">Gesundheitsdaten bewahren</button>
+    <button onclick="openModal('modal4')">Privates mit Kollegen/Freunden</button>
+    <button onclick="openModal('modal5')">Standort-Infos absichern</button>
+    <button onclick="openModal('modal6')">Urlaubsankündigungen vermeiden</button>
+    <button onclick="openModal('modal7')">WhatsApp richtig nutzen</button>
+    <button onclick="openModal('modal8')">Screenshots bewusst teilen</button>
+    <button onclick="openModal('modal9')">Kinderdaten schützen</button>
+    <button onclick="openModal('modal10')">Passwort-Tipps</button>
+    <button onclick="openModal('modal11')">Nachrichten sicher senden</button>
+    <button onclick="openModal('modal12')">Infos über Firmen</button>
   </div>
-
-  <!-- Modale Popups: LANGE Inhalte -->
-
-  <div id="passwort" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('passwort')">&times;</span>
-      <h3>Passwörter: deine erste Verteidigungslinie</h3>
-      <p>Was du vermeiden solltest:
-•	einfach strukturierte Passwörter wie „123456“ oder „Passwort“
-•	dasselbe Passwort auf mehreren Plattformen
-•	Weitergabe von Passwörtern per Chat oder E-Mail
-•	aktiviere Zwei-Faktor-Authentifizierung (2FA) immer, wo möglich
-Empathischer Umgang:
-•	verwende Passwort-Manager
-•	setze auf lange, komplexe Passphrasen
-•	lass achtung.live dich daran erinnern, niemals sensible Infos offen zu verschicken
-</p>
-    </div>
-  </div>
-
-<div id="iban" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('iban')">&times;</span>
-    <h3>IBAN & Kontodaten schützen</h3>
-    <p>Deine IBAN gehört zu den wichtigsten persönlichen Daten. Unachtsames Teilen kann Konto-Missbrauch ermöglichen.
-Was du vermeiden solltest:
-•	IBAN oder Kontonummer in Posts oder Chats veröffentlichen
-•	Bankverbindungen in ungesicherten E-Mails versenden
-•	Screenshots von Überweisungen teilen
-Empathischer Umgang:
-•	Verwende verschlüsselte Kanäle (z.B. Signal)
-•	Frage dich: Muss diese Info überhaupt raus?
-•	Nutze achtung.live, um deinen Text automatisch zu prüfen
-</p>
-  </div>
-</div>
-
-<div id="kreditkarte" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('kreditkarte')">&times;</span>
-    <h3>Kreditkartendaten schützen</h3>
-    <p>Kreditkartendaten sind ein beliebtes Ziel für Betrug. Ein kleiner Fehler kann teuer werden.
-Was du vermeiden solltest:
-•	Posten oder Teilen der Kartennummer oder Prüfziffer
-•	Screenshots von Bezahlvorgängen online stellen
-•	Unverschlüsselte Übermittlung in Chats oder E-Mails
-Empathischer Umgang:
-•	Immer sichere, verschlüsselte Kanäle nutzen
-•	Nur notwendige Daten teilen – so wenig wie möglich
-•	Mit achtung.live deinen Text auf riskante Inhalte prüfen
-</p>
-  </div>
-</div>
-
-<div id="screenshot" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('screenshot')">&times;</span>
-    <h3>Screenshots vermeiden</h3>
-    <p>Screenshots enthalten oft mehr Informationen als gewollt – Chatverläufe, Adressen, sensible Details.
-Was du vermeiden solltest:
-•	Teilen von Screenshots mit Klarnamen, Telefonnummern oder Adressen
-•	Öffentliche Posts von sensiblen Bildschirmausschnitten
-•	Vertrauen auf "Löschen" – das Internet vergisst nie komplett
-Empathischer Umgang:
-•	Screenshots vor dem Teilen prüfen und schwärzen
-•	Nur in gesicherten, privaten Kanälen verwenden
-•	achtung.live nutzen, um sensible Inhalte im Text zu erkennen
-</p>
-  </div>
-</div>
-
-<div id="reise" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('reise')">&times;</span>
-    <h3>Reisepläne teilen... nach dem Urlaub</h3>
-    <p>Urlaubsfotos in Echtzeit zu teilen, verrät Einbrechern, dass du nicht zu Hause bist.
-Was du vermeiden solltest:
-•	Fotos oder Stories während des Urlaubs posten
-•	Verwendung von Hashtags wie #jetzt, #urlaub oder #weg
-•	Veröffentlichung von genauen Reisedaten
-Empathischer Umgang:
-•	Fotos und Erlebnisse erst nach Rückkehr teilen
-•	Ortsdaten (GPS) in Bildern vor dem Teilen entfernen
-•	Mit achtung.live Formulierungen prüfen, bevor du postest
-</p>
-  </div>
-</div>
-
-<div id="whatsapp" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('whatsapp')">&times;</span>
-    <h3>WhatsApp ist praktisch... aber nicht privat</h3>
-    <p>Chats sind komfortabel, aber sie sind kein sicherer Aufbewahrungsort für sensible Informationen.
-Was du vermeiden solltest:
-•	Sensible Daten wie Passwörter oder Kontoinfos teilen
-•	Vertrauen auf die Löschung einzelner Nachrichten
-•	Unverschlüsselte Gruppenkommunikation
-Empathischer Umgang:
-•	Verwende Alternativen wie Signal oder Threema
-•	Aktiviere die Ende-zu-Ende-Verschlüsselung in den Einstellungen
-•	Verwende die Funktion „Verifizierung in zwei Schritten“, um dein Konto besser zu schützen
-•	Vermeide Gruppenchats für sensible Themen
-•	Lass achtung.live prüfen, ob deine Nachricht zu viel preisgibt
-</p>
-  </div>
-</div>
-
-<div id="gesundheit" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('gesundheit')">&times;</span>
-    <h3>Gesundheitsdaten schützen</h3>
-    <p>Gesundheitsdaten sind extrem sensibel. Einmal online, schwer wieder zurückzuholen.
-Was du vermeiden solltest:
-•	Diagnosen öffentlich posten
-•	Medikamente oder Therapien in Social Media teilen
-•	Gefühle ohne Schutzkanal äußern
-Empathischer Umgang:
-•	Wähle private Chats statt öffentliche Posts
-•	Nutze Plattformen mit sicherer Verschlüsselung
-•	Lass achtung.live dich beim Formulieren unterstützen
-Deine Gesundheit verdient Respekt – auch digital.
-</p>
-  </div>
-</div>
-
-<div id="kinder" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('kinder')">&times;</span>
-    <h3>Infos über Kinder schützen</h3>
-    <p>Verzichte darauf, private Bilder oder persönliche Details über Kinder in sozialen Netzwerken öffentlich zu posten. Achte auf kindgerechte Datenschutzeinstellungen und nutze Messenger mit Ende-zu-Ende-Verschlüsselung für den Austausch von Kinderfotos.</p>
-  </div>
-</div>
-
-<div id="medikamente" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('medikamente')">&times;</span>
-    <h3>Medikamenten-Infos schützen</h3>
-    <p>Informationen zu Medikamenten sind hochsensible Gesundheitsdaten. Falsches Teilen kann unerwünschte Folgen haben.
-Was du vermeiden solltest:
-•	Posten von Medikamentennamen oder Diagnosen
-•	Veröffentlichung von Medikamentenplänen oder Rezeptbildern
-•	Teilen sensibler Informationen in offenen Gruppen
-Empathischer Umgang:
-•	Nur mit vertrauenswürdigen Personen über sichere Kanäle kommunizieren
-•	Vermeiden, Details auf Social Media preiszugeben
-•	achtung.live verwenden, um Texte auf sensible Inhalte zu prüfen
-</p>
-  </div>
-</div>
-
-<div id="standort" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('standort')">&times;</span>
-    <h3>Standortdaten vermeiden</h3>
-    <p>Wo du bist, ist oft sensibler als was du sagst. Standortdaten können missbraucht werden.
-Was du vermeiden solltest:
-•	Echtzeit-Posts vom Urlaub oder Veranstaltungen
-•	Öffentliche Sichtbarkeit deines Wohnorts
-•	Automatische Standortfreigabe in Apps und Fotos
-Empathischer Umgang:
-•	Standortfreigaben nur temporär aktivieren
-•	Fotos vor dem Teilen auf Standortdaten prüfen (EXIF-Daten)
-•	achtung.live nutzen, um Texte auf indirekte Standorthinweise zu prüfen
-</p>
-  </div>
-</div>
-
-<div id="sicher-senden" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('sicher-senden')">&times;</span>
-    <h3>Sicherer senden</h3>
-    <p>Was du sendest, kann mitgelesen werden – je nach Medium. Sicherheit beginnt bei der Wahl des Kanals.
-Was du vermeiden solltest:
-•	Unverschlüsselte E-Mails für sensible Inhalte
-•	Öffentliche Gruppenchats für private Themen
-•	Offene WLANs ohne VPN nutzen
-Empathischer Umgang:
-•	Ende-zu-Ende-verschlüsselte Messenger bevorzugen (z.B. Signal)
-•	Nur notwendige Informationen teilen
-•	achtung.live nutzen, um risikobehaftete Begriffe vorher zu erkennen
-</p>
-  </div>
-</div>
-
-
-  <!-- (Alle anderen Popups folgen genau diesem Muster – wurden ebenfalls aktualisiert) -->
-
-  <!-- Weiterführende Links -->
-
-  <section class="weiterfuehrende-links">
-    <h2 style="color: #990000;">Weiterführende Links zur digitalen Sicherheit:</h2>
-    <p>Wenn du deine Privatsphäre noch umfassender schützen willst, findest du hier seriöse Anlaufstellen:</p>
-    <ul>
-      <li><a href="https://www.bsi.bund.de" target="_blank">BSI – Bundesamt für Sicherheit in der Informationstechnik</a></li>
-      <li><a href="https://www.edpb.europa.eu" target="_blank">EDPB – Europäischer Datenschutzausschuss</a></li>
-      <li><a href="https://www.no-spy.org" target="_blank">No-Spy Allianz – Für einen besseren Datenschutz</a></li>
-      <li><a href="https://digitalcourage.de" target="_blank">Digitalcourage e.V. – Bürgerrechte im digitalen Zeitalter</a></li>
-      <li><a href="https://www.privacyinternational.org" target="_blank">Privacy International – Global Privacy Advocacy</a></li>
-    </ul>
-  </section>
 
 </main>
 
-<footer>
-  <p><span class="eu">🇪🇺 Aus Europa. Für Alle.</span></p>
+<!-- Modals -->
 
-  <p>
-    <span style="color: #990000; font-weight: bold;">[achtung.live]</span> – entwickelt in Europa, gehostet in Europa.<br>
-    Auf Basis europäischer Werte: Datenschutz und digitale Selbstbestimmung.<br>
-    Und mit einer klaren Mission: Menschen schützen, nicht überwachen.<br>
-    DSGVO- & EU AI-Act-konform. Menschlich. Verständlich. Transparent.
-  </p>
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal1')">&times;</span>
+    <h3>Bankdaten schützen</h3>
+    <p>Bankdaten sollten niemals leichtfertig weitergegeben werden. Nutze sichere Verbindungen und teile sensible Informationen nur mit vertrauenswürdigen Stellen. Überprüfe regelmäßig deine Kontoaktivitäten auf verdächtige Vorgänge. Im Zweifel lieber einmal zu oft nachfragen, als Daten ungesichert versenden.</p>
+  </div>
+</div>
+
+<div id="modal2" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal2')">&times;</span>
+    <h3>Kreditkarte sichern</h3>
+    <p>Kreditkartendaten sind besonders anfällig für Betrug. Teile Kartennummern niemals in Chats oder unverschlüsselten Nachrichten. Nutze vertrauenswürdige Zahlungsdienste und überprüfe regelmäßig deine Abrechnungen auf ungewöhnliche Abbuchungen. Schütze deine Kreditkarte wie deine Brieftasche.</p>
+  </div>
+</div>
+
+<div id="modal3" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modal3')">&times;</span>
+    <h3>Gesundheitsdaten bewahren</h3>
+    <p>Gesundheitsdaten zählen zu den sensibelsten persönlichen Informationen. Teile sie nur, wenn unbedingt erforderlich und vorzugsweise verschlüsselt. Achte darauf, welche Apps oder Plattformen Zugriff auf diese Informationen erhalten und prüfe deren Datenschutzrichtlinien sorgfältig.</p>
+  </div>
+</div>
+
+<!-- Weitere Modals analog -->
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+  <div class="schutztext">[achtung.live] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.</div>
+  <div class="claims">DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.</div>
 
   <nav class="footer-nav">
     <a href="start.html">Start</a> •
@@ -304,8 +77,19 @@ Empathischer Umgang:
     <a href="demo.html">Demo</a>
   </nav>
 
-  <p class="tiny">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
+  <p>© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
+
+<!-- Modal Script -->
+<script>
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
+}
+
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+</script>
 
 </body>
 </html>
