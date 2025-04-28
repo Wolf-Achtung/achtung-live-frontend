@@ -9,7 +9,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #fafafa;
-  color: #002855;
+  color: #002855; /* Dunkelblauer Fließtext */
   font-family: Arial, sans-serif;
   text-align: center;
 }
@@ -21,7 +21,7 @@ main {
 
 /* Headlines */
 h1, h2, h3 {
-  color: #990000;
+  color: #990000; /* Achtung.live Rot für Headlines */
   margin-bottom: 1rem;
 }
 
@@ -67,18 +67,28 @@ footer {
   color: #002855;
 }
 
-/* Formulareingabefelder */
+/* Formulareingabefelder – moderner Underline-Style */
 input[type="email"],
 input[type="text"],
 textarea {
   width: 90%;
   max-width: 400px;
-  padding: 10px;
+  padding: 10px 5px;
   margin: 10px auto;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: none;
+  border-bottom: 2px solid #ccc;
   font-family: Arial, sans-serif;
+  background: transparent;
   display: block;
+  font-size: 1rem;
+  color: #002855;
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-bottom: 2px solid #990000;
 }
 
 /* Buttons */
@@ -149,4 +159,29 @@ button:hover {
 ul {
   list-style-type: none;
   padding-left: 0;
+}
+
+/* Modal Styles für Datenschutzerklärung und Danke-Popups */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90%;
+  overflow: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
