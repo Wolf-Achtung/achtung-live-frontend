@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="achtung.live startet bald – sichere dir deinen Platz auf der Warteliste!">
+  <meta name="robots" content="index,follow">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>achtung.live startet bald!</title>
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+    function openDankePopup() {
+      event.preventDefault();
+      openModalExtern('danke.html');
+      return false;
+    }
+    function openModalExtern(url) {
+      let modal = document.createElement('div');
+      modal.classList.add('modal');
+      modal.style.display = 'block';
+      modal.innerHTML = '<div class="modal-content"><span class="close" onclick="this.parentElement.parentElement.style.display=\'none\'">&times;</span><iframe src="' + url + '" style="width:100%;height:400px;border:none;"></iframe></div>';
+      document.body.appendChild(modal);
+    }
+  </script>
+  <style>
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fafafa;
+      margin: 8% auto;
+      padding: 25px;
+      border: 1px solid #002855;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 10px;
+      text-align: center;
+      line-height: 1.6;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    .close {
+      color: #002855;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #990000;
+    }
+    form input[type="email"] {
+      border: none;
+      border-bottom: 2px solid #002855;
+      background: transparent;
+      width: 100%;
+      padding: 10px 5px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #002855;
+    }
+    form input[type="email"]:focus {
+      outline: none;
+      border-bottom: 2px solid #990000;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1><span class="achtung-logo">[achtung.live]</span></h1>
+  <p class="claim">Datenschutz, der sich wie ein Schutzengel anfühlt.</p>
+</header>
+
+<main class="main-content">
+  <h2>achtung.live startet bald!</h2>
+  <p>Sichere dir jetzt deinen Platz auf unserer Warteliste.</p>
+
+  <form name="launch-anmeldung" method="POST" data-netlify="true" onsubmit="return openDankePopup();">
+    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
+
+    <div class="datenschutz-hinweis">
+      <input type="checkbox" id="datenschutz" name="datenschutz" required>
+      <label for="datenschutz">
+        Ich akzeptiere die <a href="datenschutz-popup.html" onclick="openModalExtern('datenschutz-popup.html'); return false;">Datenschutzerklärung</a>.
+      </label>
+    </div>
+
+    <button type="submit">Jetzt eintragen</button>
+  </form>
+</main>
+
+<footer class="site-footer">
+  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+  
+  <div class="schutztext">
+    [<span style="color: #a60000;">achtung.live</span>] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.
+  </div>
+  
+  <div class="claims">
+    DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.
+  </div>
+
+  <div class="copyright">
+    © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+  </div>
+</footer>
+
+</body>
+</html>
