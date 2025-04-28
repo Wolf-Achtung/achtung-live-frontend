@@ -8,35 +8,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <title>achtung.live startet bald!</title>
-  <script>
-    function openModal(id) {
-      document.getElementById(id).style.display = "block";
-    }
-    function closeModal(id) {
-      document.getElementById(id).style.display = "none";
-    }
-    function openDankePopup() {
-      event.preventDefault();
-      openModalExtern('danke.html');
-      return false;
-    }
-function openModalExtern(url) {
-  let existingModal = document.getElementById('externModal');
-  if (!existingModal) {
-    let modal = document.createElement('div');
-    modal.id = 'externModal';
-    modal.classList.add('modal');
-    modal.innerHTML = `
-      <div class="modal-content">
-        <span class="close" onclick="document.getElementById('externModal').remove()">&times;</span>
-        <iframe src="` + url + `" style="width: 100%; height: 400px; border: none;"></iframe>
-      </div>
-    `;
-    document.body.appendChild(modal);
-  }
-  document.getElementById('externModal').style.display = 'block';
-    }
-  </script>
+
   <style>
     /* Modal Styles */
     .modal {
@@ -76,21 +48,8 @@ function openModalExtern(url) {
     .close:hover {
       color: #990000;
     }
-    form input[type="email"] {
-      border: none;
-      border-bottom: 2px solid #002855;
-      background: transparent;
-      width: 100%;
-      padding: 10px 5px;
-      margin-bottom: 20px;
-      font-size: 16px;
-      color: #002855;
-    }
-    form input[type="email"]:focus {
-      outline: none;
-      border-bottom: 2px solid #990000;
-    }
   </style>
+
 </head>
 
 <body>
@@ -104,13 +63,13 @@ function openModalExtern(url) {
   <h2>achtung.live startet bald!</h2>
   <p>Sichere dir jetzt deinen Platz auf unserer Warteliste.</p>
 
-  <form name="launch-anmeldung" method="POST" data-netlify="true" onsubmit="return openDankePopup();">
+  <form name="launch-anmeldung" method="POST" data-netlify="true" onsubmit="openDankePopup(); return false;">
     <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required>
 
     <div class="datenschutz-hinweis">
       <input type="checkbox" id="datenschutz" name="datenschutz" required>
       <label for="datenschutz">
-        Ich akzeptiere die <a href="datenschutz-popup.html" onclick="openModalExtern('datenschutz-popup.html'); return false;">Datenschutzerklärung</a>.
+        Ich akzeptiere die <a href="#" onclick="openDatenschutzPopup(); return false;">Datenschutzerklärung</a>.
       </label>
     </div>
 
@@ -118,21 +77,42 @@ function openModalExtern(url) {
   </form>
 </main>
 
+<!-- Datenschutz-Popup -->
+<div id="datenschutzModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('datenschutzModal')">&times;</span>
+    <iframe src="datenschutz-popup.html" style="width: 100%; height: 400px; border: none;"></iframe>
+  </div>
+</div>
+
+<!-- Danke-Popup -->
+<div id="dankeModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('dankeModal')">&times;</span>
+    <h3>Danke für deine Anmeldung!</h3>
+    <p>Wir informieren dich rechtzeitig zum Launch.</p>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
-  
-  <div class="schutztext">
-    [<span style="color: #a60000;">achtung.live</span>] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.
-  </div>
-  
-  <div class="claims">
-    DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.
-  </div>
-
-  <div class="copyright">
-    © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
-  </div>
+  <div class="schutztext">[achtung.live] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.</div>
+  <div class="claims">DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.</div>
+  <p>© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
 </footer>
+
+<script>
+function openDatenschutzPopup() {
+  document.getElementById('datenschutzModal').style.display = "block";
+}
+function openDankePopup() {
+  document.getElementById('dankeModal').style.display = "block";
+  return false;
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+</script>
 
 </body>
 </html>
