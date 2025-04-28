@@ -49,21 +49,43 @@ footer {
   color: #002855;
   padding: 2rem;
   font-size: 0.9rem;
-  border-top: 1px solid #002855; /* Neuer feiner dunkelblauer Trenner */
+  border-top: 1px solid #002855;
 }
 
-/* Footer-Navigation */
+.footer-top {
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.footer-middle p {
+  margin: 8px 0;
+  color: #002855;
+}
+
+.footer-middle p strong {
+  color: #990000; /* Achtung.live Rot */
+}
+
 .footer-nav {
-  margin-top: 1rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .footer-nav a {
   color: #990000;
-  margin: 0 0.5rem;
+  margin: 0 8px;
+  text-decoration: none;
   font-weight: bold;
 }
 
 .footer-nav a:hover {
+  color: #002855;
+  text-decoration: underline;
+}
+
+.footer-bottom p {
+  font-size: 0.8rem;
   color: #002855;
 }
 
@@ -149,6 +171,7 @@ button:hover {
 /* Logos und EU-Icons */
 .achtung-logo {
   font-weight: bold;
+  color: #990000;
 }
 
 .eu {
@@ -184,4 +207,15 @@ ul {
   max-height: 90%;
   overflow: auto;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Responsive Footer für Mobile */
+@media (max-width: 600px) {
+  .footer {
+    font-size: 0.85rem;
+  }
+  .footer-nav a {
+    display: block;
+    margin: 5px 0;
+  }
 }
