@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hilfe – Achtung.live</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .modal-content {
+      animation: fadeIn 0.5s ease-in-out;
+      background-color: #fefefe;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>[achtung.live]</h1>
+  <p>Die Autokorrektur für deine Privatsphäre</p>
+</header>
+
+<main>
+  <h2>Wähle ein Thema für mehr Infos</h2>
+
+  <div class="button-container">
+    <button onclick="openModal('modal1')">Bankdaten schützen</button>
+    <button onclick="openModal('modal2')">Kreditkarte sichern</button>
+    <button onclick="openModal('modal3')">Gesundheitsdaten bewahren</button>
+    <button onclick="openModal('modal4')">Privates im Job/Freundeskreis</button>
+    <button onclick="openModal('modal5')">Standortangaben vermeiden</button>
+    <button onclick="openModal('modal6')">Urlaubsankündigungen schützen</button>
+    <button onclick="openModal('modal7')">WhatsApp richtig nutzen</button>
+    <button onclick="openModal('modal8')">Screenshots bewusst teilen</button>
+    <button onclick="openModal('modal9')">Kinderfotos absichern</button>
+    <button onclick="openModal('modal10')">Passwörter sicher wählen</button>
+    <button onclick="openModal('modal11')">Nachrichten sicher senden</button>
+    <button onclick="openModal('modal12')">Firmeninterna bewahren</button>
+  </div>
+
+  <section class="weiterfuehrende-links">
+    <h2>Weiterführende Links zur digitalen Sicherheit:</h2>
+    <p>Wenn du deine Privatsphäre noch umfassender schützen willst, findest du hier seriöse Anlaufstellen:</p>
+    <ul>
+      <li><a href="https://www.bsi.bund.de/" target="_blank">BSI – Bundesamt für Sicherheit in der Informationstechnik</a></li>
+      <li><a href="https://edpb.europa.eu/edpb_de" target="_blank">EDPB – Europäischer Datenschutzausschuss</a></li>
+      <li><a href="https://www.no-spy.org/" target="_blank">No-Spy Allianz – Für besseren Datenschutz</a></li>
+      <li><a href="https://digitalcourage.de/" target="_blank">Digitalcourage e.V. – Bürgerrechte im digitalen Zeitalter</a></li>
+      <li><a href="https://privacyinternational.org/" target="_blank">Privacy International – Global Privacy Advocacy</a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+  <div class="schutztext">[achtung.live] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.</div>
+  <div class="claims">DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.</div>
+
+  <nav class="footer-nav">
+    <a href="start.html">Start</a> •
+    <a href="kontakt.html">Kontakt</a> •
+    <a href="impressum.html">Impressum</a> •
+    <a href="ki-hinweis.html">KI-Hinweis</a> •
+    <a href="datenschutz.html">Datenschutz</a> •
+    <a href="hilfe.html" class="active">Hilfe</a> •
+    <a href="demo.html">Demo</a>
+  </nav>
+
+  <p>© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</p>
+</footer>
+
+<script>
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+</script>
+
+</body>
+</html>
