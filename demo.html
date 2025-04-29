@@ -59,6 +59,7 @@
   <h2 style="color: #800000;">Jetzt live testen!</h2>
   <form id="demoForm">
     <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass' ihn direkt überprüfen..." rows="5" required></textarea>
+    <div id="emojiWarning" style="display:none; color:#800000; font-weight:bold; margin-top:8px;"></div>
     <p style="font-size: 14px;">
       <input type="checkbox" id="privacyPolicyDemo" required>
       <label for="privacyPolicyDemo">
@@ -68,11 +69,11 @@
     <button type="submit" style="background-color: #800000;">Text analysieren</button>
   </form>
   <div id="analysisResult" class="analysis-result" style="display: none;"></div>
-
   <h2 style="margin-top: 60px; text-align: center; color: #800000;">
     Du möchtest wissen, was andere User für Infos überprüft haben? Hier einige Beispiele:
   </h2>
 </section>
+
 
 <section class="case-study-container">
   <div class="case-study-box active">
@@ -156,44 +157,95 @@
 </div>
 
 <script>
-let currentCase = 0;
-const cases = document.querySelectorAll('.case-study-box');
-function changeCase(direction) {
-  cases[currentCase].classList.remove('active');
-  currentCase = (currentCase + direction + cases.length) % cases.length;
-  cases[currentCase].classList.add('active');
-}
-setInterval(() => changeCase(1), 15000);
-function containsRiskEmojis(text) {
-  const risky = /[🧨🔥🚩🔪🔫☠️💣]/g;
-  return risky.test(text);
-}
+  let currentCase = 0;
+  const cases = document.querySelectorAll('.case-study-box');
 
-function containsSuspiciousLinks(text) {
-  const suspiciousPatterns = /(bit\.ly|t\.co|tinyurl\.com|paypal-|login|secure|\.onion|\.(ru|tk|cn|xyz|biz))/i;
-  const urlPattern = /(https?:\/\/[^\s]+)/g;
-  const links = text.match(urlPattern);
-  if (!links) return false;
-  return links.some(link => suspiciousPatterns.test(link));
-}
-
-function showAnalysisResult(result) {
-  const container = document.getElementById('analysisResult');
-  container.style.display = 'block';
-
-  let additionalWarnings = "";
-  const input = document.getElementById('demoText').value;
-
-  if (containsRiskEmojis(input)) {
-    additionalWarnings += "<p><strong>Hinweis:</strong> Der eingegebene Text enthält Emojis, die politisch oder extrem konnotiert sein könnten. Achte auf Missverständnisse bei der Veröffentlichung.</p>";
-  }
-  if (containsSuspiciousLinks(input)) {
-    additionalWarnings += "<p><strong>Warnung:</strong> Es wurden verdächtige oder verkürzte Links erkannt. Prüfe, ob du dieser Quelle vertraust.</p>";
+  function changeCase(direction) {
+    cases[currentCase].classList.remove('active');
+    currentCase = (currentCase + direction + cases.length) % cases.length;
+    cases[currentCase].classList.add('active');
   }
 
-  container.innerHTML = `<h3>Analyse-Ergebnis:</h3><p>${result.analysis}</p>${additionalWarnings}`;
-}
+  setInterval(() => changeCase(1), 15000);
 
+  function containsRiskEmojis(text) {
+    const risky = /[🧨🔥🚩🔪🔫☠️💣]/g;
+    return risky.test(text);
+  }
+
+  function containsSuspiciousLinks(text) {
+    const suspiciousPatterns = /(bit\.ly|t\.co|tinyurl\.com|paypal-|login|secure|\.onion|\.(ru|tk|cn|xyz|biz))/i;
+    const urlPattern = /(https?:\/\/[^\s]+)/g;
+    const links = text.match(urlPattern);
+    if (!links) return false;
+    return links.some(link => suspiciousPatterns.test(link));
+  }
+
+  function showAnalysisResult(result) {
+    const examples = document.querySelector('.case-study-container');
+    if (examples) examples.style.display = 'none';
+
+    const container = document.getElementById('analysisResult');
+    container.style.display = 'block';
+
+    let additionalWarnings = "";
+    const input = document.getElementById('demoText').value;
+
+    if (containsRiskEmojis(input)) {
+      additionalWarnings += "<p><strong>Hinweis:</strong> Der eingegebene Text enthält Emojis, die politisch oder extrem konnotiert sein könnten. Achte auf Missverständnisse bei der Veröffentlichung.</p>";
+    }
+    if (containsSuspiciousLinks(input)) {
+      additionalWarnings += "<p><strong>Warnung:</strong> Es wurden verdächtige oder verkürzte Links erkannt. Prüfe, ob du dieser Quelle vertraust.</p>";
+    }
+
+    container.innerHTML = `<h3>Analyse-Ergebnis:</h3><p>${result.analysis}</p>${additionalWarnings}
+    <div style="margin-top:20px;">
+      <button onclick="showExamplesAgain()" style="background-color:#800000;color:white;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;">
+        Weitere Fallbeispiele ansehen
+      </button>
+    </div>`;
+  }
+
+  function showExamplesAgain() {
+    const examples = document.querySelector('.case-study-container');
+    if (examples) examples.style.display = 'block';
+    window.scrollTo({ top: examples.offsetTop - 20, behavior: 'smooth' });
+  }
+
+  // LIVE EMOJI-WARNUNG BEIM TIPPEN
+  document.getElementById('demoText').addEventListener('input', function () {
+    const text = this.value;
+    const warningBox = document.getElementById('emojiWarning');
+    const risky = /[🧨🔥🚩🔪🔫☠️💣]/g;
+
+    if (risky.test(text)) {
+      warningBox.style.display = 'block';
+      warningBox.innerText = '⚠️ Achtung: Dieses Emoji kann politisch oder extrem interpretiert werden.';
+    } else {
+      warningBox.style.display = 'none';
+      warningBox.innerText = '';
+    }
+  });
+
+  document.getElementById('demoForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const text = document.getElementById('demoText').value;
+
+    const response = await fetch('https://web-production-2e4ae.up.railway.app/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text })
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      showAnalysisResult(result);
+    } else {
+      alert('Fehler beim Senden deines Textes.');
+    }
+  });
 </script>
+
+
 </body>
 </html>
