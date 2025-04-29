@@ -91,3 +91,79 @@
     }
   </style>
 </head>
+<body>
+  <header>
+    <h1>[achtung.live]</h1>
+    <p>Die Autokorrektur für deine Privatsphäre</p>
+  </header>
+
+  <main>
+    <h2>Jetzt live testen!</h2>
+    <form id="demoForm">
+      <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass' ihn direkt überprüfen..." rows="5" required></textarea>
+      <p style="font-size: 14px;">
+        <input type="checkbox" id="privacyPolicyDemo" required>
+        <label for="privacyPolicyDemo">
+          Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.
+        </label>
+      </p>
+      <button type="submit">Text analysieren</button>
+    </form>
+    <div id="analysisResult" class="analysis-result" style="display: none;"></div>
+    <!-- Hier folgen deine Fallbeispiele -->
+  </main>
+
+  <footer class="site-footer">
+    <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+    <div class="schutztext">
+      [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.
+    </div>
+    <div class="claims">
+      DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.
+    </div>
+    <nav class="footer-nav">
+      <a href="info.html">Info</a> •
+      <a href="gefahr.html">Gefahr</a> •
+      <a href="demo.html">Demo</a> •
+      <a href="ki-hinweis.html">KI-Hinweis</a> •
+      <a href="datenschutz.html">Datenschutz</a> •
+      <a href="kontakt.html">Kontakt</a> •
+      <a href="impressum.html">Impressum</a>
+    </nav>
+    <div class="copyright">
+      © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+    </div>
+  </footer>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    document.getElementById('demoForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const text = document.getElementById('demoText').value;
+      const response = await fetch('https://web-production-2e4ae.up.railway.app/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text })
+      });
+      if (response.ok) {
+        const result = await response.json();
+        showAnalysisResult(result);
+      } else {
+        alert('Fehler beim Senden deines Textes.');
+      }
+    });
+
+    function showAnalysisResult(result) {
+      const container = document.getElementById('analysisResult');
+      container.style.display = 'block';
+      container.innerHTML = `<h3>Analyse-Ergebnis:</h3><p>${result.analysis}</p>`;
+    }
+  </script>
+</body>
+</html>
