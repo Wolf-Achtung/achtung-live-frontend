@@ -11,7 +11,9 @@
       background-color: #fefefe;
     }
     @keyframes fadeIn {
-      from {opacity: 0;}
+  0% {opacity: 0; transform: scale(0.97);}
+  100% {opacity: 1; transform: scale(1);}
+}
       to {opacity: 1;}
     }
     .analysis-result {
@@ -190,5 +192,5 @@
       currentCase = (currentCase + direction + cases.length) % cases.length;
       cases[currentCase].classList.add('active');
     }
-    setInterval(() => changeCase(1), 10000);
+    setInterval(() => changeCase(1), 15000);
   </script>
