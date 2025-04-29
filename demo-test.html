@@ -59,7 +59,7 @@
       width: 100%;
       padding: 12px;
       margin: 6px 0 14px 0;
-      border: 1px solid #ccc;
+      border: none;
       border-radius: 6px;
       font-family: inherit;
       background: #ffffff;
@@ -73,14 +73,13 @@
       margin-bottom: 10px;
     }
     .case-study-box .hint {
-      background-color: #f2f7ff;
-      font-style: italic;
+      background-color: #800000;
+      color: #ffffff;
+      font-style: normal;
       font-size: 1em;
-      color: #0a2b59;
       margin-top: 14px;
       padding: 12px;
-      border-left: 4px solid #a60000;
-      border-radius: 4px;
+      border-radius: 6px;
     }
     .case-study-nav {
       text-align: center;
@@ -98,79 +97,3 @@
   </style>
 </head>
 <body>
-  <main>
-    <section class="case-study-container">
-      <div class="case-study-box active">
-        <h3>🔍 Fallbeispiel: Kreditkartendaten unbewusst geteilt</h3>
-        <div class="label">Originaltext eines Nutzers:</div>
-        <div class="field">Meine Kreditkartennummer lautet: 3948673029486</div>
-        <div class="label">achtung.live Feedback:</div>
-        <div class="feedback">Achtung: Teile sensible Bankdaten wie IBANs oder Kreditkartennummern niemals öffentlich.</div>
-        <div class="label">Empfohlene Text-Alternative zum Kopieren:</div>
-        <div class="field">Ich sende dir meine Zahlungsdaten separat über einen sicheren Kanal.</div>
-        <div class="hint">💡 achtung.live Tipp: Nutze verschlüsselte Messenger wie Signal oder frage bei deiner Bank nach einer sicheren Freigabe-Methode.</div>
-      </div>
-
-      <div class="case-study-box">
-        <h3>🔍 Fallbeispiel: Standortdaten öffentlich geteilt</h3>
-        <div class="label">Originaltext eines Nutzers:</div>
-        <div class="field">Bin gerade im Urlaub in Italien 🍝</div>
-        <div class="label">achtung.live Feedback:</div>
-        <div class="feedback">Achtung: Standortinformationen können deine Abwesenheit verraten und ein Sicherheitsrisiko darstellen.</div>
-        <div class="label">Empfohlene Text-Alternative zum Kopieren:</div>
-        <div class="field">Ich melde mich nach meiner Rückkehr mit Reise-Updates!</div>
-        <div class="hint">💡 achtung.live Tipp: Warte mit Standort-Posts, bis du wieder zuhause bist.</div>
-      </div>
-
-      <div class="case-study-box">
-        <h3>🔍 Fallbeispiel: Screenshot mit Patientendaten</h3>
-        <div class="label">Originaltext eines Nutzers:</div>
-        <div class="field">(Screenshot) Diagnosebericht meiner Ärztin für meine Krankenkasse</div>
-        <div class="label">achtung.live Feedback:</div>
-        <div class="feedback">Achtung: Fotos von Dokumenten können vertrauliche Gesundheitsdaten enthalten.</div>
-        <div class="label">Empfohlene Text-Alternative zum Kopieren:</div>
-        <div class="field">Bitte verwende statt Screenshots verschlüsselte Dokumentenübertragung.</div>
-        <div class="hint">💡 achtung.live Tipp: Vermeide die Ablage von Gesundheitsinfos in Messenger-Apps ohne Ende-zu-Ende-Verschlüsselung.</div>
-      </div>
-
-      <div class="case-study-box">
-        <h3>🔍 Fallbeispiel: Arbeitgeber namentlich erwähnt</h3>
-        <div class="label">Originaltext eines Nutzers:</div>
-        <div class="field">Mein Chef bei der XY AG ist total unfähig...</div>
-        <div class="label">achtung.live Feedback:</div>
-        <div class="feedback">Achtung: Aussagen über Dritte in Verbindung mit Namen oder Firmen können rechtliche Folgen haben.</div>
-        <div class="label">Empfohlene Text-Alternative zum Kopieren:</div>
-        <div class="field">Ich habe in meinem Job aktuell Herausforderungen mit der Führungskultur.</div>
-        <div class="hint">💡 achtung.live Tipp: Kritik anonymisieren – Sachverhalt statt Person!</div>
-      </div>
-
-      <div class="case-study-box">
-        <h3>🔍 Fallbeispiel: Messenger-Screenshot mit Klarname</h3>
-        <div class="label">Originaltext eines Nutzers:</div>
-        <div class="field">(Screenshot) WhatsApp-Verlauf mit vollem Namen sichtbar</div>
-        <div class="label">achtung.live Feedback:</div>
-        <div class="feedback">Achtung: Screenshots können Klarnamen oder sensible Kontakte ungewollt offenlegen.</div>
-        <div class="label">Empfohlene Text-Alternative zum Kopieren:</div>
-        <div class="field">Verwende anonymisierte Screenshots oder Text-Zitate ohne Identifikatoren.</div>
-        <div class="hint">💡 achtung.live Tipp: Namen und Profilbilder vorher unkenntlich machen.</div>
-      </div>
-
-      <div class="case-study-nav">
-        <button onclick="changeCase(-1)">&laquo; Zurück</button>
-        <button onclick="changeCase(1)">Weiter &raquo;</button>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    let currentCase = 0;
-    const cases = document.querySelectorAll('.case-study-box');
-    function changeCase(direction) {
-      cases[currentCase].classList.remove('active');
-      currentCase = (currentCase + direction + cases.length) % cases.length;
-      cases[currentCase].classList.add('active');
-    }
-    setInterval(() => changeCase(1), 10000);
-  </script>
-</body>
-</html>
