@@ -262,3 +262,28 @@ button:hover, input[type="submit"]:hover {
 .link-list a:hover {
     background: #e0e0e0;
 }
+
+.link-button-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.link-button-list a {
+    background-color: #a60000;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+.link-button-list a:hover {
+    background-color: #800000;
+}
+
