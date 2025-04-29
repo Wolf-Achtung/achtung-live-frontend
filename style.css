@@ -185,3 +185,8 @@ button:hover, input[type="submit"]:hover {
         padding: 20px;
     }
 }
+
+.no-bullets {
+    list-style-type: none;
+    padding-left: 0;
+}
