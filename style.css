@@ -190,3 +190,75 @@ button:hover, input[type="submit"]:hover {
     list-style-type: none;
     padding-left: 0;
 }
+
+/* Achtung.live Link- und Maillink-Styles */
+
+/* Info-Link-Boxen */
+.info-boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.info-box {
+    background-color: #ffffff;
+    border: 2px solid #a60000;
+    border-radius: 12px;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #0a2b59;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.info-box:hover {
+    background-color: #fff4f4;
+    transform: translateY(-2px);
+}
+
+/* Maillinks als Button */
+.mail-button {
+    display: inline-block;
+    background-color: #a60000;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.mail-button:hover {
+    background-color: #800000;
+    transform: scale(1.05);
+}
+
+/* Kleine schlichte Linklisten */
+.link-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.link-list li {
+    margin: 10px 0;
+}
+
+.link-list a {
+    display: block;
+    background: #f9f9f9;
+    color: #0a2b59;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.3s;
+    font-weight: bold;
+}
+
+.link-list a:hover {
+    background: #e0e0e0;
+}
