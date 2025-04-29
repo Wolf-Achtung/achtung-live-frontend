@@ -31,7 +31,7 @@
       max-width: 700px;
       text-align: left;
       position: relative;
-      min-height: 420px;
+      min-height: 480px;
     }
     .case-study-box {
       border: 1px solid #a60000;
@@ -69,6 +69,9 @@
       background-color: #ffecec;
       color: #800000;
       font-weight: bold;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 10px;
     }
     .case-study-box .hint {
       font-style: italic;
@@ -110,7 +113,24 @@
       <button type="submit">Text analysieren</button>
     </form>
     <div id="analysisResult" class="analysis-result" style="display: none;"></div>
-    <!-- Hier folgen deine Fallbeispiele -->
+
+    <section class="case-study-container">
+      <div class="case-study-box active">
+        <h3>🔍 Fallbeispiel: Kreditkartendaten unbewusst geteilt</h3>
+        <div class="label">Originaltext eines Nutzers:</div>
+        <div class="field">Meine Kreditkartennummer lautet: 3948673029486</div>
+        <div class="label">achtung.live Feedback:</div>
+        <div class="feedback">Achtung: Teile sensible Bankdaten wie IBANs oder Kreditkartennummern niemals öffentlich.</div>
+        <div class="hint">Hinweis: Nutze verschlüsselte Messenger wie Signal oder frage bei deiner Bank nach einer sicheren Freigabe-Methode.</div>
+        <div class="label">Empfohlene Alternative:</div>
+        <div class="field">Ich sende dir meine Zahlungsdaten separat über einen sicheren Kanal.</div>
+      </div>
+
+      <div class="case-study-nav">
+        <button onclick="changeCase(-1)">&laquo; Zurück</button>
+        <button onclick="changeCase(1)">Weiter &raquo;</button>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -164,6 +184,15 @@
       container.style.display = 'block';
       container.innerHTML = `<h3>Analyse-Ergebnis:</h3><p>${result.analysis}</p>`;
     }
+
+    let currentCase = 0;
+    const cases = document.querySelectorAll('.case-study-box');
+    function changeCase(direction) {
+      cases[currentCase].classList.remove('active');
+      currentCase = (currentCase + direction + cases.length) % cases.length;
+      cases[currentCase].classList.add('active');
+    }
+    setInterval(() => changeCase(1), 9000);
   </script>
 </body>
 </html>
