@@ -6,76 +6,137 @@
   <title>Demo – Achtung.live</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .modal-content { animation: fadeIn 0.5s ease-in-out; background-color: #fefefe; }
-    @keyframes fadeIn { 0% {opacity: 0; transform: scale(0.97);} 100% {opacity: 1; transform: scale(1);} }
+    .modal-content {
+      animation: fadeIn 0.5s ease-in-out;
+      background-color: #fefefe;
+    }
+    @keyframes fadeIn {
+  0% {opacity: 0; transform: scale(0.97);}
+  100% {opacity: 1; transform: scale(1);}
+}
+      to {opacity: 1;}
+    }
     .analysis-result {
-      margin: 40px auto; padding: 20px; max-width: 600px;
-      background: #f2f7ff; border: 1px solid #002855; border-radius: 8px;
-      text-align: center; color: #002855; font-size: 1.1em;
+      margin: 40px auto;
+      padding: 20px;
+      max-width: 600px;
+      background: #f2f7ff;
+      border: 1px solid #002855;
+      border-radius: 8px;
+      text-align: center;
+      color: #002855;
+      font-size: 1.1em;
     }
     .case-study-container {
-      margin: 60px auto; padding: 0 20px; max-width: 700px;
-      text-align: left; position: relative; min-height: 480px;
+      margin: 60px auto;
+      padding: 0 20px;
+      max-width: 700px;
+      text-align: left;
+      position: relative;
+      min-height: 480px;
     }
     .case-study-box {
-      border: none; border-radius: 12px; padding: 20px;
-      background-color: #ffffff; display: none; box-sizing: border-box;
+      border: none;
+      border-radius: 12px;
+      padding: 20px;
+      background-color: #ffffff;
+      display: none;
+      box-sizing: border-box;
     }
-    .case-study-box.active { display: block; animation: fadeIn 0.5s ease-in-out; }
-    .case-study-box h3 { color: #800000; font-size: 1.2em; margin-bottom: 10px; }
-    .case-study-box .label { font-weight: bold; margin-top: 10px; color: #0a2b59; }
+    .case-study-box.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .case-study-box h3 {
+      color: #800000;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .case-study-box .label {
+      font-weight: bold;
+      margin-top: 10px;
+      color: #0a2b59;
+    }
     .case-study-box .field {
-      width: 100%; padding: 12px; margin: 6px 0 14px 0;
-      border: none; border-radius: 6px; font-family: inherit;
-      background: #ffffff; color: #000;
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0 14px 0;
+      border: none;
+      border-radius: 6px;
+      font-family: inherit;
+      background: #ffffff;
+      color: #000;
     }
     .case-study-box .feedback {
-      background-color: #ffffff; color: #800000;
-      font-weight: bold; padding: 12px; margin-bottom: 10px;
+      background-color: #ffffff;
+      color: #800000;
+      font-weight: bold;
+      padding: 12px;
+      margin-bottom: 10px;
     }
     .case-study-box .hint {
-      background-color: #800000; color: #ffffff;
-      font-style: normal; font-size: 1em; margin-top: 14px;
-      padding: 12px; border-radius: 6px;
+      background-color: #800000;
+      color: #ffffff;
+      font-style: normal;
+      font-size: 1em;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 6px;
     }
-    .case-study-nav { text-align: center; margin-top: 20px; }
+    .case-study-nav {
+      text-align: center;
+      margin-top: 20px;
+    }
     .case-study-nav button {
-      background-color: #800000; color: white;
-      border: none; padding: 8px 16px; border-radius: 6px;
-      margin: 0 5px; cursor: pointer;
+      background-color: #800000;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      margin: 0 5px;
+      cursor: pointer;
     }
   </style>
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
 <div class="content-wrapper" style="max-width:800px; margin:0 auto; padding:0 20px;">
+  <header>
+    <h1>[achtung.live]</h1>
+    <p>Die Autokorrektur für deine Privatsphäre</p>
+  </header>
 
-<header>
-  <h1>[achtung.live]</h1>
-  <p>Die Autokorrektur für deine Privatsphäre</p>
-</header>
-
-<main class="main-content">
-<section class="live-demo">
-  <h2 style="color: #800000;">Jetzt live testen!</h2>
-  <form id="demoForm">
-    <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass' ihn direkt überprüfen..." rows="5" required></textarea>
-    <div id="emojiWarning" style="display:none; color:#800000; font-weight:bold; margin-top:8px;"></div>
-    <p style="font-size: 14px;">
-      <input type="checkbox" id="privacyPolicyDemo" required>
-      <label for="privacyPolicyDemo">
-        Ich akzeptiere die <a href="#">Datenschutzerklärung</a>.
-      </label>
-    </p>
-    <button type="submit" style="background-color: #800000;">Text analysieren</button>
-  </form>
-  <div id="analysisResult" class="analysis-result" style="display: none;"></div>
-  <h2 style="margin-top: 60px; text-align: center; color: #800000;">
-    Du möchtest wissen, was andere User für Infos überprüft haben? Hier einige Beispiele:
-  </h2>
-</section>
-
-
-<section class="case-study-container">
+  <div class="content-wrapper">
+  <main class="main-content">
+    <section class="live-demo">
+      <h2 style="color: #800000;">Jetzt live testen!</h2>
+      <form id="demoForm">
+        <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass' ihn direkt überprüfen..." rows="5" required></textarea>
+        <p style="font-size: 14px;">
+          <input type="checkbox" id="privacyPolicyDemo" required>
+          <label for="privacyPolicyDemo">
+            Ich akzeptiere die <a href="#">Datenschutzerklärung</a>.
+          </label>
+        </p>
+        <button type="submit" style="background-color: #800000;">Text analysieren</button>
+      </form>
+      $1
+<div style="text-align:center; margin-top:20px;">
+  <button onclick="showAllEmojiWarnings()" style="background-color:#800000;color:white;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;">
+    Alle Warnsignale anzeigen
+  </button>
+</div>
+<div id="allEmojiWarnings" style="display:none; margin-top:20px; font-size:0.95em; background:#fff3f3; padding:16px; border-radius:8px; color:#800000;"></div>
+<div style="text-align: center; margin-top: 40px;">
+  <button onclick="document.getElementById('caseModal').style.display='block'" style="background-color:#800000;color:white;padding:10px 20px;border:none;border-radius:6px;cursor:pointer;">
+    Fallbeispiele ansehen
+  </button>
+</div>
+    </section>
+    
+  <div id="caseModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); z-index:9999; overflow:auto;">
+  <div style="background:white; max-width:800px; margin:60px auto; padding:20px; border-radius:12px;">
+    <h2 style="color:#800000; text-align:center;">Fallbeispiele</h2>
+    <div class="case-study-container">
   <div class="case-study-box active">
     <h3>🔍 Fallbeispiel: Kreditkartendaten unbewusst geteilt</h3>
     <div class="label">Originaltext eines Nutzers:</div>
@@ -84,9 +145,8 @@
     <div class="feedback">Teile sensible Bankdaten wie IBANs oder Kreditkartennummern niemals öffentlich.</div>
     <div class="label">Empfohlene Text-Alternative zum Kopieren:</div>
     <div class="field">Ich sende dir meine Zahlungsdaten separat über einen sicheren Kanal.</div>
-    <div class="hint">achtung.live Tipp: Nutze verschlüsselte Messenger wie Signal oder sichere Kanäle deiner Bank.</div>
+    <div class="hint">achtung.live Tipp: Nutze verschlüsselte Messenger wie Signal oder frage bei deiner Bank nach einer sicheren Freigabe-Methode.</div>
   </div>
-
   <div class="case-study-box">
     <h3>🔍 Fallbeispiel: Standortdaten öffentlich geteilt</h3>
     <div class="label">Originaltext eines Nutzers:</div>
@@ -97,7 +157,6 @@
     <div class="field">Bis bald – ich melde mich wieder mit Neuigkeiten!</div>
     <div class="hint">achtung.live Tipp: Poste Urlaubs-Updates erst nach deiner Rückkehr.</div>
   </div>
-
   <div class="case-study-box">
     <h3>🔍 Fallbeispiel: Screenshot mit Patientendaten</h3>
     <div class="label">Originaltext eines Nutzers:</div>
@@ -108,18 +167,16 @@
     <div class="field">Bitte sichere Übertragungswege für Dokumente verwenden.</div>
     <div class="hint">achtung.live Tipp: Nutze verschlüsselte Übermittlung, keine Messenger-Screenshots.</div>
   </div>
-
   <div class="case-study-box">
     <h3>🔍 Fallbeispiel: Arbeitgeber namentlich erwähnt</h3>
     <div class="label">Originaltext eines Nutzers:</div>
     <div class="field">Mein Chef bei der XY AG ist total unfähig...</div>
     <div class="label">achtung.live Feedback:</div>
-    <div class="feedback">Nennungen von Firmen und Namen können rechtliche Folgen haben.</div>
+    <div class="feedback">Aussagen über Dritte in Verbindung mit Namen oder Firmen können rechtliche Folgen haben.</div>
     <div class="label">Empfohlene Text-Alternative zum Kopieren:</div>
     <div class="field">Ich habe in meinem Job aktuell Herausforderungen mit der Führungskultur.</div>
-    <div class="hint">achtung.live Tipp: Personen anonymisieren – Fokus auf die Sache!</div>
+    <div class="hint">achtung.live Tipp: Kritik anonymisieren – Sachverhalt statt Person!</div>
   </div>
-
   <div class="case-study-box">
     <h3>🔍 Fallbeispiel: Messenger-Screenshot mit Klarnamen</h3>
     <div class="label">Originaltext eines Nutzers:</div>
@@ -130,122 +187,134 @@
     <div class="field">Anonymisierte Screenshots oder Zitate verwenden.</div>
     <div class="hint">achtung.live Tipp: Namen und Profilbilder vorher unkenntlich machen.</div>
   </div>
-
   <div class="case-study-nav">
-    <button onclick="changeCase(-1)">&laquo; Zurück</button>
-    <button onclick="changeCase(1)">Weiter &raquo;</button>
+    <button onclick="changeCase(-1)" style="background-color:#800000;color:white;padding:8px 16px;border:none;border-radius:6px;margin-right:8px;">&laquo; Zurück</button>
+    <button onclick="changeCase(1)" style="background-color:#800000;color:white;padding:8px 16px;border:none;border-radius:6px;">Weiter &raquo;</button>
   </div>
-</section>
+</div>
+      <!-- Weitere Case Studies hier -->
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+      <button onclick="document.getElementById('caseModal').style.display='none'" style="background-color:#800000;color:white;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;">
+        Schließen
+      </button>
+    </div>
+  </div>
+</div>
 </main>
-
-<footer class="site-footer">
-  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
-  <div class="schutztext">[<span style="color: #800000;">achtung.live</span>] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.</div>
-  <div class="claims">DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.</div>
-  <nav class="footer-nav">
-    <a href="info.html">Info</a> •
-    <a href="gefahr.html">Gefahr</a> •
-    <a href="demo.html">Demo</a> •
-    <a href="ki-hinweis.html">KI-Hinweis</a> •
-    <a href="datenschutz.html">Datenschutz</a> •
-    <a href="kontakt.html">Kontakt</a> •
-    <a href="impressum.html">Impressum</a>
-  </nav>
-  <div class="copyright">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</div>
-</footer>
-
 </div>
 
-<script>
-  let currentCase = 0;
-  const cases = document.querySelectorAll('.case-study-box');
+  <footer class="site-footer" style="margin-top: auto;">
+    <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+    <div class="schutztext">[<span style="color: #800000;">achtung.live</span>] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.</div>
+    <div class="claims">DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.</div>
+    <nav class="footer-nav">
+      <a href="info.html">Info</a> •
+      <a href="gefahr.html">Gefahr</a> •
+      <a href="demo.html">Demo</a> •
+      <a href="ki-hinweis.html">KI-Hinweis</a> •
+      <a href="datenschutz.html">Datenschutz</a> •
+      <a href="kontakt.html">Kontakt</a> •
+      <a href="impressum.html">Impressum</a>
+    </nav>
+    <div class="copyright">© 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.</div>
+  </footer>
+</div>
 
-  function changeCase(direction) {
-    cases[currentCase].classList.remove('active');
-    currentCase = (currentCase + direction + cases.length) % cases.length;
-    cases[currentCase].classList.add('active');
-  }
-
-  setInterval(() => changeCase(1), 15000);
-
-  function containsRiskEmojis(text) {
-    const risky = /[🧨🔥🚩🔪🔫☠️💣]/g;
-    return risky.test(text);
-  }
-
-  function containsSuspiciousLinks(text) {
-    const suspiciousPatterns = /(bit\.ly|t\.co|tinyurl\.com|paypal-|login|secure|\.onion|\.(ru|tk|cn|xyz|biz))/i;
-    const urlPattern = /(https?:\/\/[^\s]+)/g;
-    const links = text.match(urlPattern);
-    if (!links) return false;
-    return links.some(link => suspiciousPatterns.test(link));
-  }
-
-  function showAnalysisResult(result) {
-    const examples = document.querySelector('.case-study-container');
-    if (examples) examples.style.display = 'none';
-
-    const container = document.getElementById('analysisResult');
-    container.style.display = 'block';
-
-    let additionalWarnings = "";
-    const input = document.getElementById('demoText').value;
-
-    if (containsRiskEmojis(input)) {
-      additionalWarnings += "<p><strong>Hinweis:</strong> Der eingegebene Text enthält Emojis, die politisch oder extrem konnotiert sein könnten. Achte auf Missverständnisse bei der Veröffentlichung.</p>";
+  <script>
+    let currentCase = 0;
+    const cases = document.querySelectorAll('.case-study-box');
+    function changeCase(direction) {
+      cases[currentCase].classList.remove('active');
+      currentCase = (currentCase + direction + cases.length) % cases.length;
+      cases[currentCase].classList.add('active');
     }
-    if (containsSuspiciousLinks(input)) {
-      additionalWarnings += "<p><strong>Warnung:</strong> Es wurden verdächtige oder verkürzte Links erkannt. Prüfe, ob du dieser Quelle vertraust.</p>";
+    setInterval(() => changeCase(1), 15000);
+  
+    const emojiMeanings = {
+      "🧨": "Explosivsymbol – wird in extremistischen Kontexten eingesetzt.",
+      "🔥": "Feuer – kann auf Wut oder Gewalt anspielen.",
+      "🚩": "Rote Flagge – häufig in Shaming- oder Cancel-Debatten sowie Symbol linker Online-Aktivist:innen (z. B. gegen Patriarchat, Rassismus, toxisches Verhalten)",
+      "🔪": "Messer – potenziell gewaltverherrlichend.",
+      "🔫": "Pistole – Symbol für Drohung oder Gewalt.",
+      "☠️": "Totenkopf – verwendet in radikalen Subkulturen, manchmal in Zusammenhang mit rechter Symbolik oder Gewaltverherrlichung",
+      "💣": "Bombe – oft in Chatgruppen mit extremistischen, anarchistischen oder staatskritischen Inhalten verwendet",
+      "💙": "Blaues Herz – häufig verwendet als stilles Zeichen von Unterstützung für die Ukraine (z. B. in sozialen Netzwerken von liberalen, pro-europäischen und anti-russischen Positionen), aber teils auch vereinzelt von rechten oder AfD-nahen Accounts übernommen – beachte also je nach Plattform die Bedeutung im jeweiligen Umfeld."
+    };
+
+    function highlightContextualEmojis(text) {
+      const found = [];
+      for (const [emoji, meaning] of Object.entries(emojiMeanings)) {
+        if (text.includes(emoji)) {
+          found.push(`<li><strong>${emoji}</strong>: ${meaning}</li>`);
+        }
+      }
+      return found.length > 0 ? `<ul style="text-align:left;">${found.join("")}</ul>` : "";
     }
 
-    container.innerHTML = `<h3>Analyse-Ergebnis:</h3><p>${result.analysis}</p>${additionalWarnings}
-    <div style="margin-top:20px;">
-      <button onclick="showExamplesAgain()" style="background-color:#800000;color:white;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;">
-        Weitere Fallbeispiele ansehen
-      </button>
-    </div>`;
+    document.getElementById('demoText').addEventListener('input', function () {
+      const text = this.value;
+      const warningBox = document.getElementById('emojiWarning');
+      const contextualList = highlightContextualEmojis(text);
+
+      if (contextualList) {
+        warningBox.style.display = 'block';
+        warningBox.innerHTML = '<strong>Emoji-Hinweis:</strong>' + contextualList;
+      } else {
+        warningBox.style.display = 'none';
+        warningBox.innerHTML = '';
+      }
+    });
+  const sensitiveHashtags = {
+    "#nwo": "Häufig in Verschwörungstheorien rund um 'Neue Weltordnung' verwendet.",
+    "#covidlüge": "Verwendet von Impfgegnern und Querdenkern zur Diskreditierung von Wissenschaft.",
+    "#heimatschutz": "In rechten bis rechtsextremen Kontexten zur Tarnung nationalistischer Agenden genutzt.",
+    "#patriot": "Kann in extrem rechten Kreisen als Code für nationalistische oder rassistische Ideologie dienen.",
+    "#whitegenocide": "Extrem rechter Begriff, international bekannt als rassistische Verschwörungserzählung."
+  };
+
+  function highlightHashtagWarnings(text) {
+    const found = [];
+    for (const [hashtag, meaning] of Object.entries(sensitiveHashtags)) {
+      if (text.toLowerCase().includes(hashtag.toLowerCase())) {
+        found.push(`<li><strong>${hashtag}</strong>: ${meaning}</li>`);
+      }
+    }
+    return found.length > 0 ? `<ul style="text-align:left;">${found.join("")}</ul>` : "";
   }
 
-  function showExamplesAgain() {
-    const examples = document.querySelector('.case-study-container');
-    if (examples) examples.style.display = 'block';
-    window.scrollTo({ top: examples.offsetTop - 20, behavior: 'smooth' });
-  }
-
-  // LIVE EMOJI-WARNUNG BEIM TIPPEN
   document.getElementById('demoText').addEventListener('input', function () {
     const text = this.value;
     const warningBox = document.getElementById('emojiWarning');
-    const risky = /[🧨🔥🚩🔪🔫☠️💣]/g;
+    const contextualList = highlightContextualEmojis(text);
+    const hashtagList = highlightHashtagWarnings(text);
 
-    if (risky.test(text)) {
+    const output = [];
+    if (contextualList) output.push('<strong>Emoji-Hinweis:</strong>' + contextualList);
+    if (hashtagList) output.push('<strong>Hashtag-Hinweis:</strong>' + hashtagList);
+
+    if (output.length > 0) {
       warningBox.style.display = 'block';
-      warningBox.innerText = '⚠️ Achtung: Dieses Emoji kann politisch oder extrem interpretiert werden.';
+      warningBox.innerHTML = output.join('<hr style="margin:10px 0;">');
     } else {
       warningBox.style.display = 'none';
-      warningBox.innerText = '';
+      warningBox.innerHTML = '';
     }
   });
-
-  document.getElementById('demoForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const text = document.getElementById('demoText').value;
-
-    const response = await fetch('https://web-production-2e4ae.up.railway.app/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text })
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      showAnalysisResult(result);
-    } else {
-      alert('Fehler beim Senden deines Textes.');
+  function showAllEmojiWarnings() {
+    let html = '<h4>Alle hinterlegten Warnsignale:</h4><ul style="text-align:left;">';
+    for (const [emoji, meaning] of Object.entries(emojiMeanings)) {
+      html += `<li><strong>${emoji}</strong>: ${meaning}</li>`;
     }
-  });
+    html += '</ul>';
+    html += '<hr><ul style="text-align:left;">';
+    for (const [hashtag, meaning] of Object.entries(sensitiveHashtags)) {
+      html += `<li><strong>${hashtag}</strong>: ${meaning}</li>`;
+    }
+    html += '</ul>';
+    const box = document.getElementById('allEmojiWarnings');
+    box.innerHTML = html;
+    box.style.display = 'block';
+    window.scrollTo({ top: box.offsetTop - 60, behavior: 'smooth' });
+  }
 </script>
-
-
-</body>
-</html>
