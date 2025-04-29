@@ -105,6 +105,20 @@
   </header>
 
   <main>
+    <section class="live-demo">
+      <h2>Jetzt live testen!</h2>
+      <form id="demoForm">
+        <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass' ihn direkt überprüfen..." rows="5" required></textarea>
+        <p style="font-size: 14px;">
+          <input type="checkbox" id="privacyPolicyDemo" required>
+          <label for="privacyPolicyDemo">
+            Ich akzeptiere die <a href="#">Datenschutzerklärung</a>.
+          </label>
+        </p>
+        <button type="submit">Text analysieren</button>
+      </form>
+      <div id="analysisResult" class="analysis-result" style="display: none;"></div>
+    </section>
     <section class="case-study-container">
       <div class="case-study-box active">
         <h3>🔍 Fallbeispiel: Kreditkartendaten unbewusst geteilt</h3>
