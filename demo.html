@@ -10,15 +10,16 @@
       font-family: sans-serif;
       margin: 0;
       padding: 0;
+      background: #fff;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
     .content-wrapper {
-      flex: 1;
       max-width: 800px;
       margin: 0 auto;
       padding: 20px;
+      flex: 1;
     }
     textarea {
       width: 100%;
@@ -36,7 +37,7 @@
     }
     .case-study-container {
       position: relative;
-      min-height: 300px;
+      min-height: 340px;
     }
     .case-study-box {
       display: none;
@@ -57,7 +58,7 @@
     }
     .case-study-nav {
       text-align: center;
-      margin-top: 320px;
+      margin-top: 360px;
     }
     .case-study-nav button {
       background-color: #800000;
@@ -68,47 +69,113 @@
       margin: 0 5px;
       cursor: pointer;
     }
+    footer {
+      text-align: center;
+      font-size: 0.85em;
+      color: #666;
+      padding: 20px 0;
+    }
   </style>
 </head>
 <body>
-<div class="content-wrapper">
-  <header>
-    <h1>[achtung.live]</h1>
-    <p>Die Autokorrektur für deine Privatsphäre</p>
-  </header>
+  <div class="content-wrapper">
+    <header>
+      <h1>[achtung.live]</h1>
+      <p>Die Autokorrektur für deine Privatsphäre</p>
+    </header>
 
-  <main>
-    <h2 style="color:#800000;">Jetzt live testen!</h2>
-    <form id="demoForm">
-      <textarea id="demoText" placeholder="Füge hier deinen Text ein ..." rows="6" required></textarea>
-      <p><input type="checkbox" id="privacyPolicyDemo" required> <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openDatenschutzPopup()">Datenschutzerklärung</a>.</label></p>
-      <button type="submit">Text analysieren</button>
-    </form>
-    <div id="feedbackBox" class="analysis-result" style="display:none;"></div>
+    <main>
+      <h2 style="color:#800000;">Jetzt live testen!</h2>
+      <form id="demoForm">
+        <textarea id="demoText" placeholder="Füge hier deinen Text ein ..." rows="6" required></textarea>
+        <p><input type="checkbox" id="privacyPolicyDemo" required> <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openDatenschutzPopup()">Datenschutzerklärung</a>.</label></p>
+        <button type="submit">Text analysieren</button>
+      </form>
+      <div id="feedbackBox" class="analysis-result" style="display:none;"></div>
 
-    <div style="margin-top:40px; text-align:center;">
-      <button onclick="document.getElementById('caseModal').style.display='block'">Fallbeispiele ansehen</button>
-    </div>
-  </main>
+      <div style="margin-top:40px; text-align:center;">
+        <button onclick="document.getElementById('caseModal').style.display='block'">Fallbeispiele ansehen</button>
+      </div>
+    </main>
+  </div>
 
-  <footer style="margin-top:auto; text-align:center; font-size:0.85em; color:#666;">
-    <p>© 2025 achtung.live – Keine Weitergabe deiner Daten. Kein Tracking.</p>
-    <p><a href="impressum.html">Impressum</a> • <a href="kontakt.html">Kontakt</a> • <a href="datenschutz.html">Datenschutz</a></p>
-  </footer>
+
+  <footer class="site-footer">
+  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+  
+  <div class="schutztext">
+    [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: deine Daten, deine Privatsphäre, deine Freiheit.
+  </div>
+  
+  <div class="claims">
+    DSGVO- & EU AI-Act-konform. Menschlich. Selbstbestimmt. Transparent.
+  </div>
+
+  <nav class="footer-nav">
+    <a href="info.html">Info</a> •
+    <a href="gefahr.html">Gefahr</a> •
+    <a href="demo.html">Demo</a> •
+    <a href="ki-hinweis.html">KI-Hinweis</a> •
+    <a href="datenschutz.html">Datenschutz</a> •
+    <a href="kontakt.html">Kontakt</a> •
+    <a href="impressum.html">Impressum</a>
+  </nav>
+
+  <div class="copyright">
+    © 2025 achtung.live – keine Weitergabe deiner Daten. Kein Tracking. Kein Bullshit.
+  </div>
+</footer>
+
 </div>
 
+<!-- Fallbeispiele Modal -->
 <div id="caseModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); z-index:9999; overflow:auto;">
   <div style="background:white; max-width:800px; margin:60px auto; padding:20px; border-radius:12px;">
     <h2 style="color:#800000; text-align:center;">Fallbeispiele</h2>
     <div class="case-study-container">
+
       <div class="case-study-box active">
-        <h3>Fall 1: Kreditkartendaten</h3>
-        <p>"Meine Kreditkartennummer lautet 1234..."</p>
+        <h3>Fall 1: Kreditkartendaten öffentlich geteilt</h3>
+        <p><strong>Original:</strong> Meine Kreditkartennummer lautet: 3948673029486</p>
+        <p><strong>Feedback:</strong> Teile sensible Zahlungsdaten niemals öffentlich.</p>
+        <p><strong>Alternative:</strong> Ich sende dir meine Daten separat über einen sicheren Kanal.</p>
       </div>
+
       <div class="case-study-box">
-        <h3>Fall 2: Standort im Urlaub</h3>
-        <p>"Bin gerade in Italien 🍝"</p>
+        <h3>Fall 2: Standortdaten im Urlaub</h3>
+        <p><strong>Original:</strong> Bin gerade im Urlaub in Italien 🍝</p>
+        <p><strong>Feedback:</strong> Standort-Postings während der Abwesenheit können Einbrechern Hinweise liefern.</p>
+        <p><strong>Alternative:</strong> Ich melde mich nach meiner Rückkehr mit Updates!</p>
       </div>
+
+      <div class="case-study-box">
+        <h3>Fall 3: Patientendaten per Screenshot</h3>
+        <p><strong>Original:</strong> (Screenshot vom Diagnosebericht)</p>
+        <p><strong>Feedback:</strong> Screenshots von Gesundheitsdaten sollten nie unverschlüsselt geteilt werden.</p>
+        <p><strong>Alternative:</strong> Nutze sichere Übertragungswege oder PDFs mit Passwortschutz.</p>
+      </div>
+
+      <div class="case-study-box">
+        <h3>Fall 4: Arbeitgeber öffentlich kritisiert</h3>
+        <p><strong>Original:</strong> Mein Chef bei XY GmbH ist unfähig...</p>
+        <p><strong>Feedback:</strong> Beleidigungen mit Klarnamen können juristische Folgen haben.</p>
+        <p><strong>Alternative:</strong> Ich habe Herausforderungen mit der aktuellen Führungskultur.</p>
+      </div>
+
+      <div class="case-study-box">
+        <h3>Fall 5: Messenger-Screenshot mit Namen</h3>
+        <p><strong>Original:</strong> Screenshot eines WhatsApp-Chats mit Klarnamen</p>
+        <p><strong>Feedback:</strong> Chats enthalten oft sensible Namen & Bilder.</p>
+        <p><strong>Alternative:</strong> Namen unkenntlich machen oder nur Textzitieren.</p>
+      </div>
+
+      <div class="case-study-box">
+        <h3>Fall 6: Politischer Begriff mit Signalwirkung</h3>
+        <p><strong>Original:</strong> Diese Systemmedien erzählen doch alle das Gleiche!</p>
+        <p><strong>Feedback:</strong> Begriffe wie „Systemmedien“ sind ideologisch aufgeladen.</p>
+        <p><strong>Alternative:</strong> Ich wünsche mir differenziertere Berichterstattung.</p>
+      </div>
+
     </div>
     <div class="case-study-nav">
       <button onclick="changeCase(-1)">&laquo; Zurück</button>
@@ -120,6 +187,7 @@
   </div>
 </div>
 
+<!-- JS -->
 <script>
 function openDatenschutzPopup() {
   window.open("datenschutz-popup2.html", "DatenschutzPopup", "width=600,height=500");
@@ -138,7 +206,7 @@ function extractUrls(text) {
 }
 
 async function checkUrlSafety(url) {
-  const API_KEY = "HIER_DEIN_API_KEY"; // 🔁 Hier deinen API-Key einsetzen
+  const API_KEY = "HIER_DEIN_API_KEY"; // ❗ API-Key einfügen
   const body = {
     client: { clientId: "achtung.live", clientVersion: "1.0" },
     threatInfo: {
@@ -157,8 +225,7 @@ async function checkUrlSafety(url) {
   return data && data.matches ? "unsicher" : "sicher";
 }
 
-const form = document.getElementById("demoForm");
-form.addEventListener("submit", async function(e) {
+document.getElementById("demoForm").addEventListener("submit", async function(e) {
   e.preventDefault();
   const text = document.getElementById("demoText").value;
   const urls = extractUrls(text);
