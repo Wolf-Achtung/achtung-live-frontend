@@ -322,17 +322,7 @@ function extractUrls(text) {
 }
 
 async function checkUrlSafety(url) {
-  const API_KEY = "AIzaSyDMI5h6KbNAV27wbpXIldyYJlaFK0zGRdc"; // ❗ API-Key einfügen
-  const body = {
-    client: { clientId: "achtung.live", clientVersion: "1.0" },
-    threatInfo: {
-      threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
-      platformTypes: ["ANY_PLATFORM"],
-      threatEntryTypes: ["URL"],
-      threatEntries: [{ url }]
-    }
-  };
-  const res = await fetch(`https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${API_KEY}`, {
+  const res = await fetch("https://achtung-live-api-railway.up.railway.app/check-url", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
