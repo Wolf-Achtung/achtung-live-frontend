@@ -307,6 +307,30 @@ document.getElementById("demoForm").addEventListener("submit", async function(e)
   box.innerHTML += "</ul>";
   box.style.display = "block";
 });
+let currentCaseIndex = 0;
+
+  function showCase(index) {
+    const cases = document.querySelectorAll('.case-study-box');
+    cases.forEach((caseBox, i) => {
+      caseBox.classList.remove('active');
+      caseBox.style.display = 'none';
+    });
+    cases[index].classList.add('active');
+    cases[index].style.display = 'block';
+  }
+
+  function changeCase(direction) {
+    const cases = document.querySelectorAll('.case-study-box');
+    currentCaseIndex += direction;
+    if (currentCaseIndex < 0) currentCaseIndex = cases.length - 1;
+    if (currentCaseIndex >= cases.length) currentCaseIndex = 0;
+    showCase(currentCaseIndex);
+  }
+
+  // Initialisierung beim Laden der Seite
+  document.addEventListener('DOMContentLoaded', () => {
+    showCase(currentCaseIndex);
+  });
 </script>
 </body>
 </html>
