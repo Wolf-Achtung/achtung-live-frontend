@@ -1,307 +1,38 @@
-/* Basis-Layout, damit Footer immer unten */
+/* Basis-Layout */
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Hauptinhalt */
-main {
-    flex: 1 0 auto;
-}
-
-/* Global Styles */
+/* Struktur */
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #0a2b59; /* dunkelblauer CI-Farbton */
-    background-color: #ffffff;
-    text-align: center;
-    line-height: 1.6;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #0a2b59;
+  background-color: #ffffff;
+  text-align: center;
+  line-height: 1.6;
 }
 
-/* Headline Styles */
+main {
+  flex: 1 0 auto;
+}
+
+/* Headings */
 h1, h2, h3, h4, h5 {
-    color: #a60000; /* achtung.live Rot */
-    margin: 20px 0 10px;
+  color: #800000;
+  margin: 20px 0 10px;
 }
 
-/* Paragraph Styles */
-p {
-    margin: 10px 0;
-}
-
-/* Formulare (Underline Only Style) */
-form {
-    max-width: 500px;
-    margin: 20px auto;
-}
-
-input[type="text"],
-input[type="email"],
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0 20px 0;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    background-color: transparent;
-    font-size: 16px;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-textarea:focus {
-    border-bottom: 2px solid #a60000;
-    outline: none;
-}
-
-/* Button Styles */
-button, input[type="submit"] {
-    background-color: #a60000;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-button:hover, input[type="submit"]:hover {
-    background-color: #800000;
-}
-
-/* Footer Styles */
-.site-footer {
-    flex-shrink: 0;
-    text-align: center;
-    padding: 30px 20px;
-    background-color: #f9f9f9;
-    font-size: 14px;
-    color: #0a2b59;
-    line-height: 1.6;
-    margin-top: 20px;
-    border-top: 1px solid #c5c5c5;
-}
-
-.site-footer .europe {
-    font-weight: bold;
-    color: #0a2b59;
-    font-size: 16px;
-    margin-bottom: 15px;
-}
-
-.site-footer .schutztext {
-    font-size: 16px;
-    color: #0a2b59;
-    margin: 10px 0;
-}
-
-.site-footer .claims {
-    font-size: 14px;
-    color: #0a2b59;
-    margin: 10px 0;
-}
-
-.footer-nav {
-    margin-top: 20px;
-}
-
-.footer-nav a {
-    color: #a60000;
-    margin: 0 8px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.footer-nav a:hover {
-    text-decoration: underline;
-}
-
-/* Copyright Text */
-.site-footer .copyright {
-    font-size: 12px;
-    color: #0a2b59;
-    margin-top: 15px;
-}
-
-/* Popups (Modal-Style) */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    padding-top: 80px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 30px;
-    border: 1px solid #888;
-    width: 90%;
-    max-width: 600px;
-    border-radius: 8px;
-    text-align: left;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-    h1, h2, h3, h4, h5 {
-        font-size: 20px;
-    }
-
-    .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-}
-
-.no-bullets {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-/* Achtung.live Link- und Maillink-Styles */
-
-/* Info-Link-Boxen */
-.info-boxes {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin: 20px 0;
-}
-
-.info-box {
-    background-color: #ffffff;
-    border: 2px solid #a60000;
-    border-radius: 12px;
-    padding: 12px 20px;
-    text-decoration: none;
-    color: #0a2b59;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.info-box:hover {
-    background-color: #fff4f4;
-    transform: translateY(-2px);
-}
-
-/* Maillinks als Button */
-.mail-button {
-    display: inline-block;
-    background-color: #a60000;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 10px;
-    transition: background 0.3s, transform 0.2s;
-}
-
-.mail-button:hover {
-    background-color: #800000;
-    transform: scale(1.05);
-}
-
-/* Kleine schlichte Linklisten */
-.link-list {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
-}
-
-.link-list li {
-    margin: 10px 0;
-}
-
-.link-list a {
-    display: block;
-    background: #f9f9f9;
-    color: #0a2b59;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background 0.3s;
-    font-weight: bold;
-}
-
-.link-list a:hover {
-    background: #e0e0e0;
-}
-
-.link-button-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.link-button-list a {
-    background-color: #a60000;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    display: inline-block;
-}
-
-.link-button-list a:hover {
-    background-color: #800000;
-}
+/* Header & Logo */
 header {
   margin-top: 40px;
   margin-bottom: 30px;
 }
-
-header h1 {
-  margin-bottom: 8px;
-}
-
-header .claim {
-  font-size: 1em;
-  margin: 0;
-}
 .achtung-logo {
-  color: #a60000;
+  color: #800000;
   font-weight: bold;
   font-size: 2em;
   margin: 30px 0 8px 0;
@@ -313,9 +44,180 @@ header .claim {
   margin: -10px 0 20px 0;
   text-align: center;
 }
-h2 {
-  color: #a60000;
-  font-size: 1.4em;
-  text-align: center;
-  margin-top: 30px;
+
+/* Formulare */
+form {
+  max-width: 500px;
+  margin: 20px auto;
 }
+textarea,
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0 20px 0;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  background-color: transparent;
+  font-size: 16px;
+}
+textarea:focus,
+input:focus {
+  border-bottom: 2px solid #800000;
+  outline: none;
+}
+
+/* Buttons */
+button,
+input[type="submit"] {
+  background-color: #800000;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+button:hover,
+input[type="submit"]:hover {
+  background-color: #a60000;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  padding-top: 80px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 30px;
+  border: 1px solid #888;
+  width: 90%;
+  max-width: 720px;
+  border-radius: 8px;
+  text-align: left;
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: #000;
+}
+
+/* Fallbeispiele */
+.case-study-box {
+  display: none;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.case-study-box.active {
+  display: block;
+}
+.case-study-box h3 {
+  color: #800000;
+}
+.case-study-box .label {
+  font-weight: bold;
+  margin-top: 10px;
+  color: #0a2b59;
+}
+.case-study-box .field {
+  background: #ffffff;
+  color: #000;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+.case-study-box .feedback {
+  background: #800000;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+.case-study-box .hint {
+  background: #800000;
+  color: #ffffff;
+  font-size: 0.95em;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 6px;
+}
+.case-study-nav {
+  text-align: center;
+  margin-top: 20px;
+}
+.case-study-nav button {
+  background-color: #800000;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+/* Footer */
+.site-footer {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: #0a2b59;
+  line-height: 1.6;
+  margin-top: 20px;
+  border-top: 1px solid #c5c5c5;
+}
+.site-footer .europe {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.site-footer .schutztext,
+.site-footer .claims {
+  font-size: 14px;
+  margin: 10px 0;
+}
+.footer-nav {
+  margin-top: 20px;
+}
+.footer-nav a {
+  color: #800000;
+  margin: 0 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+.footer-nav a:hover {
+  text-decoration: underline;
+}
+.site-footer .copyright {
+  font-size: 12px;
+  margin-top: 15px;
+  color: #0a2b59;
+}
+
+/* Weitere Stilklassen für Links, Buttons etc. bei Bedarf wie gehabt… */
