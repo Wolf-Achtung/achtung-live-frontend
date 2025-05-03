@@ -287,4 +287,17 @@ button:hover, input[type="submit"]:hover {
 .link-button-list a:hover {
     background-color: #800000;
 }
+header {
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  margin-bottom: 8px;
+}
+
+header .claim {
+  font-size: 1em;
+  margin: 0;
+}
 
