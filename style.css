@@ -1,4 +1,4 @@
-/* Basis-Layout */
+/* Struktur-Reset für volle Höhe & Footer */
 html, body {
   height: 100%;
   margin: 0;
@@ -7,7 +7,7 @@ html, body {
   flex-direction: column;
 }
 
-/* Struktur */
+/* Logo + Header */
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #0a2b59;
@@ -26,18 +26,19 @@ h1, h2, h3, h4, h5 {
   margin: 20px 0 10px;
 }
 
-/* Header & Logo */
 header {
   margin-top: 40px;
   margin-bottom: 30px;
 }
+
 .achtung-logo {
   color: #800000;
   font-weight: bold;
-  font-size: 2em;
+  font-size: 2.4em;
   margin: 30px 0 8px 0;
   text-align: center;
 }
+
 .claim {
   color: #0a2b59;
   font-size: 1em;
@@ -102,11 +103,9 @@ input[type="submit"]:hover {
   background-color: #fefefe;
   margin: auto;
   padding: 30px;
-  border: 1px solid #888;
-  width: 90%;
-  max-width: 720px;
   border-radius: 8px;
-  text-align: left;
+  max-width: 720px;
+  position: relative;
   animation: fadeIn 0.5s ease-in-out;
 }
 @keyframes fadeIn {
@@ -179,16 +178,16 @@ input[type="submit"]:hover {
   cursor: pointer;
 }
 
-/* Footer */
+/* Footer fixiert unten */
 .site-footer {
   flex-shrink: 0;
+  margin-top: auto;
   text-align: center;
   padding: 30px 20px;
   background-color: #f9f9f9;
   font-size: 14px;
   color: #0a2b59;
   line-height: 1.6;
-  margin-top: 20px;
   border-top: 1px solid #c5c5c5;
 }
 .site-footer .europe {
@@ -219,5 +218,3 @@ input[type="submit"]:hover {
   margin-top: 15px;
   color: #0a2b59;
 }
-
-/* Weitere Stilklassen für Links, Buttons etc. bei Bedarf wie gehabt… */
