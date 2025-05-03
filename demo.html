@@ -200,7 +200,7 @@
     cases[currentCase].classList.add('active');
   }
 
-  // Feedback-System: Achtung.live Analyse-API
+  // NEUES FEEDBACK-SYSTEM – ersetzt veraltete API-Response-Logik
   document.getElementById("demoForm").addEventListener("submit", async function (e) {
     e.preventDefault();
     const text = document.getElementById("demoText").value;
@@ -217,15 +217,15 @@
       });
 
       const data = await response.json();
-      const feedbackArray = data.analysis;
+      const feedbackList = data.feedback;
 
-      if (!Array.isArray(feedbackArray)) {
-        box.innerHTML = "<strong>Hinweis:</strong> Kein Feedback vom Server erhalten.";
+      if (!Array.isArray(feedbackList)) {
+        box.innerHTML = "<strong>Hinweis:</strong> Kein valides Feedback vom Server erhalten.";
         return;
       }
 
-      box.innerHTML = feedbackArray.map(entry =>
-        `<div style="margin-bottom:12px; padding:12px; background:#fff3f3; border-left:4px solid #800000; color:#800000;">
+      box.innerHTML = feedbackList.map(entry =>
+        `<div style="margin-bottom:12px; padding:12px; background:#fff3f3; border-left:5px solid #800000; color:#800000;">
           <strong>⚠️ Hinweis:</strong> ${entry}
         </div>`
       ).join("");
@@ -234,6 +234,7 @@
     }
   });
 </script>
+
 
 </body>
 </html>
