@@ -300,4 +300,16 @@ header .claim {
   font-size: 1em;
   margin: 0;
 }
+.achtung-logo {
+  color: #800000;
+  font-weight: bold;
+  font-size: 2em;
+  line-height: 1.2;
+  display: inline-block;
+}
 
+.claim {
+  color: #0a2b59;
+  margin-top: -12px;
+  font-size: 1em;
+}
