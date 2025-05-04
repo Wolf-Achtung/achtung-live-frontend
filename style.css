@@ -69,6 +69,18 @@ input:focus {
 }
 
 /* Buttons */
+
+.button-link {
+  display: inline-block;
+  background-color: #800000;
+  color: white;
+  padding: 10px 16px;
+  margin: 5px 0;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
 button,
 input[type="submit"] {
   background-color: #800000;
@@ -85,6 +97,17 @@ button:hover,
 input[type="submit"]:hover {
   background-color: #a60000;
 }
+.mail-button {
+  background-color: #800000;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
+  text-decoration: none;
+  display: inline-block;
+}
+
 
 /* Modal */
 .modal {
@@ -217,4 +240,9 @@ input[type="submit"]:hover {
   font-size: 12px;
   margin-top: 15px;
   color: #0a2b59;
+}
+.no-bullets {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
