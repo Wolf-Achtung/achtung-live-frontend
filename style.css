@@ -246,3 +246,11 @@ input[type="submit"]:hover {
   margin: 0;
   padding: 0;
 }
+.footer-nav a.demo-highlight {
+  background-color: #800000;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
