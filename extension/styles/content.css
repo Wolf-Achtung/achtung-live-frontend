@@ -1,0 +1,258 @@
+/* achtung.live Guard - Content Script Styles */
+
+/* Warning Box */
+.achtung-warning {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #fff;
+  border: 2px solid #ff9800;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  overflow: hidden;
+  font-size: 13px;
+  min-width: 280px;
+}
+
+.achtung-warning[data-risk-level="high"] {
+  border-color: #f44336;
+}
+
+.achtung-warning[data-risk-level="critical"] {
+  border-color: #9c27b0;
+}
+
+.achtung-warning-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #800000, #a00000);
+  color: white;
+}
+
+.achtung-warning-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.achtung-warning-title {
+  font-weight: 600;
+  flex: 1;
+}
+
+.achtung-warning-score {
+  background: rgba(255,255,255,0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.achtung-warning-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.achtung-warning-close:hover {
+  opacity: 1;
+}
+
+.achtung-warning-body {
+  padding: 12px;
+  background: #fff;
+}
+
+.achtung-finding {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  color: #333;
+  border-bottom: 1px solid #eee;
+}
+
+.achtung-finding:last-child {
+  border-bottom: none;
+}
+
+.achtung-finding-icon {
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #800000;
+}
+
+.achtung-warning-footer {
+  padding: 10px 12px;
+  background: #fff3cd;
+  font-size: 12px;
+  color: #856404;
+}
+
+.achtung-warning-hint {
+  display: block;
+}
+
+/* Safe Indicator */
+.achtung-safe-indicator {
+  display: inline-block;
+  background: #4caf50;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* Form Warning */
+.achtung-form-warning {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #fff;
+  border: 2px solid #ff9800;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.achtung-form-warning-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #ff9800, #ffa726);
+  color: white;
+  font-weight: 600;
+}
+
+.achtung-form-warning-body {
+  padding: 12px;
+}
+
+.achtung-form-score {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.achtung-unusual-field {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.achtung-unusual-field:last-child {
+  border-bottom: none;
+}
+
+.severity-critical {
+  color: #9c27b0;
+}
+
+.severity-high {
+  color: #f44336;
+}
+
+.severity-medium {
+  color: #ff9800;
+}
+
+.severity-low {
+  color: #4caf50;
+}
+
+.achtung-form-warning-footer {
+  padding: 10px 12px;
+  background: #f5f5f5;
+  font-size: 12px;
+  color: #666;
+}
+
+/* Page Warning (Toast) */
+.achtung-page-warning {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  animation: achtung-slide-in 0.3s ease;
+}
+
+@keyframes achtung-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.achtung-page-warning-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #800000, #a00000);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  max-width: 400px;
+}
+
+.achtung-page-warning-icon {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.achtung-page-warning-text {
+  flex: 1;
+  font-size: 14px;
+}
+
+.achtung-page-warning-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.achtung-page-warning-close:hover {
+  opacity: 1;
+}
+
+/* Cookie Banner Info */
+.achtung-cookie-info {
+  background: #fff3cd;
+  color: #856404;
+  padding: 8px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #ffc107;
+}
+
+/* Animation for highlighting */
+@keyframes achtung-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+  }
+}
+
+.achtung-highlighted {
+  animation: achtung-pulse 1s ease-in-out 3;
+}
