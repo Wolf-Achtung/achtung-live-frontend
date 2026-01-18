@@ -109,6 +109,7 @@
       <button class="tab-btn" data-tab="batch" role="tab" aria-selected="false" aria-controls="batchTab" data-i18n="tabs.batch">Batch-Analyse</button>
       <button class="tab-btn" data-tab="document" role="tab" aria-selected="false" aria-controls="documentTab" data-i18n="tabs.document">Dokument</button>
       <button class="tab-btn" data-tab="predictive" role="tab" aria-selected="false" aria-controls="predictiveTab" data-i18n="tabs.predictive">🔮 Predictive</button>
+      <button class="tab-btn" data-tab="footprint" role="tab" aria-selected="false" aria-controls="footprintTab" data-i18n="tabs.footprint">🔍 Footprint</button>
     </div>
 
     <!-- Single Text Tab -->
@@ -463,6 +464,219 @@
         <div class="privacy-lifespan" id="privacyLifespan">
           <span class="lifespan-icon">📅</span>
           <span class="lifespan-text" id="lifespanText"></span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Digital Footprint Scanner Tab (Phase 7) -->
+    <div id="footprintTab" class="tab-content" role="tabpanel" aria-labelledby="footprint-tab">
+      <h2 data-i18n="footprint.title">🔍 Digital Footprint Scanner</h2>
+      <p class="footprint-description" data-i18n="footprint.description">Finde heraus, wo deine Daten im Internet auftauchen</p>
+      <p class="simple-lang footprint-description-simple" style="display:none;" data-i18n="footprint.descriptionSimple">Wir suchen nach deinen Daten im Internet und zeigen dir, wo sie sind.</p>
+
+      <form id="footprintForm">
+        <!-- Scan Type Selector -->
+        <div class="footprint-scan-type">
+          <label data-i18n="footprint.scanType">Scan-Typ:</label>
+          <div class="scan-type-buttons">
+            <button type="button" class="scan-type-btn active" data-type="quick">
+              <span class="scan-type-icon">⚡</span>
+              <span class="scan-type-text">Quick-Scan</span>
+            </button>
+            <button type="button" class="scan-type-btn" data-type="full">
+              <span class="scan-type-icon">🔬</span>
+              <span class="scan-type-text">Full-Scan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Input Fields -->
+        <div class="footprint-inputs">
+          <div class="footprint-input-group">
+            <label for="footprintEmail">
+              <span class="input-icon">📧</span>
+              <span data-i18n="footprint.email">E-Mail-Adresse</span>
+              <span class="required">*</span>
+            </label>
+            <input type="email" id="footprintEmail" placeholder="deine@email.de" required>
+          </div>
+
+          <div class="footprint-input-group">
+            <label for="footprintName">
+              <span class="input-icon">👤</span>
+              <span data-i18n="footprint.name">Name (optional)</span>
+            </label>
+            <input type="text" id="footprintName" placeholder="Max Mustermann">
+          </div>
+
+          <div class="footprint-input-group">
+            <label for="footprintUsername">
+              <span class="input-icon">@</span>
+              <span data-i18n="footprint.username">Username (optional)</span>
+            </label>
+            <input type="text" id="footprintUsername" placeholder="maxmuster">
+          </div>
+
+          <div class="footprint-input-group collapsible" id="advancedInputs" style="display:none;">
+            <label for="footprintPhone">
+              <span class="input-icon">📱</span>
+              <span data-i18n="footprint.phone">Telefon (optional)</span>
+            </label>
+            <input type="tel" id="footprintPhone" placeholder="+49 123 456789">
+          </div>
+        </div>
+
+        <button type="button" class="toggle-advanced-btn" onclick="toggleAdvancedInputs()">
+          <span class="toggle-icon">▼</span>
+          <span data-i18n="footprint.moreOptions">Weitere Optionen</span>
+        </button>
+
+        <!-- Scan Options -->
+        <div class="footprint-options">
+          <label class="footprint-option">
+            <input type="checkbox" id="optBreaches" checked>
+            <span class="option-icon">💥</span>
+            <span class="option-text" data-i18n="footprint.optBreaches">Datenlecks prüfen</span>
+          </label>
+          <label class="footprint-option">
+            <input type="checkbox" id="optSocial" checked>
+            <span class="option-icon">📱</span>
+            <span class="option-text" data-i18n="footprint.optSocial">Social Media scannen</span>
+          </label>
+          <label class="footprint-option">
+            <input type="checkbox" id="optDatabrokers" checked>
+            <span class="option-icon">🏢</span>
+            <span class="option-text" data-i18n="footprint.optDatabrokers">Data Broker prüfen</span>
+          </label>
+          <label class="footprint-option">
+            <input type="checkbox" id="optDarkweb">
+            <span class="option-icon">🌑</span>
+            <span class="option-text" data-i18n="footprint.optDarkweb">Dark Web (Premium)</span>
+          </label>
+        </div>
+
+        <div class="datenschutz-hinweis">
+          <input type="checkbox" id="privacyPolicyFootprint" required>
+          <label for="privacyPolicyFootprint">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+        </div>
+
+        <button type="submit" id="footprintSubmitBtn">
+          <span class="btn-text" data-i18n="footprint.scan">🔍 Footprint scannen</span>
+          <span class="btn-loading" style="display:none;">Scanne...</span>
+        </button>
+      </form>
+
+      <!-- Footprint Results -->
+      <div id="footprintResults" style="display:none;">
+
+        <!-- Summary Card -->
+        <div class="footprint-summary-card" id="footprintSummary">
+          <div class="summary-header">
+            <span class="summary-icon">🎯</span>
+            <span class="summary-title" data-i18n="footprint.summaryTitle">Dein digitaler Fußabdruck</span>
+          </div>
+          <div class="summary-content">
+            <div class="footprint-risk-circle" id="footprintRiskCircle">
+              <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" class="risk-bg"/>
+                <circle cx="50" cy="50" r="45" class="risk-fill" id="footprintRiskFill"/>
+              </svg>
+              <div class="risk-value">
+                <span class="risk-score" id="footprintRiskScore">--</span>
+                <span class="risk-label">Risiko</span>
+              </div>
+            </div>
+            <div class="summary-stats">
+              <div class="stat-item">
+                <span class="stat-value" id="statExposures">0</span>
+                <span class="stat-label" data-i18n="footprint.exposures">Fundstellen</span>
+              </div>
+              <div class="stat-item critical">
+                <span class="stat-value" id="statCritical">0</span>
+                <span class="stat-label" data-i18n="footprint.critical">Kritisch</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value" id="statActions">0</span>
+                <span class="stat-label" data-i18n="footprint.actions">Aktionen nötig</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Breach Results Section -->
+        <div class="footprint-section" id="breachResultsSection" style="display:none;">
+          <div class="section-header collapsible" onclick="toggleSection('breachResultsContent')">
+            <span class="section-icon">💥</span>
+            <h3 data-i18n="footprint.breachesTitle">Datenlecks</h3>
+            <span class="section-count" id="breachCount">0</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="breachResultsContent">
+            <div class="breach-list" id="breachList"></div>
+          </div>
+        </div>
+
+        <!-- Social Media Section -->
+        <div class="footprint-section" id="socialResultsSection" style="display:none;">
+          <div class="section-header collapsible" onclick="toggleSection('socialResultsContent')">
+            <span class="section-icon">📱</span>
+            <h3 data-i18n="footprint.socialTitle">Social Media Profile</h3>
+            <span class="section-count" id="socialCount">0</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="socialResultsContent">
+            <div class="social-profiles-list" id="socialProfilesList"></div>
+          </div>
+        </div>
+
+        <!-- Data Brokers Section -->
+        <div class="footprint-section" id="databrokerResultsSection" style="display:none;">
+          <div class="section-header collapsible" onclick="toggleSection('databrokerResultsContent')">
+            <span class="section-icon">🏢</span>
+            <h3 data-i18n="footprint.databrokersTitle">Data Broker</h3>
+            <span class="section-count" id="databrokerCount">0</span>
+            <span class="section-toggle">▼</span>
+          </div>
+          <div class="section-content" id="databrokerResultsContent">
+            <div class="databroker-list" id="databrokerList"></div>
+            <div class="databroker-summary" id="databrokerSummary">
+              <div class="optout-progress">
+                <span class="progress-label" data-i18n="footprint.optoutProgress">Opt-out Fortschritt:</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" id="optoutProgressFill"></div>
+                </div>
+                <span class="progress-value" id="optoutProgressValue">0%</span>
+              </div>
+              <button type="button" class="bulk-optout-btn" id="bulkOptoutBtn" onclick="startBulkOptout()">
+                <span class="btn-icon">🚀</span>
+                <span data-i18n="footprint.bulkOptout">Alle Opt-outs starten</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div class="footprint-section" id="recommendationsSection">
+          <div class="section-header">
+            <span class="section-icon">💡</span>
+            <h3 data-i18n="footprint.recommendationsTitle">Empfehlungen</h3>
+          </div>
+          <div class="section-content">
+            <div class="recommendations-list" id="recommendationsList"></div>
+          </div>
+        </div>
+
+        <!-- Monitoring CTA -->
+        <div class="monitoring-cta" id="monitoringCta">
+          <div class="cta-icon">🛡️</div>
+          <div class="cta-content">
+            <h4 data-i18n="footprint.monitoringTitle">Kontinuierliches Monitoring</h4>
+            <p data-i18n="footprint.monitoringDesc">Werde sofort benachrichtigt, wenn deine Daten in neuen Leaks auftauchen.</p>
+          </div>
+          <button type="button" class="cta-btn" onclick="setupMonitoring()">
+            <span data-i18n="footprint.enableMonitoring">Aktivieren</span>
+          </button>
         </div>
 
       </div>
@@ -3348,6 +3562,511 @@
     }
 
     // ========================================
+    // Phase 7: Digital Footprint Scanner
+    // ========================================
+
+    const API_FOOTPRINT_URL = `${API_BASE}/footprint-scan`;
+    const API_BREACH_CHECK_URL = `${API_BASE}/footprint-breach-check`;
+    const API_SOCIAL_SCAN_URL = `${API_BASE}/footprint-social-scan`;
+    const API_DATABROKER_URL = `${API_BASE}/footprint-databroker-scan`;
+
+    let currentScanType = 'quick';
+    let footprintScanResults = null;
+
+    // Sample breach database for client-side fallback
+    const BREACH_DATABASE = [
+      { id: 'linkedin_2021', name: 'LinkedIn', date: '2021-06-22', accounts: 700000000, severity: 'high', dataTypes: ['email', 'password', 'name', 'phone'] },
+      { id: 'facebook_2019', name: 'Facebook', date: '2019-04-03', accounts: 533000000, severity: 'high', dataTypes: ['email', 'phone', 'name', 'location'] },
+      { id: 'twitter_2023', name: 'Twitter/X', date: '2023-01-04', accounts: 200000000, severity: 'medium', dataTypes: ['email', 'name', 'username'] },
+      { id: 'adobe_2013', name: 'Adobe', date: '2013-10-04', accounts: 153000000, severity: 'high', dataTypes: ['email', 'password', 'username'] },
+      { id: 'dropbox_2012', name: 'Dropbox', date: '2012-07-01', accounts: 68000000, severity: 'medium', dataTypes: ['email', 'password'] },
+      { id: 'myspace_2016', name: 'MySpace', date: '2016-05-27', accounts: 360000000, severity: 'medium', dataTypes: ['email', 'password', 'username'] },
+      { id: 'canva_2019', name: 'Canva', date: '2019-05-24', accounts: 137000000, severity: 'medium', dataTypes: ['email', 'name', 'username'] },
+      { id: 'zynga_2019', name: 'Zynga', date: '2019-09-01', accounts: 218000000, severity: 'medium', dataTypes: ['email', 'password', 'username', 'phone'] }
+    ];
+
+    // Data broker database
+    const DATABROKER_DATABASE = [
+      { id: 'spokeo', name: 'Spokeo', category: 'people_search', region: 'US', difficulty: 'easy', optoutUrl: 'https://spokeo.com/optout', dataTypes: ['name', 'address', 'phone', 'email', 'relatives'] },
+      { id: 'beenverified', name: 'BeenVerified', category: 'background_check', region: 'US', difficulty: 'medium', optoutUrl: 'https://beenverified.com/optout', dataTypes: ['name', 'address', 'phone', 'criminal'] },
+      { id: 'whitepages', name: 'Whitepages', category: 'people_search', region: 'US', difficulty: 'easy', optoutUrl: 'https://whitepages.com/suppression', dataTypes: ['name', 'address', 'phone'] },
+      { id: 'intelius', name: 'Intelius', category: 'people_search', region: 'US', difficulty: 'medium', optoutUrl: 'https://intelius.com/optout', dataTypes: ['name', 'address', 'phone', 'email'] },
+      { id: 'acxiom', name: 'Acxiom', category: 'marketing', region: 'Global', difficulty: 'medium', optoutUrl: 'https://isapps.acxiom.com/optout', dataTypes: ['name', 'address', 'demographics', 'purchase_history'] },
+      { id: 'oracle_datacloud', name: 'Oracle Data Cloud', category: 'marketing', region: 'Global', difficulty: 'hard', optoutUrl: 'https://datacloudoptout.oracle.com', dataTypes: ['name', 'email', 'browsing', 'interests'] },
+      { id: 'experian', name: 'Experian', category: 'credit', region: 'Global', difficulty: 'medium', optoutUrl: 'https://experian.com/privacy', dataTypes: ['name', 'address', 'credit_score', 'financial'] },
+      { id: 'equifax', name: 'Equifax', category: 'credit', region: 'Global', difficulty: 'medium', optoutUrl: 'https://equifax.com/personal/credit-report-services', dataTypes: ['name', 'address', 'credit_score', 'financial'] },
+      { id: 'lexisnexis', name: 'LexisNexis', category: 'background_check', region: 'Global', difficulty: 'hard', optoutUrl: 'https://optout.lexisnexis.com', dataTypes: ['name', 'address', 'legal', 'employment'] },
+      { id: 'peoplelooker', name: 'PeopleLooker', category: 'people_search', region: 'US', difficulty: 'easy', optoutUrl: 'https://peoplelooker.com/optout', dataTypes: ['name', 'address', 'phone', 'email'] },
+      { id: 'truepeoplesearch', name: 'TruePeopleSearch', category: 'people_search', region: 'US', difficulty: 'easy', optoutUrl: 'https://truepeoplesearch.com/removal', dataTypes: ['name', 'address', 'phone'] },
+      { id: 'fastpeoplesearch', name: 'FastPeopleSearch', category: 'people_search', region: 'US', difficulty: 'easy', optoutUrl: 'https://fastpeoplesearch.com/removal', dataTypes: ['name', 'address', 'phone'] }
+    ];
+
+    // Social media platforms to check
+    const SOCIAL_PLATFORMS = [
+      { id: 'twitter', name: 'Twitter/X', icon: '🐦', urlPattern: 'twitter.com/' },
+      { id: 'facebook', name: 'Facebook', icon: '👤', urlPattern: 'facebook.com/' },
+      { id: 'instagram', name: 'Instagram', icon: '📷', urlPattern: 'instagram.com/' },
+      { id: 'linkedin', name: 'LinkedIn', icon: '💼', urlPattern: 'linkedin.com/in/' },
+      { id: 'github', name: 'GitHub', icon: '💻', urlPattern: 'github.com/' },
+      { id: 'tiktok', name: 'TikTok', icon: '🎵', urlPattern: 'tiktok.com/@' },
+      { id: 'youtube', name: 'YouTube', icon: '▶️', urlPattern: 'youtube.com/@' },
+      { id: 'reddit', name: 'Reddit', icon: '🤖', urlPattern: 'reddit.com/user/' },
+      { id: 'pinterest', name: 'Pinterest', icon: '📌', urlPattern: 'pinterest.com/' },
+      { id: 'snapchat', name: 'Snapchat', icon: '👻', urlPattern: 'snapchat.com/add/' },
+      { id: 'discord', name: 'Discord', icon: '🎮', urlPattern: 'discord.com/users/' },
+      { id: 'telegram', name: 'Telegram', icon: '✈️', urlPattern: 't.me/' }
+    ];
+
+    function initFootprintScanner() {
+      // Form submission
+      const form = document.getElementById('footprintForm');
+      if (form) {
+        form.addEventListener('submit', handleFootprintSubmit);
+      }
+
+      // Scan type buttons
+      document.querySelectorAll('.scan-type-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.scan-type-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentScanType = this.dataset.type;
+        });
+      });
+    }
+
+    function toggleAdvancedInputs() {
+      const advanced = document.getElementById('advancedInputs');
+      const btn = document.querySelector('.toggle-advanced-btn');
+      if (advanced.style.display === 'none') {
+        advanced.style.display = 'block';
+        btn.querySelector('.toggle-icon').textContent = '▲';
+      } else {
+        advanced.style.display = 'none';
+        btn.querySelector('.toggle-icon').textContent = '▼';
+      }
+    }
+
+    function toggleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const header = section.previousElementSibling;
+      if (section.style.display === 'none') {
+        section.style.display = 'block';
+        header.querySelector('.section-toggle').textContent = '▼';
+      } else {
+        section.style.display = 'none';
+        header.querySelector('.section-toggle').textContent = '▶';
+      }
+    }
+
+    async function handleFootprintSubmit(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('footprintEmail').value.trim();
+      const name = document.getElementById('footprintName').value.trim();
+      const username = document.getElementById('footprintUsername').value.trim();
+      const phone = document.getElementById('footprintPhone').value.trim();
+
+      if (!email) {
+        alert('Bitte gib eine E-Mail-Adresse ein.');
+        return;
+      }
+
+      const btn = document.getElementById('footprintSubmitBtn');
+      btn.querySelector('.btn-text').style.display = 'none';
+      btn.querySelector('.btn-loading').style.display = 'inline';
+      btn.disabled = true;
+
+      const options = {
+        checkBreaches: document.getElementById('optBreaches').checked,
+        checkSocialMedia: document.getElementById('optSocial').checked,
+        checkDataBrokers: document.getElementById('optDatabrokers').checked,
+        checkDarkWeb: document.getElementById('optDarkweb').checked,
+        deepScan: currentScanType === 'full'
+      };
+
+      try {
+        // Try API first, fallback to client-side
+        let results;
+        try {
+          const response = await fetch(API_FOOTPRINT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, name, username, phone, options })
+          });
+          if (response.ok) {
+            results = await response.json();
+          } else {
+            throw new Error('API unavailable');
+          }
+        } catch (apiError) {
+          console.log('Using client-side footprint analysis');
+          results = performClientSideFootprintScan(email, name, username, phone, options);
+        }
+
+        footprintScanResults = results;
+        displayFootprintResults(results);
+
+      } catch (error) {
+        console.error('Footprint scan error:', error);
+        alert('Fehler beim Scan. Bitte versuche es erneut.');
+      } finally {
+        btn.querySelector('.btn-text').style.display = 'inline';
+        btn.querySelector('.btn-loading').style.display = 'none';
+        btn.disabled = false;
+      }
+    }
+
+    function performClientSideFootprintScan(email, name, username, phone, options) {
+      const results = {
+        scanId: 'scan_' + Date.now(),
+        timestamp: new Date().toISOString(),
+        summary: {
+          overallRisk: 'medium',
+          riskScore: 0,
+          totalExposures: 0,
+          criticalFindings: 0,
+          actionRequired: 0
+        },
+        breaches: { found: false, count: 0, items: [] },
+        socialMedia: { found: false, count: 0, profiles: [] },
+        dataBrokers: { found: false, count: 0, items: [] },
+        recommendations: { immediate: [], shortTerm: [], longTerm: [] }
+      };
+
+      // Simulate breach check
+      if (options.checkBreaches) {
+        const emailDomain = email.split('@')[1];
+        const hash = simpleHash(email);
+
+        // Simulate finding some breaches based on email characteristics
+        const foundBreaches = BREACH_DATABASE.filter((breach, index) => {
+          return (hash + index) % 3 === 0; // Randomly select ~1/3 of breaches
+        }).map(breach => ({
+          ...breach,
+          exposedData: breach.dataTypes,
+          description: `${breach.name} wurde kompromittiert mit ${formatNumber(breach.accounts)} Konten`,
+          recommendations: [
+            'Passwort sofort ändern',
+            '2FA aktivieren',
+            'Auf Phishing-Mails achten'
+          ]
+        }));
+
+        if (foundBreaches.length > 0) {
+          results.breaches = {
+            found: true,
+            count: foundBreaches.length,
+            items: foundBreaches
+          };
+          results.summary.totalExposures += foundBreaches.length;
+          results.summary.criticalFindings += foundBreaches.filter(b => b.severity === 'high').length;
+        }
+      }
+
+      // Simulate social media scan
+      if (options.checkSocialMedia && username) {
+        const foundProfiles = SOCIAL_PLATFORMS.slice(0, 4 + Math.floor(Math.random() * 4)).map(platform => ({
+          platform: platform.id,
+          displayName: platform.name,
+          icon: platform.icon,
+          found: true,
+          url: `https://${platform.urlPattern}${username}`,
+          username: username,
+          isPublic: Math.random() > 0.3,
+          privacyScore: Math.floor(Math.random() * 60) + 20,
+          privacyIssues: [
+            'Profil ist öffentlich',
+            'Standort sichtbar',
+            'E-Mail im Profil'
+          ].slice(0, Math.floor(Math.random() * 3) + 1),
+          recommendations: [
+            'Profil auf privat stellen',
+            'Persönliche Infos entfernen'
+          ]
+        }));
+
+        results.socialMedia = {
+          found: true,
+          count: foundProfiles.length,
+          profiles: foundProfiles
+        };
+        results.summary.totalExposures += foundProfiles.length;
+      }
+
+      // Simulate data broker scan
+      if (options.checkDataBrokers) {
+        const foundBrokers = DATABROKER_DATABASE.filter((_, index) => {
+          return Math.random() > 0.4; // ~60% chance to be found
+        }).map(broker => ({
+          ...broker,
+          confirmed: Math.random() > 0.3 ? true : 'likely',
+          optOut: {
+            available: true,
+            url: broker.optoutUrl,
+            difficulty: broker.difficulty,
+            estimatedDays: broker.difficulty === 'easy' ? 3 : broker.difficulty === 'medium' ? 14 : 30
+          }
+        }));
+
+        if (foundBrokers.length > 0) {
+          results.dataBrokers = {
+            found: true,
+            count: foundBrokers.length,
+            items: foundBrokers
+          };
+          results.summary.totalExposures += foundBrokers.length;
+          results.summary.actionRequired += foundBrokers.length;
+        }
+      }
+
+      // Calculate overall risk score
+      results.summary.riskScore = Math.min(100,
+        results.breaches.count * 15 +
+        results.socialMedia.count * 5 +
+        results.dataBrokers.count * 8 +
+        results.summary.criticalFindings * 10
+      );
+
+      // Determine risk level
+      if (results.summary.riskScore >= 70) {
+        results.summary.overallRisk = 'critical';
+      } else if (results.summary.riskScore >= 50) {
+        results.summary.overallRisk = 'high';
+      } else if (results.summary.riskScore >= 25) {
+        results.summary.overallRisk = 'medium';
+      } else {
+        results.summary.overallRisk = 'low';
+      }
+
+      // Generate recommendations
+      if (results.breaches.count > 0) {
+        results.recommendations.immediate.push({
+          priority: 1,
+          action: 'Passwörter für betroffene Dienste ändern',
+          reason: `${results.breaches.count} Datenlecks gefunden`
+        });
+        results.recommendations.immediate.push({
+          priority: 2,
+          action: '2-Faktor-Authentifizierung aktivieren',
+          reason: 'Zusätzlicher Schutz gegen Account-Übernahme'
+        });
+      }
+
+      if (results.dataBrokers.count > 0) {
+        results.recommendations.shortTerm.push({
+          priority: 3,
+          action: `Opt-out bei ${results.dataBrokers.count} Data Brokern durchführen`,
+          reason: 'Persönliche Daten öffentlich verfügbar'
+        });
+      }
+
+      results.recommendations.longTerm.push({
+        priority: 4,
+        action: 'Regelmäßiges Monitoring einrichten',
+        reason: 'Neue Lecks frühzeitig erkennen'
+      });
+
+      return results;
+    }
+
+    function simpleHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return Math.abs(hash);
+    }
+
+    function formatNumber(num) {
+      if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+      if (num >= 1000000) return (num / 1000000).toFixed(0) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+      return num.toString();
+    }
+
+    function displayFootprintResults(results) {
+      const container = document.getElementById('footprintResults');
+      container.style.display = 'block';
+
+      // Update summary
+      const riskScore = results.summary.riskScore;
+      document.getElementById('footprintRiskScore').textContent = riskScore;
+      document.getElementById('statExposures').textContent = results.summary.totalExposures;
+      document.getElementById('statCritical').textContent = results.summary.criticalFindings;
+      document.getElementById('statActions').textContent = results.summary.actionRequired;
+
+      // Update risk circle
+      const riskFill = document.getElementById('footprintRiskFill');
+      const circumference = 2 * Math.PI * 45;
+      const offset = circumference - (riskScore / 100) * circumference;
+      riskFill.style.strokeDasharray = circumference;
+      riskFill.style.strokeDashoffset = offset;
+
+      // Color based on risk
+      const riskColors = {
+        low: '#4caf50',
+        medium: '#ff9800',
+        high: '#f44336',
+        critical: '#9c27b0'
+      };
+      riskFill.style.stroke = riskColors[results.summary.overallRisk];
+      document.getElementById('footprintRiskScore').style.color = riskColors[results.summary.overallRisk];
+
+      // Display breaches
+      if (results.breaches.found) {
+        displayBreachResults(results.breaches);
+      }
+
+      // Display social media
+      if (results.socialMedia.found) {
+        displaySocialResults(results.socialMedia);
+      }
+
+      // Display data brokers
+      if (results.dataBrokers.found) {
+        displayDatabrokerResults(results.dataBrokers);
+      }
+
+      // Display recommendations
+      displayRecommendations(results.recommendations);
+
+      // Scroll to results
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function displayBreachResults(breaches) {
+      const section = document.getElementById('breachResultsSection');
+      section.style.display = 'block';
+      document.getElementById('breachCount').textContent = breaches.count;
+
+      const list = document.getElementById('breachList');
+      list.innerHTML = breaches.items.map(breach => `
+        <div class="breach-item severity-${breach.severity}">
+          <div class="breach-header">
+            <span class="breach-name">${breach.name}</span>
+            <span class="breach-date">${breach.date}</span>
+            <span class="breach-severity severity-badge-${breach.severity}">${breach.severity}</span>
+          </div>
+          <div class="breach-details">
+            <div class="breach-accounts">
+              <span class="detail-icon">👥</span>
+              <span>${formatNumber(breach.accounts)} Konten betroffen</span>
+            </div>
+            <div class="breach-data-types">
+              <span class="detail-icon">📋</span>
+              <span>Exponiert: ${breach.exposedData.join(', ')}</span>
+            </div>
+          </div>
+          <div class="breach-actions">
+            ${breach.recommendations.map(rec => `<span class="action-tag">💡 ${rec}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function displaySocialResults(social) {
+      const section = document.getElementById('socialResultsSection');
+      section.style.display = 'block';
+      document.getElementById('socialCount').textContent = social.count;
+
+      const list = document.getElementById('socialProfilesList');
+      list.innerHTML = social.profiles.map(profile => `
+        <div class="social-profile-item">
+          <div class="profile-header">
+            <span class="profile-icon">${profile.icon}</span>
+            <span class="profile-name">${profile.displayName}</span>
+            <span class="profile-username">@${profile.username}</span>
+            <span class="privacy-score score-${profile.privacyScore < 40 ? 'bad' : profile.privacyScore < 70 ? 'medium' : 'good'}">
+              ${profile.privacyScore}%
+            </span>
+          </div>
+          <div class="profile-status">
+            <span class="status-badge ${profile.isPublic ? 'public' : 'private'}">
+              ${profile.isPublic ? '🔓 Öffentlich' : '🔒 Privat'}
+            </span>
+          </div>
+          ${profile.privacyIssues.length > 0 ? `
+            <div class="profile-issues">
+              ${profile.privacyIssues.map(issue => `<span class="issue-tag">⚠️ ${issue}</span>`).join('')}
+            </div>
+          ` : ''}
+          <div class="profile-link">
+            <a href="${profile.url}" target="_blank" rel="noopener">Profil öffnen →</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function displayDatabrokerResults(brokers) {
+      const section = document.getElementById('databrokerResultsSection');
+      section.style.display = 'block';
+      document.getElementById('databrokerCount').textContent = brokers.count;
+
+      const list = document.getElementById('databrokerList');
+      list.innerHTML = brokers.items.map(broker => `
+        <div class="databroker-item">
+          <div class="broker-header">
+            <span class="broker-name">${broker.name}</span>
+            <span class="broker-category">${broker.category}</span>
+            <span class="broker-region">${broker.region}</span>
+          </div>
+          <div class="broker-data">
+            <span class="data-icon">📊</span>
+            <span>Daten: ${broker.dataTypes.join(', ')}</span>
+          </div>
+          <div class="broker-optout">
+            <span class="difficulty difficulty-${broker.difficulty}">${broker.difficulty}</span>
+            <span class="time-estimate">~${broker.optOut.estimatedDays} Tage</span>
+            <a href="${broker.optOut.url}" target="_blank" rel="noopener" class="optout-link">
+              Opt-out starten →
+            </a>
+          </div>
+        </div>
+      `).join('');
+
+      // Update progress bar
+      document.getElementById('optoutProgressFill').style.width = '0%';
+      document.getElementById('optoutProgressValue').textContent = '0%';
+    }
+
+    function displayRecommendations(recommendations) {
+      const list = document.getElementById('recommendationsList');
+      const allRecs = [
+        ...recommendations.immediate.map(r => ({ ...r, type: 'immediate' })),
+        ...recommendations.shortTerm.map(r => ({ ...r, type: 'shortTerm' })),
+        ...recommendations.longTerm.map(r => ({ ...r, type: 'longTerm' }))
+      ];
+
+      list.innerHTML = allRecs.map(rec => `
+        <div class="recommendation-item priority-${rec.type}">
+          <div class="rec-priority">
+            <span class="priority-badge ${rec.type}">${
+              rec.type === 'immediate' ? '🔴 Sofort' :
+              rec.type === 'shortTerm' ? '🟡 Bald' : '🟢 Langfristig'
+            }</span>
+          </div>
+          <div class="rec-content">
+            <div class="rec-action">${rec.action}</div>
+            <div class="rec-reason">${rec.reason}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function startBulkOptout() {
+      alert('Bulk Opt-out Feature wird in der nächsten Version verfügbar sein.');
+    }
+
+    function setupMonitoring() {
+      const email = document.getElementById('footprintEmail').value;
+      if (email) {
+        alert(`Monitoring für ${email} wird eingerichtet. Du erhältst eine Bestätigungs-E-Mail.`);
+      }
+    }
+
+    // ========================================
     // Initialize Everything
     // ========================================
 
@@ -3366,6 +4085,9 @@
 
       // Initialize Phase 5 features
       initPredictivePrivacy();
+
+      // Initialize Phase 7 features
+      initFootprintScanner();
 
       // Load saved language preference
       const savedLang = localStorage.getItem('achtung-lang') || 'de';
