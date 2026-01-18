@@ -20,31 +20,84 @@
 
   <!-- Geschützter Inhalt -->
   <main class="main-content protected-content">
-    <h2>Jetzt live testen!</h2>
-    <form id="demoForm">
-      <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass ihn direkt überprüfen..." rows="6" required></textarea>
+    <!-- API Status Indicator -->
+    <div id="apiStatus" class="api-status"></div>
 
-      <!-- Kontext-Auswahl -->
-      <div class="context-selector">
-        <label for="contextSelect">Wo soll dieser Text verwendet werden?</label>
-        <select id="contextSelect">
-          <option value="private">Privater Chat (1:1)</option>
-          <option value="whatsapp">WhatsApp Gruppe</option>
-          <option value="email">E-Mail</option>
-          <option value="linkedin">LinkedIn / Beruflich</option>
-          <option value="public">Öffentlicher Post (Social Media)</option>
-        </select>
-      </div>
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="single">Einzeltext</button>
+      <button class="tab-btn" data-tab="batch">Batch-Analyse</button>
+    </div>
 
-      <div class="datenschutz-hinweis">
-        <input type="checkbox" id="privacyPolicyDemo" required>
-        <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
-      </div>
-      <button type="submit">Text analysieren</button>
-    </form>
+    <!-- Single Text Tab -->
+    <div id="singleTab" class="tab-content active">
+      <h2>Jetzt live testen!</h2>
+      <form id="demoForm">
+        <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass ihn direkt überprüfen..." rows="6" required></textarea>
 
-    <!-- Risk Dashboard -->
-    <div id="riskDashboard" style="display:none;"></div>
+        <!-- Kontext-Auswahl -->
+        <div class="context-selector">
+          <label for="contextSelect">Wo soll dieser Text verwendet werden?</label>
+          <select id="contextSelect">
+            <option value="private">Privater Chat (1:1)</option>
+            <option value="whatsapp">WhatsApp Gruppe</option>
+            <option value="email">E-Mail</option>
+            <option value="linkedin">LinkedIn / Beruflich</option>
+            <option value="public">Öffentlicher Post (Social Media)</option>
+          </select>
+        </div>
+
+        <div class="datenschutz-hinweis">
+          <input type="checkbox" id="privacyPolicyDemo" required>
+          <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+        </div>
+        <button type="submit">Text analysieren</button>
+      </form>
+
+      <!-- Risk Dashboard -->
+      <div id="riskDashboard" style="display:none;"></div>
+    </div>
+
+    <!-- Batch Analysis Tab -->
+    <div id="batchTab" class="tab-content">
+      <h2>Batch-Analyse</h2>
+      <p class="batch-description">Analysiere mehrere Texte gleichzeitig (max. 20 Texte)</p>
+
+      <form id="batchForm">
+        <div class="batch-input-area">
+          <div class="batch-textarea-container">
+            <textarea id="batchTexts" placeholder="Füge mehrere Texte ein, getrennt durch eine Leerzeile (2x Enter)..." rows="8"></textarea>
+            <div class="batch-counter">
+              <span id="textCount">0</span> / 20 Texte
+            </div>
+          </div>
+
+          <div class="batch-divider">
+            <span>oder</span>
+          </div>
+
+          <div class="batch-upload-area" id="dropZone">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Datei hierher ziehen</div>
+            <div class="upload-subtext">oder klicken zum Auswählen (.txt, .csv)</div>
+            <input type="file" id="batchFile" accept=".txt,.csv" hidden>
+          </div>
+        </div>
+
+        <div class="datenschutz-hinweis">
+          <input type="checkbox" id="privacyPolicyBatch" required>
+          <label for="privacyPolicyBatch">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+        </div>
+
+        <button type="submit" id="batchSubmitBtn">
+          <span class="btn-text">Alle Texte analysieren</span>
+          <span class="btn-loading" style="display:none;">Analysiere...</span>
+        </button>
+      </form>
+
+      <!-- Batch Results -->
+      <div id="batchResults" style="display:none;"></div>
+    </div>
 
     <div style="text-align:center; margin-top:40px;">
       <button onclick="openModal('caseModal')">Fallbeispiele ansehen</button>
@@ -173,26 +226,70 @@
     // ========================================
     // API Konfiguration
     // ========================================
-    const API_ANALYZE_URL = "/.netlify/functions/analyze";
+    const API_BASE = "/.netlify/functions";
+    const API_ANALYZE_URL = `${API_BASE}/analyze`;
+    const API_REWRITE_URL = `${API_BASE}/rewrite`;
+    const API_BATCH_URL = `${API_BASE}/analyze-batch`;
+    const API_HEALTH_URL = `${API_BASE}/health`;
 
-    // Kategorie-Metadaten für das Dashboard
+    // Kategorie-Metadaten für das Dashboard (Phase 2: 25+ Kategorien)
     const CATEGORY_META = {
-      iban: { label: "IBAN/Bankdaten", icon: "🏦" },
-      credit_card: { label: "Kreditkarte", icon: "💳" },
-      phone: { label: "Telefonnummer", icon: "📱" },
-      email: { label: "E-Mail-Adresse", icon: "📧" },
-      address: { label: "Postadresse", icon: "📍" },
-      password: { label: "Passwort", icon: "🔑" },
-      health: { label: "Gesundheitsdaten", icon: "🏥" },
-      child: { label: "Kinderdaten", icon: "👶" },
-      location: { label: "Standort", icon: "📍" },
-      emotion: { label: "Emotionen", icon: "😤" },
-      legal: { label: "Rechtlich heikel", icon: "⚖️" },
-      employer: { label: "Arbeitgeber", icon: "🏢" },
-      vacation: { label: "Abwesenheit", icon: "✈️" },
-      name: { label: "Personenname", icon: "👤" },
-      date: { label: "Datum/Termin", icon: "📅" },
-      generic: { label: "Sensible Daten", icon: "⚠️" }
+      // Finanzen
+      iban: { label: "IBAN/Bankdaten", icon: "🏦", group: "financial" },
+      credit_card: { label: "Kreditkarte", icon: "💳", group: "financial" },
+      bic: { label: "BIC/SWIFT", icon: "🏛️", group: "financial" },
+      account_number: { label: "Kontonummer", icon: "💰", group: "financial" },
+
+      // Identifikation
+      national_id: { label: "Personalausweis", icon: "🪪", group: "identity" },
+      passport: { label: "Reisepass", icon: "📕", group: "identity" },
+      tax_id: { label: "Steuer-ID", icon: "📋", group: "identity" },
+      social_security: { label: "Sozialversicherung", icon: "🆔", group: "identity" },
+      drivers_license: { label: "Führerschein", icon: "🚗", group: "identity" },
+
+      // Gesundheit
+      health_insurance: { label: "Krankenversicherung", icon: "🏥", group: "health" },
+      medical_record: { label: "Medizinische Daten", icon: "💊", group: "health" },
+      health: { label: "Gesundheitsdaten", icon: "🩺", group: "health" },
+
+      // Digital
+      ip_address: { label: "IP-Adresse", icon: "🌐", group: "digital" },
+      mac_address: { label: "MAC-Adresse", icon: "📡", group: "digital" },
+      username: { label: "Benutzername", icon: "👤", group: "digital" },
+      password: { label: "Passwort", icon: "🔑", group: "digital" },
+      api_key: { label: "API-Schlüssel", icon: "🔐", group: "digital" },
+
+      // Persönlich
+      name: { label: "Personenname", icon: "👤", group: "personal" },
+      phone: { label: "Telefonnummer", icon: "📱", group: "personal" },
+      email: { label: "E-Mail-Adresse", icon: "📧", group: "personal" },
+      address: { label: "Postadresse", icon: "📍", group: "personal" },
+      date_of_birth: { label: "Geburtsdatum", icon: "🎂", group: "personal" },
+      age: { label: "Alter", icon: "🔢", group: "personal" },
+      gender: { label: "Geschlecht", icon: "⚧️", group: "personal" },
+      religion: { label: "Religion", icon: "🛐", group: "personal" },
+      political: { label: "Politische Meinung", icon: "🗳️", group: "personal" },
+      sexual_orientation: { label: "Sexuelle Orientierung", icon: "🏳️‍🌈", group: "personal" },
+
+      // Biometrisch
+      biometric: { label: "Biometrische Daten", icon: "👁️", group: "biometric" },
+      photo: { label: "Erkennbares Foto", icon: "📸", group: "biometric" },
+
+      // Standort
+      gps_coordinates: { label: "GPS-Koordinaten", icon: "🛰️", group: "location" },
+      license_plate: { label: "Kfz-Kennzeichen", icon: "🚘", group: "location" },
+      location: { label: "Standort", icon: "📍", group: "location" },
+      vacation: { label: "Abwesenheit/Urlaub", icon: "✈️", group: "location" },
+
+      // Semantisch (GPT-erkannt)
+      child: { label: "Kinderdaten", icon: "👶", group: "semantic" },
+      emotion: { label: "Emotionen", icon: "😤", group: "semantic" },
+      employer: { label: "Arbeitgeber", icon: "🏢", group: "semantic" },
+      legal: { label: "Rechtlich heikel", icon: "⚖️", group: "semantic" },
+
+      // Fallback
+      date: { label: "Datum/Termin", icon: "📅", group: "other" },
+      generic: { label: "Sensible Daten", icon: "⚠️", group: "other" }
     };
 
     // Kontext-Warnungen
@@ -439,21 +536,44 @@
             </div>
           ` : ''}
 
-          <!-- Smart Rewrite -->
-          ${rewrite ? `
-            <div class="rewrite-section">
-              <div class="rewrite-header">
-                <span class="rewrite-icon">✨</span>
-                <span class="rewrite-title">Sicherer Text-Vorschlag</span>
-              </div>
+          <!-- Smart Rewrite Section -->
+          <div class="rewrite-section">
+            <div class="rewrite-header">
+              <span class="rewrite-icon">✨</span>
+              <span class="rewrite-title">Smart Rewrite</span>
+            </div>
+
+            <!-- Rewrite Mode Selection -->
+            <div class="rewrite-mode-selector">
+              <button class="rewrite-mode-btn active" data-mode="anonymize" onclick="selectRewriteMode('anonymize')">
+                <span class="mode-icon">🏷️</span>
+                <span class="mode-label">Anonymisieren</span>
+                <span class="mode-desc">[NAME], [IBAN]...</span>
+              </button>
+              <button class="rewrite-mode-btn" data-mode="redact" onclick="selectRewriteMode('redact')">
+                <span class="mode-icon">█</span>
+                <span class="mode-label">Zensieren</span>
+                <span class="mode-desc">[ZENSIERT]</span>
+              </button>
+              <button class="rewrite-mode-btn" data-mode="pseudonymize" onclick="selectRewriteMode('pseudonymize')">
+                <span class="mode-icon">🎭</span>
+                <span class="mode-label">Pseudonymisieren</span>
+                <span class="mode-desc">Fake-Daten</span>
+              </button>
+            </div>
+
+            <button class="rewrite-generate-btn" onclick="generateRewrite('${escapeHtml(originalText).replace(/'/g, "\\'")}')">
+              <span class="btn-icon">⚡</span>
+              <span class="btn-text">Text neu schreiben</span>
+              <span class="btn-loading" style="display:none;">Generiere...</span>
+            </button>
+
+            <!-- Rewrite Result (initially hidden, shown after generation) -->
+            <div id="rewriteResult" class="rewrite-result" style="display:none;">
               <div class="rewrite-container">
-                <div class="rewrite-text" id="rewriteText">${escapeHtml(rewrite.suggestion)}</div>
+                <div class="rewrite-text" id="rewriteText"></div>
               </div>
-              ${rewrite.changes && rewrite.changes.length > 0 ? `
-                <div class="rewrite-changes">
-                  ${rewrite.changes.map(change => `<span class="rewrite-change-tag">${escapeHtml(change)}</span>`).join('')}
-                </div>
-              ` : ''}
+              <div class="rewrite-changes" id="rewriteChanges"></div>
               <div class="rewrite-actions">
                 <button class="rewrite-btn rewrite-btn-primary" onclick="copyRewrite()">
                   📋 Text kopieren
@@ -462,6 +582,40 @@
                   ↩️ In Textfeld übernehmen
                 </button>
               </div>
+            </div>
+
+            <!-- Show existing rewrite if available from API -->
+            ${rewrite ? `
+              <div class="rewrite-result">
+                <div class="rewrite-container">
+                  <div class="rewrite-text" id="rewriteTextInitial">${escapeHtml(rewrite.suggestion || rewrite.rewritten || '')}</div>
+                </div>
+                ${rewrite.changes && rewrite.changes.length > 0 ? `
+                  <div class="rewrite-changes">
+                    ${rewrite.changes.map(change => {
+                      const changeText = typeof change === 'string' ? change : `${change.original} → ${change.replacement}`;
+                      return `<span class="rewrite-change-tag">${escapeHtml(changeText)}</span>`;
+                    }).join('')}
+                  </div>
+                ` : ''}
+                <div class="rewrite-actions">
+                  <button class="rewrite-btn rewrite-btn-primary" onclick="copyRewrite()">
+                    📋 Text kopieren
+                  </button>
+                  <button class="rewrite-btn rewrite-btn-secondary" onclick="useRewrite()">
+                    ↩️ In Textfeld übernehmen
+                  </button>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Provider Info (if available) -->
+          ${data.meta ? `
+            <div class="provider-info">
+              <span class="provider-badge">${data.meta.provider || 'AI'}</span>
+              <span class="provider-model">${data.meta.model || ''}</span>
+              <span class="provider-time">${data.meta.processingTime ? `${data.meta.processingTime}ms` : ''}</span>
             </div>
           ` : ''}
         </div>
@@ -597,19 +751,91 @@
     }
 
     // ========================================
-    // Rewrite Funktionen
+    // Rewrite Funktionen (Phase 2)
     // ========================================
 
+    let currentRewriteMode = 'anonymize';
+    let lastAnalyzedText = '';
+
+    function selectRewriteMode(mode) {
+      currentRewriteMode = mode;
+      document.querySelectorAll('.rewrite-mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+      });
+    }
+
+    async function generateRewrite(originalText) {
+      const text = originalText || lastAnalyzedText || document.getElementById('demoText').value;
+      if (!text) return;
+
+      const btn = document.querySelector('.rewrite-generate-btn');
+      const btnText = btn.querySelector('.btn-text');
+      const btnLoading = btn.querySelector('.btn-loading');
+
+      // Show loading state
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(API_REWRITE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: text,
+            mode: currentRewriteMode
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server-Fehler: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Show result
+        const resultDiv = document.getElementById('rewriteResult');
+        const rewriteTextDiv = document.getElementById('rewriteText');
+        const changesDiv = document.getElementById('rewriteChanges');
+
+        if (data.rewritten) {
+          rewriteTextDiv.textContent = data.rewritten;
+
+          // Show changes
+          if (data.changes && data.changes.length > 0) {
+            changesDiv.innerHTML = data.changes.map(change => {
+              const changeText = typeof change === 'string' ? change : `${change.original} → ${change.replacement}`;
+              return `<span class="rewrite-change-tag">${escapeHtml(changeText)}</span>`;
+            }).join('');
+          } else {
+            changesDiv.innerHTML = '';
+          }
+
+          resultDiv.style.display = 'block';
+        }
+
+      } catch (error) {
+        console.error('Rewrite error:', error);
+        alert('Fehler beim Rewrite: ' + error.message);
+      } finally {
+        // Reset button state
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+        btn.disabled = false;
+      }
+    }
+
     function copyRewrite() {
-      const text = document.getElementById('rewriteText')?.innerText;
+      const text = document.getElementById('rewriteText')?.innerText ||
+                   document.getElementById('rewriteTextInitial')?.innerText;
       if (text) {
         navigator.clipboard.writeText(text).then(() => {
-          const btn = event.target;
-          const originalText = btn.innerHTML;
+          const btn = event.target.closest('button');
+          const originalHTML = btn.innerHTML;
           btn.innerHTML = '✓ Kopiert!';
           btn.classList.add('copy-success');
           setTimeout(() => {
-            btn.innerHTML = originalText;
+            btn.innerHTML = originalHTML;
             btn.classList.remove('copy-success');
           }, 2000);
         });
@@ -617,12 +843,282 @@
     }
 
     function useRewrite() {
-      const text = document.getElementById('rewriteText')?.innerText;
+      const text = document.getElementById('rewriteText')?.innerText ||
+                   document.getElementById('rewriteTextInitial')?.innerText;
       if (text) {
         document.getElementById('demoText').value = text;
         // Scroll zum Textfeld
         document.getElementById('demoText').scrollIntoView({ behavior: 'smooth' });
         document.getElementById('demoText').focus();
+      }
+    }
+
+    // ========================================
+    // Tab Navigation
+    // ========================================
+
+    function initTabs() {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.dataset.tab;
+
+          // Update buttons
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          // Update content
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          document.getElementById(tabId + 'Tab').classList.add('active');
+        });
+      });
+    }
+
+    // ========================================
+    // Batch Analyse (Phase 2)
+    // ========================================
+
+    function initBatchAnalysis() {
+      const textarea = document.getElementById('batchTexts');
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('batchFile');
+      const form = document.getElementById('batchForm');
+
+      // Count texts as user types
+      if (textarea) {
+        textarea.addEventListener('input', () => {
+          const texts = parseTexts(textarea.value);
+          document.getElementById('textCount').textContent = texts.length;
+        });
+      }
+
+      // Drag & Drop
+      if (dropZone) {
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+          dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dropZone.classList.remove('drag-over');
+          const file = e.dataTransfer.files[0];
+          if (file) handleFile(file);
+        });
+      }
+
+      // File input change
+      if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (file) handleFile(file);
+        });
+      }
+
+      // Form submit
+      if (form) {
+        form.addEventListener('submit', handleBatchSubmit);
+      }
+    }
+
+    function parseTexts(input) {
+      if (!input || !input.trim()) return [];
+      // Split by double newline (empty line)
+      return input.split(/\n\s*\n/)
+        .map(t => t.trim())
+        .filter(t => t.length > 0)
+        .slice(0, 20); // Max 20 texts
+    }
+
+    function handleFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target.result;
+        let texts = [];
+
+        if (file.name.endsWith('.csv')) {
+          // Parse CSV (assume one text per line)
+          texts = content.split('\n').filter(t => t.trim());
+        } else {
+          // Parse TXT (double newline separated)
+          texts = parseTexts(content);
+        }
+
+        document.getElementById('batchTexts').value = texts.join('\n\n');
+        document.getElementById('textCount').textContent = Math.min(texts.length, 20);
+      };
+      reader.readAsText(file);
+    }
+
+    async function handleBatchSubmit(e) {
+      e.preventDefault();
+
+      const texts = parseTexts(document.getElementById('batchTexts').value);
+      if (texts.length === 0) {
+        alert('Bitte mindestens einen Text eingeben.');
+        return;
+      }
+
+      const btn = document.getElementById('batchSubmitBtn');
+      const btnText = btn.querySelector('.btn-text');
+      const btnLoading = btn.querySelector('.btn-loading');
+
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(API_BATCH_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            texts: texts.map((text, i) => ({ id: `text-${i}`, text }))
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server-Fehler: ${response.status}`);
+        }
+
+        const data = await response.json();
+        renderBatchResults(data, texts);
+
+      } catch (error) {
+        console.error('Batch error:', error);
+        document.getElementById('batchResults').innerHTML = `
+          <div class="batch-error">
+            <span class="error-icon">⚠️</span>
+            <span>Fehler: ${escapeHtml(error.message)}</span>
+          </div>
+        `;
+        document.getElementById('batchResults').style.display = 'block';
+      } finally {
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+        btn.disabled = false;
+      }
+    }
+
+    function renderBatchResults(data, originalTexts) {
+      const resultsDiv = document.getElementById('batchResults');
+
+      const summary = data.summary || {
+        total: data.results?.length || 0,
+        successful: data.results?.filter(r => r.success).length || 0,
+        averageRiskScore: 0
+      };
+
+      // Calculate average if not provided
+      if (!summary.averageRiskScore && data.results) {
+        const scores = data.results
+          .filter(r => r.success && r.analysis?.riskScore !== undefined)
+          .map(r => r.analysis.riskScore);
+        summary.averageRiskScore = scores.length > 0
+          ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+          : 100;
+      }
+
+      resultsDiv.innerHTML = `
+        <div class="batch-results-container">
+          <!-- Summary -->
+          <div class="batch-summary">
+            <div class="batch-summary-item">
+              <span class="summary-number">${summary.total}</span>
+              <span class="summary-label">Texte analysiert</span>
+            </div>
+            <div class="batch-summary-item">
+              <span class="summary-number ${summary.averageRiskScore >= 80 ? 'safe' : summary.averageRiskScore >= 50 ? 'warning' : 'danger'}">
+                ${summary.averageRiskScore}
+              </span>
+              <span class="summary-label">Durchschn. Score</span>
+            </div>
+            <div class="batch-summary-item">
+              <span class="summary-number">${summary.totalRisks || data.results?.reduce((sum, r) => sum + (r.analysis?.categories?.length || 0), 0) || 0}</span>
+              <span class="summary-label">Risiken gesamt</span>
+            </div>
+          </div>
+
+          <!-- Individual Results -->
+          <div class="batch-results-list">
+            ${(data.results || []).map((result, i) => {
+              const text = originalTexts[i] || '';
+              const preview = text.substring(0, 100) + (text.length > 100 ? '...' : '');
+              const analysis = result.analysis || {};
+              const riskScore = analysis.riskScore ?? 100;
+              const level = getRiskLevel(riskScore);
+              const riskCount = analysis.categories?.length || 0;
+
+              return `
+                <div class="batch-result-item ${level}">
+                  <div class="result-header">
+                    <span class="result-number">#${i + 1}</span>
+                    <span class="result-score ${level}">${riskScore}/100</span>
+                  </div>
+                  <div class="result-preview">${escapeHtml(preview)}</div>
+                  ${riskCount > 0 ? `
+                    <div class="result-risks">
+                      ${analysis.categories.slice(0, 3).map(cat => {
+                        const meta = CATEGORY_META[cat.type] || CATEGORY_META.generic;
+                        return `<span class="risk-mini-badge ${cat.severity || 'medium'}">${meta.icon}</span>`;
+                      }).join('')}
+                      ${riskCount > 3 ? `<span class="risk-more">+${riskCount - 3}</span>` : ''}
+                    </div>
+                  ` : '<div class="result-safe">✓ Sicher</div>'}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      resultsDiv.style.display = 'block';
+      resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ========================================
+    // Health Check & API Status
+    // ========================================
+
+    async function checkApiHealth() {
+      const statusDiv = document.getElementById('apiStatus');
+      if (!statusDiv) return;
+
+      try {
+        const response = await fetch(API_HEALTH_URL);
+        const data = await response.json();
+
+        if (data.status === 'healthy') {
+          statusDiv.innerHTML = `
+            <span class="status-dot healthy"></span>
+            <span class="status-text">API Online</span>
+            ${data.providers ? `
+              <span class="provider-status">
+                ${data.providers.openai?.status === 'ok' ? '🟢 OpenAI' : '🔴 OpenAI'}
+                ${data.providers.anthropic?.status === 'ok' ? '🟢 Claude' : ''}
+              </span>
+            ` : ''}
+          `;
+          statusDiv.className = 'api-status healthy';
+        } else {
+          statusDiv.innerHTML = `
+            <span class="status-dot degraded"></span>
+            <span class="status-text">Eingeschränkt</span>
+          `;
+          statusDiv.className = 'api-status degraded';
+        }
+      } catch (error) {
+        statusDiv.innerHTML = `
+          <span class="status-dot offline"></span>
+          <span class="status-text">API Offline</span>
+        `;
+        statusDiv.className = 'api-status offline';
       }
     }
 
@@ -634,6 +1130,9 @@
       e.preventDefault();
       const text = document.getElementById("demoText").value;
       const context = document.getElementById("contextSelect").value;
+
+      // Store for rewrite function
+      lastAnalyzedText = text;
 
       showLoading();
 
@@ -686,6 +1185,14 @@
 
     // Authentifizierung prüfen und Seite initialisieren
     document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Phase 2 features
+      initTabs();
+      initBatchAnalysis();
+      checkApiHealth();
+
+      // Check health every 60 seconds
+      setInterval(checkApiHealth, 60000);
+
       if (typeof achtungAuth !== 'undefined') {
         if (achtungAuth.isAuthenticated()) {
           document.querySelectorAll('.protected-content').forEach(el => {
