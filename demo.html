@@ -2329,7 +2329,7 @@
     // Phase 5: Predictive Privacy
     // ========================================
 
-    const API_PREDICTIVE_URL = `${API_BASE}/analyze/predictive`;
+    const API_PREDICTIVE_URL = `${API_BASE}/analyze-predictive`;
     const API_BREACH_SCENARIOS_URL = `${API_BASE}/breach-scenarios`;
     let selectedTimeHorizon = 1;
 
@@ -2956,39 +2956,58 @@
       const resultsDiv = document.getElementById('predictiveResults');
       resultsDiv.style.display = 'block';
 
-      const data = result.data?.predictive || result.predictive;
-      const summary = result.data?.summary || result.summary;
+      // Handle both API response (predictiveAnalysis) and client-side (predictive)
+      const data = result.predictiveAnalysis || result.data?.predictive || result.predictive;
+      const standardAnalysis = result.standardAnalysis || result.data?.standardAnalysis;
+
+      // Build summary from API response or use client-side summary
+      let summary = result.data?.summary || result.summary;
+      if (!summary && data?.overallAssessment) {
+        // Build summary from API overallAssessment
+        summary = {
+          currentRisk: data.overallAssessment.level || 'medium',
+          futureRisk: data.futureRisk?.timeline?.[data.futureRisk?.timeline?.length - 1]?.riskLevel || data.overallAssessment.level || 'medium',
+          mainVulnerability: data.deanonymization?.contributingFactors?.[0]?.type || 'Nicht ermittelt',
+          quickFix: data.overallAssessment.recommendations?.[0] || 'Weniger persönliche Details teilen.',
+          privacyLifespan: data.deanonymization?.risk > 0.5 ? 'Diese Daten bleiben ~15-20 Jahre auffindbar' : 'Geringe Langzeit-Auffindbarkeit'
+        };
+      }
 
       // Summary Card
       displaySummary(summary);
 
-      // Deanonymization Section
-      if (options.deanonymization && data.deanonymization) {
-        displayDeanonymization(data.deanonymization);
+      // Deanonymization Section - map API format to display format
+      if (options.deanonymization && data?.deanonymization) {
+        const deanonData = mapDeanonymizationData(data.deanonymization);
+        displayDeanonymization(deanonData);
         document.getElementById('deanonSection').style.display = 'block';
       } else {
         document.getElementById('deanonSection').style.display = 'none';
       }
 
-      // Breach Simulation Section
-      if (options.breachSimulation && data.breachSimulation) {
-        displayBreachSimulation(data.breachSimulation);
+      // Breach Simulation Section - map API format
+      if (options.breachSimulation && data?.breachSimulation) {
+        const breachData = mapBreachSimulationData(data.breachSimulation);
+        displayBreachSimulation(breachData);
         document.getElementById('breachSection').style.display = 'block';
       } else {
         document.getElementById('breachSection').style.display = 'none';
       }
 
       // Future Risk Section
-      if (options.futureRisk && data.futureRisk) {
-        displayFutureRisk(data.futureRisk);
+      if (options.futureRisk && data?.futureRisk) {
+        const futureData = mapFutureRiskData(data.futureRisk);
+        displayFutureRisk(futureData);
         document.getElementById('futureSection').style.display = 'block';
       } else {
         document.getElementById('futureSection').style.display = 'none';
       }
 
-      // Correlation Section
-      if (options.correlationAttack && data.correlationAttack) {
-        displayCorrelationAttack(data.correlationAttack);
+      // Correlation Section - map API format (correlationRisk -> correlationAttack)
+      const correlationData = data?.correlationRisk || data?.correlationAttack;
+      if (options.correlationAttack && correlationData) {
+        const mappedCorrelation = mapCorrelationData(correlationData);
+        displayCorrelationAttack(mappedCorrelation);
         document.getElementById('correlationSection').style.display = 'block';
       } else {
         document.getElementById('correlationSection').style.display = 'none';
@@ -3002,6 +3021,117 @@
 
       // Scroll to results
       resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Map API deanonymization response to display format
+    function mapDeanonymizationData(apiData) {
+      // If already in display format (client-side), return as-is
+      if (apiData.uniqueDataPoints) return apiData;
+
+      // Map from API format
+      return {
+        kAnonymity: apiData.kAnonymity || Math.round(1 / Math.max(0.01, apiData.risk || 0.5)),
+        identifiabilityScore: apiData.risk || 0.5,
+        uniqueDataPoints: (apiData.contributingFactors || []).map(f => ({
+          type: f.type || f.dataType,
+          value: f.value || f.matchedValue || '[Erkannt]',
+          uniqueness: f.uniquenessScore || f.uniqueness || 0.5,
+          icon: RISK_FACTORS[f.type]?.icon || '📌',
+          label: RISK_FACTORS[f.type]?.label || f.type,
+          note: f.uniquenessScore > 0.7 ? 'Hohe Identifikationskraft!' :
+                f.uniquenessScore > 0.4 ? 'Mittelhohe Identifikationskraft' : 'Geringe Identifikationskraft'
+        })),
+        combinedRisk: {
+          score: apiData.risk || 0.5,
+          explanation: `${(apiData.contributingFactors || []).length} Datenpunkte ergeben ${Math.round((apiData.risk || 0.5) * 100)}% Identifizierbarkeit.`,
+          dataPointsNeeded: Math.max(0, 3 - (apiData.contributingFactors || []).length),
+          recommendation: apiData.recommendation || 'Weniger persönliche Details teilen.'
+        }
+      };
+    }
+
+    // Map API breach simulation response to display format
+    function mapBreachSimulationData(apiData) {
+      // If already in display format (client-side), return as-is
+      if (apiData.scenarios) return apiData;
+
+      // Map from API format
+      const scenarios = (apiData.applicableScenarios || []).map(s => ({
+        type: s.id || s.type,
+        icon: s.icon || BREACH_SCENARIOS.find(b => b.id === s.id)?.icon || '💥',
+        name: s.name || s.id,
+        description: s.description || '',
+        probability: s.adjustedProbability > 0.6 ? 'high' : s.adjustedProbability > 0.3 ? 'medium' : 'low',
+        affectedData: s.affectedData || s.affectedTypes || [],
+        potentialDamage: Math.round((s.adjustedProbability || 0.5) * 10),
+        consequences: s.consequences || s.potentialConsequences || [],
+        mitigation: s.mitigation || s.mitigations || [],
+        examples: s.realWorldExamples || s.examples || []
+      }));
+
+      return {
+        scenarios: scenarios.slice(0, 4),
+        overallBreachRisk: {
+          score: apiData.overallRisk || 0.5,
+          worstCase: scenarios[0]?.name || 'Kein signifikantes Breach-Risiko'
+        }
+      };
+    }
+
+    // Map API future risk response to display format
+    function mapFutureRiskData(apiData) {
+      // If already in display format (client-side), return as-is
+      if (apiData.timeline && apiData.timeline[0]?.newThreats) return apiData;
+
+      // Map from API format
+      const timeline = (apiData.timeline || []).map(t => ({
+        years: t.period === 'immediate' ? 0 : t.period === '1_year' ? 1 : t.period === '5_years' ? 5 : 10,
+        riskMultiplier: t.riskMultiplier || 1.0,
+        projectedScore: Math.round((t.riskScore || t.projectedRisk || 50) * 100 / (t.riskMultiplier || 1)),
+        newThreats: t.threats || t.newThreats || ['Risiko steigt mit der Zeit']
+      }));
+
+      // Ensure we have entries for 1, 5, 10 years
+      const timelineMap = { 1: null, 5: null, 10: null };
+      timeline.forEach(t => {
+        if (t.years in timelineMap) timelineMap[t.years] = t;
+      });
+
+      const normalizedTimeline = [1, 5, 10].map(y => timelineMap[y] || {
+        years: y,
+        riskMultiplier: y === 1 ? 1.2 : y === 5 ? 1.8 : 2.5,
+        projectedScore: 50 * (y === 1 ? 1.2 : y === 5 ? 1.8 : 2.5),
+        newThreats: ['Zunehmende Datenkorrelation möglich']
+      });
+
+      return {
+        timeline: normalizedTimeline,
+        permanentRisks: apiData.dataDecay?.permanentRisks || apiData.permanentRisks || []
+      };
+    }
+
+    // Map API correlation response to display format
+    function mapCorrelationData(apiData) {
+      // If already in display format (client-side), return as-is
+      if (apiData.possibleCorrelations) return apiData;
+
+      // Map from API format
+      const possibleCorrelations = (apiData.possibleAttacks || []).map(a => ({
+        method: a.name || a.method,
+        icon: a.icon || CORRELATION_METHODS.find(m => m.id === a.id)?.icon || '🔗',
+        confidence: a.confidence || a.successProbability || 0.5,
+        steps: a.steps || a.attackSteps || ['Datensammlung', 'Korrelationsanalyse'],
+        difficulty: a.difficulty || 'medium'
+      }));
+
+      return {
+        possibleCorrelations: possibleCorrelations.slice(0, 3),
+        attackSurface: {
+          score: apiData.risk || apiData.overallRisk || 0.5,
+          weakestLink: apiData.weakestLink || possibleCorrelations[0]?.method || 'Nicht ermittelt',
+          recommendation: apiData.recommendation || 'Weniger verknüpfbare Daten teilen.'
+        }
+      };
     }
 
     function displaySummary(summary) {
