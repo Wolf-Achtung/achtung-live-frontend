@@ -496,11 +496,11 @@
       }
 
       if (parts.length === 0) {
-        return `${categories.length} Risiko${categories.length === 1 ? '' : 'en'} erkannt`;
+        return `${categories.length} ${categories.length === 1 ? 'Risiko' : 'Risiken'} erkannt`;
       }
 
       const total = categories.length;
-      return `${parts.join(', ')} Risiko${total === 1 ? '' : 'en'} erkannt`;
+      return `${parts.join(', ')} ${total === 1 ? 'Risiko' : 'Risiken'} erkannt`;
     }
 
     // Normalisiert API-Response (unterstützt altes und neues Format)
