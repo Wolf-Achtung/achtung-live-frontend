@@ -3,6 +3,22 @@
 [build]
   publish = "."
 
+# Prerendering deaktivieren (legacy feature wird eingestellt)
+[build.processing]
+  skip_processing = false
+[build.processing.html]
+  pretty_urls = true
+[build.processing.css]
+  bundle = false
+  minify = false
+[build.processing.js]
+  bundle = false
+  minify = false
+[build.processing.images]
+  compress = true
+
+# Kein Prerendering nötig - Website ist bereits statisches HTML
+
 [[headers]]
   for = "/*"
   [headers.values]
