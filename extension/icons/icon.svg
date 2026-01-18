@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Background shield shape -->
+  <path d="M64 8 L116 28 L116 60 C116 90 92 114 64 120 C36 114 12 90 12 60 L12 28 Z" fill="#800000"/>
+
+  <!-- Inner highlight -->
+  <path d="M64 16 L108 33 L108 60 C108 85 87 106 64 112 C41 106 20 85 20 60 L20 33 Z" fill="#a00000"/>
+
+  <!-- Letter "a" in brackets -->
+  <text x="64" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white">[a]</text>
+</svg>
