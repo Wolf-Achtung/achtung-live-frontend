@@ -1,7 +1,7 @@
 // Netlify Function als Proxy für die Analyse-API
 // Umgeht CORS-Probleme durch Server-zu-Server Kommunikation
 
-const API_URL = "https://web-production-2e4ae.up.railway.app/analyze";
+const API_URL = "https://achtung-live-backend-production.up.railway.app/analyze";
 
 exports.handler = async (event, context) => {
   // CORS Headers für alle Responses
