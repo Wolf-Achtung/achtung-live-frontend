@@ -111,6 +111,7 @@
       <button class="tab-btn" data-tab="predictive" role="tab" aria-selected="false" aria-controls="predictiveTab" data-i18n="tabs.predictive">🔮 Predictive</button>
       <button class="tab-btn" data-tab="footprint" role="tab" aria-selected="false" aria-controls="footprintTab" data-i18n="tabs.footprint">🔍 Footprint</button>
       <button class="tab-btn" data-tab="coach" role="tab" aria-selected="false" aria-controls="coachTab" data-i18n="tabs.coach">🤖 Coach</button>
+      <button class="tab-btn" data-tab="policy" role="tab" aria-selected="false" aria-controls="policyTab" data-i18n="tabs.policy">📜 Policy</button>
     </div>
 
     <!-- Single Text Tab -->
@@ -759,6 +760,180 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Analyzer Tab (Phase 13) -->
+    <div id="policyTab" class="tab-content" role="tabpanel" aria-labelledby="policy-tab">
+      <h2 data-i18n="policy.title">📜 Privacy Policy Analyzer</h2>
+      <p class="policy-description" data-i18n="policy.description">Analysiere Datenschutzerklärungen und AGBs - einfach verständlich</p>
+
+      <div class="policy-container">
+        <!-- Input Section -->
+        <div class="policy-input-section">
+          <div class="policy-input-tabs">
+            <button type="button" class="policy-input-tab active" data-input="url" onclick="switchPolicyInput('url')">
+              <span class="tab-icon">🔗</span>
+              <span>URL eingeben</span>
+            </button>
+            <button type="button" class="policy-input-tab" data-input="text" onclick="switchPolicyInput('text')">
+              <span class="tab-icon">📝</span>
+              <span>Text einfügen</span>
+            </button>
+            <button type="button" class="policy-input-tab" data-input="known" onclick="switchPolicyInput('known')">
+              <span class="tab-icon">📚</span>
+              <span>Bekannte Dienste</span>
+            </button>
+          </div>
+
+          <!-- URL Input -->
+          <div class="policy-input-content" id="policyUrlInput">
+            <form id="policyUrlForm">
+              <div class="url-input-group">
+                <span class="url-prefix">https://</span>
+                <input type="text" id="policyUrl" placeholder="example.com/privacy" autocomplete="off">
+                <button type="submit" class="analyze-btn">
+                  <span class="btn-text">Analysieren</span>
+                  <span class="btn-loading" style="display:none;">...</span>
+                </button>
+              </div>
+              <div class="popular-urls">
+                <span>Beliebt:</span>
+                <button type="button" onclick="setPolicyUrl('facebook.com/privacy')">Facebook</button>
+                <button type="button" onclick="setPolicyUrl('google.com/privacy')">Google</button>
+                <button type="button" onclick="setPolicyUrl('amazon.de/privacy')">Amazon</button>
+                <button type="button" onclick="setPolicyUrl('tiktok.com/privacy')">TikTok</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Text Input -->
+          <div class="policy-input-content" id="policyTextInput" style="display:none;">
+            <form id="policyTextForm">
+              <textarea id="policyText" placeholder="Füge hier die Datenschutzerklärung ein..." rows="8"></textarea>
+              <button type="submit" class="analyze-btn">
+                <span class="btn-text">Text analysieren</span>
+                <span class="btn-loading" style="display:none;">...</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Known Services -->
+          <div class="policy-input-content" id="policyKnownInput" style="display:none;">
+            <div class="known-services-grid" id="knownServicesGrid">
+              <!-- Services will be loaded dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="policy-results" id="policyResults" style="display:none;">
+
+          <!-- Score Card -->
+          <div class="policy-score-card" id="policyScoreCard">
+            <div class="score-circle">
+              <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" class="score-bg"/>
+                <circle cx="50" cy="50" r="45" class="score-fill" id="policyScoreFill"/>
+              </svg>
+              <div class="score-content">
+                <span class="score-value" id="policyScoreValue">--</span>
+                <span class="score-grade" id="policyScoreGrade">-</span>
+              </div>
+            </div>
+            <div class="score-details">
+              <h3 id="policyServiceName">Datenschutz-Bewertung</h3>
+              <p class="score-label" id="policyScoreLabel">--</p>
+              <p class="score-summary" id="policyScoreSummary"></p>
+            </div>
+          </div>
+
+          <!-- TLDR Summary -->
+          <div class="policy-tldr" id="policyTldr">
+            <div class="tldr-header">
+              <span class="tldr-icon">💡</span>
+              <h4>Zusammenfassung (TL;DR)</h4>
+            </div>
+            <p id="policyTldrText"></p>
+          </div>
+
+          <!-- Key Points -->
+          <div class="policy-section" id="policyKeyPoints">
+            <div class="section-header">
+              <span class="section-icon">📊</span>
+              <h4>Wichtige Punkte</h4>
+            </div>
+            <div class="key-points-list" id="keyPointsList"></div>
+          </div>
+
+          <!-- Red Flags -->
+          <div class="policy-section" id="policyRedFlags" style="display:none;">
+            <div class="section-header warning">
+              <span class="section-icon">🚨</span>
+              <h4>Warnsignale</h4>
+            </div>
+            <div class="red-flags-list" id="redFlagsList"></div>
+          </div>
+
+          <!-- Score Breakdown -->
+          <div class="policy-section" id="policyBreakdown">
+            <div class="section-header collapsible" onclick="togglePolicySection('breakdownContent')">
+              <span class="section-icon">📈</span>
+              <h4>Score-Aufschlüsselung</h4>
+              <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content" id="breakdownContent">
+              <div class="breakdown-grid" id="breakdownGrid"></div>
+            </div>
+          </div>
+
+          <!-- Data Collection -->
+          <div class="policy-section" id="policyDataCollection">
+            <div class="section-header collapsible" onclick="togglePolicySection('dataCollectionContent')">
+              <span class="section-icon">📋</span>
+              <h4>Gesammelte Daten</h4>
+              <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content" id="dataCollectionContent" style="display:none;">
+              <div class="data-collection-list" id="dataCollectionList"></div>
+            </div>
+          </div>
+
+          <!-- Third Parties -->
+          <div class="policy-section" id="policyThirdParties">
+            <div class="section-header collapsible" onclick="togglePolicySection('thirdPartiesContent')">
+              <span class="section-icon">🔗</span>
+              <h4>Datenweitergabe</h4>
+              <span class="section-count" id="thirdPartyCount">0</span>
+              <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content" id="thirdPartiesContent" style="display:none;">
+              <div class="third-parties-list" id="thirdPartiesList"></div>
+            </div>
+          </div>
+
+          <!-- Recommendations -->
+          <div class="policy-section" id="policyRecommendations">
+            <div class="section-header">
+              <span class="section-icon">💡</span>
+              <h4>Empfehlungen</h4>
+            </div>
+            <div class="recommendations-list" id="policyRecommendationsList"></div>
+          </div>
+
+          <!-- Compare CTA -->
+          <div class="policy-compare-cta">
+            <span class="cta-icon">⚖️</span>
+            <div class="cta-text">
+              <strong>Bessere Alternativen?</strong>
+              <span id="betterAlternativesText">Vergleiche mit datenschutzfreundlicheren Diensten</span>
+            </div>
+            <button type="button" class="cta-btn" onclick="showBetterAlternatives()">
+              Vergleichen
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -4609,6 +4784,659 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
     }
 
     // ========================================
+    // Phase 13: Privacy Policy Analyzer
+    // ========================================
+
+    const API_POLICY_URL = `${API_BASE}/policy-analyze`;
+    const API_POLICY_QUICK_URL = `${API_BASE}/policy-quick-check`;
+    const API_POLICY_KNOWN_URL = `${API_BASE}/policy-known`;
+
+    let currentPolicyInput = 'url';
+    let lastPolicyResults = null;
+
+    // Known services database for client-side fallback
+    const KNOWN_SERVICES_DB = [
+      { domain: 'facebook.com', name: 'Facebook', icon: '👤', score: 35, grade: 'D', category: 'social' },
+      { domain: 'google.com', name: 'Google', icon: '🔍', score: 45, grade: 'C', category: 'tech' },
+      { domain: 'amazon.de', name: 'Amazon', icon: '📦', score: 40, grade: 'C', category: 'shopping' },
+      { domain: 'tiktok.com', name: 'TikTok', icon: '🎵', score: 25, grade: 'D', category: 'social' },
+      { domain: 'twitter.com', name: 'X/Twitter', icon: '🐦', score: 38, grade: 'D', category: 'social' },
+      { domain: 'instagram.com', name: 'Instagram', icon: '📷', score: 32, grade: 'D', category: 'social' },
+      { domain: 'whatsapp.com', name: 'WhatsApp', icon: '💬', score: 50, grade: 'C', category: 'messaging' },
+      { domain: 'signal.org', name: 'Signal', icon: '🔐', score: 92, grade: 'A', category: 'messaging' },
+      { domain: 'proton.me', name: 'Proton', icon: '🛡️', score: 95, grade: 'A', category: 'privacy' },
+      { domain: 'duckduckgo.com', name: 'DuckDuckGo', icon: '🦆', score: 90, grade: 'A', category: 'search' },
+      { domain: 'linkedin.com', name: 'LinkedIn', icon: '💼', score: 42, grade: 'C', category: 'professional' },
+      { domain: 'spotify.com', name: 'Spotify', icon: '🎧', score: 55, grade: 'C', category: 'entertainment' },
+      { domain: 'netflix.com', name: 'Netflix', icon: '🎬', score: 60, grade: 'B', category: 'entertainment' },
+      { domain: 'zoom.us', name: 'Zoom', icon: '📹', score: 48, grade: 'C', category: 'communication' },
+      { domain: 'microsoft.com', name: 'Microsoft', icon: '🪟', score: 52, grade: 'C', category: 'tech' },
+      { domain: 'apple.com', name: 'Apple', icon: '🍎', score: 70, grade: 'B', category: 'tech' }
+    ];
+
+    // Red flags database
+    const RED_FLAGS_DB = {
+      'unlimited_sharing': { text: 'Unbegrenzte Datenweitergabe an Dritte', severity: 'high', icon: '🚨' },
+      'sell_data': { text: 'Verkauf personenbezogener Daten möglich', severity: 'high', icon: '💰' },
+      'no_deletion': { text: 'Keine garantierte Datenlöschung', severity: 'high', icon: '♾️' },
+      'vague_purposes': { text: 'Vage Zweckangaben bei Datennutzung', severity: 'medium', icon: '❓' },
+      'third_party_tracking': { text: 'Tracking durch Drittanbieter', severity: 'medium', icon: '👁️' },
+      'location_tracking': { text: 'Permanente Standortverfolgung', severity: 'medium', icon: '📍' },
+      'data_retention': { text: 'Unbegrenzte Speicherdauer', severity: 'medium', icon: '⏰' },
+      'profiling': { text: 'Automatisierte Profilerstellung', severity: 'medium', icon: '🤖' },
+      'change_without_notice': { text: 'Änderungen ohne Benachrichtigung', severity: 'low', icon: '📝' },
+      'forced_consent': { text: 'Erzwungene Zustimmung für Nutzung', severity: 'high', icon: '⚠️' }
+    };
+
+    // Data categories
+    const DATA_CATEGORIES = {
+      'personal_info': { label: 'Persönliche Daten', icon: '👤', examples: ['Name', 'E-Mail', 'Telefon', 'Adresse'] },
+      'device_info': { label: 'Gerätedaten', icon: '📱', examples: ['IP-Adresse', 'Browser', 'Betriebssystem', 'Gerätekennungen'] },
+      'location': { label: 'Standortdaten', icon: '📍', examples: ['GPS', 'Netzwerkbasiert', 'Zeitzone'] },
+      'financial': { label: 'Finanzdaten', icon: '💳', examples: ['Zahlungsdaten', 'Kaufhistorie', 'Kontodaten'] },
+      'behavioral': { label: 'Verhaltensdaten', icon: '👁️', examples: ['Klickverhalten', 'Nutzungsdauer', 'Interessen'] },
+      'social': { label: 'Soziale Daten', icon: '👥', examples: ['Kontakte', 'Follower', 'Interaktionen'] },
+      'content': { label: 'Nutzungsinhalte', icon: '📄', examples: ['Nachrichten', 'Uploads', 'Kommentare'] },
+      'biometric': { label: 'Biometrische Daten', icon: '🔐', examples: ['Gesichtserkennung', 'Stimme', 'Fingerabdruck'] }
+    };
+
+    function initPolicyAnalyzer() {
+      // URL form submission
+      const urlForm = document.getElementById('policyUrlForm');
+      if (urlForm) {
+        urlForm.addEventListener('submit', handlePolicyUrlSubmit);
+      }
+
+      // Text form submission
+      const textForm = document.getElementById('policyTextForm');
+      if (textForm) {
+        textForm.addEventListener('submit', handlePolicyTextSubmit);
+      }
+
+      // Load known services grid
+      loadKnownServicesGrid();
+    }
+
+    function switchPolicyInput(inputType) {
+      currentPolicyInput = inputType;
+
+      // Update tabs
+      document.querySelectorAll('.policy-input-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.input === inputType);
+      });
+
+      // Show/hide content sections
+      document.getElementById('policyUrlInput').style.display = inputType === 'url' ? 'block' : 'none';
+      document.getElementById('policyTextInput').style.display = inputType === 'text' ? 'block' : 'none';
+      document.getElementById('policyKnownInput').style.display = inputType === 'known' ? 'block' : 'none';
+    }
+
+    function setPolicyUrl(url) {
+      document.getElementById('policyUrl').value = url;
+      document.getElementById('policyUrlForm').dispatchEvent(new Event('submit'));
+    }
+
+    function loadKnownServicesGrid() {
+      const grid = document.getElementById('knownServicesGrid');
+      if (!grid) return;
+
+      grid.innerHTML = KNOWN_SERVICES_DB.map(service => `
+        <div class="known-service-card grade-${service.grade.toLowerCase()}" onclick="analyzeKnownService('${service.domain}')">
+          <span class="service-icon">${service.icon}</span>
+          <span class="service-name">${service.name}</span>
+          <span class="service-grade grade-badge-${service.grade.toLowerCase()}">${service.grade}</span>
+        </div>
+      `).join('');
+    }
+
+    async function handlePolicyUrlSubmit(e) {
+      e.preventDefault();
+      let url = document.getElementById('policyUrl').value.trim();
+
+      if (!url) {
+        alert('Bitte gib eine URL ein.');
+        return;
+      }
+
+      // Add https:// if not present
+      if (!url.startsWith('http')) {
+        url = 'https://' + url;
+      }
+
+      await analyzePolicy({ type: 'url', value: url });
+    }
+
+    async function handlePolicyTextSubmit(e) {
+      e.preventDefault();
+      const text = document.getElementById('policyText').value.trim();
+
+      if (!text) {
+        alert('Bitte füge einen Text ein.');
+        return;
+      }
+
+      if (text.length < 100) {
+        alert('Der Text ist zu kurz für eine Analyse. Bitte füge die vollständige Datenschutzerklärung ein.');
+        return;
+      }
+
+      await analyzePolicy({ type: 'text', value: text });
+    }
+
+    async function analyzeKnownService(domain) {
+      await analyzePolicy({ type: 'known', value: domain });
+    }
+
+    async function analyzePolicy(input) {
+      // Show loading state
+      const submitBtn = document.querySelector('.policy-input-content:not([style*="display: none"]) .analyze-btn');
+      if (submitBtn) {
+        submitBtn.querySelector('.btn-text').style.display = 'none';
+        submitBtn.querySelector('.btn-loading').style.display = 'inline';
+        submitBtn.disabled = true;
+      }
+
+      try {
+        let results;
+
+        // Try API first
+        try {
+          const endpoint = input.type === 'known' ? API_POLICY_KNOWN_URL : API_POLICY_URL;
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(input.type === 'known' ? { domain: input.value } : input)
+          });
+
+          if (response.ok) {
+            results = await response.json();
+          } else {
+            throw new Error('API unavailable');
+          }
+        } catch (apiError) {
+          console.log('Using client-side policy analysis');
+          results = performClientSidePolicyAnalysis(input);
+        }
+
+        lastPolicyResults = results;
+        displayPolicyResults(results);
+
+      } catch (error) {
+        console.error('Policy analysis error:', error);
+        alert('Fehler bei der Analyse. Bitte versuche es erneut.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.querySelector('.btn-text').style.display = 'inline';
+          submitBtn.querySelector('.btn-loading').style.display = 'none';
+          submitBtn.disabled = false;
+        }
+      }
+    }
+
+    function performClientSidePolicyAnalysis(input) {
+      // Check if known service
+      if (input.type === 'known' || input.type === 'url') {
+        let domain = input.value;
+        if (input.type === 'url') {
+          try {
+            domain = new URL(input.value.startsWith('http') ? input.value : 'https://' + input.value).hostname;
+          } catch (e) {
+            domain = input.value;
+          }
+        }
+
+        // Find known service
+        const knownService = KNOWN_SERVICES_DB.find(s =>
+          domain.includes(s.domain) || s.domain.includes(domain.replace('www.', ''))
+        );
+
+        if (knownService) {
+          return generateKnownServiceResults(knownService);
+        }
+      }
+
+      // Client-side text analysis
+      return generateTextAnalysisResults(input.value);
+    }
+
+    function generateKnownServiceResults(service) {
+      const isGood = service.score >= 70;
+      const isBad = service.score < 40;
+
+      // Generate red flags based on score
+      const redFlags = [];
+      if (isBad) {
+        const flagKeys = Object.keys(RED_FLAGS_DB);
+        const numFlags = Math.floor(4 + Math.random() * 3);
+        for (let i = 0; i < numFlags && i < flagKeys.length; i++) {
+          redFlags.push({
+            ...RED_FLAGS_DB[flagKeys[i]],
+            id: flagKeys[i]
+          });
+        }
+      } else if (!isGood) {
+        const mediumFlags = ['vague_purposes', 'third_party_tracking', 'data_retention'];
+        mediumFlags.slice(0, 2).forEach(key => {
+          redFlags.push({ ...RED_FLAGS_DB[key], id: key });
+        });
+      }
+
+      // Generate data collection info
+      const dataCategories = Object.keys(DATA_CATEGORIES);
+      const collectedData = dataCategories
+        .filter(() => Math.random() > (isGood ? 0.6 : 0.2))
+        .map(key => ({
+          category: key,
+          ...DATA_CATEGORIES[key],
+          purpose: getPurposeForCategory(key)
+        }));
+
+      // Generate third parties
+      const thirdParties = generateThirdParties(service.score);
+
+      return {
+        service: {
+          name: service.name,
+          domain: service.domain,
+          icon: service.icon
+        },
+        score: service.score,
+        grade: service.grade,
+        gradeLabel: getGradeLabel(service.grade),
+        tldr: generateTldr(service),
+        keyPoints: generateKeyPoints(service, redFlags.length),
+        redFlags: redFlags,
+        breakdown: generateBreakdown(service.score),
+        dataCollection: collectedData,
+        thirdParties: thirdParties,
+        recommendations: generateRecommendations(service, redFlags),
+        alternatives: getAlternatives(service)
+      };
+    }
+
+    function generateTextAnalysisResults(text) {
+      // Simple keyword analysis
+      const lowerText = text.toLowerCase();
+
+      // Calculate score based on keywords
+      let score = 50;
+      const redFlags = [];
+
+      // Negative keywords
+      const negativeKeywords = {
+        'dritte': -5, 'weitergabe': -5, 'verkauf': -10, 'werbung': -5,
+        'tracking': -8, 'partner': -3, 'affiliate': -5, 'marketing': -5,
+        'unbegrenzt': -7, 'permanent': -5
+      };
+
+      // Positive keywords
+      const positiveKeywords = {
+        'verschlüssel': 5, 'lösch': 5, 'auskunft': 5, 'widerruf': 5,
+        'gdpr': 8, 'dsgvo': 8, 'datenschutzbeauftragter': 5,
+        'minimierung': 5, 'anonymisier': 8
+      };
+
+      for (const [word, impact] of Object.entries(negativeKeywords)) {
+        if (lowerText.includes(word)) {
+          score += impact;
+          if (impact <= -7) {
+            redFlags.push({
+              text: `Kritischer Begriff gefunden: "${word}"`,
+              severity: 'medium',
+              icon: '⚠️'
+            });
+          }
+        }
+      }
+
+      for (const [word, impact] of Object.entries(positiveKeywords)) {
+        if (lowerText.includes(word)) {
+          score += impact;
+        }
+      }
+
+      score = Math.max(0, Math.min(100, score));
+      const grade = scoreToGrade(score);
+
+      return {
+        service: {
+          name: 'Benutzerdefinierte Analyse',
+          domain: 'text-analyse',
+          icon: '📝'
+        },
+        score: score,
+        grade: grade,
+        gradeLabel: getGradeLabel(grade),
+        tldr: `Diese Datenschutzerklärung erhält einen Score von ${score}/100 (${grade}). ${score < 50 ? 'Es wurden einige bedenkliche Formulierungen gefunden.' : 'Die Richtlinie enthält grundlegende Datenschutzprinzipien.'}`,
+        keyPoints: [
+          { type: 'info', text: `Text mit ${text.length} Zeichen analysiert` },
+          { type: score >= 50 ? 'positive' : 'negative', text: score >= 50 ? 'Grundlegende DSGVO-Konformität erkennbar' : 'Möglicherweise DSGVO-kritische Formulierungen' }
+        ],
+        redFlags: redFlags,
+        breakdown: generateBreakdown(score),
+        dataCollection: [],
+        thirdParties: [],
+        recommendations: [
+          { priority: 1, text: 'Vollständige Analyse mit Backend für detaillierte Ergebnisse' }
+        ],
+        alternatives: []
+      };
+    }
+
+    function scoreToGrade(score) {
+      if (score >= 85) return 'A';
+      if (score >= 70) return 'B';
+      if (score >= 50) return 'C';
+      if (score >= 30) return 'D';
+      return 'F';
+    }
+
+    function getGradeLabel(grade) {
+      const labels = {
+        'A': 'Ausgezeichnet',
+        'B': 'Gut',
+        'C': 'Akzeptabel',
+        'D': 'Mangelhaft',
+        'F': 'Ungenügend'
+      };
+      return labels[grade] || 'Unbekannt';
+    }
+
+    function generateTldr(service) {
+      const tldrs = {
+        'A': `${service.name} bietet eine vorbildliche Datenschutzrichtlinie mit klaren Angaben, minimaler Datensammlung und starkem Nutzerschutz. Empfehlenswert!`,
+        'B': `${service.name} hat eine solide Datenschutzrichtlinie mit guten Grundprinzipien. Einige Bereiche könnten transparenter sein.`,
+        'C': `${service.name} erfüllt grundlegende Datenschutzanforderungen, aber es gibt Verbesserungspotential bei Transparenz und Datenminimierung.`,
+        'D': `${service.name} sammelt umfangreiche Daten und teilt diese mit vielen Partnern. Die Richtlinie ist wenig nutzerfreundlich.`,
+        'F': `Vorsicht: ${service.name} hat erhebliche Datenschutzmängel. Umfangreiche Datensammlung, vage Formulierungen und weitreichende Datenweitergabe.`
+      };
+      return tldrs[service.grade] || tldrs['C'];
+    }
+
+    function generateKeyPoints(service, numRedFlags) {
+      const points = [];
+
+      if (service.score >= 70) {
+        points.push({ type: 'positive', text: 'Transparente Datennutzung' });
+        points.push({ type: 'positive', text: 'Starke Nutzerkontrolle' });
+        points.push({ type: 'positive', text: 'Datenminimierung beachtet' });
+      } else if (service.score >= 50) {
+        points.push({ type: 'neutral', text: 'Grundlegende Transparenz vorhanden' });
+        points.push({ type: 'negative', text: 'Tracking durch Drittanbieter' });
+        points.push({ type: 'info', text: 'DSGVO-Rechte werden erwähnt' });
+      } else {
+        points.push({ type: 'negative', text: 'Umfangreiche Datensammlung' });
+        points.push({ type: 'negative', text: 'Weitergabe an viele Partner' });
+        points.push({ type: 'negative', text: 'Wenig Transparenz über Verwendung' });
+      }
+
+      if (numRedFlags > 3) {
+        points.push({ type: 'negative', text: `${numRedFlags} kritische Warnsignale gefunden` });
+      }
+
+      return points;
+    }
+
+    function generateBreakdown(overallScore) {
+      // Generate sub-scores based on overall score with some variance
+      const variance = () => Math.floor(Math.random() * 20) - 10;
+
+      return {
+        transparency: Math.max(0, Math.min(100, overallScore + variance())),
+        dataMinimization: Math.max(0, Math.min(100, overallScore + variance())),
+        userControl: Math.max(0, Math.min(100, overallScore + variance())),
+        security: Math.max(0, Math.min(100, overallScore + variance() + 10)),
+        thirdPartySharing: Math.max(0, Math.min(100, overallScore + variance() - 5)),
+        gdprCompliance: Math.max(0, Math.min(100, overallScore + variance() + 5))
+      };
+    }
+
+    function getPurposeForCategory(category) {
+      const purposes = {
+        'personal_info': 'Kontoverwaltung, Kundenservice',
+        'device_info': 'Sicherheit, Fehlerbehebung, Analyse',
+        'location': 'Lokalisierte Dienste, Werbung',
+        'financial': 'Zahlungsabwicklung, Betrugsprävention',
+        'behavioral': 'Personalisierung, Werbung, Analyse',
+        'social': 'Empfehlungen, soziale Funktionen',
+        'content': 'Bereitstellung des Dienstes',
+        'biometric': 'Authentifizierung, Sicherheit'
+      };
+      return purposes[category] || 'Dienstbereitstellung';
+    }
+
+    function generateThirdParties(score) {
+      const allParties = [
+        { name: 'Google Analytics', category: 'Analyse', risk: 'medium' },
+        { name: 'Facebook Pixel', category: 'Werbung', risk: 'high' },
+        { name: 'Stripe', category: 'Zahlung', risk: 'low' },
+        { name: 'CloudFlare', category: 'Sicherheit', risk: 'low' },
+        { name: 'Hotjar', category: 'Analyse', risk: 'medium' },
+        { name: 'DoubleClick', category: 'Werbung', risk: 'high' },
+        { name: 'Amazon AWS', category: 'Hosting', risk: 'low' },
+        { name: 'Mixpanel', category: 'Analyse', risk: 'medium' },
+        { name: 'Criteo', category: 'Werbung', risk: 'high' },
+        { name: 'Salesforce', category: 'CRM', risk: 'medium' }
+      ];
+
+      // Lower score = more third parties
+      const numParties = score >= 70 ? 2 : score >= 50 ? 5 : 8;
+      return allParties.slice(0, numParties);
+    }
+
+    function generateRecommendations(service, redFlags) {
+      const recs = [];
+
+      if (service.score < 50) {
+        recs.push({ priority: 1, text: `Erwäge datenschutzfreundlichere Alternativen zu ${service.name}` });
+      }
+
+      if (redFlags.length > 0) {
+        recs.push({ priority: 2, text: 'Überprüfe die Datenschutzeinstellungen im Dienst' });
+      }
+
+      recs.push({ priority: 3, text: 'Nutze nur notwendige Funktionen' });
+
+      if (service.score < 70) {
+        recs.push({ priority: 4, text: 'Gib nur minimal notwendige Daten preis' });
+        recs.push({ priority: 5, text: 'Prüfe regelmäßig gespeicherte Daten und fordere Löschung an' });
+      }
+
+      return recs;
+    }
+
+    function getAlternatives(service) {
+      const alternatives = {
+        'facebook.com': ['Mastodon', 'Diaspora'],
+        'google.com': ['DuckDuckGo', 'Startpage'],
+        'whatsapp.com': ['Signal', 'Threema'],
+        'instagram.com': ['Pixelfed'],
+        'twitter.com': ['Mastodon', 'Bluesky'],
+        'tiktok.com': ['BeReal'],
+        'zoom.us': ['Jitsi Meet'],
+        'amazon.de': ['lokale Händler']
+      };
+      return alternatives[service.domain] || [];
+    }
+
+    function displayPolicyResults(results) {
+      const container = document.getElementById('policyResults');
+      container.style.display = 'block';
+
+      // Update score circle
+      const scoreValue = document.getElementById('policyScoreValue');
+      const scoreFill = document.getElementById('policyScoreFill');
+      const scoreGrade = document.getElementById('policyScoreGrade');
+      const scoreLabel = document.getElementById('policyScoreLabel');
+      const serviceName = document.getElementById('policyServiceName');
+      const scoreSummary = document.getElementById('policyScoreSummary');
+
+      scoreValue.textContent = results.score;
+      scoreGrade.textContent = results.grade;
+      scoreLabel.textContent = results.gradeLabel;
+      serviceName.textContent = results.service.icon + ' ' + results.service.name;
+
+      // Animate score circle
+      const circumference = 2 * Math.PI * 45;
+      const offset = circumference - (results.score / 100) * circumference;
+      scoreFill.style.strokeDasharray = circumference;
+      scoreFill.style.strokeDashoffset = offset;
+
+      // Color based on grade
+      const colors = { A: '#4caf50', B: '#8bc34a', C: '#ff9800', D: '#f44336', F: '#9c27b0' };
+      const color = colors[results.grade] || '#ff9800';
+      scoreFill.style.stroke = color;
+      scoreGrade.style.color = color;
+
+      // TLDR
+      document.getElementById('policyTldrText').textContent = results.tldr;
+
+      // Key Points
+      const keyPointsList = document.getElementById('keyPointsList');
+      keyPointsList.innerHTML = results.keyPoints.map(point => `
+        <div class="key-point ${point.type}">
+          <span class="point-icon">${point.type === 'positive' ? '✅' : point.type === 'negative' ? '❌' : 'ℹ️'}</span>
+          <span class="point-text">${point.text}</span>
+        </div>
+      `).join('');
+
+      // Red Flags
+      const redFlagsSection = document.getElementById('policyRedFlags');
+      const redFlagsList = document.getElementById('redFlagsList');
+      if (results.redFlags && results.redFlags.length > 0) {
+        redFlagsSection.style.display = 'block';
+        redFlagsList.innerHTML = results.redFlags.map(flag => `
+          <div class="red-flag-item severity-${flag.severity}">
+            <span class="flag-icon">${flag.icon}</span>
+            <span class="flag-text">${flag.text}</span>
+            <span class="severity-badge">${flag.severity}</span>
+          </div>
+        `).join('');
+      } else {
+        redFlagsSection.style.display = 'none';
+      }
+
+      // Breakdown
+      const breakdownGrid = document.getElementById('breakdownGrid');
+      if (results.breakdown) {
+        const labels = {
+          transparency: 'Transparenz',
+          dataMinimization: 'Datenminimierung',
+          userControl: 'Nutzerkontrolle',
+          security: 'Sicherheit',
+          thirdPartySharing: 'Datenweitergabe',
+          gdprCompliance: 'DSGVO-Konformität'
+        };
+        breakdownGrid.innerHTML = Object.entries(results.breakdown).map(([key, value]) => `
+          <div class="breakdown-item">
+            <span class="breakdown-label">${labels[key] || key}</span>
+            <div class="breakdown-bar">
+              <div class="breakdown-fill" style="width: ${value}%; background: ${value >= 70 ? '#4caf50' : value >= 50 ? '#ff9800' : '#f44336'}"></div>
+            </div>
+            <span class="breakdown-value">${value}%</span>
+          </div>
+        `).join('');
+      }
+
+      // Data Collection
+      const dataList = document.getElementById('dataCollectionList');
+      if (results.dataCollection && results.dataCollection.length > 0) {
+        dataList.innerHTML = results.dataCollection.map(data => `
+          <div class="data-category-item">
+            <span class="data-icon">${data.icon}</span>
+            <div class="data-info">
+              <strong>${data.label}</strong>
+              <span class="data-examples">${data.examples.join(', ')}</span>
+              <span class="data-purpose">Zweck: ${data.purpose}</span>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        dataList.innerHTML = '<p class="no-data">Keine detaillierten Informationen zur Datensammlung verfügbar.</p>';
+      }
+
+      // Third Parties
+      document.getElementById('thirdPartyCount').textContent = results.thirdParties?.length || 0;
+      const thirdPartiesList = document.getElementById('thirdPartiesList');
+      if (results.thirdParties && results.thirdParties.length > 0) {
+        thirdPartiesList.innerHTML = results.thirdParties.map(party => `
+          <div class="third-party-item risk-${party.risk}">
+            <span class="party-name">${party.name}</span>
+            <span class="party-category">${party.category}</span>
+            <span class="party-risk risk-badge-${party.risk}">${party.risk}</span>
+          </div>
+        `).join('');
+      } else {
+        thirdPartiesList.innerHTML = '<p class="no-data">Keine Drittanbieter-Informationen verfügbar.</p>';
+      }
+
+      // Recommendations
+      const recsList = document.getElementById('policyRecommendationsList');
+      if (results.recommendations && results.recommendations.length > 0) {
+        recsList.innerHTML = results.recommendations.map(rec => `
+          <div class="policy-recommendation-item priority-${rec.priority}">
+            <span class="rec-priority">${rec.priority}</span>
+            <span class="rec-text">${rec.text}</span>
+          </div>
+        `).join('');
+      }
+
+      // Alternatives
+      if (results.alternatives && results.alternatives.length > 0) {
+        document.getElementById('betterAlternativesText').textContent =
+          `Bessere Alternativen: ${results.alternatives.join(', ')}`;
+      }
+
+      // Scroll to results
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function togglePolicySection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const header = section.previousElementSibling;
+      const toggle = header.querySelector('.section-toggle');
+
+      if (section.style.display === 'none') {
+        section.style.display = 'block';
+        toggle.textContent = '▼';
+      } else {
+        section.style.display = 'none';
+        toggle.textContent = '▶';
+      }
+    }
+
+    function showBetterAlternatives() {
+      if (!lastPolicyResults || !lastPolicyResults.alternatives || lastPolicyResults.alternatives.length === 0) {
+        alert('Keine alternativen Dienste bekannt. Nutze die Suchfunktion für datenschutzfreundliche Alternativen.');
+        return;
+      }
+
+      const alternatives = lastPolicyResults.alternatives;
+      const altServices = KNOWN_SERVICES_DB.filter(s =>
+        alternatives.some(alt => s.name.toLowerCase().includes(alt.toLowerCase()))
+      );
+
+      if (altServices.length > 0) {
+        switchPolicyInput('known');
+        setTimeout(() => {
+          const grid = document.getElementById('knownServicesGrid');
+          grid.innerHTML = altServices.map(service => `
+            <div class="known-service-card grade-${service.grade.toLowerCase()} highlighted" onclick="analyzeKnownService('${service.domain}')">
+              <span class="service-icon">${service.icon}</span>
+              <span class="service-name">${service.name}</span>
+              <span class="service-grade grade-badge-${service.grade.toLowerCase()}">${service.grade}</span>
+              <span class="service-recommended">✨ Empfohlen</span>
+            </div>
+          `).join('') + `
+            <button class="show-all-btn" onclick="loadKnownServicesGrid()">Alle Dienste anzeigen</button>
+          `;
+        }, 100);
+      } else {
+        alert(`Empfohlene Alternativen: ${alternatives.join(', ')}`);
+      }
+    }
+
+    // ========================================
     // Initialize Everything
     // ========================================
 
@@ -4633,6 +5461,9 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
       // Initialize Phase 10 features
       initPrivacyCoach();
+
+      // Initialize Phase 13 features
+      initPolicyAnalyzer();
 
       // Load saved language preference
       const savedLang = localStorage.getItem('achtung-lang') || 'de';
