@@ -4,7 +4,7 @@
  */
 
 // API Configuration - einheitlicher Endpunkt
-const API_BASE_URL = "https://web-production-2e4ae.up.railway.app";
+const API_BASE_URL = "https://achtung-live-backend-production.up.railway.app";
 
 // DOM Elements
 const analyzeButton = document.getElementById("analyze-button");
