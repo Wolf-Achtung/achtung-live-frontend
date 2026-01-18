@@ -1,249 +1,202 @@
-// achtung.live Privacy Guard - Popup Script
+// achtung.live Guard - Popup Script
 
-const API_URL = 'https://achtung-live-frontend.netlify.app/.netlify/functions/analyze';
+document.addEventListener('DOMContentLoaded', async () => {
+  // Load settings and stats
+  await loadSettings();
+  await loadStats();
+  await loadCurrentPage();
 
-// Category metadata for display
-const CATEGORY_META = {
-  iban: { label: "Bankdaten", icon: "🏦" },
-  credit_card: { label: "Kreditkarte", icon: "💳" },
-  phone: { label: "Telefon", icon: "📱" },
-  email: { label: "E-Mail", icon: "📧" },
-  address: { label: "Adresse", icon: "📍" },
-  name: { label: "Name", icon: "👤" },
-  health: { label: "Gesundheit", icon: "🏥" },
-  password: { label: "Passwort", icon: "🔑" },
-  location: { label: "Standort", icon: "📍" },
-  vacation: { label: "Abwesenheit", icon: "✈️" },
-  child: { label: "Kinderdaten", icon: "👶" },
-  generic: { label: "Sensibel", icon: "⚠️" }
-};
-
-// Initialize popup
-document.addEventListener('DOMContentLoaded', () => {
-  initializeUI();
-  loadSettings();
+  // Setup event listeners
+  setupEventListeners();
 });
 
-function initializeUI() {
-  const textArea = document.getElementById('quickText');
-  const checkBtn = document.getElementById('checkBtn');
-  const closeResults = document.getElementById('closeResults');
-  const charCount = document.getElementById('charCount');
+async function loadSettings() {
+  const response = await chrome.runtime.sendMessage({ type: 'GET_SETTINGS' });
+  const settings = response || {};
 
-  // Character counter
-  textArea.addEventListener('input', () => {
-    charCount.textContent = textArea.value.length;
+  document.getElementById('enabledToggle').checked = settings.enabled !== false;
+  document.getElementById('liveTypingToggle').checked = settings.liveTypingGuard !== false;
+  document.getElementById('formAnalysisToggle').checked = settings.formAnalysis !== false;
+  document.getElementById('darkPatternToggle').checked = settings.darkPatternDetection !== false;
+  document.getElementById('cookieAnalysisToggle').checked = settings.cookieAnalysis !== false;
 
-    // Auto-check if enabled
-    const autoCheck = document.getElementById('autoCheck').checked;
-    if (autoCheck && textArea.value.length > 20) {
-      debounce(performCheck, 1000)();
+  updateStatusIndicator(settings.enabled !== false);
+}
+
+async function loadStats() {
+  const stats = await chrome.runtime.sendMessage({ type: 'GET_STATS' });
+
+  document.getElementById('statAnalyses').textContent = formatNumber(stats?.totalAnalyses || 0);
+  document.getElementById('statWarnings').textContent = formatNumber(stats?.warningsShown || 0);
+  document.getElementById('statDarkPatterns').textContent = formatNumber(stats?.darkPatternsDetected || 0);
+  document.getElementById('statTrackers').textContent = formatNumber(stats?.trackersBlocked || 0);
+}
+
+async function loadCurrentPage() {
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tab?.url) {
+      const url = new URL(tab.url);
+      document.getElementById('pageDomain').textContent = url.hostname;
+
+      // Get site data
+      const siteData = await chrome.runtime.sendMessage({
+        type: 'GET_SITE_DATA',
+        payload: { domain: url.hostname }
+      });
+
+      if (siteData?.trustScore !== undefined) {
+        updatePageScore(siteData.trustScore);
+      }
     }
+  } catch (e) {
+    document.getElementById('pageDomain').textContent = 'Unbekannt';
+  }
+}
+
+function setupEventListeners() {
+  // Main toggle
+  document.getElementById('enabledToggle').addEventListener('change', async (e) => {
+    const enabled = e.target.checked;
+    await updateSetting('enabled', enabled);
+    updateStatusIndicator(enabled);
   });
 
-  // Check button
-  checkBtn.addEventListener('click', performCheck);
-
-  // Close results
-  closeResults.addEventListener('click', () => {
-    document.getElementById('resultsSection').style.display = 'none';
+  // Feature toggles
+  document.getElementById('liveTypingToggle').addEventListener('change', (e) => {
+    updateSetting('liveTypingGuard', e.target.checked);
   });
 
-  // Settings toggles
-  document.getElementById('autoCheck').addEventListener('change', saveSettings);
-  document.getElementById('showBadge').addEventListener('change', saveSettings);
+  document.getElementById('formAnalysisToggle').addEventListener('change', (e) => {
+    updateSetting('formAnalysis', e.target.checked);
+  });
 
-  // Paste from clipboard shortcut
-  textArea.addEventListener('paste', () => {
-    setTimeout(() => {
-      charCount.textContent = textArea.value.length;
-    }, 10);
+  document.getElementById('darkPatternToggle').addEventListener('change', (e) => {
+    updateSetting('darkPatternDetection', e.target.checked);
+  });
+
+  document.getElementById('cookieAnalysisToggle').addEventListener('change', (e) => {
+    updateSetting('cookieAnalysis', e.target.checked);
+  });
+
+  // Scan button
+  document.getElementById('scanPageBtn').addEventListener('click', scanCurrentPage);
+
+  // Report button
+  document.getElementById('reportBtn').addEventListener('click', () => {
+    chrome.tabs.create({ url: 'https://achtung.live/report' });
   });
 }
 
-// Debounce helper
-let debounceTimer;
-function debounce(func, wait) {
-  return function(...args) {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => func.apply(this, args), wait);
-  };
+async function updateSetting(key, value) {
+  await chrome.runtime.sendMessage({
+    type: 'UPDATE_SETTINGS',
+    payload: { [key]: value }
+  });
+
+  // Notify content scripts
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (tab?.id) {
+    chrome.tabs.sendMessage(tab.id, {
+      type: 'SETTINGS_UPDATED',
+      payload: { [key]: value }
+    }).catch(() => {});
+  }
 }
 
-// Perform privacy check
-async function performCheck() {
-  const text = document.getElementById('quickText').value.trim();
+function updateStatusIndicator(enabled) {
+  const indicator = document.getElementById('statusIndicator');
+  const statusText = indicator.querySelector('.status-text');
+  const statusDot = indicator.querySelector('.status-dot');
 
-  if (!text) {
-    showError('Bitte Text eingeben');
-    return;
+  if (enabled) {
+    statusText.textContent = 'Aktiv';
+    statusDot.style.background = '#4caf50';
+    indicator.classList.remove('disabled');
+  } else {
+    statusText.textContent = 'Deaktiviert';
+    statusDot.style.background = '#9e9e9e';
+    indicator.classList.add('disabled');
   }
+}
 
-  if (text.length < 5) {
-    showError('Text zu kurz (min. 5 Zeichen)');
-    return;
+function updatePageScore(score) {
+  const scoreValue = document.getElementById('scoreValue');
+  scoreValue.textContent = score + '%';
+
+  if (score >= 70) {
+    scoreValue.style.color = '#4caf50';
+  } else if (score >= 40) {
+    scoreValue.style.color = '#ff9800';
+  } else {
+    scoreValue.style.color = '#f44336';
   }
+}
 
-  // Show loading state
-  setLoadingState(true);
-  updateStatus('checking', 'Prüfe...');
+async function scanCurrentPage() {
+  const btn = document.getElementById('scanPageBtn');
+  const originalText = btn.querySelector('.action-text').textContent;
+  btn.querySelector('.action-text').textContent = 'Scanne...';
+  btn.disabled = true;
 
   try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, context: 'private' })
-    });
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab?.id) throw new Error('No active tab');
 
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    displayResults(data, text);
-    updateBadge(data);
+    const results = await chrome.tabs.sendMessage(tab.id, { type: 'SCAN_PAGE' });
+    displayScanResults(results);
 
   } catch (error) {
-    console.error('Check error:', error);
-    showError('Verbindungsfehler. Bitte erneut versuchen.');
-    updateStatus('error', 'Offline');
+    console.error('Scan error:', error);
+    displayScanResults({ error: 'Scan fehlgeschlagen' });
   } finally {
-    setLoadingState(false);
-  }
-}
-
-// Display results
-function displayResults(data, originalText) {
-  const resultsSection = document.getElementById('resultsSection');
-  const resultsContent = document.getElementById('resultsContent');
-
-  // Normalize data
-  const riskScore = data.riskScore ?? 100;
-  const categories = data.categories || [];
-
-  if (categories.length === 0) {
-    // All safe
-    resultsContent.innerHTML = `
-      <div class="result-safe">
-        <div class="result-icon">🛡️</div>
-        <div class="result-title">Alles sicher!</div>
-        <div class="result-text">Keine sensiblen Daten erkannt.</div>
-      </div>
-    `;
-    updateStatus('safe', 'Sicher');
-  } else {
-    // Risks found
-    const level = riskScore >= 80 ? 'low' : riskScore >= 50 ? 'medium' : 'high';
-
-    resultsContent.innerHTML = `
-      <div class="result-warning ${level}">
-        <div class="result-score">
-          <span class="score-number">${riskScore}</span>
-          <span class="score-label">/ 100</span>
-        </div>
-        <div class="result-risks">
-          ${categories.slice(0, 5).map(cat => {
-            const meta = CATEGORY_META[cat.type] || CATEGORY_META.generic;
-            return `
-              <div class="risk-item ${cat.severity || 'medium'}">
-                <span class="risk-icon">${meta.icon}</span>
-                <span class="risk-label">${meta.label}</span>
-              </div>
-            `;
-          }).join('')}
-          ${categories.length > 5 ? `<div class="risk-more">+${categories.length - 5} weitere</div>` : ''}
-        </div>
-        <div class="result-hint">
-          ${categories.length} ${categories.length === 1 ? 'Risiko' : 'Risiken'} erkannt
-        </div>
-      </div>
-      <a href="https://achtung.live/demo.html" target="_blank" class="full-analysis-btn">
-        Vollständige Analyse öffnen
-      </a>
-    `;
-    updateStatus(level === 'high' ? 'danger' : 'warning', `${categories.length} Risiken`);
-  }
-
-  resultsSection.style.display = 'block';
-}
-
-// Show error message
-function showError(message) {
-  const resultsSection = document.getElementById('resultsSection');
-  const resultsContent = document.getElementById('resultsContent');
-
-  resultsContent.innerHTML = `
-    <div class="result-error">
-      <span class="error-icon">⚠️</span>
-      <span class="error-text">${message}</span>
-    </div>
-  `;
-
-  resultsSection.style.display = 'block';
-}
-
-// Update status indicator
-function updateStatus(status, text) {
-  const indicator = document.getElementById('statusIndicator');
-  indicator.className = 'status-indicator ' + status;
-  indicator.querySelector('.status-text').textContent = text;
-}
-
-// Set loading state
-function setLoadingState(loading) {
-  const btn = document.getElementById('checkBtn');
-  const btnIcon = btn.querySelector('.btn-icon');
-  const btnText = btn.querySelector('.btn-text');
-
-  if (loading) {
-    btn.disabled = true;
-    btnIcon.textContent = '⏳';
-    btnText.textContent = 'Prüfe...';
-  } else {
+    btn.querySelector('.action-text').textContent = originalText;
     btn.disabled = false;
-    btnIcon.textContent = '🔍';
-    btnText.textContent = 'Text prüfen';
   }
 }
 
-// Update extension badge
-function updateBadge(data) {
-  const showBadge = document.getElementById('showBadge').checked;
+function displayScanResults(results) {
+  const section = document.getElementById('resultsSection');
+  const content = document.getElementById('resultsContent');
 
-  if (!showBadge) {
-    chrome.action.setBadgeText({ text: '' });
+  section.style.display = 'block';
+
+  if (results.error) {
+    content.innerHTML = '<div class="result-error">' + results.error + '</div>';
     return;
   }
 
-  const categories = data.categories || [];
+  let html = '';
 
-  if (categories.length === 0) {
-    chrome.action.setBadgeText({ text: '✓' });
-    chrome.action.setBadgeBackgroundColor({ color: '#28a745' });
-  } else {
-    chrome.action.setBadgeText({ text: String(categories.length) });
-    const riskScore = data.riskScore ?? 100;
-    const color = riskScore >= 80 ? '#ffc107' : riskScore >= 50 ? '#fd7e14' : '#dc3545';
-    chrome.action.setBadgeBackgroundColor({ color });
+  // Forms
+  if (results.forms?.length > 0) {
+    html += '<div class="result-group">';
+    html += '<div class="result-title">[F] Formulare: ' + results.forms.length + '</div>';
+    results.forms.forEach(form => {
+      html += '<div class="result-item">' + (form.fields?.length || 0) + ' Felder</div>';
+    });
+    html += '</div>';
   }
+
+  // Trackers
+  if (results.trackers?.length > 0) {
+    html += '<div class="result-group">';
+    html += '<div class="result-title">[T] Tracker: ' + results.trackers.length + '</div>';
+    results.trackers.forEach(t => {
+      html += '<div class="result-item">' + t.name + ' (' + t.type + ')</div>';
+    });
+    html += '</div>';
+  }
+
+  if (!html) {
+    html = '<div class="result-empty">Keine besonderen Funde</div>';
+  }
+
+  content.innerHTML = html;
 }
 
-// Save settings to storage
-function saveSettings() {
-  const settings = {
-    autoCheck: document.getElementById('autoCheck').checked,
-    showBadge: document.getElementById('showBadge').checked
-  };
-
-  chrome.storage.sync.set({ settings });
-}
-
-// Load settings from storage
-function loadSettings() {
-  chrome.storage.sync.get(['settings'], (result) => {
-    if (result.settings) {
-      document.getElementById('autoCheck').checked = result.settings.autoCheck || false;
-      document.getElementById('showBadge').checked = result.settings.showBadge !== false;
-    }
-  });
+function formatNumber(num) {
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+  return num.toString();
 }

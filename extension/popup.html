@@ -3,68 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>achtung.live Privacy Guard</title>
-  <link rel="stylesheet" href="popup-styles.css">
+  <title>achtung.live Guard</title>
+  <link rel="stylesheet" href="styles/popup.css">
 </head>
 <body>
   <div class="popup-container">
     <!-- Header -->
     <header class="popup-header">
       <div class="logo">[achtung.live]</div>
-      <div class="tagline">Privacy Guard</div>
+      <div class="subtitle">Guard</div>
     </header>
 
     <!-- Status Section -->
-    <div id="statusSection" class="status-section">
+    <section class="status-section">
       <div class="status-indicator" id="statusIndicator">
         <span class="status-dot"></span>
-        <span class="status-text">Bereit</span>
+        <span class="status-text">Aktiv</span>
       </div>
-    </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="enabledToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </section>
 
-    <!-- Quick Check Section -->
-    <div class="section">
-      <label for="quickText" class="section-label">Schnell-Check</label>
-      <textarea id="quickText" placeholder="Text hier eingeben oder einfügen..." rows="4"></textarea>
-      <div class="char-counter"><span id="charCount">0</span> Zeichen</div>
-      <button id="checkBtn" class="primary-btn">
-        <span class="btn-icon">🔍</span>
-        <span class="btn-text">Text prüfen</span>
+    <!-- Current Page Info -->
+    <section class="page-section">
+      <div class="page-domain" id="pageDomain">-</div>
+      <div class="page-score" id="pageScore">
+        <span class="score-label">Seiten-Score</span>
+        <span class="score-value" id="scoreValue">--</span>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="actions-section">
+      <button class="action-btn" id="scanPageBtn">
+        <span class="action-icon">[S]</span>
+        <span class="action-text">Seite scannen</span>
       </button>
-    </div>
+      <button class="action-btn" id="reportBtn">
+        <span class="action-icon">[R]</span>
+        <span class="action-text">Problem melden</span>
+      </button>
+    </section>
 
-    <!-- Results Section -->
-    <div id="resultsSection" class="results-section" style="display: none;">
-      <div class="results-header">
-        <span class="results-title">Ergebnis</span>
-        <button id="closeResults" class="close-btn" title="Schließen">&times;</button>
-      </div>
-      <div id="resultsContent" class="results-content"></div>
-    </div>
+    <!-- Features Toggles -->
+    <section class="features-section">
+      <h3>Schutzfunktionen</h3>
+      
+      <label class="feature-toggle">
+        <span class="feature-info">
+          <span class="feature-icon">[T]</span>
+          <span class="feature-name">Live Typing Guard</span>
+        </span>
+        <input type="checkbox" id="liveTypingToggle" checked>
+        <span class="toggle-slider small"></span>
+      </label>
 
-    <!-- Settings Section -->
-    <div class="section settings-section">
-      <div class="setting-item">
-        <label class="toggle-label">
-          <input type="checkbox" id="autoCheck" class="toggle-input">
-          <span class="toggle-slider"></span>
-          <span class="toggle-text">Auto-Check beim Tippen</span>
-        </label>
+      <label class="feature-toggle">
+        <span class="feature-info">
+          <span class="feature-icon">[F]</span>
+          <span class="feature-name">Formular-Analyse</span>
+        </span>
+        <input type="checkbox" id="formAnalysisToggle" checked>
+        <span class="toggle-slider small"></span>
+      </label>
+
+      <label class="feature-toggle">
+        <span class="feature-info">
+          <span class="feature-icon">[D]</span>
+          <span class="feature-name">Dark Pattern Detection</span>
+        </span>
+        <input type="checkbox" id="darkPatternToggle" checked>
+        <span class="toggle-slider small"></span>
+      </label>
+
+      <label class="feature-toggle">
+        <span class="feature-info">
+          <span class="feature-icon">[C]</span>
+          <span class="feature-name">Cookie-Analyse</span>
+        </span>
+        <input type="checkbox" id="cookieAnalysisToggle" checked>
+        <span class="toggle-slider small"></span>
+      </label>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <h3>Statistiken</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-value" id="statAnalyses">0</span>
+          <span class="stat-label">Analysen</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statWarnings">0</span>
+          <span class="stat-label">Warnungen</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statDarkPatterns">0</span>
+          <span class="stat-label">Dark Patterns</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statTrackers">0</span>
+          <span class="stat-label">Tracker</span>
+        </div>
       </div>
-      <div class="setting-item">
-        <label class="toggle-label">
-          <input type="checkbox" id="showBadge" class="toggle-input" checked>
-          <span class="toggle-slider"></span>
-          <span class="toggle-text">Risiko-Badge anzeigen</span>
-        </label>
-      </div>
-    </div>
+    </section>
+
+    <!-- Scan Results (hidden by default) -->
+    <section class="results-section" id="resultsSection" style="display: none;">
+      <h3>Scan-Ergebnisse</h3>
+      <div id="resultsContent"></div>
+    </section>
 
     <!-- Footer -->
     <footer class="popup-footer">
-      <a href="https://achtung.live/demo.html" target="_blank" class="footer-link">Zur Demo</a>
-      <span class="footer-divider">|</span>
-      <a href="https://achtung.live/datenschutz.html" target="_blank" class="footer-link">Datenschutz</a>
+      <a href="https://achtung.live" target="_blank">achtung.live</a>
+      <span class="version">v1.0.0</span>
     </footer>
   </div>
 
