@@ -1104,6 +1104,47 @@ input[type="submit"]:hover {
   font-size: 11px;
 }
 
+.status-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+}
+
+.provider-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.provider-badge.openai {
+  background: rgba(0, 166, 126, 0.15);
+  color: #00a67e;
+}
+
+.provider-badge.anthropic {
+  background: rgba(204, 119, 34, 0.15);
+  color: #cc7722;
+}
+
+.quick-check-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(0, 123, 255, 0.15);
+  color: #007bff;
+  cursor: help;
+}
+
 /* ========================================
    Phase 2: Batch Analysis
    ======================================== */
@@ -1905,6 +1946,18 @@ body.simple-language .simple-lang {
   font-size: 11px;
   color: #6c757d;
   padding: 4px 8px;
+}
+
+.live-time {
+  font-size: 10px;
+  color: #6c757d;
+  margin-left: auto;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.live-safe .live-time {
+  margin-left: 10px;
 }
 
 /* ========================================
