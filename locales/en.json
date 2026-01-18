@@ -32,7 +32,28 @@
   "tabs": {
     "single": "Single Text",
     "batch": "Batch Analysis",
-    "document": "Document"
+    "document": "Document",
+    "predictive": "🔮 Predictive"
+  },
+  "predictive": {
+    "title": "🔮 Predictive Privacy",
+    "description": "Analyze future risks of your data",
+    "descriptionSimple": "We show you what could happen with your data in the future.",
+    "optDeanon": "Deanonymization Risk",
+    "optBreach": "Breach Simulation",
+    "optFuture": "Future Risk",
+    "optCorrelation": "Correlation Attacks",
+    "timeHorizon": "Time Horizon:",
+    "analyze": "🔮 Analyze Future",
+    "summaryTitle": "Summary",
+    "deanonTitle": "Deanonymization Risk",
+    "breachTitle": "Breach Simulation",
+    "futureTitle": "Future Risk",
+    "correlationTitle": "Correlation Attacks",
+    "anonymity": "Anonymity",
+    "datapoints": "Detected Data Points",
+    "combinedRisk": "Combined Risk",
+    "permanentRisks": "⚠️ Permanent Risks"
   },
   "form": {
     "title": "Test it live!",

@@ -108,6 +108,7 @@
       <button class="tab-btn active" data-tab="single" role="tab" aria-selected="true" aria-controls="singleTab" data-i18n="tabs.single">Einzeltext</button>
       <button class="tab-btn" data-tab="batch" role="tab" aria-selected="false" aria-controls="batchTab" data-i18n="tabs.batch">Batch-Analyse</button>
       <button class="tab-btn" data-tab="document" role="tab" aria-selected="false" aria-controls="documentTab" data-i18n="tabs.document">Dokument</button>
+      <button class="tab-btn" data-tab="predictive" role="tab" aria-selected="false" aria-controls="predictiveTab" data-i18n="tabs.predictive">🔮 Predictive</button>
     </div>
 
     <!-- Single Text Tab -->
@@ -273,6 +274,197 @@
           <!-- Risk Dashboard for Document -->
           <div id="docRiskDashboard"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- Predictive Privacy Tab (Phase 5) -->
+    <div id="predictiveTab" class="tab-content" role="tabpanel" aria-labelledby="predictive-tab">
+      <h2 data-i18n="predictive.title">🔮 Predictive Privacy</h2>
+      <p class="predictive-description" data-i18n="predictive.description">Analysiere zukünftige Risiken deiner Daten</p>
+      <p class="simple-lang predictive-description-simple" style="display:none;" data-i18n="predictive.descriptionSimple">Wir zeigen dir, was in der Zukunft mit deinen Daten passieren könnte.</p>
+
+      <form id="predictiveForm">
+        <label for="predictiveText" class="sr-only">Text für Predictive Privacy Analyse</label>
+        <textarea id="predictiveText" placeholder="Schreibe hier deinen Text... Wir zeigen dir, wie identifizierbar du bist und was in Zukunft passieren könnte." rows="6" required></textarea>
+
+        <!-- Analysis Options -->
+        <div class="predictive-options">
+          <label class="predictive-option">
+            <input type="checkbox" id="optDeanon" checked>
+            <span class="option-icon">👤</span>
+            <span class="option-text" data-i18n="predictive.optDeanon">Deanonymisierungs-Risiko</span>
+          </label>
+          <label class="predictive-option">
+            <input type="checkbox" id="optBreach" checked>
+            <span class="option-icon">💥</span>
+            <span class="option-text" data-i18n="predictive.optBreach">Breach-Simulation</span>
+          </label>
+          <label class="predictive-option">
+            <input type="checkbox" id="optFuture" checked>
+            <span class="option-icon">⏳</span>
+            <span class="option-text" data-i18n="predictive.optFuture">Zukunfts-Risiko</span>
+          </label>
+          <label class="predictive-option">
+            <input type="checkbox" id="optCorrelation" checked>
+            <span class="option-icon">🔗</span>
+            <span class="option-text" data-i18n="predictive.optCorrelation">Korrelations-Angriffe</span>
+          </label>
+        </div>
+
+        <!-- Time Horizon Selector -->
+        <div class="time-horizon-selector">
+          <label data-i18n="predictive.timeHorizon">Zeithorizont:</label>
+          <div class="time-horizon-buttons">
+            <button type="button" class="time-btn active" data-years="1">1 Jahr</button>
+            <button type="button" class="time-btn" data-years="5">5 Jahre</button>
+            <button type="button" class="time-btn" data-years="10">10 Jahre</button>
+          </div>
+        </div>
+
+        <div class="datenschutz-hinweis">
+          <input type="checkbox" id="privacyPolicyPredictive" required>
+          <label for="privacyPolicyPredictive">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+        </div>
+
+        <button type="submit" id="predictiveSubmitBtn">
+          <span class="btn-text" data-i18n="predictive.analyze">🔮 Zukunft analysieren</span>
+          <span class="btn-loading" style="display:none;">Analysiere...</span>
+        </button>
+      </form>
+
+      <!-- Predictive Results -->
+      <div id="predictiveResults" style="display:none;">
+
+        <!-- Summary Card -->
+        <div class="predictive-summary-card" id="predictiveSummary">
+          <div class="summary-header">
+            <span class="summary-icon">🎯</span>
+            <span class="summary-title" data-i18n="predictive.summaryTitle">Zusammenfassung</span>
+          </div>
+          <div class="summary-content">
+            <div class="summary-risk-badge" id="summaryRiskBadge"></div>
+            <div class="summary-text" id="summaryText"></div>
+            <div class="summary-quickfix" id="summaryQuickFix"></div>
+          </div>
+        </div>
+
+        <!-- Deanonymization Risk Section -->
+        <div class="predictive-section" id="deanonSection">
+          <div class="section-header">
+            <span class="section-icon">👤</span>
+            <h3 data-i18n="predictive.deanonTitle">Deanonymisierungs-Risiko</h3>
+          </div>
+          <div class="deanon-content">
+            <!-- k-Anonymity Gauge -->
+            <div class="k-anonymity-gauge">
+              <div class="gauge-circle" id="kAnonGauge">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" class="gauge-bg"/>
+                  <circle cx="50" cy="50" r="45" class="gauge-fill" id="kAnonFill"/>
+                </svg>
+                <div class="gauge-value">
+                  <span class="gauge-k" id="kAnonValue">k=?</span>
+                  <span class="gauge-label" data-i18n="predictive.anonymity">Anonymität</span>
+                </div>
+              </div>
+              <div class="gauge-explanation" id="kAnonExplanation"></div>
+            </div>
+
+            <!-- Unique Data Points -->
+            <div class="unique-datapoints" id="uniqueDatapoints">
+              <h4 data-i18n="predictive.datapoints">Gefundene Datenpunkte</h4>
+              <div class="datapoints-list" id="datapointsList"></div>
+            </div>
+
+            <!-- Combined Risk -->
+            <div class="combined-risk" id="combinedRisk">
+              <div class="combined-risk-header">
+                <span class="combined-risk-score" id="combinedRiskScore"></span>
+                <span class="combined-risk-label" data-i18n="predictive.combinedRisk">Kombiniertes Risiko</span>
+              </div>
+              <div class="combined-risk-explanation" id="combinedRiskExplanation"></div>
+              <div class="combined-risk-recommendation" id="combinedRiskRecommendation"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Breach Simulation Section -->
+        <div class="predictive-section" id="breachSection">
+          <div class="section-header">
+            <span class="section-icon">💥</span>
+            <h3 data-i18n="predictive.breachTitle">Breach-Simulation</h3>
+          </div>
+          <div class="breach-content">
+            <div class="breach-scenarios" id="breachScenarios"></div>
+            <div class="breach-overall" id="breachOverall">
+              <div class="breach-overall-score" id="breachOverallScore"></div>
+              <div class="breach-worst-case" id="breachWorstCase"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Future Risk Timeline Section -->
+        <div class="predictive-section" id="futureSection">
+          <div class="section-header">
+            <span class="section-icon">⏳</span>
+            <h3 data-i18n="predictive.futureTitle">Zukunfts-Risiko</h3>
+          </div>
+          <div class="future-content">
+            <!-- Interactive Timeline -->
+            <div class="future-timeline" id="futureTimeline">
+              <div class="timeline-track">
+                <div class="timeline-point now" data-year="0">
+                  <span class="timeline-label">Jetzt</span>
+                  <span class="timeline-score" id="scoreNow"></span>
+                </div>
+                <div class="timeline-point" data-year="1">
+                  <span class="timeline-label">1 Jahr</span>
+                  <span class="timeline-score" id="score1y"></span>
+                </div>
+                <div class="timeline-point" data-year="5">
+                  <span class="timeline-label">5 Jahre</span>
+                  <span class="timeline-score" id="score5y"></span>
+                </div>
+                <div class="timeline-point" data-year="10">
+                  <span class="timeline-label">10 Jahre</span>
+                  <span class="timeline-score" id="score10y"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Future Threats -->
+            <div class="future-threats" id="futureThreats"></div>
+
+            <!-- Permanent Risks -->
+            <div class="permanent-risks" id="permanentRisks">
+              <h4 data-i18n="predictive.permanentRisks">⚠️ Dauerhafte Risiken</h4>
+              <div class="permanent-risks-list" id="permanentRisksList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Correlation Attack Section -->
+        <div class="predictive-section" id="correlationSection">
+          <div class="section-header">
+            <span class="section-icon">🔗</span>
+            <h3 data-i18n="predictive.correlationTitle">Korrelations-Angriffe</h3>
+          </div>
+          <div class="correlation-content">
+            <div class="correlation-methods" id="correlationMethods"></div>
+            <div class="attack-surface" id="attackSurface">
+              <div class="attack-surface-score" id="attackSurfaceScore"></div>
+              <div class="attack-surface-weakest" id="attackSurfaceWeakest"></div>
+              <div class="attack-surface-recommendation" id="attackSurfaceRecommendation"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Lifespan -->
+        <div class="privacy-lifespan" id="privacyLifespan">
+          <span class="lifespan-icon">📅</span>
+          <span class="lifespan-text" id="lifespanText"></span>
+        </div>
+
       </div>
     </div>
 
@@ -2134,6 +2326,898 @@
     }
 
     // ========================================
+    // Phase 5: Predictive Privacy
+    // ========================================
+
+    const API_PREDICTIVE_URL = `${API_BASE}/analyze/predictive`;
+    const API_BREACH_SCENARIOS_URL = `${API_BASE}/breach-scenarios`;
+    let selectedTimeHorizon = 1;
+
+    // Risk factors for client-side calculation (fallback)
+    const RISK_FACTORS = {
+      name: { uniqueness: 0.15, label: 'Vorname', icon: '👤' },
+      full_name: { uniqueness: 0.95, label: 'Vollständiger Name', icon: '👤' },
+      email: { uniqueness: 0.99, label: 'E-Mail', icon: '📧' },
+      phone: { uniqueness: 0.98, label: 'Telefonnummer', icon: '📱' },
+      age: { uniqueness: 0.02, label: 'Alter', icon: '🎂' },
+      birth_date: { uniqueness: 0.60, label: 'Geburtsdatum', icon: '📅' },
+      city_small: { uniqueness: 0.70, label: 'Kleinstadt', icon: '🏘️' },
+      city_large: { uniqueness: 0.20, label: 'Großstadt', icon: '🏙️' },
+      address: { uniqueness: 0.98, label: 'Adresse', icon: '📍' },
+      plz: { uniqueness: 0.40, label: 'Postleitzahl', icon: '📮' },
+      profession: { uniqueness: 0.30, label: 'Beruf', icon: '💼' },
+      profession_specific: { uniqueness: 0.75, label: 'Spezifischer Beruf', icon: '💼' },
+      employer: { uniqueness: 0.90, label: 'Arbeitgeber', icon: '🏢' },
+      routine: { uniqueness: 0.60, label: 'Routine/Gewohnheit', icon: '🔄' },
+      political: { uniqueness: 0.20, futureMultiplier: 3.0, label: 'Politische Meinung', icon: '🗳️' },
+      health: { uniqueness: 0.40, futureMultiplier: 2.8, label: 'Gesundheitsdaten', icon: '🏥' },
+      financial: { uniqueness: 0.50, futureMultiplier: 2.0, label: 'Finanzdaten', icon: '💰' },
+      iban: { uniqueness: 0.99, label: 'IBAN', icon: '🏦' },
+      credit_card: { uniqueness: 0.99, label: 'Kreditkarte', icon: '💳' }
+    };
+
+    // Breach scenario templates
+    const BREACH_SCENARIOS = [
+      {
+        id: 'social_media_leak',
+        icon: '📱',
+        name: 'Social Media Leak',
+        description: 'Eine Social-Media-Plattform wird gehackt',
+        affectedTypes: ['name', 'full_name', 'email', 'city_small', 'city_large', 'profession', 'political'],
+        examples: ['Facebook 2019 (533M)', 'LinkedIn 2021 (700M)']
+      },
+      {
+        id: 'email_breach',
+        icon: '📧',
+        name: 'E-Mail Provider Hack',
+        description: 'Ihr E-Mail-Anbieter wird kompromittiert',
+        affectedTypes: ['email', 'name', 'full_name', 'address'],
+        examples: ['Yahoo 2013 (3B)', 'Collection #1 2019 (773M)']
+      },
+      {
+        id: 'health_data_leak',
+        icon: '🏥',
+        name: 'Gesundheitsdaten-Leak',
+        description: 'Gesundheitsdienstleister wird gehackt',
+        affectedTypes: ['health', 'name', 'full_name', 'birth_date', 'address'],
+        examples: ['Anthem 2015 (78M)', 'Medibank 2022 (9.7M)']
+      },
+      {
+        id: 'financial_breach',
+        icon: '🏦',
+        name: 'Finanzdaten-Leak',
+        description: 'Bank oder Payment-Provider gehackt',
+        affectedTypes: ['iban', 'credit_card', 'financial', 'name', 'full_name', 'address'],
+        examples: ['Equifax 2017 (147M)', 'Capital One 2019 (100M)']
+      },
+      {
+        id: 'employer_breach',
+        icon: '🏢',
+        name: 'Arbeitgeber-Datenleck',
+        description: 'HR-System Ihres Arbeitgebers gehackt',
+        affectedTypes: ['employer', 'profession', 'name', 'full_name', 'email', 'address', 'financial'],
+        examples: ['Sony 2014 (47K)', 'Uber 2016 (57M)']
+      },
+      {
+        id: 'government_leak',
+        icon: '🏛️',
+        name: 'Behörden-Datenleck',
+        description: 'Behördliche Datenbank kompromittiert',
+        affectedTypes: ['name', 'full_name', 'birth_date', 'address', 'plz'],
+        examples: ['OPM 2015 (21.5M)', 'Bulgaria NRA 2019 (5M)']
+      }
+    ];
+
+    // Correlation attack methods
+    const CORRELATION_METHODS = [
+      {
+        id: 'linkedin_search',
+        name: 'LinkedIn + Ort',
+        dataNeeded: ['profession', 'city_small', 'employer'],
+        difficulty: 'easy',
+        icon: '🔍'
+      },
+      {
+        id: 'google_dorking',
+        name: 'Google Dorking',
+        dataNeeded: ['name', 'profession', 'employer'],
+        difficulty: 'easy',
+        icon: '🔎'
+      },
+      {
+        id: 'reverse_image',
+        name: 'Reverse Image Search',
+        dataNeeded: ['name'],
+        difficulty: 'medium',
+        icon: '🖼️'
+      },
+      {
+        id: 'social_graph',
+        name: 'Social Graph Analysis',
+        dataNeeded: ['name', 'city_small', 'routine'],
+        difficulty: 'medium',
+        icon: '🕸️'
+      },
+      {
+        id: 'public_records',
+        name: 'Öffentliche Register',
+        dataNeeded: ['full_name', 'address', 'employer'],
+        difficulty: 'easy',
+        icon: '📋'
+      }
+    ];
+
+    function initPredictivePrivacy() {
+      const form = document.getElementById('predictiveForm');
+      if (!form) return;
+
+      // Time horizon button handlers
+      document.querySelectorAll('.time-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          selectedTimeHorizon = parseInt(this.dataset.years);
+        });
+      });
+
+      // Form submission
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        await runPredictiveAnalysis();
+      });
+    }
+
+    async function runPredictiveAnalysis() {
+      const text = document.getElementById('predictiveText').value.trim();
+      if (!text) return;
+
+      const options = {
+        deanonymization: document.getElementById('optDeanon').checked,
+        breachSimulation: document.getElementById('optBreach').checked,
+        futureRisk: document.getElementById('optFuture').checked,
+        correlationAttack: document.getElementById('optCorrelation').checked,
+        timeHorizons: [1, 5, 10]
+      };
+
+      const submitBtn = document.getElementById('predictiveSubmitBtn');
+      const btnText = submitBtn.querySelector('.btn-text');
+      const btnLoading = submitBtn.querySelector('.btn-loading');
+
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+      submitBtn.disabled = true;
+
+      try {
+        // Try API first
+        let result;
+        try {
+          const response = await fetch(API_PREDICTIVE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, lang: currentLang, options })
+          });
+          if (response.ok) {
+            result = await response.json();
+          } else {
+            throw new Error('API not available');
+          }
+        } catch (apiError) {
+          // Fallback to client-side analysis
+          console.log('[Predictive] Using client-side analysis');
+          result = performClientSidePredictiveAnalysis(text, options);
+        }
+
+        displayPredictiveResults(result, options);
+      } catch (error) {
+        console.error('[Predictive] Error:', error);
+        alert('Fehler bei der Analyse: ' + error.message);
+      } finally {
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+        submitBtn.disabled = false;
+      }
+    }
+
+    // Client-side predictive analysis (fallback when API unavailable)
+    function performClientSidePredictiveAnalysis(text, options) {
+      const dataPoints = detectDataPoints(text);
+      const deanon = calculateDeanonymization(dataPoints);
+      const breach = simulateBreaches(dataPoints);
+      const future = calculateFutureRisk(dataPoints, deanon.identifiabilityScore);
+      const correlation = analyzeCorrelationAttacks(dataPoints);
+
+      return {
+        success: true,
+        data: {
+          predictive: {
+            deanonymization: deanon,
+            breachSimulation: breach,
+            futureRisk: future,
+            correlationAttack: correlation
+          },
+          summary: generateSummary(deanon, breach, future, correlation)
+        },
+        meta: { mode: 'client-side', version: '5.0.0' }
+      };
+    }
+
+    // Detect data points in text
+    function detectDataPoints(text) {
+      const dataPoints = [];
+      const textLower = text.toLowerCase();
+
+      // Name patterns
+      const nameMatch = text.match(/(?:ich bin|mein name ist|heiße)\s+([A-ZÄÖÜ][a-zäöüß]+)/i);
+      if (nameMatch) {
+        dataPoints.push({ type: 'name', value: nameMatch[1], ...RISK_FACTORS.name });
+      }
+
+      // Full name (First + Last)
+      const fullNameMatch = text.match(/([A-ZÄÖÜ][a-zäöüß]+)\s+([A-ZÄÖÜ][a-zäöüß]+)(?=\s|,|\.)/);
+      if (fullNameMatch && fullNameMatch[1].length > 2 && fullNameMatch[2].length > 2) {
+        dataPoints.push({ type: 'full_name', value: `${fullNameMatch[1]} ${fullNameMatch[2]}`, ...RISK_FACTORS.full_name });
+      }
+
+      // Age
+      const ageMatch = text.match(/(\d{1,2})\s*(?:jahre?\s*alt|j\.?\s*a\.?|years?\s*old)/i) ||
+                       text.match(/(?:bin|ich bin)\s*(\d{2})/i);
+      if (ageMatch) {
+        dataPoints.push({ type: 'age', value: ageMatch[1], ...RISK_FACTORS.age });
+      }
+
+      // Email
+      const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+      if (emailMatch) {
+        dataPoints.push({ type: 'email', value: emailMatch[0], ...RISK_FACTORS.email });
+      }
+
+      // Phone
+      const phoneMatch = text.match(/(?:\+49|0049|0)\s*\d{2,4}[\s\-\/]?\d{3,}[\s\-\/]?\d{2,}/);
+      if (phoneMatch) {
+        dataPoints.push({ type: 'phone', value: phoneMatch[0], ...RISK_FACTORS.phone });
+      }
+
+      // Location (small town indicators)
+      const smallTownPatterns = [
+        /(?:in|aus|bei|wohne in)\s+([A-ZÄÖÜ][a-zäöüß]+(?:dorf|hausen|heim|berg|feld|bach|kirchen|hofen|ingen|burg))/i,
+        /(?:in|aus)\s+([A-ZÄÖÜ][a-zäöüß]{3,12})(?:\s|,|\.)/i
+      ];
+      for (const pattern of smallTownPatterns) {
+        const match = text.match(pattern);
+        if (match) {
+          const town = match[1];
+          // Check if it's a small town (heuristic: not a major city)
+          const majorCities = ['berlin', 'hamburg', 'münchen', 'köln', 'frankfurt', 'stuttgart', 'düsseldorf', 'wien', 'zürich'];
+          if (!majorCities.includes(town.toLowerCase())) {
+            dataPoints.push({ type: 'city_small', value: town, ...RISK_FACTORS.city_small });
+          } else {
+            dataPoints.push({ type: 'city_large', value: town, ...RISK_FACTORS.city_large });
+          }
+          break;
+        }
+      }
+
+      // Profession
+      const professionPatterns = [
+        /(?:arbeite als|bin|beruf(?:lich)?:?)\s+(?:der\s+|die\s+)?([A-ZÄÖÜa-zäöüß\-]+(?:er|in|ist|ant|ent)?)/i,
+        /(?:lehrer|arzt|ärztin|anwalt|anwältin|ingenieur|programmierer|entwickler|manager|chef|direktor)/i
+      ];
+      for (const pattern of professionPatterns) {
+        const match = text.match(pattern);
+        if (match) {
+          const profession = match[1] || match[0];
+          dataPoints.push({ type: 'profession', value: profession, ...RISK_FACTORS.profession });
+          break;
+        }
+      }
+
+      // Employer
+      const employerMatch = text.match(/(?:bei|für|arbeite bei)\s+(?:der\s+|die\s+)?([A-ZÄÖÜ][A-Za-zäöüß\s&\.]+(?:AG|GmbH|SE|Inc|Ltd|UG)?)/i);
+      if (employerMatch) {
+        dataPoints.push({ type: 'employer', value: employerMatch[1].trim(), ...RISK_FACTORS.employer });
+      }
+
+      // Routine/Schedule
+      const routineMatch = text.match(/(?:jeden|immer)\s+(?:montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag|tag|morgen|abend)/i);
+      if (routineMatch) {
+        dataPoints.push({ type: 'routine', value: routineMatch[0], ...RISK_FACTORS.routine });
+      }
+
+      // IBAN
+      const ibanMatch = text.match(/[A-Z]{2}\d{2}[\s]?(?:\d{4}[\s]?){4,5}\d{0,2}/i);
+      if (ibanMatch) {
+        dataPoints.push({ type: 'iban', value: '[IBAN]', ...RISK_FACTORS.iban });
+      }
+
+      // Health
+      if (textLower.match(/(?:diagnose|diabetes|krebs|depression|medikament|arzt|kranken|operation|therapie)/)) {
+        dataPoints.push({ type: 'health', value: '[Gesundheitsdaten]', ...RISK_FACTORS.health });
+      }
+
+      // Political
+      if (textLower.match(/(?:wähle|unterstütze|partei|afd|cdu|spd|grüne|linke|fdp|politisch)/)) {
+        dataPoints.push({ type: 'political', value: '[Politische Meinung]', ...RISK_FACTORS.political });
+      }
+
+      return dataPoints;
+    }
+
+    // Calculate deanonymization risk
+    function calculateDeanonymization(dataPoints) {
+      if (dataPoints.length === 0) {
+        return {
+          kAnonymity: 1000,
+          identifiabilityScore: 0.05,
+          uniqueDataPoints: [],
+          combinedRisk: {
+            score: 0.05,
+            explanation: 'Keine identifizierenden Datenpunkte gefunden.',
+            dataPointsNeeded: 3,
+            recommendation: 'Text ist relativ anonym.'
+          }
+        };
+      }
+
+      // Calculate combined risk
+      let combinedAnonymity = 1.0;
+      for (const dp of dataPoints) {
+        combinedAnonymity *= (1 - dp.uniqueness);
+      }
+
+      // Bonus for specific combinations
+      const hasNameAndLocation = dataPoints.some(d => d.type.includes('name')) &&
+                                  dataPoints.some(d => d.type.includes('city'));
+      const hasProfessionAndLocation = dataPoints.some(d => d.type === 'profession') &&
+                                        dataPoints.some(d => d.type === 'city_small');
+
+      if (hasNameAndLocation) combinedAnonymity *= 0.85;
+      if (hasProfessionAndLocation) combinedAnonymity *= 0.80;
+      if (dataPoints.length >= 3) combinedAnonymity *= 0.75;
+
+      const identifiabilityScore = 1 - combinedAnonymity;
+
+      // Estimate k-anonymity
+      let kAnonymity;
+      if (identifiabilityScore > 0.95) kAnonymity = 1;
+      else if (identifiabilityScore > 0.90) kAnonymity = 2;
+      else if (identifiabilityScore > 0.80) kAnonymity = 5;
+      else if (identifiabilityScore > 0.60) kAnonymity = 20;
+      else if (identifiabilityScore > 0.40) kAnonymity = 100;
+      else kAnonymity = 1000;
+
+      // Generate recommendation
+      let recommendation = '';
+      if (identifiabilityScore > 0.8) {
+        const weakest = dataPoints.sort((a, b) => b.uniqueness - a.uniqueness)[0];
+        recommendation = `Entferne oder generalisiere "${weakest.value}" für mehr Anonymität.`;
+      } else if (identifiabilityScore > 0.5) {
+        recommendation = 'Vermeide weitere identifizierende Details.';
+      } else {
+        recommendation = 'Gute Anonymität - achte auf weitere Datenpunkte.';
+      }
+
+      return {
+        kAnonymity,
+        identifiabilityScore,
+        uniqueDataPoints: dataPoints.map(dp => ({
+          type: dp.type,
+          value: dp.value,
+          uniqueness: dp.uniqueness,
+          icon: dp.icon,
+          label: dp.label,
+          note: dp.uniqueness > 0.7 ? 'Hohe Identifikationskraft!' :
+                dp.uniqueness > 0.4 ? 'Mittelhohe Identifikationskraft' : 'Geringe Identifikationskraft'
+        })),
+        combinedRisk: {
+          score: identifiabilityScore,
+          explanation: `${dataPoints.length} Datenpunkte ergeben ${Math.round(identifiabilityScore * 100)}% Identifizierbarkeit.`,
+          dataPointsNeeded: Math.max(0, 3 - dataPoints.length),
+          recommendation
+        }
+      };
+    }
+
+    // Simulate breach scenarios
+    function simulateBreaches(dataPoints) {
+      const dataTypes = dataPoints.map(dp => dp.type);
+      const scenarios = [];
+
+      for (const scenario of BREACH_SCENARIOS) {
+        const affectedData = scenario.affectedTypes.filter(t => dataTypes.includes(t));
+        if (affectedData.length === 0) continue;
+
+        const damage = Math.min(10, Math.round(affectedData.length * 2 + Math.random() * 2));
+        const probability = affectedData.length >= 2 ? 'high' : 'medium';
+
+        scenarios.push({
+          type: scenario.id,
+          icon: scenario.icon,
+          name: scenario.name,
+          description: scenario.description,
+          probability,
+          affectedData: affectedData.map(t => RISK_FACTORS[t]?.label || t),
+          potentialDamage: damage,
+          consequences: generateConsequences(scenario.id, affectedData),
+          mitigation: generateMitigation(scenario.id, affectedData),
+          examples: scenario.examples
+        });
+      }
+
+      // Sort by damage
+      scenarios.sort((a, b) => b.potentialDamage - a.potentialDamage);
+
+      const overallScore = scenarios.length > 0
+        ? Math.min(1, scenarios.reduce((sum, s) => sum + s.potentialDamage, 0) / (scenarios.length * 10))
+        : 0;
+
+      return {
+        scenarios: scenarios.slice(0, 4), // Top 4
+        overallBreachRisk: {
+          score: overallScore,
+          worstCase: scenarios[0]?.name || 'Kein signifikantes Breach-Risiko'
+        }
+      };
+    }
+
+    function generateConsequences(scenarioId, affectedData) {
+      const consequences = [];
+      if (affectedData.includes('full_name') || affectedData.includes('name')) {
+        consequences.push('Identität kann mit anderen Profilen verknüpft werden');
+      }
+      if (affectedData.includes('email')) {
+        consequences.push('Phishing-Angriffe werden wahrscheinlicher');
+      }
+      if (affectedData.includes('address') || affectedData.includes('city_small')) {
+        consequences.push('Physischer Standort wird kompromittiert');
+      }
+      if (affectedData.includes('employer')) {
+        consequences.push('Berufliche Reputation gefährdet');
+      }
+      if (affectedData.includes('health')) {
+        consequences.push('Sensible Gesundheitsdaten öffentlich');
+      }
+      if (consequences.length === 0) {
+        consequences.push('Teilweise Identifizierung möglich');
+      }
+      return consequences;
+    }
+
+    function generateMitigation(scenarioId, affectedData) {
+      const mitigations = [];
+      if (affectedData.includes('email')) {
+        mitigations.push('Separate E-Mail für öffentliche Dienste nutzen');
+      }
+      if (affectedData.includes('city_small')) {
+        mitigations.push('Nur Region statt genauem Ort nennen');
+      }
+      if (affectedData.includes('employer')) {
+        mitigations.push('Arbeitgeber nicht öffentlich nennen');
+      }
+      if (mitigations.length === 0) {
+        mitigations.push('Weniger persönliche Details teilen');
+      }
+      return mitigations;
+    }
+
+    // Calculate future risk
+    function calculateFutureRisk(dataPoints, currentScore) {
+      const multipliers = { 1: 1.2, 5: 1.8, 10: 2.5 };
+      const timeline = [];
+
+      for (const [years, baseMultiplier] of Object.entries(multipliers)) {
+        let multiplier = baseMultiplier;
+
+        // Adjust for sensitive data types
+        for (const dp of dataPoints) {
+          if (dp.futureMultiplier) {
+            multiplier *= (1 + (dp.futureMultiplier - 1) * 0.2);
+          }
+        }
+
+        const projectedScore = Math.min(200, Math.round(currentScore * 100 * multiplier));
+        const newThreats = generateFutureThreats(parseInt(years), dataPoints);
+
+        timeline.push({
+          years: parseInt(years),
+          riskMultiplier: multiplier,
+          projectedScore,
+          newThreats
+        });
+      }
+
+      const permanentRisks = dataPoints
+        .filter(dp => dp.type === 'political' || dp.type === 'health' || dp.type === 'profession')
+        .map(dp => ({
+          dataType: dp.type,
+          risk: dp.type === 'political' ? 'Karriere/Visa' :
+                dp.type === 'health' ? 'Versicherung' : 'Reputation',
+          description: `Diese Information bleibt dauerhaft mit Ihnen verknüpft`,
+          icon: dp.icon
+        }));
+
+      return { timeline, permanentRisks };
+    }
+
+    function generateFutureThreats(years, dataPoints) {
+      const threats = [];
+      if (years >= 1) {
+        threats.push('Mehr korrelierbare Daten im Internet');
+        if (dataPoints.some(d => d.type === 'name')) {
+          threats.push('Reverse Image Search wird besser');
+        }
+      }
+      if (years >= 5) {
+        threats.push('KI kann Schreibstil eindeutig zuordnen');
+        if (dataPoints.some(d => d.type.includes('city'))) {
+          threats.push('Aggregierte Standortdaten präziser');
+        }
+      }
+      if (years >= 10) {
+        threats.push('Quantencomputer-Risiko für alte Verschlüsselung');
+        threats.push('Langzeit-Bewegungsprofile möglich');
+      }
+      return threats;
+    }
+
+    // Analyze correlation attacks
+    function analyzeCorrelationAttacks(dataPoints) {
+      const dataTypes = dataPoints.map(dp => dp.type);
+      const possibleCorrelations = [];
+
+      for (const method of CORRELATION_METHODS) {
+        const matchingData = method.dataNeeded.filter(t => dataTypes.includes(t));
+        if (matchingData.length === 0) continue;
+
+        const confidence = Math.min(0.95, matchingData.length / method.dataNeeded.length + 0.1);
+
+        possibleCorrelations.push({
+          method: method.name,
+          icon: method.icon,
+          confidence,
+          steps: generateCorrelationSteps(method, dataPoints),
+          difficulty: method.difficulty
+        });
+      }
+
+      // Sort by confidence
+      possibleCorrelations.sort((a, b) => b.confidence - a.confidence);
+
+      const attackScore = possibleCorrelations.length > 0
+        ? possibleCorrelations[0].confidence
+        : 0;
+
+      const weakestLink = dataPoints.length > 0
+        ? dataPoints.sort((a, b) => b.uniqueness - a.uniqueness)[0]
+        : null;
+
+      return {
+        possibleCorrelations: possibleCorrelations.slice(0, 3),
+        attackSurface: {
+          score: attackScore,
+          weakestLink: weakestLink ? `${weakestLink.label}: "${weakestLink.value}"` : 'Keine',
+          recommendation: weakestLink && weakestLink.uniqueness > 0.5
+            ? `Entferne oder generalisiere "${weakestLink.value}"`
+            : 'Gute Resistenz gegen Korrelationsangriffe'
+        }
+      };
+    }
+
+    function generateCorrelationSteps(method, dataPoints) {
+      const steps = [];
+      if (method.id === 'linkedin_search') {
+        const profession = dataPoints.find(d => d.type === 'profession');
+        const city = dataPoints.find(d => d.type.includes('city'));
+        if (profession) steps.push(`LinkedIn-Suche: "${profession.value}"`);
+        if (city) steps.push(`Filter nach Ort: "${city.value}"`);
+        steps.push('Profilabgleich mit anderen Datenpunkten');
+      } else if (method.id === 'google_dorking') {
+        steps.push('Google-Suche mit Operatoren');
+        steps.push('Verknüpfung öffentlicher Informationen');
+      } else {
+        steps.push('Datensammlung aus öffentlichen Quellen');
+        steps.push('Musterabgleich und Verknüpfung');
+      }
+      return steps;
+    }
+
+    // Generate summary
+    function generateSummary(deanon, breach, future, correlation) {
+      let currentRisk = 'low';
+      let futureRisk = 'low';
+
+      if (deanon.identifiabilityScore > 0.8) currentRisk = 'critical';
+      else if (deanon.identifiabilityScore > 0.6) currentRisk = 'high';
+      else if (deanon.identifiabilityScore > 0.3) currentRisk = 'medium';
+
+      const maxFutureScore = Math.max(...future.timeline.map(t => t.projectedScore));
+      if (maxFutureScore > 150) futureRisk = 'critical';
+      else if (maxFutureScore > 100) futureRisk = 'high';
+      else if (maxFutureScore > 50) futureRisk = 'medium';
+
+      const mainVulnerability = deanon.uniqueDataPoints.length > 0
+        ? deanon.uniqueDataPoints.sort((a, b) => b.uniqueness - a.uniqueness)[0]
+        : null;
+
+      return {
+        currentRisk,
+        futureRisk,
+        mainVulnerability: mainVulnerability
+          ? `${mainVulnerability.label}: "${mainVulnerability.value}"`
+          : 'Keine kritischen Datenpunkte',
+        quickFix: deanon.combinedRisk.recommendation,
+        privacyLifespan: deanon.identifiabilityScore > 0.5
+          ? 'Diese Daten bleiben ~15-20 Jahre auffindbar'
+          : 'Geringe Langzeit-Auffindbarkeit'
+      };
+    }
+
+    // Display predictive results
+    function displayPredictiveResults(result, options) {
+      const resultsDiv = document.getElementById('predictiveResults');
+      resultsDiv.style.display = 'block';
+
+      const data = result.data?.predictive || result.predictive;
+      const summary = result.data?.summary || result.summary;
+
+      // Summary Card
+      displaySummary(summary);
+
+      // Deanonymization Section
+      if (options.deanonymization && data.deanonymization) {
+        displayDeanonymization(data.deanonymization);
+        document.getElementById('deanonSection').style.display = 'block';
+      } else {
+        document.getElementById('deanonSection').style.display = 'none';
+      }
+
+      // Breach Simulation Section
+      if (options.breachSimulation && data.breachSimulation) {
+        displayBreachSimulation(data.breachSimulation);
+        document.getElementById('breachSection').style.display = 'block';
+      } else {
+        document.getElementById('breachSection').style.display = 'none';
+      }
+
+      // Future Risk Section
+      if (options.futureRisk && data.futureRisk) {
+        displayFutureRisk(data.futureRisk);
+        document.getElementById('futureSection').style.display = 'block';
+      } else {
+        document.getElementById('futureSection').style.display = 'none';
+      }
+
+      // Correlation Section
+      if (options.correlationAttack && data.correlationAttack) {
+        displayCorrelationAttack(data.correlationAttack);
+        document.getElementById('correlationSection').style.display = 'block';
+      } else {
+        document.getElementById('correlationSection').style.display = 'none';
+      }
+
+      // Privacy Lifespan
+      if (summary?.privacyLifespan) {
+        document.getElementById('lifespanText').textContent = summary.privacyLifespan;
+        document.getElementById('privacyLifespan').style.display = 'flex';
+      }
+
+      // Scroll to results
+      resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function displaySummary(summary) {
+      if (!summary) return;
+
+      const riskColors = {
+        low: '#4caf50',
+        medium: '#ff9800',
+        high: '#f44336',
+        critical: '#9c27b0'
+      };
+
+      const riskLabels = {
+        low: 'Niedriges Risiko',
+        medium: 'Mittleres Risiko',
+        high: 'Hohes Risiko',
+        critical: 'Kritisches Risiko'
+      };
+
+      document.getElementById('summaryRiskBadge').innerHTML = `
+        <span class="risk-badge" style="background: ${riskColors[summary.currentRisk]}">
+          Aktuell: ${riskLabels[summary.currentRisk]}
+        </span>
+        <span class="risk-badge" style="background: ${riskColors[summary.futureRisk]}">
+          Zukunft: ${riskLabels[summary.futureRisk]}
+        </span>
+      `;
+      document.getElementById('summaryText').innerHTML = `
+        <strong>Hauptschwachstelle:</strong> ${summary.mainVulnerability}
+      `;
+      document.getElementById('summaryQuickFix').innerHTML = `
+        <strong>💡 Quick Fix:</strong> ${summary.quickFix}
+      `;
+    }
+
+    function displayDeanonymization(deanon) {
+      // k-Anonymity Gauge
+      const kValue = document.getElementById('kAnonValue');
+      const kFill = document.getElementById('kAnonFill');
+      const kExplanation = document.getElementById('kAnonExplanation');
+
+      kValue.textContent = `k=${deanon.kAnonymity}`;
+
+      // Calculate fill percentage (inverse - lower k = more fill/danger)
+      const fillPercent = deanon.kAnonymity <= 1 ? 100 :
+                          deanon.kAnonymity <= 5 ? 80 :
+                          deanon.kAnonymity <= 20 ? 60 :
+                          deanon.kAnonymity <= 100 ? 40 : 20;
+
+      const circumference = 2 * Math.PI * 45;
+      const offset = circumference - (fillPercent / 100 * circumference);
+      kFill.style.strokeDasharray = circumference;
+      kFill.style.strokeDashoffset = offset;
+
+      // Color based on risk
+      const color = deanon.kAnonymity <= 2 ? '#f44336' :
+                    deanon.kAnonymity <= 10 ? '#ff9800' :
+                    deanon.kAnonymity <= 50 ? '#ffeb3b' : '#4caf50';
+      kFill.style.stroke = color;
+
+      kExplanation.innerHTML = deanon.kAnonymity <= 2
+        ? '⚠️ <strong>Sehr identifizierbar!</strong> Du bist eine von nur ~' + deanon.kAnonymity + ' Personen mit diesen Merkmalen.'
+        : deanon.kAnonymity <= 20
+        ? '⚡ <strong>Mäßig identifizierbar.</strong> Du bist eine von ~' + deanon.kAnonymity + ' Personen.'
+        : '✅ <strong>Gute Anonymität.</strong> Schwer eindeutig zu identifizieren.';
+
+      // Data Points List
+      const dpList = document.getElementById('datapointsList');
+      dpList.innerHTML = deanon.uniqueDataPoints.map(dp => `
+        <div class="datapoint-item" style="border-left: 4px solid ${dp.uniqueness > 0.7 ? '#f44336' : dp.uniqueness > 0.4 ? '#ff9800' : '#4caf50'}">
+          <span class="dp-icon">${dp.icon || '📌'}</span>
+          <span class="dp-label">${dp.label || dp.type}</span>
+          <span class="dp-value">"${dp.value}"</span>
+          <span class="dp-uniqueness">${Math.round(dp.uniqueness * 100)}%</span>
+          <span class="dp-note">${dp.note}</span>
+        </div>
+      `).join('');
+
+      // Combined Risk
+      document.getElementById('combinedRiskScore').textContent =
+        Math.round(deanon.combinedRisk.score * 100) + '%';
+      document.getElementById('combinedRiskExplanation').textContent =
+        deanon.combinedRisk.explanation;
+      document.getElementById('combinedRiskRecommendation').innerHTML =
+        `💡 ${deanon.combinedRisk.recommendation}`;
+    }
+
+    function displayBreachSimulation(breach) {
+      const scenariosDiv = document.getElementById('breachScenarios');
+
+      scenariosDiv.innerHTML = breach.scenarios.map(s => `
+        <div class="breach-scenario-card">
+          <div class="breach-header">
+            <span class="breach-icon">${s.icon}</span>
+            <span class="breach-name">${s.name}</span>
+            <span class="breach-probability probability-${s.probability}">${s.probability}</span>
+          </div>
+          <div class="breach-description">${s.description}</div>
+          <div class="breach-affected">
+            <strong>Betroffene Daten:</strong> ${s.affectedData.join(', ')}
+          </div>
+          <div class="breach-damage">
+            <span class="damage-label">Schadenspotenzial:</span>
+            <div class="damage-bar">
+              <div class="damage-fill" style="width: ${s.potentialDamage * 10}%; background: ${s.potentialDamage > 7 ? '#f44336' : s.potentialDamage > 4 ? '#ff9800' : '#4caf50'}"></div>
+            </div>
+            <span class="damage-value">${s.potentialDamage}/10</span>
+          </div>
+          <div class="breach-consequences">
+            <strong>Mögliche Folgen:</strong>
+            <ul>${s.consequences.map(c => `<li>${c}</li>`).join('')}</ul>
+          </div>
+          <div class="breach-examples">
+            <em>Echte Beispiele: ${s.examples.join(', ')}</em>
+          </div>
+        </div>
+      `).join('');
+
+      // Overall risk
+      const overallScore = breach.overallBreachRisk.score;
+      document.getElementById('breachOverallScore').innerHTML = `
+        <span class="overall-label">Gesamt-Breach-Risiko:</span>
+        <span class="overall-value" style="color: ${overallScore > 0.7 ? '#f44336' : overallScore > 0.4 ? '#ff9800' : '#4caf50'}">
+          ${Math.round(overallScore * 100)}%
+        </span>
+      `;
+      document.getElementById('breachWorstCase').innerHTML = `
+        <strong>Worst Case:</strong> ${breach.overallBreachRisk.worstCase}
+      `;
+    }
+
+    function displayFutureRisk(future) {
+      // Timeline scores
+      document.getElementById('scoreNow').textContent = '●';
+      future.timeline.forEach(t => {
+        const el = document.getElementById(`score${t.years}y`);
+        if (el) {
+          el.textContent = t.projectedScore;
+          el.style.color = t.projectedScore > 150 ? '#9c27b0' :
+                           t.projectedScore > 100 ? '#f44336' :
+                           t.projectedScore > 50 ? '#ff9800' : '#4caf50';
+        }
+      });
+
+      // Future threats
+      const threatsDiv = document.getElementById('futureThreats');
+      threatsDiv.innerHTML = future.timeline.map(t => `
+        <div class="threat-card" data-years="${t.years}">
+          <div class="threat-header">
+            <span class="threat-year">In ${t.years} Jahr${t.years > 1 ? 'en' : ''}</span>
+            <span class="threat-multiplier">×${t.riskMultiplier.toFixed(1)}</span>
+          </div>
+          <ul class="threat-list">
+            ${t.newThreats.map(threat => `<li>${threat}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('');
+
+      // Permanent risks
+      const permList = document.getElementById('permanentRisksList');
+      if (future.permanentRisks.length > 0) {
+        permList.innerHTML = future.permanentRisks.map(r => `
+          <div class="permanent-risk-item">
+            <span class="perm-icon">${r.icon || '⚠️'}</span>
+            <span class="perm-type">${r.dataType}</span>
+            <span class="perm-risk">→ ${r.risk}</span>
+            <span class="perm-desc">${r.description}</span>
+          </div>
+        `).join('');
+        document.getElementById('permanentRisks').style.display = 'block';
+      } else {
+        document.getElementById('permanentRisks').style.display = 'none';
+      }
+    }
+
+    function displayCorrelationAttack(correlation) {
+      const methodsDiv = document.getElementById('correlationMethods');
+
+      methodsDiv.innerHTML = correlation.possibleCorrelations.map(c => `
+        <div class="correlation-card">
+          <div class="corr-header">
+            <span class="corr-icon">${c.icon}</span>
+            <span class="corr-name">${c.method}</span>
+            <span class="corr-difficulty difficulty-${c.difficulty}">${c.difficulty}</span>
+          </div>
+          <div class="corr-confidence">
+            <span>Erfolgswahrscheinlichkeit:</span>
+            <div class="confidence-bar">
+              <div class="confidence-fill" style="width: ${c.confidence * 100}%"></div>
+            </div>
+            <span>${Math.round(c.confidence * 100)}%</span>
+          </div>
+          <div class="corr-steps">
+            <strong>Angriffs-Schritte:</strong>
+            <ol>${c.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+          </div>
+        </div>
+      `).join('');
+
+      // Attack surface
+      const surface = correlation.attackSurface;
+      document.getElementById('attackSurfaceScore').innerHTML = `
+        <span>Angriffsfläche: </span>
+        <strong style="color: ${surface.score > 0.7 ? '#f44336' : surface.score > 0.4 ? '#ff9800' : '#4caf50'}">
+          ${Math.round(surface.score * 100)}%
+        </strong>
+      `;
+      document.getElementById('attackSurfaceWeakest').innerHTML = `
+        <strong>Schwächstes Glied:</strong> ${surface.weakestLink}
+      `;
+      document.getElementById('attackSurfaceRecommendation').innerHTML = `
+        💡 ${surface.recommendation}
+      `;
+    }
+
+    // ========================================
     // Initialize Everything
     // ========================================
 
@@ -2149,6 +3233,9 @@
       // Initialize Phase 4 features
       initDocumentUpload();
       initPWA();
+
+      // Initialize Phase 5 features
+      initPredictivePrivacy();
 
       // Load saved language preference
       const savedLang = localStorage.getItem('achtung-lang') || 'de';
