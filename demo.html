@@ -5,15 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Demo | achtung.live – Teste den Airbag für digitale Kommunikation">
   <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#800000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="achtung.live">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>Demo | achtung.live</title>
 </head>
 <body>
+  <!-- PWA Install Prompt (hidden by default) -->
+  <div id="pwaInstallPrompt" class="pwa-install-prompt" style="display:none;">
+    <span class="pwa-icon">📱</span>
+    <span class="pwa-text" data-i18n="pwa.installHint">App installieren für Offline-Nutzung</span>
+    <button class="pwa-install-btn" onclick="installPWA()">Installieren</button>
+    <button class="pwa-close-btn" onclick="dismissPWAPrompt()">&times;</button>
+  </div>
+
+  <!-- Offline Indicator -->
+  <div id="offlineIndicator" class="offline-indicator" style="display:none;">
+    <span class="offline-icon">📴</span>
+    <span class="offline-text">Offline - Eingeschränkte Funktionen</span>
+  </div>
+
   <!-- Accessibility Toolbar -->
   <div class="accessibility-toolbar" role="toolbar" aria-label="Barrierefreiheit-Einstellungen">
     <div class="a11y-group">
-      <span class="a11y-label">Schrift:</span>
+      <span class="a11y-label" data-i18n="a11y.font">Schrift:</span>
       <button class="a11y-btn" onclick="changeFontSize(-1)" aria-label="Schrift verkleinern" title="Kleinere Schrift">A-</button>
       <button class="a11y-btn" onclick="changeFontSize(0)" aria-label="Standard Schriftgröße" title="Standard">A</button>
       <button class="a11y-btn" onclick="changeFontSize(1)" aria-label="Schrift vergrößern" title="Größere Schrift">A+</button>
@@ -21,19 +41,34 @@
     <div class="a11y-group">
       <button class="a11y-btn" id="contrastToggle" onclick="toggleHighContrast()" aria-label="Hoher Kontrast umschalten" title="Hoher Kontrast">
         <span class="a11y-icon">◐</span>
-        <span class="a11y-text">Kontrast</span>
+        <span class="a11y-text" data-i18n="a11y.contrast">Kontrast</span>
       </button>
     </div>
     <div class="a11y-group">
       <button class="a11y-btn" id="simpleLangToggle" onclick="toggleSimpleLanguage()" aria-label="Einfache Sprache umschalten" title="Einfache Sprache für besseres Verständnis">
         <span class="a11y-icon">📖</span>
-        <span class="a11y-text">Einfache Sprache</span>
+        <span class="a11y-text" data-i18n="a11y.simpleLang">Einfache Sprache</span>
       </button>
     </div>
     <div class="a11y-group">
       <button class="a11y-btn" id="realtimeToggle" onclick="toggleRealtime()" aria-label="Live-Prüfung umschalten" title="Text wird während des Tippens geprüft">
         <span class="a11y-icon">⚡</span>
-        <span class="a11y-text">Live-Prüfung</span>
+        <span class="a11y-text" data-i18n="a11y.liveCheck">Live-Prüfung</span>
+      </button>
+    </div>
+    <!-- Language Switcher -->
+    <div class="a11y-group lang-switcher">
+      <button class="a11y-btn lang-btn active" data-lang="de" onclick="switchLanguage('de')" title="Deutsch">
+        <span class="lang-flag">🇩🇪</span>
+        <span class="lang-code">DE</span>
+      </button>
+      <button class="a11y-btn lang-btn" data-lang="en" onclick="switchLanguage('en')" title="English">
+        <span class="lang-flag">🇬🇧</span>
+        <span class="lang-code">EN</span>
+      </button>
+      <button class="a11y-btn lang-btn" data-lang="fr" onclick="switchLanguage('fr')" title="Français">
+        <span class="lang-flag">🇫🇷</span>
+        <span class="lang-code">FR</span>
       </button>
     </div>
   </div>
@@ -43,10 +78,11 @@
 
   <header role="banner">
     <h1><span class="achtung-logo">[achtung.live]</span></h1>
-    <p class="claim" id="mainClaim">Der Airbag für digitale Kommunikation</p>
+    <p class="claim" id="mainClaim" data-i18n="header.tagline">Der Airbag für digitale Kommunikation</p>
     <!-- Simple language version (hidden by default) -->
-    <p class="claim simple-lang" id="mainClaimSimple" style="display:none;">Wir helfen dir, keine privaten Daten zu teilen.</p>
+    <p class="claim simple-lang" id="mainClaimSimple" data-i18n="header.taglineSimple" style="display:none;">Wir helfen dir, keine privaten Daten zu teilen.</p>
   </header>
+
 
   <!-- Geschützter Inhalt -->
   <main class="main-content protected-content" role="main">
@@ -61,8 +97,9 @@
 
     <!-- Tab Navigation -->
     <div class="tab-nav" role="tablist" aria-label="Analyse-Modus wählen">
-      <button class="tab-btn active" data-tab="single" role="tab" aria-selected="true" aria-controls="singleTab">Einzeltext</button>
-      <button class="tab-btn" data-tab="batch" role="tab" aria-selected="false" aria-controls="batchTab">Batch-Analyse</button>
+      <button class="tab-btn active" data-tab="single" role="tab" aria-selected="true" aria-controls="singleTab" data-i18n="tabs.single">Einzeltext</button>
+      <button class="tab-btn" data-tab="batch" role="tab" aria-selected="false" aria-controls="batchTab" data-i18n="tabs.batch">Batch-Analyse</button>
+      <button class="tab-btn" data-tab="document" role="tab" aria-selected="false" aria-controls="documentTab" data-i18n="tabs.document">Dokument</button>
     </div>
 
     <!-- Single Text Tab -->
@@ -151,6 +188,84 @@
 
       <!-- Batch Results -->
       <div id="batchResults" style="display:none;"></div>
+    </div>
+
+    <!-- Document Analysis Tab -->
+    <div id="documentTab" class="tab-content" role="tabpanel" aria-labelledby="document-tab">
+      <h2 data-i18n="document.title">Dokument-Analyse</h2>
+      <p class="doc-description" data-i18n="document.description">Lade ein Bild oder PDF hoch zur Analyse</p>
+      <p class="simple-lang doc-description-simple" style="display:none;" data-i18n="document.descriptionSimple">Lade ein Foto oder PDF hoch. Wir prüfen den Text darin.</p>
+
+      <form id="documentForm">
+        <div class="document-upload-area" id="docDropZone">
+          <div class="upload-icon">📄</div>
+          <div class="upload-text" data-i18n="document.dropzone">Bild oder PDF hierher ziehen</div>
+          <div class="upload-subtext" data-i18n="document.dropzoneHint">oder klicken zum Auswählen (PNG, JPG, PDF)</div>
+          <div class="upload-maxsize" data-i18n="document.maxSize">Maximal 10 MB für Bilder, 25 MB für PDFs</div>
+          <input type="file" id="documentFile" accept="image/png,image/jpeg,image/webp,application/pdf" hidden>
+        </div>
+
+        <!-- Document Preview -->
+        <div id="documentPreview" class="document-preview" style="display:none;">
+          <div class="doc-preview-header">
+            <span class="doc-preview-name" id="docFileName"></span>
+            <span class="doc-preview-size" id="docFileSize"></span>
+            <button type="button" class="doc-remove-btn" onclick="removeDocument()">&times;</button>
+          </div>
+          <div class="doc-preview-content">
+            <img id="docPreviewImage" class="doc-preview-img" style="display:none;" alt="Dokument-Vorschau">
+            <div id="docPreviewPdf" class="doc-preview-pdf" style="display:none;">
+              <span class="pdf-icon">📑</span>
+              <span class="pdf-text">PDF-Dokument</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- OCR Options -->
+        <div class="ocr-options" id="ocrOptions" style="display:none;">
+          <label class="ocr-option">
+            <input type="checkbox" id="enableOcr" checked>
+            <span>Text erkennen (OCR)</span>
+          </label>
+          <label class="ocr-option">
+            <input type="checkbox" id="enableSentiment">
+            <span>Stimmungsanalyse</span>
+          </label>
+        </div>
+
+        <div class="datenschutz-hinweis">
+          <input type="checkbox" id="privacyPolicyDoc" required>
+          <label for="privacyPolicyDoc">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+        </div>
+
+        <button type="submit" id="docSubmitBtn" disabled>
+          <span class="btn-text" data-i18n="form.submit">Dokument analysieren</span>
+          <span class="btn-loading" style="display:none;" data-i18n="document.analyzing">Analysiere...</span>
+        </button>
+      </form>
+
+      <!-- Document Results -->
+      <div id="documentResults" style="display:none;">
+        <div class="doc-results-container">
+          <!-- Extracted Text Section -->
+          <div class="doc-extracted-text" id="extractedTextSection" style="display:none;">
+            <div class="extracted-header">
+              <span class="extracted-title" data-i18n="document.extractedText">Erkannter Text</span>
+              <span class="extracted-confidence" id="ocrConfidence"></span>
+            </div>
+            <div class="extracted-content" id="extractedText"></div>
+          </div>
+
+          <!-- Sentiment Section -->
+          <div class="doc-sentiment" id="sentimentSection" style="display:none;">
+            <div class="sentiment-header" data-i18n="document.sentiment">Stimmung</div>
+            <div class="sentiment-result" id="sentimentResult"></div>
+          </div>
+
+          <!-- Risk Dashboard for Document -->
+          <div id="docRiskDashboard"></div>
+        </div>
+      </div>
     </div>
 
     <div style="text-align:center; margin-top:40px;">
@@ -1484,8 +1599,437 @@
       setTimeout(() => announcer.remove(), 1000);
     }
 
-    // Authentifizierung prüfen und Seite initialisieren
-    document.addEventListener('DOMContentLoaded', function() {
+    // ========================================
+    // Phase 4: Internationalization (i18n)
+    // ========================================
+
+    let currentLang = 'de';
+    let translations = {};
+
+    async function loadTranslations(lang) {
+      try {
+        const response = await fetch(`/locales/${lang}.json`);
+        if (!response.ok) throw new Error('Translation not found');
+        return await response.json();
+      } catch (error) {
+        console.warn(`Failed to load ${lang} translations:`, error);
+        return null;
+      }
+    }
+
+    async function switchLanguage(lang) {
+      // Load translations if not cached
+      if (!translations[lang]) {
+        translations[lang] = await loadTranslations(lang);
+      }
+
+      if (!translations[lang]) {
+        console.error(`Translations for ${lang} not available`);
+        return;
+      }
+
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      // Update UI with translations
+      applyTranslations(translations[lang]);
+
+      // Update language buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      // Save preference
+      localStorage.setItem('achtung-lang', lang);
+    }
+
+    function applyTranslations(t) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        const value = getNestedValue(t, key);
+        if (value) {
+          el.textContent = value;
+        }
+      });
+
+      // Update placeholders
+      const demoText = document.getElementById('demoText');
+      if (demoText && t.form?.placeholder) {
+        demoText.placeholder = t.form.placeholder;
+      }
+
+      const batchTexts = document.getElementById('batchTexts');
+      if (batchTexts && t.batch?.placeholder) {
+        batchTexts.placeholder = t.batch.placeholder;
+      }
+    }
+
+    function getNestedValue(obj, path) {
+      return path.split('.').reduce((current, key) => current?.[key], obj);
+    }
+
+    function t(key, replacements = {}) {
+      const lang = translations[currentLang] || translations['de'];
+      let value = getNestedValue(lang, key) || key;
+
+      // Replace placeholders like {count}
+      Object.entries(replacements).forEach(([k, v]) => {
+        value = value.replace(`{${k}}`, v);
+      });
+
+      return value;
+    }
+
+    // ========================================
+    // Phase 4: Document Upload & Analysis
+    // ========================================
+
+    let selectedDocument = null;
+    const API_DOCUMENT_URL = `${API_BASE}/analyze-document`;
+
+    function initDocumentUpload() {
+      const dropZone = document.getElementById('docDropZone');
+      const fileInput = document.getElementById('documentFile');
+      const form = document.getElementById('documentForm');
+
+      if (!dropZone || !fileInput) return;
+
+      // Click to select
+      dropZone.addEventListener('click', () => fileInput.click());
+
+      // Drag & drop
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+      });
+
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file) handleDocumentSelect(file);
+      });
+
+      // File input change
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) handleDocumentSelect(file);
+      });
+
+      // Form submit
+      if (form) {
+        form.addEventListener('submit', handleDocumentSubmit);
+      }
+    }
+
+    function handleDocumentSelect(file) {
+      const maxImageSize = 10 * 1024 * 1024; // 10 MB
+      const maxPdfSize = 25 * 1024 * 1024; // 25 MB
+      const isImage = file.type.startsWith('image/');
+      const isPdf = file.type === 'application/pdf';
+
+      if (!isImage && !isPdf) {
+        alert('Bitte nur Bilder (PNG, JPG) oder PDFs hochladen.');
+        return;
+      }
+
+      const maxSize = isImage ? maxImageSize : maxPdfSize;
+      if (file.size > maxSize) {
+        alert(`Datei zu groß. Maximum: ${maxSize / 1024 / 1024} MB`);
+        return;
+      }
+
+      selectedDocument = file;
+
+      // Show preview
+      const preview = document.getElementById('documentPreview');
+      const fileName = document.getElementById('docFileName');
+      const fileSize = document.getElementById('docFileSize');
+      const previewImage = document.getElementById('docPreviewImage');
+      const previewPdf = document.getElementById('docPreviewPdf');
+      const ocrOptions = document.getElementById('ocrOptions');
+      const submitBtn = document.getElementById('docSubmitBtn');
+
+      fileName.textContent = file.name;
+      fileSize.textContent = formatFileSize(file.size);
+
+      if (isImage) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImage.src = e.target.result;
+          previewImage.style.display = 'block';
+          previewPdf.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        previewImage.style.display = 'none';
+        previewPdf.style.display = 'flex';
+      }
+
+      preview.style.display = 'block';
+      ocrOptions.style.display = 'flex';
+      submitBtn.disabled = false;
+
+      // Hide upload zone text
+      document.getElementById('docDropZone').classList.add('has-file');
+    }
+
+    function removeDocument() {
+      selectedDocument = null;
+      document.getElementById('documentPreview').style.display = 'none';
+      document.getElementById('ocrOptions').style.display = 'none';
+      document.getElementById('docSubmitBtn').disabled = true;
+      document.getElementById('docDropZone').classList.remove('has-file');
+      document.getElementById('documentFile').value = '';
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    async function handleDocumentSubmit(e) {
+      e.preventDefault();
+
+      if (!selectedDocument) {
+        alert('Bitte zuerst ein Dokument auswählen.');
+        return;
+      }
+
+      const btn = document.getElementById('docSubmitBtn');
+      const btnText = btn.querySelector('.btn-text');
+      const btnLoading = btn.querySelector('.btn-loading');
+
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+      btn.disabled = true;
+
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedDocument);
+        formData.append('lang', currentLang);
+        formData.append('options', JSON.stringify({
+          ocr: document.getElementById('enableOcr').checked,
+          sentiment: document.getElementById('enableSentiment').checked
+        }));
+
+        const response = await fetch(API_DOCUMENT_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server-Fehler: ${response.status}`);
+        }
+
+        const data = await response.json();
+        renderDocumentResults(data);
+
+      } catch (error) {
+        console.error('Document analysis error:', error);
+        document.getElementById('documentResults').innerHTML = `
+          <div class="doc-error">
+            <span class="error-icon">⚠️</span>
+            <span>${t('errors.analysisError')}: ${error.message}</span>
+          </div>
+        `;
+        document.getElementById('documentResults').style.display = 'block';
+      } finally {
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+        btn.disabled = false;
+      }
+    }
+
+    function renderDocumentResults(data) {
+      const resultsDiv = document.getElementById('documentResults');
+      const extractedSection = document.getElementById('extractedTextSection');
+      const sentimentSection = document.getElementById('sentimentSection');
+      const riskDashboard = document.getElementById('docRiskDashboard');
+
+      // Show extracted text if available
+      if (data.document?.extractedText) {
+        document.getElementById('extractedText').textContent = data.document.extractedText;
+        if (data.document.ocrConfidence) {
+          document.getElementById('ocrConfidence').textContent =
+            `${Math.round(data.document.ocrConfidence * 100)}% ${t('document.confidence')}`;
+        }
+        extractedSection.style.display = 'block';
+      } else {
+        extractedSection.style.display = 'none';
+      }
+
+      // Show sentiment if available
+      if (data.sentiment) {
+        const sentimentResult = document.getElementById('sentimentResult');
+        const sentimentLabels = {
+          positive: { icon: '😊', text: t('document.sentimentPositive'), class: 'positive' },
+          neutral: { icon: '😐', text: t('document.sentimentNeutral'), class: 'neutral' },
+          negative: { icon: '😟', text: t('document.sentimentNegative'), class: 'negative' }
+        };
+        const s = sentimentLabels[data.sentiment.label] || sentimentLabels.neutral;
+
+        sentimentResult.innerHTML = `
+          <span class="sentiment-icon">${s.icon}</span>
+          <span class="sentiment-label ${s.class}">${s.text}</span>
+          <span class="sentiment-score">${(data.sentiment.score * 100).toFixed(0)}%</span>
+        `;
+        sentimentSection.style.display = 'block';
+      } else {
+        sentimentSection.style.display = 'none';
+      }
+
+      // Render risk dashboard using existing function
+      if (data.categories && data.categories.length > 0) {
+        // Re-use existing dashboard rendering
+        const dashboardHtml = generateDashboardHtml(data, data.document?.extractedText || '');
+        riskDashboard.innerHTML = dashboardHtml;
+      } else {
+        riskDashboard.innerHTML = `
+          <div class="all-safe-message">
+            <div class="all-safe-icon">🛡️</div>
+            <div class="all-safe-title">${t('results.safe')}</div>
+            <div class="all-safe-text">${t('results.safeText')}</div>
+          </div>
+        `;
+      }
+
+      resultsDiv.style.display = 'block';
+      resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function generateDashboardHtml(data, text) {
+      const normalized = normalizeApiResponse(data, text);
+      const { riskScore, riskLevel, categories } = normalized;
+
+      return `
+        <div class="privacy-score-section">
+          <div class="privacy-score-label">${t('results.privacyScore')}</div>
+          <div class="privacy-score-circle ${riskLevel}">
+            <span class="privacy-score-number">${riskScore}</span>
+            <span class="privacy-score-max">/ 100</span>
+          </div>
+          <div class="privacy-score-status ${riskLevel}">${getStatusText(riskLevel)}</div>
+        </div>
+        <div class="risk-categories">
+          ${categories.map(cat => {
+            const meta = CATEGORY_META[cat.type] || CATEGORY_META.generic;
+            return `<span class="risk-category-badge ${cat.severity || 'medium'}">
+              ${meta.icon} ${t('categories.' + cat.type) || meta.label}
+            </span>`;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // ========================================
+    // Phase 4: PWA Support
+    // ========================================
+
+    let deferredPrompt = null;
+
+    function initPWA() {
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registered:', registration.scope);
+
+            // Check for updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  showUpdatePrompt();
+                }
+              });
+            });
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed:', error);
+          });
+      }
+
+      // Listen for install prompt
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallPrompt();
+      });
+
+      // Track install
+      window.addEventListener('appinstalled', () => {
+        console.log('PWA installed');
+        hideInstallPrompt();
+        deferredPrompt = null;
+      });
+
+      // Online/offline detection
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+      updateOnlineStatus();
+    }
+
+    function showInstallPrompt() {
+      const prompt = document.getElementById('pwaInstallPrompt');
+      if (prompt && !localStorage.getItem('achtung-pwa-dismissed')) {
+        prompt.style.display = 'flex';
+      }
+    }
+
+    function hideInstallPrompt() {
+      const prompt = document.getElementById('pwaInstallPrompt');
+      if (prompt) {
+        prompt.style.display = 'none';
+      }
+    }
+
+    function dismissPWAPrompt() {
+      hideInstallPrompt();
+      localStorage.setItem('achtung-pwa-dismissed', 'true');
+    }
+
+    async function installPWA() {
+      if (!deferredPrompt) return;
+
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+
+      if (outcome === 'accepted') {
+        console.log('User accepted PWA install');
+      }
+
+      deferredPrompt = null;
+      hideInstallPrompt();
+    }
+
+    function showUpdatePrompt() {
+      // Could show a toast notification here
+      console.log('New version available');
+    }
+
+    function updateOnlineStatus() {
+      const indicator = document.getElementById('offlineIndicator');
+      if (indicator) {
+        indicator.style.display = navigator.onLine ? 'none' : 'flex';
+      }
+
+      // Update API status when coming back online
+      if (navigator.onLine) {
+        checkApiHealth();
+      }
+    }
+
+    // ========================================
+    // Initialize Everything
+    // ========================================
+
+    document.addEventListener('DOMContentLoaded', async function() {
       // Initialize Phase 2 features
       initTabs();
       initBatchAnalysis();
@@ -1493,6 +2037,20 @@
 
       // Initialize Phase 3 accessibility features
       loadAccessibilityPreferences();
+
+      // Initialize Phase 4 features
+      initDocumentUpload();
+      initPWA();
+
+      // Load saved language preference
+      const savedLang = localStorage.getItem('achtung-lang') || 'de';
+      translations[savedLang] = await loadTranslations(savedLang);
+      if (savedLang !== 'de') {
+        switchLanguage(savedLang);
+      } else {
+        // Load DE translations for t() function
+        translations['de'] = await loadTranslations('de');
+      }
 
       // Check health every 60 seconds
       setInterval(checkApiHealth, 60000);

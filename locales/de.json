@@ -1,0 +1,192 @@
+{
+  "meta": {
+    "code": "de",
+    "name": "Deutsch",
+    "flag": "🇩🇪"
+  },
+  "header": {
+    "tagline": "Der Airbag für digitale Kommunikation",
+    "taglineSimple": "Wir helfen dir, keine privaten Daten zu teilen."
+  },
+  "nav": {
+    "info": "Info",
+    "danger": "Gefahr",
+    "demo": "Demo",
+    "aiNotice": "KI-Hinweis",
+    "privacy": "Datenschutz",
+    "contact": "Kontakt",
+    "imprint": "Impressum"
+  },
+  "a11y": {
+    "font": "Schrift",
+    "fontSmaller": "Schrift verkleinern",
+    "fontDefault": "Standard Schriftgröße",
+    "fontLarger": "Schrift vergrößern",
+    "contrast": "Kontrast",
+    "contrastToggle": "Hoher Kontrast umschalten",
+    "simpleLang": "Einfache Sprache",
+    "simpleLangToggle": "Einfache Sprache umschalten",
+    "liveCheck": "Live-Prüfung",
+    "liveCheckToggle": "Live-Prüfung umschalten"
+  },
+  "tabs": {
+    "single": "Einzeltext",
+    "batch": "Batch-Analyse",
+    "document": "Dokument"
+  },
+  "form": {
+    "title": "Jetzt live testen!",
+    "titleSimple": "Schreibe deinen Text unten. Wir sagen dir, ob private Daten drin sind.",
+    "placeholder": "Schreibe hier deinen Text und lass ihn direkt überprüfen...",
+    "contextLabel": "Wo soll dieser Text verwendet werden?",
+    "contextHelp": "Wähle aus, wo du den Text posten möchtest. Das hilft uns, besser zu prüfen.",
+    "contexts": {
+      "private": "Privater Chat (1:1)",
+      "whatsapp": "WhatsApp Gruppe",
+      "email": "E-Mail",
+      "linkedin": "LinkedIn / Beruflich",
+      "public": "Öffentlicher Post (Social Media)"
+    },
+    "privacyAccept": "Ich akzeptiere die",
+    "privacyPolicy": "Datenschutzerklärung",
+    "privacyHelp": "Du musst das ankreuzen, damit wir deinen Text prüfen dürfen.",
+    "submit": "Text analysieren",
+    "analyzing": "Analysiere..."
+  },
+  "batch": {
+    "title": "Batch-Analyse",
+    "description": "Analysiere mehrere Texte gleichzeitig (max. 20 Texte)",
+    "descriptionSimple": "Prüfe viele Texte auf einmal. Maximal 20 Stück.",
+    "placeholder": "Füge mehrere Texte ein, getrennt durch eine Leerzeile (2x Enter)...",
+    "counter": "Texte",
+    "dropzone": "Datei hierher ziehen",
+    "dropzoneHint": "oder klicken zum Auswählen (.txt, .csv)",
+    "or": "oder",
+    "submit": "Alle Texte analysieren",
+    "textsAnalyzed": "Texte analysiert",
+    "avgScore": "Durchschn. Score",
+    "totalRisks": "Risiken gesamt"
+  },
+  "document": {
+    "title": "Dokument-Analyse",
+    "description": "Lade ein Bild oder PDF hoch zur Analyse",
+    "descriptionSimple": "Lade ein Foto oder PDF hoch. Wir prüfen den Text darin.",
+    "dropzone": "Bild oder PDF hierher ziehen",
+    "dropzoneHint": "oder klicken zum Auswählen (PNG, JPG, PDF)",
+    "maxSize": "Maximal 10 MB für Bilder, 25 MB für PDFs",
+    "analyzing": "Dokument wird analysiert...",
+    "ocrProgress": "Text wird erkannt...",
+    "extractedText": "Erkannter Text",
+    "confidence": "Erkennungsgenauigkeit",
+    "sentiment": "Stimmung",
+    "sentimentPositive": "Positiv",
+    "sentimentNeutral": "Neutral",
+    "sentimentNegative": "Negativ"
+  },
+  "results": {
+    "safe": "Alles sicher!",
+    "safeText": "Keine sensiblen Daten in deinem Text erkannt.",
+    "safeHint": "Du kannst ihn bedenkenlos senden.",
+    "privacyScore": "Privacy Score",
+    "statusSafe": "SICHER",
+    "statusWarning": "ACHTUNG",
+    "statusDanger": "GEFAHR",
+    "markedText": "Dein Text mit Markierungen",
+    "foundRisks": "Gefundene Risiken"
+  },
+  "rewrite": {
+    "title": "Smart Rewrite",
+    "anonymize": "Anonymisieren",
+    "anonymizeDesc": "[NAME], [IBAN]...",
+    "redact": "Zensieren",
+    "redactDesc": "[ZENSIERT]",
+    "pseudonymize": "Pseudonymisieren",
+    "pseudonymizeDesc": "Fake-Daten",
+    "generate": "Text neu schreiben",
+    "generating": "Generiere...",
+    "copy": "Text kopieren",
+    "copied": "Kopiert!",
+    "useText": "In Textfeld übernehmen"
+  },
+  "live": {
+    "active": "Live-Prüfung aktiv",
+    "preview": "Live-Vorschau",
+    "minChars": "Mindestens 10 Zeichen für Live-Prüfung...",
+    "checking": "Prüfe...",
+    "error": "Prüfung fehlgeschlagen",
+    "noRisks": "Keine Risiken erkannt",
+    "oneRisk": "1 Risiko erkannt",
+    "multipleRisks": "{count} Risiken erkannt"
+  },
+  "status": {
+    "online": "API Online",
+    "offline": "API Offline",
+    "degraded": "Eingeschränkt"
+  },
+  "categories": {
+    "iban": "IBAN/Bankdaten",
+    "credit_card": "Kreditkarte",
+    "bic": "BIC/SWIFT",
+    "account_number": "Kontonummer",
+    "national_id": "Personalausweis",
+    "passport": "Reisepass",
+    "tax_id": "Steuer-ID",
+    "social_security": "Sozialversicherung",
+    "drivers_license": "Führerschein",
+    "health_insurance": "Krankenversicherung",
+    "medical_record": "Medizinische Daten",
+    "health": "Gesundheitsdaten",
+    "ip_address": "IP-Adresse",
+    "mac_address": "MAC-Adresse",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "api_key": "API-Schlüssel",
+    "name": "Personenname",
+    "phone": "Telefonnummer",
+    "email": "E-Mail-Adresse",
+    "address": "Postadresse",
+    "date_of_birth": "Geburtsdatum",
+    "age": "Alter",
+    "gender": "Geschlecht",
+    "religion": "Religion",
+    "political": "Politische Meinung",
+    "sexual_orientation": "Sexuelle Orientierung",
+    "biometric": "Biometrische Daten",
+    "photo": "Erkennbares Foto",
+    "gps_coordinates": "GPS-Koordinaten",
+    "license_plate": "Kfz-Kennzeichen",
+    "location": "Standort",
+    "vacation": "Abwesenheit/Urlaub",
+    "child": "Kinderdaten",
+    "emotion": "Emotionen",
+    "employer": "Arbeitgeber",
+    "legal": "Rechtlich heikel",
+    "date": "Datum/Termin",
+    "generic": "Sensible Daten"
+  },
+  "contextWarnings": {
+    "whatsapp": "WhatsApp-Nachrichten können leicht weitergeleitet oder als Screenshot geteilt werden.",
+    "public": "Öffentliche Posts sind für jeden sichtbar und können von Suchmaschinen indexiert werden.",
+    "linkedin": "Berufliche Netzwerke werden oft von Arbeitgebern und Recruitern durchsucht.",
+    "email": "E-Mails können weitergeleitet werden und verbleiben oft auf Servern."
+  },
+  "errors": {
+    "analysisError": "Fehler bei der Analyse",
+    "tryAgain": "Bitte versuche es später erneut.",
+    "minText": "Bitte mindestens einen Text eingeben.",
+    "serverError": "Server-Fehler"
+  },
+  "footer": {
+    "europe": "Aus Europa. Für Alle.",
+    "protection": "[achtung.live] schützt, was zählt: unsere digitale Kommunikation.",
+    "realtime": "In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform."
+  },
+  "pwa": {
+    "installPrompt": "App installieren",
+    "installHint": "Füge achtung.live zu deinem Startbildschirm hinzu",
+    "offlineReady": "Offline verfügbar",
+    "offlineHint": "Die App funktioniert jetzt auch ohne Internet",
+    "updateAvailable": "Update verfügbar",
+    "updateNow": "Jetzt aktualisieren"
+  }
+}

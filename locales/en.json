@@ -1,0 +1,192 @@
+{
+  "meta": {
+    "code": "en",
+    "name": "English",
+    "flag": "🇬🇧"
+  },
+  "header": {
+    "tagline": "The Airbag for Digital Communication",
+    "taglineSimple": "We help you avoid sharing private data."
+  },
+  "nav": {
+    "info": "Info",
+    "danger": "Danger",
+    "demo": "Demo",
+    "aiNotice": "AI Notice",
+    "privacy": "Privacy",
+    "contact": "Contact",
+    "imprint": "Imprint"
+  },
+  "a11y": {
+    "font": "Font",
+    "fontSmaller": "Decrease font size",
+    "fontDefault": "Default font size",
+    "fontLarger": "Increase font size",
+    "contrast": "Contrast",
+    "contrastToggle": "Toggle high contrast",
+    "simpleLang": "Simple Language",
+    "simpleLangToggle": "Toggle simple language",
+    "liveCheck": "Live Check",
+    "liveCheckToggle": "Toggle live checking"
+  },
+  "tabs": {
+    "single": "Single Text",
+    "batch": "Batch Analysis",
+    "document": "Document"
+  },
+  "form": {
+    "title": "Test it live!",
+    "titleSimple": "Write your text below. We'll tell you if there's private data in it.",
+    "placeholder": "Write your text here and have it checked instantly...",
+    "contextLabel": "Where will this text be used?",
+    "contextHelp": "Choose where you plan to post this text. This helps us check better.",
+    "contexts": {
+      "private": "Private Chat (1:1)",
+      "whatsapp": "WhatsApp Group",
+      "email": "Email",
+      "linkedin": "LinkedIn / Professional",
+      "public": "Public Post (Social Media)"
+    },
+    "privacyAccept": "I accept the",
+    "privacyPolicy": "Privacy Policy",
+    "privacyHelp": "You must check this so we can analyze your text.",
+    "submit": "Analyze Text",
+    "analyzing": "Analyzing..."
+  },
+  "batch": {
+    "title": "Batch Analysis",
+    "description": "Analyze multiple texts at once (max. 20 texts)",
+    "descriptionSimple": "Check many texts at once. Maximum 20.",
+    "placeholder": "Paste multiple texts separated by blank lines (2x Enter)...",
+    "counter": "Texts",
+    "dropzone": "Drop file here",
+    "dropzoneHint": "or click to select (.txt, .csv)",
+    "or": "or",
+    "submit": "Analyze All Texts",
+    "textsAnalyzed": "Texts analyzed",
+    "avgScore": "Avg. Score",
+    "totalRisks": "Total risks"
+  },
+  "document": {
+    "title": "Document Analysis",
+    "description": "Upload an image or PDF for analysis",
+    "descriptionSimple": "Upload a photo or PDF. We'll check the text in it.",
+    "dropzone": "Drop image or PDF here",
+    "dropzoneHint": "or click to select (PNG, JPG, PDF)",
+    "maxSize": "Max 10 MB for images, 25 MB for PDFs",
+    "analyzing": "Analyzing document...",
+    "ocrProgress": "Recognizing text...",
+    "extractedText": "Extracted Text",
+    "confidence": "Recognition accuracy",
+    "sentiment": "Sentiment",
+    "sentimentPositive": "Positive",
+    "sentimentNeutral": "Neutral",
+    "sentimentNegative": "Negative"
+  },
+  "results": {
+    "safe": "All clear!",
+    "safeText": "No sensitive data detected in your text.",
+    "safeHint": "You can safely send it.",
+    "privacyScore": "Privacy Score",
+    "statusSafe": "SAFE",
+    "statusWarning": "WARNING",
+    "statusDanger": "DANGER",
+    "markedText": "Your text with highlights",
+    "foundRisks": "Found Risks"
+  },
+  "rewrite": {
+    "title": "Smart Rewrite",
+    "anonymize": "Anonymize",
+    "anonymizeDesc": "[NAME], [IBAN]...",
+    "redact": "Redact",
+    "redactDesc": "[REDACTED]",
+    "pseudonymize": "Pseudonymize",
+    "pseudonymizeDesc": "Fake data",
+    "generate": "Rewrite text",
+    "generating": "Generating...",
+    "copy": "Copy text",
+    "copied": "Copied!",
+    "useText": "Use in text field"
+  },
+  "live": {
+    "active": "Live checking active",
+    "preview": "Live Preview",
+    "minChars": "At least 10 characters for live check...",
+    "checking": "Checking...",
+    "error": "Check failed",
+    "noRisks": "No risks detected",
+    "oneRisk": "1 risk detected",
+    "multipleRisks": "{count} risks detected"
+  },
+  "status": {
+    "online": "API Online",
+    "offline": "API Offline",
+    "degraded": "Limited"
+  },
+  "categories": {
+    "iban": "IBAN/Bank Details",
+    "credit_card": "Credit Card",
+    "bic": "BIC/SWIFT",
+    "account_number": "Account Number",
+    "national_id": "National ID",
+    "passport": "Passport",
+    "tax_id": "Tax ID",
+    "social_security": "Social Security",
+    "drivers_license": "Driver's License",
+    "health_insurance": "Health Insurance",
+    "medical_record": "Medical Records",
+    "health": "Health Data",
+    "ip_address": "IP Address",
+    "mac_address": "MAC Address",
+    "username": "Username",
+    "password": "Password",
+    "api_key": "API Key",
+    "name": "Person's Name",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "address": "Postal Address",
+    "date_of_birth": "Date of Birth",
+    "age": "Age",
+    "gender": "Gender",
+    "religion": "Religion",
+    "political": "Political Opinion",
+    "sexual_orientation": "Sexual Orientation",
+    "biometric": "Biometric Data",
+    "photo": "Recognizable Photo",
+    "gps_coordinates": "GPS Coordinates",
+    "license_plate": "License Plate",
+    "location": "Location",
+    "vacation": "Absence/Vacation",
+    "child": "Child Data",
+    "emotion": "Emotions",
+    "employer": "Employer",
+    "legal": "Legally Sensitive",
+    "date": "Date/Appointment",
+    "generic": "Sensitive Data"
+  },
+  "contextWarnings": {
+    "whatsapp": "WhatsApp messages can easily be forwarded or screenshot.",
+    "public": "Public posts are visible to everyone and may be indexed by search engines.",
+    "linkedin": "Professional networks are often searched by employers and recruiters.",
+    "email": "Emails can be forwarded and often remain on servers."
+  },
+  "errors": {
+    "analysisError": "Analysis Error",
+    "tryAgain": "Please try again later.",
+    "minText": "Please enter at least one text.",
+    "serverError": "Server Error"
+  },
+  "footer": {
+    "europe": "From Europe. For Everyone.",
+    "protection": "[achtung.live] protects what matters: our digital communication.",
+    "realtime": "Real-time. No tracking. GDPR & EU AI-Act compliant."
+  },
+  "pwa": {
+    "installPrompt": "Install App",
+    "installHint": "Add achtung.live to your home screen",
+    "offlineReady": "Available Offline",
+    "offlineHint": "The app now works without internet",
+    "updateAvailable": "Update Available",
+    "updateNow": "Update Now"
+  }
+}
