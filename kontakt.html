@@ -3,18 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kontakt – Achtung.live</title>
+  <meta name="description" content="Kontakt | achtung.live – Schreib uns!">
+  <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
-  <style>
-    .modal-content {
-      animation: fadeIn 0.5s ease-in-out;
-      background-color: #fefefe;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-  </style>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Kontakt | achtung.live</title>
 </head>
 
 <body>
@@ -24,10 +17,14 @@
   <p class="claim">Der Airbag für digitale Kommunikation</p>
 </header>
 
-<main>
+<main class="main-content">
   <h2>Schreib uns!</h2>
 
-  <form id="contactForm" onsubmit="openModal('dankeModal'); return false;">
+  <form id="contactForm" name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="kontakt">
+    <p class="hidden" style="display:none;">
+      <label>Nicht ausfüllen: <input name="bot-field"></label>
+    </p>
     <input type="text" name="name" placeholder="Dein Name" required>
     <input type="email" name="email" placeholder="Deine E-Mail" required>
     <textarea name="message" placeholder="Deine Nachricht" rows="5" required></textarea>
@@ -39,8 +36,10 @@
       </label>
     </p>
 
-    <input type="submit" value="Nachricht abschicken">
+    <button type="submit">Nachricht abschicken</button>
   </form>
+
+  <div id="formMessage" class="form-message" style="display:none;"></div>
 </main>
 
 <!-- Datenschutz-Popup -->
@@ -62,12 +61,12 @@
 
 <footer class="site-footer">
   <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
-  
+
   <div class="schutztext">
     [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
   </div>
 
-   <nav class="footer-nav">
+  <nav class="footer-nav">
     <a href="info.html">Info</a> •
     <a href="gefahr.html">Gefahr</a> •
     <a href="demo.html" class="demo-highlight">Demo</a> •
@@ -77,19 +76,56 @@
     <a href="impressum.html">Impressum</a>
   </nav>
 
-   <div class="copyright">
+  <div class="copyright">
     © 2025 achtung.live
   </div>
 </footer>
-
 
 <script>
 function openModal(id) {
   document.getElementById(id).style.display = "block";
 }
+
 function closeModal(id) {
   document.getElementById(id).style.display = "none";
 }
+
+// Netlify Form Submission mit Fetch
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+  const messageBox = document.getElementById('formMessage');
+
+  try {
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData).toString()
+    });
+
+    if (response.ok) {
+      form.reset();
+      openModal('dankeModal');
+    } else {
+      messageBox.style.display = 'block';
+      messageBox.style.color = '#800000';
+      messageBox.textContent = 'Es gab ein Problem. Bitte versuche es erneut.';
+    }
+  } catch (error) {
+    messageBox.style.display = 'block';
+    messageBox.style.color = '#800000';
+    messageBox.textContent = 'Netzwerkfehler. Bitte prüfe deine Verbindung.';
+  }
+});
+
+// Schließen bei Klick außerhalb des Modals
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.style.display = 'none';
+  }
+};
 </script>
 
 </body>

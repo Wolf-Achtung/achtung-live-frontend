@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Demo – achtung.live</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Demo | achtung.live – Teste den Airbag für digitale Kommunikation">
+  <meta name="robots" content="index,follow">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Demo | achtung.live</title>
 </head>
 <body>
-  <div class="content-wrapper">
-   <header>
-  <h1><span class="achtung-logo">[achtung.live]</span></h1>
-  <p class="claim">Der Airbag für digitale Kommunikation</p>
-</header>
+  <!-- Logout Button (nur sichtbar wenn eingeloggt) -->
+  <button id="logoutBtn" class="logout-button" style="display:none;" onclick="achtungAuth.logout()">Abmelden</button>
 
+  <header>
+    <h1><span class="achtung-logo">[achtung.live]</span></h1>
+    <p class="claim">Der Airbag für digitale Kommunikation</p>
+  </header>
 
-    <main class="live-demo">
-      <h2>Jetzt live testen!</h2>
-      <form id="demoForm">
-        <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass' ihn direkt überprüfen…" rows="6" required></textarea>
-        <p style="font-size: 14px; margin-top:10px;">
-          <input type="checkbox" id="privacyPolicyDemo" required>
-          <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
-        </p>
-        <button type="submit">Text analysieren</button>
-      </form>
-
-      <div id="feedbackBox" class="analysis-result" style="display:none; margin-top:20px;"></div>
-
-      <div style="text-align:center; margin-top:40px;">
-        <button onclick="document.getElementById('caseModal').style.display='block'" style="background:#800000; color:white; padding:8px 16px; border:none; border-radius:6px;">
-          Fallbeispiele ansehen
-        </button>
+  <!-- Geschützter Inhalt -->
+  <main class="main-content protected-content">
+    <h2>Jetzt live testen!</h2>
+    <form id="demoForm">
+      <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass ihn direkt überprüfen..." rows="6" required></textarea>
+      <div class="datenschutz-hinweis">
+        <input type="checkbox" id="privacyPolicyDemo" required>
+        <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
       </div>
-    </main>
-  </div>
+      <button type="submit">Text analysieren</button>
+    </form>
+
+    <div id="feedbackBox" class="analysis-result" style="display:none;"></div>
+
+    <div style="text-align:center; margin-top:40px;">
+      <button onclick="openModal('caseModal')">Fallbeispiele ansehen</button>
+    </div>
+  </main>
+
+  <!-- Hinweis vor Authentifizierung -->
+  <main class="main-content auth-required">
+    <h2>Demo-Zugang</h2>
+    <p>Die Live-Demo ist passwortgeschützt.</p>
+    <p>Bitte gib das Passwort ein, um fortzufahren.</p>
+  </main>
 
   <!-- Popup für Datenschutz -->
   <div id="datenschutzModal" class="modal">
@@ -45,12 +54,12 @@
 
   <!-- Popup für Fallbeispiele -->
   <div id="caseModal" class="modal">
-    <div class="modal-content" style="max-width:720px;">
-      <span class="close" onclick="document.getElementById('caseModal').style.display='none'">&times;</span>
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('caseModal')">&times;</span>
 
       <div class="case-study-container">
         <div class="case-study-box active">
-          <h3>🔍 Fallbeispiel: Kreditkartendaten unbewusst geteilt</h3>
+          <h3>Fallbeispiel: Kreditkartendaten unbewusst geteilt</h3>
           <div class="label">Originaltext eines Nutzers:</div>
           <div class="field">Meine Kreditkartennummer lautet: 3948673029486</div>
           <div class="label">achtung.live Feedback:</div>
@@ -62,9 +71,9 @@
         </div>
 
         <div class="case-study-box">
-          <h3>🔍 Fallbeispiel: Standortdaten öffentlich geteilt</h3>
+          <h3>Fallbeispiel: Standortdaten öffentlich geteilt</h3>
           <div class="label">Originaltext eines Nutzers:</div>
-          <div class="field">Bin gerade im Urlaub in Italien 🍝</div>
+          <div class="field">Bin gerade im Urlaub in Italien</div>
           <div class="label">achtung.live Feedback:</div>
           <div class="feedback">Standortinformationen verraten, wo du bist - und wo nicht...</div>
           <div class="label">Empfohlene Text-Alternative zum Kopieren:</div>
@@ -74,7 +83,7 @@
         </div>
 
         <div class="case-study-box">
-          <h3>🔍 Fallbeispiel: Screenshot mit Patientendaten</h3>
+          <h3>Fallbeispiel: Screenshot mit Patientendaten</h3>
           <div class="label">Originaltext eines Nutzers:</div>
           <div class="field">(Screenshot) Diagnosebericht meiner Ärztin für die Krankenkasse</div>
           <div class="label">achtung.live Feedback:</div>
@@ -86,7 +95,7 @@
         </div>
 
         <div class="case-study-box">
-          <h3>🔍 Fallbeispiel: Arbeitgeber namentlich erwähnt</h3>
+          <h3>Fallbeispiel: Arbeitgeber namentlich erwähnt</h3>
           <div class="label">Originaltext eines Nutzers:</div>
           <div class="field">Mein Chef bei der XY AG ist total unfähig...</div>
           <div class="label">achtung.live Feedback:</div>
@@ -98,7 +107,7 @@
         </div>
 
         <div class="case-study-box">
-          <h3>🔍 Fallbeispiel: Messenger-Screenshot mit Klarnamen</h3>
+          <h3>Fallbeispiel: Messenger-Screenshot mit Klarnamen</h3>
           <div class="label">Originaltext eines Nutzers:</div>
           <div class="field">(Screenshot) WhatsApp-Chat mit vollem Namen sichtbar</div>
           <div class="label">achtung.live Feedback:</div>
@@ -111,87 +120,146 @@
       </div>
 
       <div class="case-study-nav">
-        <button onclick="changeCase(-1)">« Zurück</button>
-        <button onclick="changeCase(1)">Weiter »</button>
+        <button onclick="changeCase(-1)">Zurück</button>
+        <button onclick="changeCase(1)">Weiter</button>
       </div>
 
       <div style="text-align:center; margin-top:20px;">
-        <button onclick="document.getElementById('caseModal').style.display='none'" style="background:#800000; color:white; padding:8px 16px; border:none; border-radius:6px;">
-          Schließen
-        </button>
+        <button onclick="closeModal('caseModal')">Schließen</button>
       </div>
     </div>
   </div>
 
   <footer class="site-footer">
-  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
-  
-  <div class="schutztext">
-    [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
-  </div>
+    <div class="europe">Aus Europa. Für Alle.</div>
 
-   <nav class="footer-nav">
-    <a href="info.html">Info</a> •
-    <a href="gefahr.html">Gefahr</a> •
-    <a href="demo.html" class="demo-highlight">Demo</a> •
-    <a href="ki-hinweis.html">KI-Hinweis</a> •
-    <a href="datenschutz.html">Datenschutz</a> •
-    <a href="kontakt.html">Kontakt</a> •
-    <a href="impressum.html">Impressum</a>
-  </nav>
+    <div class="schutztext">
+      [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
+    </div>
 
-   <div class="copyright">
-    © 2025 achtung.live
-  </div>
-</footer>
+    <nav class="footer-nav">
+      <a href="info.html">Info</a> •
+      <a href="gefahr.html">Gefahr</a> •
+      <a href="demo.html" class="demo-highlight">Demo</a> •
+      <a href="ki-hinweis.html">KI-Hinweis</a> •
+      <a href="datenschutz.html">Datenschutz</a> •
+      <a href="kontakt.html">Kontakt</a> •
+      <a href="impressum.html">Impressum</a>
+    </nav>
 
+    <div class="copyright">
+      © 2025 achtung.live
+    </div>
+  </footer>
+
+  <!-- Authentifizierungs-Script -->
+  <script src="auth.js"></script>
 
   <script>
+    // API Konfiguration
+    const API_BASE_URL = "https://web-production-2e4ae.up.railway.app";
+
+    // Modal Funktionen
     function openModal(id) {
       document.getElementById(id).style.display = "block";
     }
+
     function closeModal(id) {
       document.getElementById(id).style.display = "none";
     }
 
+    // Fallbeispiele Navigation
     let currentCase = 0;
     const cases = document.querySelectorAll('.case-study-box');
+
     function changeCase(dir) {
       cases[currentCase].classList.remove('active');
       currentCase = (currentCase + dir + cases.length) % cases.length;
       cases[currentCase].classList.add('active');
     }
 
+    // Demo Formular mit verbessertem Error-Handling
     document.getElementById("demoForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const text = document.getElementById("demoText").value;
       const box = document.getElementById("feedbackBox");
 
-      box.innerHTML = "<em>Analyse läuft …</em>";
+      box.innerHTML = "<em>Analyse läuft...</em>";
       box.style.display = "block";
 
       try {
-        const response = await fetch("https://web-production-2e4ae.up.railway.app/analyze", {
+        const response = await fetch(`${API_BASE_URL}/analyze`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text })
         });
 
+        if (!response.ok) {
+          throw new Error(`Server-Fehler: ${response.status}`);
+        }
+
         const data = await response.json();
         const feedbackList = data.feedback;
 
         if (!Array.isArray(feedbackList)) {
-          box.innerHTML = "<strong>Hinweis:</strong> Kein valides Feedback vom Server erhalten.";
+          box.innerHTML = `
+            <div class="analysis-result">
+              <strong>Erkannte Datenarten:</strong> ${data.detected_data || "Keine"}<br>
+              <strong>Datenschutz-Risiko:</strong> ${data.risk_level || "Unbekannt"}<br>
+              <strong>Empfehlung:</strong> ${data.explanation || "Keine Empfehlung"}<br>
+              <strong>Tipp:</strong> ${data.tip || "Kein Tipp verfügbar"}
+            </div>
+          `;
+          return;
+        }
+
+        if (feedbackList.length === 0) {
+          box.innerHTML = `
+            <div style="padding:12px; background:#e8f5e9; border-left:5px solid #4caf50; color:#2e7d32;">
+              <strong>Alles in Ordnung!</strong> Keine sensiblen Daten erkannt.
+            </div>
+          `;
           return;
         }
 
         box.innerHTML = feedbackList.map(entry =>
           `<div style="margin-bottom:12px; padding:12px; background:#fff3f3; border-left:5px solid #800000; color:#800000;">
-            <strong>⚠️ Hinweis:</strong> ${entry}
+            <strong>Hinweis:</strong> ${entry}
           </div>`
         ).join("");
       } catch (err) {
-        box.innerHTML = `<div style="color:red;">Fehler bei der Analyse: ${err.message}</div>`;
+        box.innerHTML = `
+          <div style="padding:12px; background:#ffebee; border-left:5px solid #c62828; color:#c62828;">
+            <strong>Fehler bei der Analyse:</strong> ${err.message}<br>
+            <small>Bitte versuche es später erneut.</small>
+          </div>
+        `;
+      }
+    });
+
+    // Schließen bei Klick außerhalb des Modals
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    };
+
+    // Authentifizierung prüfen und Seite initialisieren
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof achtungAuth !== 'undefined') {
+        if (achtungAuth.isAuthenticated()) {
+          // Zeige geschützten Inhalt
+          document.querySelectorAll('.protected-content').forEach(el => {
+            el.style.display = 'block';
+          });
+          document.querySelectorAll('.auth-required').forEach(el => {
+            el.style.display = 'none';
+          });
+          document.getElementById('logoutBtn').style.display = 'block';
+        } else {
+          // Zeige Auth-Modal
+          achtungAuth.protectPage();
+        }
       }
     });
   </script>

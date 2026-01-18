@@ -6,50 +6,8 @@
   <meta name="description" content="achtung.live startet bald – sichere dir deinen Platz auf der Warteliste!">
   <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>achtung.live startet bald!</title>
-
-  <style>
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-    }
-    .modal-content {
-      background-color: #fafafa;
-      margin: 8% auto;
-      padding: 25px;
-      border: 1px solid #002855;
-      width: 90%;
-      max-width: 600px;
-      border-radius: 10px;
-      text-align: center;
-      line-height: 1.6;
-      animation: fadeIn 0.5s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    .close {
-      color: #002855;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .close:hover {
-      color: #990000;
-    }
-  </style>
-
 </head>
 
 <body>
@@ -63,18 +21,24 @@
   <h2>[achtung.live] startet bald!</h2>
   <p>Jetzt den Platz auf der Warteliste sichern.</p>
 
-  <form name="launch-anmeldung" method="POST" data-netlify="true" onsubmit="openDankePopup(); return false;">
+  <form id="launchForm" name="launch-anmeldung" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="launch-anmeldung">
+    <p class="hidden" style="display:none;">
+      <label>Nicht ausfüllen: <input name="bot-field"></label>
+    </p>
     <input type="email" name="email" placeholder="E-Mail-Adresse" required>
 
     <div class="datenschutz-hinweis">
       <input type="checkbox" id="datenschutz" name="datenschutz" required>
       <label for="datenschutz">
-        Ich akzeptiere die <a href="#" onclick="openDatenschutzPopup(); return false;">Datenschutzerklärung</a>.
+        Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.
       </label>
     </div>
 
     <button type="submit">Jetzt eintragen</button>
   </form>
+
+  <div id="formMessage" class="form-message" style="display:none;"></div>
 </main>
 
 <!-- Datenschutz-Popup -->
@@ -96,26 +60,71 @@
 
 <footer class="site-footer">
   <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
-  
+
   <div class="schutztext">
     [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
   </div>
-   <div class="copyright">
+
+  <nav class="footer-nav">
+    <a href="info.html">Info</a> •
+    <a href="gefahr.html">Gefahr</a> •
+    <a href="demo.html" class="demo-highlight">Demo</a> •
+    <a href="ki-hinweis.html">KI-Hinweis</a> •
+    <a href="datenschutz.html">Datenschutz</a> •
+    <a href="kontakt.html">Kontakt</a> •
+    <a href="impressum.html">Impressum</a>
+  </nav>
+
+  <div class="copyright">
     © 2025 achtung.live
   </div>
 </footer>
 
 <script>
-function openDatenschutzPopup() {
-  document.getElementById('datenschutzModal').style.display = "block";
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
 }
-function openDankePopup() {
-  document.getElementById('dankeModal').style.display = "block";
-  return false;
-}
+
 function closeModal(id) {
   document.getElementById(id).style.display = "none";
 }
+
+// Netlify Form Submission mit Fetch
+document.getElementById('launchForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+  const messageBox = document.getElementById('formMessage');
+
+  try {
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData).toString()
+    });
+
+    if (response.ok) {
+      form.reset();
+      openModal('dankeModal');
+    } else {
+      messageBox.style.display = 'block';
+      messageBox.style.color = '#800000';
+      messageBox.textContent = 'Es gab ein Problem. Bitte versuche es erneut.';
+    }
+  } catch (error) {
+    messageBox.style.display = 'block';
+    messageBox.style.color = '#800000';
+    messageBox.textContent = 'Netzwerkfehler. Bitte prüfe deine Verbindung.';
+  }
+});
+
+// Schließen bei Klick außerhalb des Modals
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.style.display = 'none';
+  }
+};
 </script>
 
 </body>
