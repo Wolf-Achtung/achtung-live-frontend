@@ -277,39 +277,65 @@
       }
     }
 
-    // Markiert sensible Stellen im Text
+    // Markiert sensible Stellen im Text (komplett neu geschrieben)
     function markText(text, categories) {
       if (!categories || categories.length === 0) return escapeHtml(text);
 
-      // Sortiere nach Position (rückwärts, um Indizes nicht zu verschieben)
-      const sorted = [...categories]
-        .filter(c => c.position || c.match)
-        .sort((a, b) => {
-          const posA = a.position ? a.position.start : text.indexOf(a.match);
-          const posB = b.position ? b.position.start : text.indexOf(b.match);
-          return posB - posA;
-        });
+      // Sammle alle Markierungen mit korrekten Positionen
+      const marks = categories
+        .map(cat => {
+          let start, end;
+          if (cat.position && typeof cat.position.start === 'number') {
+            start = cat.position.start;
+            end = cat.position.end;
+          } else if (cat.match) {
+            start = text.indexOf(cat.match);
+            end = start >= 0 ? start + cat.match.length : -1;
+          } else {
+            return null;
+          }
+          if (start < 0 || end <= start || end > text.length) return null;
+          return { start, end, severity: cat.severity || 'medium', message: cat.message };
+        })
+        .filter(m => m !== null)
+        .sort((a, b) => a.start - b.start);
 
-      let result = text;
-      for (const cat of sorted) {
-        const start = cat.position ? cat.position.start : result.indexOf(cat.match);
-        const end = cat.position ? cat.position.end : start + cat.match.length;
-
-        if (start >= 0 && end > start) {
-          const before = result.substring(0, start);
-          const match = result.substring(start, end);
-          const after = result.substring(end);
-
-          result = before +
-            `<span class="text-mark ${cat.severity || 'medium'}" title="${escapeHtml(cat.message || cat.label || '')}">` +
-            escapeHtml(match) +
-            `<span class="tooltip">${escapeHtml(cat.message || 'Sensible Daten')}</span>` +
-            `</span>` +
-            after;
+      // Entferne überlappende Markierungen (behalte die mit höherer Severity)
+      const severityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
+      const filtered = [];
+      for (const mark of marks) {
+        const lastMark = filtered[filtered.length - 1];
+        if (lastMark && mark.start < lastMark.end) {
+          // Überlappung: behalte die mit höherer Severity
+          if ((severityOrder[mark.severity] || 0) > (severityOrder[lastMark.severity] || 0)) {
+            filtered[filtered.length - 1] = mark;
+          }
+          // Sonst ignorieren
+        } else {
+          filtered.push(mark);
         }
       }
 
-      // Escape remaining text parts (between marks)
+      // Baue den String von links nach rechts auf
+      let result = '';
+      let lastEnd = 0;
+
+      for (const mark of filtered) {
+        // Text vor der Markierung (escaped)
+        if (mark.start > lastEnd) {
+          result += escapeHtml(text.substring(lastEnd, mark.start));
+        }
+        // Markierter Text
+        const matchText = text.substring(mark.start, mark.end);
+        result += `<span class="text-mark ${mark.severity}">${escapeHtml(matchText)}</span>`;
+        lastEnd = mark.end;
+      }
+
+      // Rest des Textes nach der letzten Markierung
+      if (lastEnd < text.length) {
+        result += escapeHtml(text.substring(lastEnd));
+      }
+
       return result;
     }
 
@@ -442,11 +468,50 @@
       `;
     }
 
+    // Generiert korrekten deutschen Summary-Text
+    function generateSummary(categories) {
+      if (!categories || categories.length === 0) {
+        return 'Keine Risiken erkannt';
+      }
+
+      // Zähle nach Severity
+      const counts = { critical: 0, high: 0, medium: 0, low: 0 };
+      for (const cat of categories) {
+        const sev = cat.severity || 'medium';
+        counts[sev] = (counts[sev] || 0) + 1;
+      }
+
+      const parts = [];
+      if (counts.critical > 0) {
+        parts.push(`${counts.critical} kritische${counts.critical === 1 ? 's' : ''}`);
+      }
+      if (counts.high > 0) {
+        parts.push(`${counts.high} hohe${counts.high === 1 ? 's' : ''}`);
+      }
+      if (counts.medium > 0) {
+        parts.push(`${counts.medium} mittlere${counts.medium === 1 ? 's' : ''}`);
+      }
+      if (counts.low > 0) {
+        parts.push(`${counts.low} geringe${counts.low === 1 ? 's' : ''}`);
+      }
+
+      if (parts.length === 0) {
+        return `${categories.length} Risiko${categories.length === 1 ? '' : 'en'} erkannt`;
+      }
+
+      const total = categories.length;
+      return `${parts.join(', ')} Risiko${total === 1 ? '' : 'en'} erkannt`;
+    }
+
     // Normalisiert API-Response (unterstützt altes und neues Format)
     function normalizeApiResponse(data, originalText) {
       // Neues API v2 Format
       if (data.riskScore !== undefined && data.categories) {
-        return data;
+        // Überschreibe Summary mit korrektem Deutsch
+        return {
+          ...data,
+          summary: generateSummary(data.categories)
+        };
       }
 
       // Altes Format mit feedback Array
@@ -464,7 +529,7 @@
           riskScore,
           riskLevel: getRiskLevel(riskScore),
           categories,
-          summary: `${categories.length} potenzielle${categories.length === 1 ? 's' : ''} Risiko${categories.length === 1 ? '' : 's'} erkannt`,
+          summary: generateSummary(categories),
           rewrite: null
         };
       }
