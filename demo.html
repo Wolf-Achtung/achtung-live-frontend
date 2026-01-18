@@ -110,6 +110,7 @@
       <button class="tab-btn" data-tab="document" role="tab" aria-selected="false" aria-controls="documentTab" data-i18n="tabs.document">Dokument</button>
       <button class="tab-btn" data-tab="predictive" role="tab" aria-selected="false" aria-controls="predictiveTab" data-i18n="tabs.predictive">🔮 Predictive</button>
       <button class="tab-btn" data-tab="footprint" role="tab" aria-selected="false" aria-controls="footprintTab" data-i18n="tabs.footprint">🔍 Footprint</button>
+      <button class="tab-btn" data-tab="coach" role="tab" aria-selected="false" aria-controls="coachTab" data-i18n="tabs.coach">🤖 Coach</button>
     </div>
 
     <!-- Single Text Tab -->
@@ -679,6 +680,86 @@
           </button>
         </div>
 
+      </div>
+    </div>
+
+    <!-- Smart Privacy Coach Tab (Phase 10) -->
+    <div id="coachTab" class="tab-content" role="tabpanel" aria-labelledby="coach-tab">
+      <h2 data-i18n="coach.title">🤖 Smart Privacy Coach</h2>
+      <p class="coach-description" data-i18n="coach.description">Dein persönlicher KI-Assistent für Datenschutz-Fragen</p>
+
+      <div class="coach-container">
+        <!-- Chat Interface -->
+        <div class="coach-chat-container">
+          <div class="coach-chat-header">
+            <div class="coach-avatar">🤖</div>
+            <div class="coach-info">
+              <span class="coach-name">Privacy Coach</span>
+              <span class="coach-status online">Online</span>
+            </div>
+            <button class="coach-menu-btn" onclick="toggleCoachMenu()" title="Menü">⋮</button>
+          </div>
+
+          <div class="coach-chat-messages" id="coachMessages">
+            <!-- Welcome message will be inserted here -->
+          </div>
+
+          <div class="coach-suggestions" id="coachSuggestions">
+            <!-- Quick suggestions will be inserted here -->
+          </div>
+
+          <form class="coach-input-form" id="coachInputForm">
+            <div class="coach-input-container">
+              <button type="button" class="coach-attach-btn" onclick="attachTextForAnalysis()" title="Text zur Analyse anhängen">📎</button>
+              <input type="text" id="coachInput" placeholder="Stelle eine Frage zum Datenschutz..." autocomplete="off">
+              <button type="submit" class="coach-send-btn" title="Senden">
+                <span class="send-icon">➤</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sidebar with Topics -->
+        <div class="coach-sidebar">
+          <div class="coach-sidebar-section">
+            <h4 data-i18n="coach.quickActions">Schnellaktionen</h4>
+            <div class="coach-quick-actions">
+              <button class="quick-action-btn" onclick="askCoach('Was sind personenbezogene Daten?')">
+                <span class="action-icon">📚</span>
+                <span>Grundlagen lernen</span>
+              </button>
+              <button class="quick-action-btn" onclick="askCoach('Erkläre mir k-Anonymität einfach')">
+                <span class="action-icon">🔢</span>
+                <span>k-Anonymität</span>
+              </button>
+              <button class="quick-action-btn" onclick="askCoach('Wie erkenne ich Phishing?')">
+                <span class="action-icon">🎣</span>
+                <span>Phishing erkennen</span>
+              </button>
+              <button class="quick-action-btn" onclick="askCoach('Welche Daten sollte ich nie teilen?')">
+                <span class="action-icon">🚫</span>
+                <span>Risiko-Daten</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="coach-sidebar-section">
+            <h4 data-i18n="coach.learnTopics">Lern-Themen</h4>
+            <div class="coach-topics-list" id="coachTopicsList">
+              <!-- Topics will be loaded dynamically -->
+            </div>
+          </div>
+
+          <div class="coach-sidebar-section">
+            <h4 data-i18n="coach.tipOfDay">Tipp des Tages</h4>
+            <div class="coach-daily-tip" id="coachDailyTip">
+              <div class="tip-icon">💡</div>
+              <div class="tip-content">
+                <p>Verwende für jeden Dienst ein einzigartiges Passwort. Ein Passwort-Manager hilft dabei!</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -4067,6 +4148,467 @@
     }
 
     // ========================================
+    // Phase 10: Smart Privacy Coach
+    // ========================================
+
+    const API_COACH_URL = `${API_BASE}/coach-chat`;
+    let coachSessionId = null;
+    let coachConversation = [];
+    let isCoachTyping = false;
+
+    // Knowledge base for client-side responses
+    const COACH_KNOWLEDGE = {
+      greetings: [
+        "Hallo! 👋 Ich bin dein Privacy Coach. Wie kann ich dir heute helfen?",
+        "Hi! Schön, dass du da bist. Frag mich alles über Datenschutz!",
+        "Willkommen! Ich helfe dir gerne bei Datenschutz-Fragen."
+      ],
+      topics: {
+        pii: {
+          keywords: ['personenbezogen', 'pii', 'persönliche daten', 'was sind'],
+          response: `**Personenbezogene Daten (PII)** sind alle Informationen, die dich identifizieren können:
+
+📋 **Direkte Identifikatoren:**
+- Name, Adresse, Telefonnummer
+- E-Mail, Geburtsdatum
+- Personalausweis-/Passnummer
+
+🔗 **Indirekte Identifikatoren:**
+- IP-Adresse, Cookies
+- Standortdaten
+- Gerätekennungen
+
+⚠️ **Besonders sensibel:**
+- Gesundheitsdaten
+- Politische Meinungen
+- Religiöse Überzeugungen
+- Sexuelle Orientierung
+
+💡 **Tipp:** Auch scheinbar harmlose Daten können in Kombination zur Identifikation führen!`
+        },
+        k_anonymity: {
+          keywords: ['k-anonymität', 'k anonymität', 'anonymität', 'k='],
+          response: `**k-Anonymität** einfach erklärt:
+
+🎭 Stell dir vor, du versteckst dich in einer Menschenmenge:
+
+**k = 1** 🔴
+Du bist allein erkennbar. Sofort identifizierbar!
+
+**k = 10** 🟡
+Du bist einer von 10 gleich aussehenden Personen. Besser!
+
+**k = 1000** 🟢
+Du bist einer von 1000 - sehr gut versteckt!
+
+📊 **Beispiel:**
+"28-jähriger Programmierer in Berlin-Mitte"
+→ Vielleicht nur 5 Personen (k=5) - riskant!
+
+"20-30 Jahre, IT-Branche, Berlin"
+→ Tausende Personen (k=10.000+) - sicher!
+
+💡 **Merke:** Je höher k, desto besser dein Datenschutz!`
+        },
+        phishing: {
+          keywords: ['phishing', 'betrug', 'fake mail', 'spam', 'erkennen'],
+          response: `**Phishing erkennen** - So schützt du dich:
+
+🎣 Phishing = "Angeln" nach deinen Daten
+
+**Typische Merkmale:**
+1. ⚠️ **Dringlichkeit**: "Ihr Konto wird gesperrt!"
+2. 📧 **Falsche Absender**: support@amaz0n-sicher.com
+3. ✏️ **Rechtschreibfehler**: "Bitte bestätigen Sie Ihre Daten"
+4. 🔗 **Verdächtige Links**: Hover zeigt andere URL
+5. 📎 **Gefährliche Anhänge**: .exe, .zip, .doc mit Makros
+
+**So prüfst du:**
+1. Absender-Adresse genau ansehen
+2. Nie direkt auf Links klicken
+3. Im Zweifel: Firma direkt kontaktieren
+4. Keine Passwörter per Mail senden
+
+💡 **Tipp:** Echte Banken fragen NIE per Mail nach Passwörtern!`
+        },
+        risky_data: {
+          keywords: ['nie teilen', 'gefährlich', 'risiko', 'welche daten', 'nicht teilen'],
+          response: `**Diese Daten solltest du NIEMALS öffentlich teilen:**
+
+🔴 **Kritisch - Nie teilen:**
+- Passwörter & PINs
+- Vollständige Kreditkartennummern
+- IBAN + Kontoinhaber zusammen
+- Personalausweis-/Passnummer
+- Sozialversicherungsnummer
+
+🟠 **Vorsicht - Nur wenn nötig:**
+- Vollständige Adresse
+- Geburtsdatum (Tag+Monat+Jahr)
+- Telefonnummer
+- Arbeitgeber + Position
+
+🟡 **Bewusst teilen:**
+- Vollständiger Name
+- Wohnort (Stadt)
+- Beruf (allgemein)
+- Alter (ungefähr)
+
+💡 **Goldene Regel:**
+Frag dich: "Würde ich das einem Fremden auf der Straße erzählen?"`
+        },
+        gdpr: {
+          keywords: ['dsgvo', 'gdpr', 'rechte', 'datenschutz gesetz', 'eu'],
+          response: `**DSGVO - Deine Rechte in der EU:**
+
+📜 Die Datenschutz-Grundverordnung gibt dir starke Rechte:
+
+**1. Auskunftsrecht (Art. 15)**
+Du kannst fragen: "Welche Daten habt ihr über mich?"
+
+**2. Recht auf Löschung (Art. 17)**
+"Löscht meine Daten!" - Unternehmen müssen folgen
+
+**3. Datenübertragbarkeit (Art. 20)**
+Deine Daten in maschinenlesbarem Format erhalten
+
+**4. Widerspruchsrecht (Art. 21)**
+Du kannst Datenverarbeitung widersprechen
+
+**5. Recht auf Berichtigung (Art. 16)**
+Falsche Daten müssen korrigiert werden
+
+💰 **Strafen für Unternehmen:**
+Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
+
+💡 **Tipp:** Bei Verstößen: Beschwerde bei der Datenschutzbehörde einreichen!`
+        },
+        password: {
+          keywords: ['passwort', 'kennwort', 'sicher', '2fa', 'zwei-faktor'],
+          response: `**Sichere Passwörter - Best Practices:**
+
+🔑 **Ein gutes Passwort:**
+- Mindestens 12 Zeichen
+- Groß- & Kleinbuchstaben
+- Zahlen & Sonderzeichen
+- KEIN Wörterbuch-Wort
+- NICHT: Geburtsdatum, Name, "123456"
+
+✅ **Gut:** "Kx7#mP9$vL2@nQ"
+❌ **Schlecht:** "Passwort123!"
+
+🛡️ **2-Faktor-Authentifizierung (2FA):**
+- Aktiviere 2FA überall wo möglich!
+- App (Authenticator) > SMS
+- Schützt auch bei Passwort-Leak
+
+📱 **Passwort-Manager:**
+- Speichert alle Passwörter sicher
+- Generiert starke Passwörter
+- Empfehlung: Bitwarden, 1Password, KeePass
+
+💡 **Goldene Regel:** Ein einzigartiges Passwort pro Dienst!`
+        },
+        breach: {
+          keywords: ['datenleck', 'breach', 'gehackt', 'leak', 'gestohlen'],
+          response: `**Was tun bei einem Datenleck?**
+
+🚨 **Sofort-Maßnahmen:**
+1. **Passwort ändern** - beim betroffenen Dienst
+2. **Gleiche Passwörter** überall ändern
+3. **2FA aktivieren** - falls noch nicht aktiv
+4. **Kontoauszüge prüfen** - bei Finanzdaten
+
+🔍 **Prüfen ob du betroffen bist:**
+- haveibeenpwned.com
+- Unser Footprint Scanner
+
+📧 **Bei E-Mail-Leak:**
+- Spam-Filter verstärken
+- Auf Phishing achten
+- Neue E-Mail für wichtige Dienste erwägen
+
+💳 **Bei Finanzdaten-Leak:**
+- Bank informieren
+- Karte sperren lassen
+- Abbuchungen überwachen
+
+💡 **Langfristig:** Regelmäßiges Monitoring einrichten!`
+        }
+      },
+      fallback: [
+        "Das ist eine interessante Frage! Leider bin ich mir nicht 100% sicher. Versuche es mal anders zu formulieren oder wähle ein Thema aus der Sidebar.",
+        "Hmm, dazu habe ich keine spezifischen Informationen. Kann ich dir bei einem anderen Datenschutz-Thema helfen?",
+        "Diese Frage übersteigt mein aktuelles Wissen. Schau gerne in unsere Lern-Themen oder formuliere die Frage anders."
+      ]
+    };
+
+    const COACH_TOPICS = [
+      { id: 'basics', icon: '📚', title: 'Grundlagen', description: 'Was ist Datenschutz?' },
+      { id: 'gdpr', icon: '🇪🇺', title: 'DSGVO', description: 'Deine Rechte in der EU' },
+      { id: 'phishing', icon: '🎣', title: 'Phishing', description: 'Betrug erkennen' },
+      { id: 'passwords', icon: '🔑', title: 'Passwörter', description: 'Sichere Passwörter & 2FA' },
+      { id: 'social', icon: '📱', title: 'Social Media', description: 'Privacy-Einstellungen' },
+      { id: 'breaches', icon: '💥', title: 'Datenlecks', description: 'Was tun bei Leaks?' }
+    ];
+
+    function initPrivacyCoach() {
+      const form = document.getElementById('coachInputForm');
+      if (form) {
+        form.addEventListener('submit', handleCoachSubmit);
+      }
+
+      // Initialize session
+      coachSessionId = 'session_' + Date.now();
+
+      // Show welcome message
+      showWelcomeMessage();
+
+      // Load topics
+      loadCoachTopics();
+    }
+
+    function showWelcomeMessage() {
+      const messagesDiv = document.getElementById('coachMessages');
+      if (!messagesDiv) return;
+
+      const welcomeMsg = COACH_KNOWLEDGE.greetings[Math.floor(Math.random() * COACH_KNOWLEDGE.greetings.length)];
+
+      messagesDiv.innerHTML = '';
+      addCoachMessage(welcomeMsg, 'coach');
+
+      // Add initial suggestions
+      showSuggestions([
+        { text: 'Was sind personenbezogene Daten?', action: 'ask' },
+        { text: 'Erkläre k-Anonymität', action: 'ask' },
+        { text: 'Wie erstelle ich sichere Passwörter?', action: 'ask' }
+      ]);
+    }
+
+    function loadCoachTopics() {
+      const topicsList = document.getElementById('coachTopicsList');
+      if (!topicsList) return;
+
+      topicsList.innerHTML = COACH_TOPICS.map(topic => `
+        <button class="coach-topic-btn" onclick="selectCoachTopic('${topic.id}')">
+          <span class="topic-icon">${topic.icon}</span>
+          <div class="topic-info">
+            <span class="topic-title">${topic.title}</span>
+            <span class="topic-desc">${topic.description}</span>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    function selectCoachTopic(topicId) {
+      const topicQuestions = {
+        basics: 'Was sind personenbezogene Daten?',
+        gdpr: 'Erkläre mir die DSGVO',
+        phishing: 'Wie erkenne ich Phishing?',
+        passwords: 'Wie erstelle ich sichere Passwörter?',
+        social: 'Wie schütze ich meine Social Media Profile?',
+        breaches: 'Was tun bei einem Datenleck?'
+      };
+
+      if (topicQuestions[topicId]) {
+        askCoach(topicQuestions[topicId]);
+      }
+    }
+
+    async function handleCoachSubmit(e) {
+      e.preventDefault();
+
+      const input = document.getElementById('coachInput');
+      const message = input.value.trim();
+
+      if (!message) return;
+
+      input.value = '';
+      await askCoach(message);
+    }
+
+    async function askCoach(message) {
+      // Add user message
+      addCoachMessage(message, 'user');
+
+      // Show typing indicator
+      showTypingIndicator();
+
+      // Hide suggestions while processing
+      document.getElementById('coachSuggestions').innerHTML = '';
+
+      try {
+        // Try API first, fallback to client-side
+        let response;
+        try {
+          const apiResponse = await fetch(API_COACH_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId: coachSessionId,
+              message: message
+            })
+          });
+
+          if (apiResponse.ok) {
+            response = await apiResponse.json();
+          } else {
+            throw new Error('API unavailable');
+          }
+        } catch (apiError) {
+          console.log('Using client-side coach');
+          response = generateClientSideResponse(message);
+        }
+
+        // Remove typing indicator
+        hideTypingIndicator();
+
+        // Add coach response
+        addCoachMessage(response.message || response, 'coach');
+
+        // Show follow-up suggestions
+        if (response.suggestions) {
+          showSuggestions(response.suggestions);
+        } else {
+          showDefaultSuggestions();
+        }
+
+      } catch (error) {
+        console.error('Coach error:', error);
+        hideTypingIndicator();
+        addCoachMessage('Entschuldigung, da ist etwas schiefgelaufen. Bitte versuche es erneut.', 'coach');
+      }
+    }
+
+    function generateClientSideResponse(message) {
+      const lowerMessage = message.toLowerCase();
+
+      // Check each topic for matching keywords
+      for (const [topicId, topic] of Object.entries(COACH_KNOWLEDGE.topics)) {
+        for (const keyword of topic.keywords) {
+          if (lowerMessage.includes(keyword)) {
+            return {
+              message: topic.response,
+              suggestions: [
+                { text: 'Noch eine Frage stellen', action: 'ask' },
+                { text: 'Anderes Thema wählen', action: 'topics' }
+              ]
+            };
+          }
+        }
+      }
+
+      // Fallback response
+      return {
+        message: COACH_KNOWLEDGE.fallback[Math.floor(Math.random() * COACH_KNOWLEDGE.fallback.length)],
+        suggestions: [
+          { text: 'Was sind personenbezogene Daten?', action: 'ask' },
+          { text: 'Wie erkenne ich Phishing?', action: 'ask' },
+          { text: 'DSGVO Rechte erklären', action: 'ask' }
+        ]
+      };
+    }
+
+    function addCoachMessage(content, role) {
+      const messagesDiv = document.getElementById('coachMessages');
+      if (!messagesDiv) return;
+
+      const messageEl = document.createElement('div');
+      messageEl.className = `coach-message ${role}`;
+
+      const avatar = role === 'coach' ? '🤖' : '👤';
+      const formattedContent = formatCoachMessage(content);
+
+      messageEl.innerHTML = `
+        <div class="message-avatar">${avatar}</div>
+        <div class="message-content">
+          <div class="message-bubble">${formattedContent}</div>
+          <div class="message-time">${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+      `;
+
+      messagesDiv.appendChild(messageEl);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      // Store in conversation history
+      coachConversation.push({ role, content, timestamp: new Date().toISOString() });
+    }
+
+    function formatCoachMessage(content) {
+      // Convert markdown-like formatting to HTML
+      return content
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>')
+        .replace(/^/, '<p>')
+        .replace(/$/, '</p>');
+    }
+
+    function showTypingIndicator() {
+      isCoachTyping = true;
+      const messagesDiv = document.getElementById('coachMessages');
+      if (!messagesDiv) return;
+
+      const typingEl = document.createElement('div');
+      typingEl.className = 'coach-message coach typing-indicator';
+      typingEl.id = 'coachTyping';
+      typingEl.innerHTML = `
+        <div class="message-avatar">🤖</div>
+        <div class="message-content">
+          <div class="message-bubble typing">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      `;
+
+      messagesDiv.appendChild(typingEl);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      isCoachTyping = false;
+      const typingEl = document.getElementById('coachTyping');
+      if (typingEl) {
+        typingEl.remove();
+      }
+    }
+
+    function showSuggestions(suggestions) {
+      const suggestionsDiv = document.getElementById('coachSuggestions');
+      if (!suggestionsDiv) return;
+
+      suggestionsDiv.innerHTML = suggestions.map(s => `
+        <button class="coach-suggestion-btn" onclick="askCoach('${s.text.replace(/'/g, "\\'")}')">
+          ${s.text}
+        </button>
+      `).join('');
+    }
+
+    function showDefaultSuggestions() {
+      showSuggestions([
+        { text: 'Erzähl mir mehr', action: 'ask' },
+        { text: 'Anderes Thema', action: 'topics' },
+        { text: 'Danke, das hilft!', action: 'end' }
+      ]);
+    }
+
+    function toggleCoachMenu() {
+      // Placeholder for menu functionality
+      alert('Menü-Funktionen kommen in der nächsten Version!');
+    }
+
+    function attachTextForAnalysis() {
+      const demoText = document.getElementById('demoText');
+      if (demoText && demoText.value.trim()) {
+        askCoach(`Analysiere diesen Text und erkläre die Risiken: "${demoText.value.trim().substring(0, 200)}..."`);
+      } else {
+        askCoach('Ich möchte einen Text analysieren lassen. Wie funktioniert das?');
+      }
+    }
+
+    // ========================================
     // Initialize Everything
     // ========================================
 
@@ -4088,6 +4630,9 @@
 
       // Initialize Phase 7 features
       initFootprintScanner();
+
+      // Initialize Phase 10 features
+      initPrivacyCoach();
 
       // Load saved language preference
       const savedLang = localStorage.getItem('achtung-lang') || 'de';
