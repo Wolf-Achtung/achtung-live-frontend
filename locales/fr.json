@@ -32,7 +32,28 @@
   "tabs": {
     "single": "Texte Unique",
     "batch": "Analyse par Lot",
-    "document": "Document"
+    "document": "Document",
+    "predictive": "🔮 Prédictif"
+  },
+  "predictive": {
+    "title": "🔮 Vie Privée Prédictive",
+    "description": "Analysez les risques futurs de vos données",
+    "descriptionSimple": "Nous vous montrons ce qui pourrait arriver à vos données à l'avenir.",
+    "optDeanon": "Risque de Désanonymisation",
+    "optBreach": "Simulation de Fuite",
+    "optFuture": "Risque Futur",
+    "optCorrelation": "Attaques de Corrélation",
+    "timeHorizon": "Horizon Temporel:",
+    "analyze": "🔮 Analyser l'Avenir",
+    "summaryTitle": "Résumé",
+    "deanonTitle": "Risque de Désanonymisation",
+    "breachTitle": "Simulation de Fuite",
+    "futureTitle": "Risque Futur",
+    "correlationTitle": "Attaques de Corrélation",
+    "anonymity": "Anonymat",
+    "datapoints": "Points de Données Détectés",
+    "combinedRisk": "Risque Combiné",
+    "permanentRisks": "⚠️ Risques Permanents"
   },
   "form": {
     "title": "Testez maintenant!",

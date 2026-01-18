@@ -32,7 +32,28 @@
   "tabs": {
     "single": "Einzeltext",
     "batch": "Batch-Analyse",
-    "document": "Dokument"
+    "document": "Dokument",
+    "predictive": "🔮 Predictive"
+  },
+  "predictive": {
+    "title": "🔮 Predictive Privacy",
+    "description": "Analysiere zukünftige Risiken deiner Daten",
+    "descriptionSimple": "Wir zeigen dir, was in der Zukunft mit deinen Daten passieren könnte.",
+    "optDeanon": "Deanonymisierungs-Risiko",
+    "optBreach": "Breach-Simulation",
+    "optFuture": "Zukunfts-Risiko",
+    "optCorrelation": "Korrelations-Angriffe",
+    "timeHorizon": "Zeithorizont:",
+    "analyze": "🔮 Zukunft analysieren",
+    "summaryTitle": "Zusammenfassung",
+    "deanonTitle": "Deanonymisierungs-Risiko",
+    "breachTitle": "Breach-Simulation",
+    "futureTitle": "Zukunfts-Risiko",
+    "correlationTitle": "Korrelations-Angriffe",
+    "anonymity": "Anonymität",
+    "datapoints": "Gefundene Datenpunkte",
+    "combinedRisk": "Kombiniertes Risiko",
+    "permanentRisks": "⚠️ Dauerhafte Risiken"
   },
   "form": {
     "title": "Jetzt live testen!",
