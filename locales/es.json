@@ -1,0 +1,164 @@
+{
+  "meta": {
+    "code": "es",
+    "name": "Español",
+    "flag": "🇪🇸"
+  },
+  "header": {
+    "tagline": "El Airbag para la Comunicación Digital",
+    "taglineSimple": "Te ayudamos a no compartir datos privados."
+  },
+  "nav": {
+    "info": "Info",
+    "danger": "Peligro",
+    "demo": "Demo",
+    "aiNotice": "Aviso IA",
+    "privacy": "Privacidad",
+    "contact": "Contacto",
+    "imprint": "Aviso legal"
+  },
+  "a11y": {
+    "font": "Fuente",
+    "fontSmaller": "Reducir tamaño",
+    "fontDefault": "Tamaño predeterminado",
+    "fontLarger": "Aumentar tamaño",
+    "contrast": "Contraste",
+    "contrastToggle": "Activar alto contraste",
+    "simpleLang": "Lenguaje Simple",
+    "simpleLangToggle": "Activar lenguaje simple",
+    "liveCheck": "Verificación en Vivo",
+    "liveCheckToggle": "Activar verificación en vivo"
+  },
+  "tabs": {
+    "single": "Texto Único",
+    "batch": "Análisis por Lotes",
+    "document": "Documento"
+  },
+  "form": {
+    "title": "¡Pruébalo ahora!",
+    "titleSimple": "Escribe tu texto abajo. Te diremos si contiene datos privados.",
+    "placeholder": "Escribe tu texto aquí para verificarlo...",
+    "contextLabel": "¿Dónde se usará este texto?",
+    "contextHelp": "Elige dónde planeas publicar este texto. Esto nos ayuda a verificar mejor.",
+    "contexts": {
+      "private": "Chat Privado (1:1)",
+      "whatsapp": "Grupo de WhatsApp",
+      "email": "Correo electrónico",
+      "linkedin": "LinkedIn / Profesional",
+      "public": "Publicación Pública (Redes Sociales)"
+    },
+    "privacyAccept": "Acepto la",
+    "privacyPolicy": "Política de Privacidad",
+    "privacyHelp": "Debes marcar esto para que podamos analizar tu texto.",
+    "submit": "Analizar Texto",
+    "analyzing": "Analizando..."
+  },
+  "batch": {
+    "title": "Análisis por Lotes",
+    "description": "Analiza varios textos a la vez (máx. 20)",
+    "descriptionSimple": "Verifica varios textos a la vez. Máximo 20.",
+    "placeholder": "Pega varios textos separados por líneas en blanco...",
+    "counter": "Textos",
+    "dropzone": "Arrastra el archivo aquí",
+    "dropzoneHint": "o haz clic para seleccionar (.txt, .csv)",
+    "or": "o",
+    "submit": "Analizar Todos",
+    "textsAnalyzed": "Textos analizados",
+    "avgScore": "Puntuación Media",
+    "totalRisks": "Riesgos totales"
+  },
+  "document": {
+    "title": "Análisis de Documento",
+    "description": "Sube una imagen o PDF para analizar",
+    "descriptionSimple": "Sube una foto o PDF. Verificaremos el texto.",
+    "dropzone": "Arrastra imagen o PDF aquí",
+    "dropzoneHint": "o haz clic para seleccionar (PNG, JPG, PDF)",
+    "maxSize": "Máx 10 MB para imágenes, 25 MB para PDFs",
+    "analyzing": "Analizando documento...",
+    "ocrProgress": "Reconociendo texto...",
+    "extractedText": "Texto Extraído",
+    "confidence": "Precisión de reconocimiento",
+    "sentiment": "Sentimiento",
+    "sentimentPositive": "Positivo",
+    "sentimentNeutral": "Neutral",
+    "sentimentNegative": "Negativo"
+  },
+  "results": {
+    "safe": "¡Todo seguro!",
+    "safeText": "No se detectaron datos sensibles en tu texto.",
+    "safeHint": "Puedes enviarlo con seguridad.",
+    "privacyScore": "Puntuación de Privacidad",
+    "statusSafe": "SEGURO",
+    "statusWarning": "ATENCIÓN",
+    "statusDanger": "PELIGRO",
+    "markedText": "Tu texto con resaltados",
+    "foundRisks": "Riesgos Encontrados"
+  },
+  "rewrite": {
+    "title": "Reescritura Inteligente",
+    "anonymize": "Anonimizar",
+    "anonymizeDesc": "[NOMBRE], [IBAN]...",
+    "redact": "Censurar",
+    "redactDesc": "[CENSURADO]",
+    "pseudonymize": "Pseudonimizar",
+    "pseudonymizeDesc": "Datos falsos",
+    "generate": "Reescribir texto",
+    "generating": "Generando...",
+    "copy": "Copiar texto",
+    "copied": "¡Copiado!",
+    "useText": "Usar en el campo"
+  },
+  "live": {
+    "active": "Verificación en vivo activa",
+    "preview": "Vista Previa en Vivo",
+    "minChars": "Mínimo 10 caracteres para verificación...",
+    "checking": "Verificando...",
+    "error": "Verificación fallida",
+    "noRisks": "No se detectaron riesgos",
+    "oneRisk": "1 riesgo detectado",
+    "multipleRisks": "{count} riesgos detectados"
+  },
+  "status": {
+    "online": "API En Línea",
+    "offline": "API Fuera de Línea",
+    "degraded": "Limitado"
+  },
+  "categories": {
+    "iban": "IBAN/Datos Bancarios",
+    "credit_card": "Tarjeta de Crédito",
+    "phone": "Número de Teléfono",
+    "email": "Correo Electrónico",
+    "address": "Dirección Postal",
+    "name": "Nombre de Persona",
+    "health": "Datos de Salud",
+    "password": "Contraseña",
+    "location": "Ubicación",
+    "vacation": "Ausencia/Vacaciones",
+    "generic": "Datos Sensibles"
+  },
+  "contextWarnings": {
+    "whatsapp": "Los mensajes de WhatsApp pueden reenviarse o capturarse fácilmente.",
+    "public": "Las publicaciones públicas son visibles para todos y pueden ser indexadas.",
+    "linkedin": "Las redes profesionales suelen ser consultadas por empleadores.",
+    "email": "Los correos pueden reenviarse y permanecen en los servidores."
+  },
+  "errors": {
+    "analysisError": "Error de Análisis",
+    "tryAgain": "Por favor, inténtalo más tarde.",
+    "minText": "Por favor, introduce al menos un texto.",
+    "serverError": "Error del Servidor"
+  },
+  "footer": {
+    "europe": "Desde Europa. Para Todos.",
+    "protection": "[achtung.live] protege lo que importa: nuestra comunicación digital.",
+    "realtime": "Tiempo real. Sin rastreo. Conforme con RGPD y EU AI-Act."
+  },
+  "pwa": {
+    "installPrompt": "Instalar App",
+    "installHint": "Añade achtung.live a tu pantalla de inicio",
+    "offlineReady": "Disponible Sin Conexión",
+    "offlineHint": "La app ahora funciona sin internet",
+    "updateAvailable": "Actualización Disponible",
+    "updateNow": "Actualizar Ahora"
+  }
+}

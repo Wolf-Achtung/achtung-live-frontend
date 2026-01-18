@@ -70,6 +70,14 @@
         <span class="lang-flag">🇫🇷</span>
         <span class="lang-code">FR</span>
       </button>
+      <button class="a11y-btn lang-btn" data-lang="es" onclick="switchLanguage('es')" title="Español">
+        <span class="lang-flag">🇪🇸</span>
+        <span class="lang-code">ES</span>
+      </button>
+      <button class="a11y-btn lang-btn" data-lang="it" onclick="switchLanguage('it')" title="Italiano">
+        <span class="lang-flag">🇮🇹</span>
+        <span class="lang-code">IT</span>
+      </button>
     </div>
   </div>
 
@@ -2022,6 +2030,106 @@
       // Update API status when coming back online
       if (navigator.onLine) {
         checkApiHealth();
+        // Re-cache patterns when coming back online
+        cacheOfflinePatterns();
+      }
+    }
+
+    // ========================================
+    // Offline Pattern Caching
+    // ========================================
+
+    let offlinePatterns = null;
+    const API_PATTERNS_URL = `${API_BASE}/patterns-offline`;
+    const API_PING_URL = `${API_BASE}/ping`;
+
+    async function cacheOfflinePatterns() {
+      try {
+        const response = await fetch(`${API_PATTERNS_URL}?lang=${currentLang}`);
+        if (response.ok) {
+          offlinePatterns = await response.json();
+          localStorage.setItem('achtung-offline-patterns', JSON.stringify(offlinePatterns));
+          console.log('[PWA] Offline patterns cached:', offlinePatterns.patterns?.length || 0, 'patterns');
+
+          // Tell service worker to cache this
+          if (navigator.serviceWorker?.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              type: 'CACHE_PATTERNS',
+              payload: { url: `${API_PATTERNS_URL}?lang=${currentLang}` }
+            });
+          }
+        }
+      } catch (error) {
+        console.log('[PWA] Could not cache patterns:', error.message);
+        // Try to load from localStorage
+        const cached = localStorage.getItem('achtung-offline-patterns');
+        if (cached) {
+          offlinePatterns = JSON.parse(cached);
+        }
+      }
+    }
+
+    // Offline analysis using cached patterns (fallback when API unavailable)
+    function analyzeOffline(text) {
+      if (!offlinePatterns?.patterns) {
+        return { error: 'No offline patterns available' };
+      }
+
+      const categories = [];
+      const patterns = offlinePatterns.patterns;
+
+      for (const [type, config] of Object.entries(patterns)) {
+        try {
+          const regex = new RegExp(config.regex, config.flags || 'gi');
+          const matches = text.match(regex);
+          if (matches) {
+            matches.forEach(match => {
+              categories.push({
+                type,
+                severity: config.severity || 'medium',
+                match,
+                message: config.message || 'Sensitive data detected',
+                position: {
+                  start: text.indexOf(match),
+                  end: text.indexOf(match) + match.length
+                }
+              });
+            });
+          }
+        } catch (e) {
+          // Skip invalid regex
+        }
+      }
+
+      const riskScore = calculateRiskScore(categories);
+
+      return {
+        riskScore,
+        riskLevel: getRiskLevel(riskScore),
+        categories,
+        summary: `${categories.length} potential risks detected (offline)`,
+        meta: {
+          mode: 'offline',
+          patternsUsed: Object.keys(patterns).length
+        }
+      };
+    }
+
+    // Quick ping to check if API is reachable
+    async function pingApi() {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+        const response = await fetch(API_PING_URL, {
+          method: 'GET',
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        return response.ok;
+      } catch (error) {
+        return false;
       }
     }
 
@@ -2051,6 +2159,9 @@
         // Load DE translations for t() function
         translations['de'] = await loadTranslations('de');
       }
+
+      // Cache offline patterns for PWA
+      cacheOfflinePatterns();
 
       // Check health every 60 seconds
       setInterval(checkApiHealth, 60000);
