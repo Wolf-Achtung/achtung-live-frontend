@@ -23,6 +23,19 @@
     <h2>Jetzt live testen!</h2>
     <form id="demoForm">
       <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass ihn direkt überprüfen..." rows="6" required></textarea>
+
+      <!-- Kontext-Auswahl -->
+      <div class="context-selector">
+        <label for="contextSelect">Wo soll dieser Text verwendet werden?</label>
+        <select id="contextSelect">
+          <option value="private">Privater Chat (1:1)</option>
+          <option value="whatsapp">WhatsApp Gruppe</option>
+          <option value="email">E-Mail</option>
+          <option value="linkedin">LinkedIn / Beruflich</option>
+          <option value="public">Öffentlicher Post (Social Media)</option>
+        </select>
+      </div>
+
       <div class="datenschutz-hinweis">
         <input type="checkbox" id="privacyPolicyDemo" required>
         <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
@@ -30,7 +43,8 @@
       <button type="submit">Text analysieren</button>
     </form>
 
-    <div id="feedbackBox" class="analysis-result" style="display:none;"></div>
+    <!-- Risk Dashboard -->
+    <div id="riskDashboard" style="display:none;"></div>
 
     <div style="text-align:center; margin-top:40px;">
       <button onclick="openModal('caseModal')">Fallbeispiele ansehen</button>
@@ -156,10 +170,43 @@
   <script src="auth.js"></script>
 
   <script>
-    // API Konfiguration - Netlify Function als Proxy (umgeht CORS)
+    // ========================================
+    // API Konfiguration
+    // ========================================
     const API_ANALYZE_URL = "/.netlify/functions/analyze";
 
+    // Kategorie-Metadaten für das Dashboard
+    const CATEGORY_META = {
+      iban: { label: "IBAN/Bankdaten", icon: "🏦" },
+      credit_card: { label: "Kreditkarte", icon: "💳" },
+      phone: { label: "Telefonnummer", icon: "📱" },
+      email: { label: "E-Mail-Adresse", icon: "📧" },
+      address: { label: "Postadresse", icon: "📍" },
+      password: { label: "Passwort", icon: "🔑" },
+      health: { label: "Gesundheitsdaten", icon: "🏥" },
+      child: { label: "Kinderdaten", icon: "👶" },
+      location: { label: "Standort", icon: "📍" },
+      emotion: { label: "Emotionen", icon: "😤" },
+      legal: { label: "Rechtlich heikel", icon: "⚖️" },
+      employer: { label: "Arbeitgeber", icon: "🏢" },
+      vacation: { label: "Abwesenheit", icon: "✈️" },
+      name: { label: "Personenname", icon: "👤" },
+      date: { label: "Datum/Termin", icon: "📅" },
+      generic: { label: "Sensible Daten", icon: "⚠️" }
+    };
+
+    // Kontext-Warnungen
+    const CONTEXT_WARNINGS = {
+      whatsapp: "WhatsApp-Nachrichten können leicht weitergeleitet oder als Screenshot geteilt werden.",
+      public: "Öffentliche Posts sind für jeden sichtbar und können von Suchmaschinen indexiert werden.",
+      linkedin: "Berufliche Netzwerke werden oft von Arbeitgebern und Recruitern durchsucht.",
+      email: "E-Mails können weitergeleitet werden und verbleiben oft auf Servern.",
+      private: null
+    };
+
+    // ========================================
     // Modal Funktionen
+    // ========================================
     function openModal(id) {
       document.getElementById(id).style.display = "block";
     }
@@ -178,20 +225,358 @@
       cases[currentCase].classList.add('active');
     }
 
-    // Demo Formular mit verbessertem Error-Handling
+    // ========================================
+    // Risk Dashboard Rendering
+    // ========================================
+
+    // Zeigt den Loading-Zustand
+    function showLoading() {
+      const dashboard = document.getElementById('riskDashboard');
+      dashboard.style.display = 'block';
+      dashboard.innerHTML = `
+        <div class="risk-dashboard">
+          <div class="dashboard-loading">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Analysiere deinen Text...</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Berechnet Risk Score aus Kategorien (Fallback wenn Backend alt)
+    function calculateRiskScore(categories) {
+      if (!categories || categories.length === 0) return 100;
+
+      let score = 100;
+      for (const cat of categories) {
+        switch (cat.severity) {
+          case 'critical': score -= 35; break;
+          case 'high': score -= 20; break;
+          case 'medium': score -= 10; break;
+          case 'low': score -= 5; break;
+          default: score -= 15;
+        }
+      }
+      return Math.max(0, score);
+    }
+
+    // Ermittelt Risk Level aus Score
+    function getRiskLevel(score) {
+      if (score >= 80) return 'safe';
+      if (score >= 50) return 'warning';
+      return 'danger';
+    }
+
+    // Status-Text für Risk Level
+    function getStatusText(level) {
+      switch (level) {
+        case 'safe': return '✓ SICHER';
+        case 'warning': return '⚠ ACHTUNG';
+        case 'danger': return '✗ GEFAHR';
+        default: return 'UNBEKANNT';
+      }
+    }
+
+    // Markiert sensible Stellen im Text
+    function markText(text, categories) {
+      if (!categories || categories.length === 0) return escapeHtml(text);
+
+      // Sortiere nach Position (rückwärts, um Indizes nicht zu verschieben)
+      const sorted = [...categories]
+        .filter(c => c.position || c.match)
+        .sort((a, b) => {
+          const posA = a.position ? a.position.start : text.indexOf(a.match);
+          const posB = b.position ? b.position.start : text.indexOf(b.match);
+          return posB - posA;
+        });
+
+      let result = text;
+      for (const cat of sorted) {
+        const start = cat.position ? cat.position.start : result.indexOf(cat.match);
+        const end = cat.position ? cat.position.end : start + cat.match.length;
+
+        if (start >= 0 && end > start) {
+          const before = result.substring(0, start);
+          const match = result.substring(start, end);
+          const after = result.substring(end);
+
+          result = before +
+            `<span class="text-mark ${cat.severity || 'medium'}" title="${escapeHtml(cat.message || cat.label || '')}">` +
+            escapeHtml(match) +
+            `<span class="tooltip">${escapeHtml(cat.message || 'Sensible Daten')}</span>` +
+            `</span>` +
+            after;
+        }
+      }
+
+      // Escape remaining text parts (between marks)
+      return result;
+    }
+
+    // HTML Escape Helper
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Rendert das komplette Dashboard
+    function renderDashboard(data, originalText, context) {
+      const dashboard = document.getElementById('riskDashboard');
+
+      // Normalisiere Daten (unterstützt altes und neues API-Format)
+      const normalized = normalizeApiResponse(data, originalText);
+
+      // Kontext-Warnung hinzufügen
+      if (!normalized.contextWarning && CONTEXT_WARNINGS[context]) {
+        normalized.contextWarning = CONTEXT_WARNINGS[context];
+      }
+
+      const { riskScore, riskLevel, categories, summary, contextWarning, rewrite } = normalized;
+
+      // Wenn alles sicher ist
+      if (categories.length === 0) {
+        dashboard.innerHTML = `
+          <div class="risk-dashboard">
+            <div class="all-safe-message">
+              <div class="all-safe-icon">🛡️</div>
+              <div class="all-safe-title">Alles sicher!</div>
+              <div class="all-safe-text">Keine sensiblen Daten in deinem Text erkannt.<br>Du kannst ihn bedenkenlos senden.</div>
+            </div>
+            ${contextWarning ? `
+              <div class="context-warning">
+                <span class="context-warning-icon">💡</span>
+                <span>${escapeHtml(contextWarning)}</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+        return;
+      }
+
+      // Vollständiges Dashboard rendern
+      dashboard.innerHTML = `
+        <div class="risk-dashboard">
+          <!-- Privacy Score -->
+          <div class="privacy-score-section">
+            <div class="privacy-score-label">Privacy Score</div>
+            <div class="privacy-score-circle ${riskLevel}">
+              <span class="privacy-score-number">${riskScore}</span>
+              <span class="privacy-score-max">/ 100</span>
+            </div>
+            <div class="privacy-score-status ${riskLevel}">${getStatusText(riskLevel)}</div>
+            <div class="privacy-score-summary">${escapeHtml(summary)}</div>
+          </div>
+
+          <!-- Kategorie-Badges -->
+          <div class="risk-categories">
+            ${categories.map(cat => {
+              const meta = CATEGORY_META[cat.type] || CATEGORY_META.generic;
+              return `<span class="risk-category-badge ${cat.severity || 'medium'}">
+                ${meta.icon} ${meta.label}
+              </span>`;
+            }).join('')}
+          </div>
+
+          <!-- Markierter Text -->
+          <div class="marked-text-section">
+            <div class="marked-text-label">Dein Text mit Markierungen</div>
+            <div class="marked-text-container">${markText(originalText, categories)}</div>
+          </div>
+
+          <!-- Findings Liste -->
+          <div class="findings-section">
+            <div class="findings-list">
+              ${categories.map(cat => {
+                const meta = CATEGORY_META[cat.type] || CATEGORY_META.generic;
+                return `
+                  <div class="finding-item ${cat.severity || 'medium'}">
+                    <div class="finding-icon">${meta.icon}</div>
+                    <div class="finding-content">
+                      <div class="finding-title">${meta.label}</div>
+                      ${cat.match ? `<div class="finding-match">"${escapeHtml(cat.match.substring(0, 50))}${cat.match.length > 50 ? '...' : ''}"</div>` : ''}
+                      <div class="finding-message">${escapeHtml(cat.message || 'Sensible Information erkannt')}</div>
+                      ${cat.suggestion ? `<div class="finding-suggestion">${escapeHtml(cat.suggestion)}</div>` : ''}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <!-- Kontext-Warnung -->
+          ${contextWarning ? `
+            <div class="context-warning">
+              <span class="context-warning-icon">💡</span>
+              <span>${escapeHtml(contextWarning)}</span>
+            </div>
+          ` : ''}
+
+          <!-- Smart Rewrite -->
+          ${rewrite ? `
+            <div class="rewrite-section">
+              <div class="rewrite-header">
+                <span class="rewrite-icon">✨</span>
+                <span class="rewrite-title">Sicherer Text-Vorschlag</span>
+              </div>
+              <div class="rewrite-container">
+                <div class="rewrite-text" id="rewriteText">${escapeHtml(rewrite.suggestion)}</div>
+              </div>
+              ${rewrite.changes && rewrite.changes.length > 0 ? `
+                <div class="rewrite-changes">
+                  ${rewrite.changes.map(change => `<span class="rewrite-change-tag">${escapeHtml(change)}</span>`).join('')}
+                </div>
+              ` : ''}
+              <div class="rewrite-actions">
+                <button class="rewrite-btn rewrite-btn-primary" onclick="copyRewrite()">
+                  📋 Text kopieren
+                </button>
+                <button class="rewrite-btn rewrite-btn-secondary" onclick="useRewrite()">
+                  ↩️ In Textfeld übernehmen
+                </button>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // Normalisiert API-Response (unterstützt altes und neues Format)
+    function normalizeApiResponse(data, originalText) {
+      // Neues API v2 Format
+      if (data.riskScore !== undefined && data.categories) {
+        return data;
+      }
+
+      // Altes Format mit feedback Array
+      if (data.feedback && Array.isArray(data.feedback)) {
+        const categories = data.feedback.map((msg, i) => ({
+          type: detectCategoryFromMessage(msg),
+          severity: 'medium',
+          message: msg,
+          match: extractMatchFromMessage(msg, originalText)
+        }));
+
+        const riskScore = calculateRiskScore(categories);
+
+        return {
+          riskScore,
+          riskLevel: getRiskLevel(riskScore),
+          categories,
+          summary: `${categories.length} potenzielle${categories.length === 1 ? 's' : ''} Risiko${categories.length === 1 ? '' : 's'} erkannt`,
+          rewrite: null
+        };
+      }
+
+      // Altes Format mit detected_data etc.
+      if (data.detected_data || data.risk_level) {
+        const categories = [];
+        if (data.detected_data && data.detected_data !== 'Keine') {
+          categories.push({
+            type: 'generic',
+            severity: data.risk_level === 'hoch' ? 'critical' : 'medium',
+            message: data.explanation || data.detected_data,
+            suggestion: data.tip
+          });
+        }
+
+        const riskScore = calculateRiskScore(categories);
+
+        return {
+          riskScore,
+          riskLevel: getRiskLevel(riskScore),
+          categories,
+          summary: data.detected_data || 'Analyse abgeschlossen',
+          rewrite: null
+        };
+      }
+
+      // Fallback: Keine Risiken
+      return {
+        riskScore: 100,
+        riskLevel: 'safe',
+        categories: [],
+        summary: 'Keine sensiblen Daten erkannt',
+        rewrite: null
+      };
+    }
+
+    // Erkennt Kategorie aus Nachrichtentext
+    function detectCategoryFromMessage(msg) {
+      const lower = msg.toLowerCase();
+      if (lower.includes('iban') || lower.includes('bank') || lower.includes('konto')) return 'iban';
+      if (lower.includes('kreditkarte') || lower.includes('kartennummer')) return 'credit_card';
+      if (lower.includes('telefon') || lower.includes('handy') || lower.includes('nummer')) return 'phone';
+      if (lower.includes('e-mail') || lower.includes('email')) return 'email';
+      if (lower.includes('adresse') || lower.includes('straße') || lower.includes('wohnort')) return 'address';
+      if (lower.includes('passwort') || lower.includes('kennwort')) return 'password';
+      if (lower.includes('gesundheit') || lower.includes('krankheit') || lower.includes('arzt') || lower.includes('diagnose')) return 'health';
+      if (lower.includes('kind') || lower.includes('sohn') || lower.includes('tochter') || lower.includes('schule')) return 'child';
+      if (lower.includes('standort') || lower.includes('urlaub') || lower.includes('reise') || lower.includes('nicht zuhause')) return 'vacation';
+      if (lower.includes('wütend') || lower.includes('emotion') || lower.includes('ärger') || lower.includes('hass')) return 'emotion';
+      if (lower.includes('chef') || lower.includes('arbeitgeber') || lower.includes('firma') || lower.includes('kollege')) return 'employer';
+      if (lower.includes('beleidigung') || lower.includes('drohung') || lower.includes('rechtlich')) return 'legal';
+      if (lower.includes('name') || lower.includes('person')) return 'name';
+      return 'generic';
+    }
+
+    // Extrahiert Match aus Nachricht (einfache Heuristik)
+    function extractMatchFromMessage(msg, originalText) {
+      // Versuche Text in Anführungszeichen zu finden
+      const quoted = msg.match(/"([^"]+)"/);
+      if (quoted) return quoted[1];
+
+      // Sonst null
+      return null;
+    }
+
+    // ========================================
+    // Rewrite Funktionen
+    // ========================================
+
+    function copyRewrite() {
+      const text = document.getElementById('rewriteText')?.innerText;
+      if (text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = event.target;
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '✓ Kopiert!';
+          btn.classList.add('copy-success');
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('copy-success');
+          }, 2000);
+        });
+      }
+    }
+
+    function useRewrite() {
+      const text = document.getElementById('rewriteText')?.innerText;
+      if (text) {
+        document.getElementById('demoText').value = text;
+        // Scroll zum Textfeld
+        document.getElementById('demoText').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('demoText').focus();
+      }
+    }
+
+    // ========================================
+    // Formular Handler
+    // ========================================
+
     document.getElementById("demoForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const text = document.getElementById("demoText").value;
-      const box = document.getElementById("feedbackBox");
+      const context = document.getElementById("contextSelect").value;
 
-      box.innerHTML = "<em>Analyse läuft...</em>";
-      box.style.display = "block";
+      showLoading();
 
       try {
         const response = await fetch(API_ANALYZE_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text })
+          body: JSON.stringify({ text, context })
         });
 
         if (!response.ok) {
@@ -199,43 +584,33 @@
         }
 
         const data = await response.json();
-        const feedbackList = data.feedback;
+        renderDashboard(data, text, context);
 
-        if (!Array.isArray(feedbackList)) {
-          box.innerHTML = `
-            <div class="analysis-result">
-              <strong>Erkannte Datenarten:</strong> ${data.detected_data || "Keine"}<br>
-              <strong>Datenschutz-Risiko:</strong> ${data.risk_level || "Unbekannt"}<br>
-              <strong>Empfehlung:</strong> ${data.explanation || "Keine Empfehlung"}<br>
-              <strong>Tipp:</strong> ${data.tip || "Kein Tipp verfügbar"}
-            </div>
-          `;
-          return;
-        }
+        // Scroll zum Dashboard
+        document.getElementById('riskDashboard').scrollIntoView({ behavior: 'smooth' });
 
-        if (feedbackList.length === 0) {
-          box.innerHTML = `
-            <div style="padding:12px; background:#e8f5e9; border-left:5px solid #4caf50; color:#2e7d32;">
-              <strong>Alles in Ordnung!</strong> Keine sensiblen Daten erkannt.
-            </div>
-          `;
-          return;
-        }
-
-        box.innerHTML = feedbackList.map(entry =>
-          `<div style="margin-bottom:12px; padding:12px; background:#fff3f3; border-left:5px solid #800000; color:#800000;">
-            <strong>Hinweis:</strong> ${entry}
-          </div>`
-        ).join("");
       } catch (err) {
-        box.innerHTML = `
-          <div style="padding:12px; background:#ffebee; border-left:5px solid #c62828; color:#c62828;">
-            <strong>Fehler bei der Analyse:</strong> ${err.message}<br>
-            <small>Bitte versuche es später erneut.</small>
+        const dashboard = document.getElementById('riskDashboard');
+        dashboard.innerHTML = `
+          <div class="risk-dashboard">
+            <div style="padding: 40px 20px; text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
+              <div style="font-size: 18px; font-weight: 600; color: #dc3545; margin-bottom: 10px;">
+                Fehler bei der Analyse
+              </div>
+              <div style="font-size: 14px; color: #6c757d;">
+                ${escapeHtml(err.message)}<br>
+                <small>Bitte versuche es später erneut.</small>
+              </div>
+            </div>
           </div>
         `;
       }
     });
+
+    // ========================================
+    // Event Listener
+    // ========================================
 
     // Schließen bei Klick außerhalb des Modals
     window.onclick = function(event) {
@@ -248,7 +623,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof achtungAuth !== 'undefined') {
         if (achtungAuth.isAuthenticated()) {
-          // Zeige geschützten Inhalt
           document.querySelectorAll('.protected-content').forEach(el => {
             el.style.display = 'block';
           });
@@ -257,7 +631,6 @@
           });
           document.getElementById('logoutBtn').style.display = 'block';
         } else {
-          // Zeige Auth-Modal
           achtungAuth.protectPage();
         }
       }
