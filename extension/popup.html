@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>achtung.live Privacy Guard</title>
+  <link rel="stylesheet" href="popup-styles.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="logo">[achtung.live]</div>
+      <div class="tagline">Privacy Guard</div>
+    </header>
+
+    <!-- Status Section -->
+    <div id="statusSection" class="status-section">
+      <div class="status-indicator" id="statusIndicator">
+        <span class="status-dot"></span>
+        <span class="status-text">Bereit</span>
+      </div>
+    </div>
+
+    <!-- Quick Check Section -->
+    <div class="section">
+      <label for="quickText" class="section-label">Schnell-Check</label>
+      <textarea id="quickText" placeholder="Text hier eingeben oder einfügen..." rows="4"></textarea>
+      <div class="char-counter"><span id="charCount">0</span> Zeichen</div>
+      <button id="checkBtn" class="primary-btn">
+        <span class="btn-icon">🔍</span>
+        <span class="btn-text">Text prüfen</span>
+      </button>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="results-section" style="display: none;">
+      <div class="results-header">
+        <span class="results-title">Ergebnis</span>
+        <button id="closeResults" class="close-btn" title="Schließen">&times;</button>
+      </div>
+      <div id="resultsContent" class="results-content"></div>
+    </div>
+
+    <!-- Settings Section -->
+    <div class="section settings-section">
+      <div class="setting-item">
+        <label class="toggle-label">
+          <input type="checkbox" id="autoCheck" class="toggle-input">
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">Auto-Check beim Tippen</span>
+        </label>
+      </div>
+      <div class="setting-item">
+        <label class="toggle-label">
+          <input type="checkbox" id="showBadge" class="toggle-input" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">Risiko-Badge anzeigen</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <a href="https://achtung.live/demo.html" target="_blank" class="footer-link">Zur Demo</a>
+      <span class="footer-divider">|</span>
+      <a href="https://achtung.live/datenschutz.html" target="_blank" class="footer-link">Datenschutz</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

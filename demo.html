@@ -10,58 +10,112 @@
   <title>Demo | achtung.live</title>
 </head>
 <body>
-  <!-- Logout Button (nur sichtbar wenn eingeloggt) -->
-  <button id="logoutBtn" class="logout-button" style="display:none;" onclick="achtungAuth.logout()">Abmelden</button>
+  <!-- Accessibility Toolbar -->
+  <div class="accessibility-toolbar" role="toolbar" aria-label="Barrierefreiheit-Einstellungen">
+    <div class="a11y-group">
+      <span class="a11y-label">Schrift:</span>
+      <button class="a11y-btn" onclick="changeFontSize(-1)" aria-label="Schrift verkleinern" title="Kleinere Schrift">A-</button>
+      <button class="a11y-btn" onclick="changeFontSize(0)" aria-label="Standard Schriftgröße" title="Standard">A</button>
+      <button class="a11y-btn" onclick="changeFontSize(1)" aria-label="Schrift vergrößern" title="Größere Schrift">A+</button>
+    </div>
+    <div class="a11y-group">
+      <button class="a11y-btn" id="contrastToggle" onclick="toggleHighContrast()" aria-label="Hoher Kontrast umschalten" title="Hoher Kontrast">
+        <span class="a11y-icon">◐</span>
+        <span class="a11y-text">Kontrast</span>
+      </button>
+    </div>
+    <div class="a11y-group">
+      <button class="a11y-btn" id="simpleLangToggle" onclick="toggleSimpleLanguage()" aria-label="Einfache Sprache umschalten" title="Einfache Sprache für besseres Verständnis">
+        <span class="a11y-icon">📖</span>
+        <span class="a11y-text">Einfache Sprache</span>
+      </button>
+    </div>
+    <div class="a11y-group">
+      <button class="a11y-btn" id="realtimeToggle" onclick="toggleRealtime()" aria-label="Live-Prüfung umschalten" title="Text wird während des Tippens geprüft">
+        <span class="a11y-icon">⚡</span>
+        <span class="a11y-text">Live-Prüfung</span>
+      </button>
+    </div>
+  </div>
 
-  <header>
+  <!-- Logout Button (nur sichtbar wenn eingeloggt) -->
+  <button id="logoutBtn" class="logout-button" style="display:none;" onclick="achtungAuth.logout()" aria-label="Abmelden">Abmelden</button>
+
+  <header role="banner">
     <h1><span class="achtung-logo">[achtung.live]</span></h1>
-    <p class="claim">Der Airbag für digitale Kommunikation</p>
+    <p class="claim" id="mainClaim">Der Airbag für digitale Kommunikation</p>
+    <!-- Simple language version (hidden by default) -->
+    <p class="claim simple-lang" id="mainClaimSimple" style="display:none;">Wir helfen dir, keine privaten Daten zu teilen.</p>
   </header>
 
   <!-- Geschützter Inhalt -->
-  <main class="main-content protected-content">
+  <main class="main-content protected-content" role="main">
     <!-- API Status Indicator -->
-    <div id="apiStatus" class="api-status"></div>
+    <div id="apiStatus" class="api-status" role="status" aria-live="polite"></div>
+
+    <!-- Live Check Indicator -->
+    <div id="liveCheckIndicator" class="live-check-indicator" style="display:none;" role="status" aria-live="polite">
+      <span class="live-dot"></span>
+      <span class="live-text">Live-Prüfung aktiv</span>
+    </div>
 
     <!-- Tab Navigation -->
-    <div class="tab-nav">
-      <button class="tab-btn active" data-tab="single">Einzeltext</button>
-      <button class="tab-btn" data-tab="batch">Batch-Analyse</button>
+    <div class="tab-nav" role="tablist" aria-label="Analyse-Modus wählen">
+      <button class="tab-btn active" data-tab="single" role="tab" aria-selected="true" aria-controls="singleTab">Einzeltext</button>
+      <button class="tab-btn" data-tab="batch" role="tab" aria-selected="false" aria-controls="batchTab">Batch-Analyse</button>
     </div>
 
     <!-- Single Text Tab -->
-    <div id="singleTab" class="tab-content active">
-      <h2>Jetzt live testen!</h2>
-      <form id="demoForm">
-        <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass ihn direkt überprüfen..." rows="6" required></textarea>
+    <div id="singleTab" class="tab-content active" role="tabpanel" aria-labelledby="single-tab">
+      <h2 id="formTitle">Jetzt live testen!</h2>
+      <p class="simple-lang form-description" id="formDescSimple" style="display:none;">
+        Schreibe deinen Text unten. Wir sagen dir, ob private Daten drin sind.
+      </p>
+      <form id="demoForm" aria-describedby="formTitle">
+        <label for="demoText" class="sr-only">Dein Text zur Prüfung</label>
+        <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass ihn direkt überprüfen..." rows="6" required aria-label="Text eingeben zur Datenschutz-Prüfung"></textarea>
+
+        <!-- Live Preview (for real-time checking) -->
+        <div id="livePreview" class="live-preview" style="display:none;" role="status" aria-live="polite">
+          <div class="live-preview-header">
+            <span class="live-preview-icon">🔍</span>
+            <span class="live-preview-title">Live-Vorschau</span>
+          </div>
+          <div id="livePreviewContent" class="live-preview-content"></div>
+        </div>
 
         <!-- Kontext-Auswahl -->
         <div class="context-selector">
           <label for="contextSelect">Wo soll dieser Text verwendet werden?</label>
-          <select id="contextSelect">
+          <select id="contextSelect" aria-describedby="contextHelp">
             <option value="private">Privater Chat (1:1)</option>
             <option value="whatsapp">WhatsApp Gruppe</option>
             <option value="email">E-Mail</option>
             <option value="linkedin">LinkedIn / Beruflich</option>
             <option value="public">Öffentlicher Post (Social Media)</option>
           </select>
+          <span id="contextHelp" class="simple-lang context-help" style="display:none;">
+            Wähle aus, wo du den Text posten möchtest. Das hilft uns, besser zu prüfen.
+          </span>
         </div>
 
         <div class="datenschutz-hinweis">
-          <input type="checkbox" id="privacyPolicyDemo" required>
+          <input type="checkbox" id="privacyPolicyDemo" required aria-describedby="privacyHelp">
           <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+          <span id="privacyHelp" class="simple-lang" style="display:none;">Du musst das ankreuzen, damit wir deinen Text prüfen dürfen.</span>
         </div>
-        <button type="submit">Text analysieren</button>
+        <button type="submit" aria-label="Text auf sensible Daten prüfen">Text analysieren</button>
       </form>
 
       <!-- Risk Dashboard -->
-      <div id="riskDashboard" style="display:none;"></div>
+      <div id="riskDashboard" style="display:none;" role="region" aria-label="Analyse-Ergebnisse"></div>
     </div>
 
     <!-- Batch Analysis Tab -->
-    <div id="batchTab" class="tab-content">
+    <div id="batchTab" class="tab-content" role="tabpanel" aria-labelledby="batch-tab">
       <h2>Batch-Analyse</h2>
       <p class="batch-description">Analysiere mehrere Texte gleichzeitig (max. 20 Texte)</p>
+      <p class="simple-lang batch-description-simple" style="display:none;">Prüfe viele Texte auf einmal. Maximal 20 Stück.</p>
 
       <form id="batchForm">
         <div class="batch-input-area">
@@ -1199,12 +1253,227 @@
       }
     };
 
+    // ========================================
+    // Phase 3: Accessibility Functions
+    // ========================================
+
+    let currentFontSize = 0; // -2 to +2 scale
+    let highContrastMode = false;
+    let simpleLanguageMode = false;
+    let realtimeMode = false;
+    let realtimeTimeout = null;
+
+    // Font Size Control
+    function changeFontSize(dir) {
+      if (dir === 0) {
+        currentFontSize = 0;
+      } else {
+        currentFontSize = Math.max(-2, Math.min(2, currentFontSize + dir));
+      }
+
+      // Base font size is 16px
+      const baseFontSize = 16;
+      const fontSizeMap = {
+        '-2': 12,
+        '-1': 14,
+        '0': 16,
+        '1': 18,
+        '2': 22
+      };
+
+      document.documentElement.style.fontSize = fontSizeMap[currentFontSize] + 'px';
+
+      // Update button states
+      document.querySelectorAll('.a11y-group .a11y-btn').forEach((btn, i) => {
+        if (i < 3) { // Only the font size buttons
+          btn.classList.toggle('active',
+            (i === 0 && currentFontSize < 0) ||
+            (i === 1 && currentFontSize === 0) ||
+            (i === 2 && currentFontSize > 0)
+          );
+        }
+      });
+
+      // Save preference
+      localStorage.setItem('achtung-fontSize', currentFontSize);
+    }
+
+    // High Contrast Mode
+    function toggleHighContrast() {
+      highContrastMode = !highContrastMode;
+      document.body.classList.toggle('high-contrast', highContrastMode);
+      document.getElementById('contrastToggle').classList.toggle('active', highContrastMode);
+
+      // Save preference
+      localStorage.setItem('achtung-highContrast', highContrastMode);
+    }
+
+    // Simple Language Mode
+    function toggleSimpleLanguage() {
+      simpleLanguageMode = !simpleLanguageMode;
+      document.body.classList.toggle('simple-language', simpleLanguageMode);
+      document.getElementById('simpleLangToggle').classList.toggle('active', simpleLanguageMode);
+
+      // Show/hide simple language elements
+      document.querySelectorAll('.simple-lang').forEach(el => {
+        el.style.display = simpleLanguageMode ? 'block' : 'none';
+      });
+
+      // Update main claim
+      document.getElementById('mainClaim').style.display = simpleLanguageMode ? 'none' : 'block';
+      document.getElementById('mainClaimSimple').style.display = simpleLanguageMode ? 'block' : 'none';
+
+      // Save preference
+      localStorage.setItem('achtung-simpleLanguage', simpleLanguageMode);
+    }
+
+    // Real-Time Checking
+    function toggleRealtime() {
+      realtimeMode = !realtimeMode;
+      document.getElementById('realtimeToggle').classList.toggle('active', realtimeMode);
+      document.getElementById('liveCheckIndicator').style.display = realtimeMode ? 'flex' : 'none';
+      document.getElementById('livePreview').style.display = realtimeMode ? 'block' : 'none';
+
+      if (realtimeMode) {
+        // Add input listener for real-time checking
+        document.getElementById('demoText').addEventListener('input', handleRealtimeInput);
+        // Initial check if there's text
+        const currentText = document.getElementById('demoText').value;
+        if (currentText.trim().length > 10) {
+          handleRealtimeInput();
+        }
+      } else {
+        document.getElementById('demoText').removeEventListener('input', handleRealtimeInput);
+        document.getElementById('livePreviewContent').innerHTML = '';
+      }
+
+      // Save preference
+      localStorage.setItem('achtung-realtime', realtimeMode);
+    }
+
+    // Debounced real-time input handler
+    function handleRealtimeInput() {
+      clearTimeout(realtimeTimeout);
+
+      const text = document.getElementById('demoText').value;
+      const previewContent = document.getElementById('livePreviewContent');
+
+      if (text.trim().length < 10) {
+        previewContent.innerHTML = '<span class="live-hint">Mindestens 10 Zeichen für Live-Prüfung...</span>';
+        return;
+      }
+
+      // Show checking indicator
+      previewContent.innerHTML = '<span class="live-checking"><span class="live-spinner"></span> Prüfe...</span>';
+
+      // Debounce: Wait 800ms after typing stops
+      realtimeTimeout = setTimeout(async () => {
+        try {
+          const response = await fetch(API_ANALYZE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text: text,
+              context: document.getElementById('contextSelect').value,
+              options: { quickCheck: true }
+            })
+          });
+
+          if (!response.ok) throw new Error('API Error');
+
+          const data = await response.json();
+          renderLivePreview(data, text);
+
+        } catch (error) {
+          previewContent.innerHTML = '<span class="live-error">Prüfung fehlgeschlagen</span>';
+        }
+      }, 800);
+    }
+
+    // Render live preview results
+    function renderLivePreview(data, text) {
+      const previewContent = document.getElementById('livePreviewContent');
+      const normalized = normalizeApiResponse(data, text);
+
+      if (normalized.categories.length === 0) {
+        previewContent.innerHTML = `
+          <div class="live-safe">
+            <span class="live-safe-icon">✓</span>
+            <span class="live-safe-text">Keine Risiken erkannt</span>
+          </div>
+        `;
+      } else {
+        const riskCount = normalized.categories.length;
+        const highestSeverity = normalized.categories.reduce((highest, cat) => {
+          const order = { critical: 4, high: 3, medium: 2, low: 1 };
+          return order[cat.severity] > order[highest] ? cat.severity : highest;
+        }, 'low');
+
+        previewContent.innerHTML = `
+          <div class="live-warning ${highestSeverity}">
+            <span class="live-warning-icon">⚠️</span>
+            <span class="live-warning-text">${riskCount} ${riskCount === 1 ? 'Risiko' : 'Risiken'} erkannt</span>
+            <div class="live-categories">
+              ${normalized.categories.slice(0, 3).map(cat => {
+                const meta = CATEGORY_META[cat.type] || CATEGORY_META.generic;
+                return `<span class="live-category ${cat.severity}">${meta.icon}</span>`;
+              }).join('')}
+              ${riskCount > 3 ? `<span class="live-more">+${riskCount - 3}</span>` : ''}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Load saved accessibility preferences
+    function loadAccessibilityPreferences() {
+      // Font size
+      const savedFontSize = localStorage.getItem('achtung-fontSize');
+      if (savedFontSize !== null) {
+        currentFontSize = parseInt(savedFontSize);
+        changeFontSize(0); // Apply without changing
+        currentFontSize = parseInt(savedFontSize); // Restore
+        const fontSizeMap = { '-2': 12, '-1': 14, '0': 16, '1': 18, '2': 22 };
+        document.documentElement.style.fontSize = fontSizeMap[currentFontSize] + 'px';
+      }
+
+      // High contrast
+      if (localStorage.getItem('achtung-highContrast') === 'true') {
+        toggleHighContrast();
+      }
+
+      // Simple language
+      if (localStorage.getItem('achtung-simpleLanguage') === 'true') {
+        toggleSimpleLanguage();
+      }
+
+      // Real-time (don't auto-enable on page load for performance)
+    }
+
+    // ========================================
+    // Screen Reader Announcements
+    // ========================================
+
+    function announceToScreenReader(message) {
+      const announcer = document.createElement('div');
+      announcer.setAttribute('role', 'status');
+      announcer.setAttribute('aria-live', 'polite');
+      announcer.setAttribute('aria-atomic', 'true');
+      announcer.className = 'sr-only';
+      announcer.textContent = message;
+      document.body.appendChild(announcer);
+      setTimeout(() => announcer.remove(), 1000);
+    }
+
     // Authentifizierung prüfen und Seite initialisieren
     document.addEventListener('DOMContentLoaded', function() {
       // Initialize Phase 2 features
       initTabs();
       initBatchAnalysis();
       checkApiHealth();
+
+      // Initialize Phase 3 accessibility features
+      loadAccessibilityPreferences();
 
       // Check health every 60 seconds
       setInterval(checkApiHealth, 60000);

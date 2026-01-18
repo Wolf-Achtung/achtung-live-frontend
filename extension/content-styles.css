@@ -1,0 +1,124 @@
+/* achtung.live Privacy Guard - Content Script Styles */
+
+.achtung-live-warning {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-size: 13px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 300px;
+  animation: achtungSlideIn 0.2s ease;
+}
+
+@keyframes achtungSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.achtung-live-warning.achtung-low {
+  border-left: 4px solid #ffc107;
+}
+
+.achtung-live-warning.achtung-medium {
+  border-left: 4px solid #fd7e14;
+}
+
+.achtung-live-warning.achtung-high {
+  border-left: 4px solid #dc3545;
+}
+
+.achtung-warning-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+.achtung-icon {
+  font-size: 16px;
+}
+
+.achtung-text {
+  flex: 1;
+  font-weight: 500;
+  color: #212529;
+}
+
+.achtung-details-btn,
+.achtung-close-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 5px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.achtung-details-btn:hover,
+.achtung-close-btn:hover {
+  opacity: 1;
+}
+
+.achtung-details {
+  padding: 10px 12px;
+  border-top: 1px solid #dee2e6;
+  background: #f8f9fa;
+  border-radius: 0 0 8px 8px;
+}
+
+.achtung-risk-item {
+  padding: 6px 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.achtung-risk-item:last-child {
+  border-bottom: none;
+}
+
+.achtung-risk-type {
+  display: block;
+  font-weight: 600;
+  color: #800000;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.achtung-risk-msg {
+  display: block;
+  font-size: 11px;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+.achtung-more {
+  padding: 6px 0;
+  font-size: 11px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.achtung-full-check {
+  display: block;
+  text-align: center;
+  padding: 8px;
+  margin-top: 8px;
+  background: #800000;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.achtung-full-check:hover {
+  background: #a00000;
+  color: white;
+}
