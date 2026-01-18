@@ -1,5 +1,20 @@
+# Netlify Konfiguration für achtung.live
+
+[build]
+  publish = "."
+
 [[headers]]
   for = "/*"
   [headers.values]
-    Basic-Auth = "alle achtung"
-    Cache-Control = "no-cache"
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Cache-Control = "public, max-age=3600"
+
+# Passwortschutz wird über Netlify UI konfiguriert (Identity/Access Control)
+# Nicht mehr im Klartext in dieser Datei!
+
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301

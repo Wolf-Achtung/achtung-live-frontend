@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hilfe zu sensiblen Themen | achtung.live – Datenschutz-Tipps">
+  <meta name="robots" content="index,follow">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Hilfe | achtung.live</title>
+</head>
+
+<body>
+
+<header>
+  <h1><span class="achtung-logo">[achtung.live]</span></h1>
+  <p class="claim">Der Airbag für digitale Kommunikation</p>
+</header>
+
+<main>
+  <h2>Hilfe zu sensiblen Themen</h2>
+
+  <div class="button-container">
+    <button onclick="openModal('passwort')">Passwörter schützen</button>
+    <button onclick="openModal('iban')">IBAN sicher mitteilen</button>
+    <button onclick="openModal('kreditkarte')">Kreditkartendaten schützen</button>
+    <button onclick="openModal('emotionen')">Emotionale Nachrichten absichern</button>
+    <button onclick="openModal('standort')">Standortdaten anonymisieren</button>
+    <button onclick="openModal('urlaub')">Urlaubspläne diskret halten</button>
+    <button onclick="openModal('chef')">Über Chef & Firma sicher reden</button>
+    <button onclick="openModal('screenshot')">Screenshots absichern</button>
+    <button onclick="openModal('krankheit')">Gesundheitsinfos schützen</button>
+    <button onclick="openModal('medikament')">Medikamente anonym teilen</button>
+    <button onclick="openModal('whatsapp')">WhatsApp & Messenger-Tipps</button>
+    <button onclick="openModal('sicher_senden')">Sicher Nachrichten senden</button>
+  </div>
+
+  <section class="weiterfuehrende-links">
+    <h2>Weiterführende Links zur digitalen Sicherheit:</h2>
+    <p>Wenn du deine Privatsphäre noch umfassender schützen willst, findest du hier seriöse Anlaufstellen:</p>
+    <ul class="no-bullets">
+      <div class="link-button-list">
+        <a href="https://stiftungdatenschutz.org/startseite" class="button-link" target="_blank" rel="noopener">Stiftung Datenschutz</a>
+        <a href="https://netzpolitik.org/" class="button-link" target="_blank" rel="noopener">Netzpolitik.org</a>
+        <a href="https://digitalcourage.de" class="button-link" target="_blank" rel="noopener">Digitalcourage e.V.</a>
+        <a href="https://privacyinternational.org" class="button-link" target="_blank" rel="noopener">Privacy International</a>
+        <a href="https://www.bsi.bund.de" class="button-link" target="_blank" rel="noopener">BSI – Sicherheit</a>
+        <a href="https://edpb.europa.eu" class="button-link" target="_blank" rel="noopener">EDPB – Datenschutz EU</a>
+        <a href="https://edps.europa.eu/de" class="button-link" target="_blank" rel="noopener">EDPS – Europäischer Datenschutzbeauftragter</a>
+      </div>
+    </ul>
+  </section>
+</main>
+
+<div id="modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div id="modal-text"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+
+  <div class="schutztext">
+    [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
+  </div>
+
+  <nav class="footer-nav">
+    <a href="info.html">Info</a> •
+    <a href="gefahr.html">Gefahr</a> •
+    <a href="demo.html" class="demo-highlight">Demo</a> •
+    <a href="ki-hinweis.html">KI-Hinweis</a> •
+    <a href="datenschutz.html">Datenschutz</a> •
+    <a href="kontakt.html">Kontakt</a> •
+    <a href="impressum.html">Impressum</a>
+  </nav>
+
+  <div class="copyright">
+    © 2025 achtung.live
+  </div>
+</footer>
+
+<script>
+const hilfeTexte = {
+  passwort: "Verwende starke, einzigartige Passwörter. Nutze Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen. Teile deine Passwörter niemals mit anderen Personen. Tipp: Ein Passwort-Manager hilft dir, alles sicher zu speichern.",
+  iban: "Deine IBAN enthält sensible Bankinformationen. Teile sie nur, wenn es unbedingt nötig ist. Über öffentliche Plattformen oder Chats sollten solche Daten niemals gesendet werden.",
+  kreditkarte: "Kreditkartendaten sollten ausschließlich auf sicheren (https://) Seiten eingegeben werden. Vermeide es, Kartennummern, Ablaufdatum und CVV-Code über Messenger oder E-Mail zu teilen.",
+  emotionen: "Emotionale Nachrichten können schnell missverstanden werden. Denk daran: Was einmal geschrieben ist, kann leicht weitergeleitet werden. Überlege zweimal, bevor du impulsiv Nachrichten mit Gefühlen oder Kritik verschickst.",
+  standort: "Standortdaten können Aufschluss über deine Wohnorte, Arbeitswege und Aufenthaltsorte geben. Teile deinen Live-Standort nur mit Personen, denen du absolut vertraust.",
+  urlaub: "Urlaubsankündigungen sind oft ein Risiko: Sie können Kriminellen signalisieren, dass dein Zuhause leersteht. Teile Urlaubspläne besser nur privat und nicht in öffentlichen Posts oder großen Gruppen.",
+  chef: "Wenn du dich über deine Firma oder deinen Chef austauschen möchtest, wähle neutrale Formulierungen und vermeide personenbezogene Details. Ein unbedachter Kommentar kann Konsequenzen haben.",
+  screenshot: "Screenshots enthalten oft Metadaten oder sensible Informationen. Überlege genau, bevor du sie versendest. Besser: persönliche Daten und Bildbereiche unkenntlich machen.",
+  krankheit: "Gesundheitsangaben sind hochsensible Daten. Teilst du Diagnosen oder Arztberichte, dann achte darauf, keine Namen, Adressen oder detaillierte Befunde ungesichert zu übermitteln.",
+  medikament: "Medikamentenangaben können Rückschlüsse auf Erkrankungen oder psychische Zustände zulassen. Teile solche Infos nur in vertrauensvollen und gesicherten Kanälen.",
+  whatsapp: "Bei WhatsApp und anderen Messengern ist die Ende-zu-Ende-Verschlüsselung aktiv. Achte trotzdem darauf, was du teilst: Backups können auf Servern landen, die weniger geschützt sind.",
+  sicher_senden: "Wenn du sensible Daten verschickst: Nutze sichere Messenger, verschlüssele Anhänge und verwende nach Möglichkeit zeitlich begrenzte Links oder Zugriffscodes."
+};
+
+function openModal(key) {
+  document.getElementById('modal-text').innerText = hilfeTexte[key];
+  document.getElementById('modal').style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = "none";
+}
+</script>
+
+</body>
+</html>

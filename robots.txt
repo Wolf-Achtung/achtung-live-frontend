@@ -1,2 +1,13 @@
+# robots.txt für achtung.live
 User-agent: *
-Disallow: /
+Allow: /
+
+# Sitemap
+Sitemap: https://achtung.live/sitemap.xml
+
+# Blockiere Test- und Debug-Seiten
+Disallow: /*-test.html
+Disallow: /gpt-debug.html
+Disallow: /mobil*.html
+Disallow: /index_updated.html
+Disallow: /index-wgPlatzhalter*.html
