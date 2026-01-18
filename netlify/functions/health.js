@@ -53,6 +53,11 @@ exports.handler = async (event, context) => {
 
     const data = await response.json();
 
+    // Ensure status is set to healthy if backend responds OK
+    if (!data.status) {
+      data.status = 'healthy';
+    }
+
     return {
       statusCode: 200,
       headers,

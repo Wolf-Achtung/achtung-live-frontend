@@ -1009,45 +1009,45 @@
     function renderBatchResults(data, originalTexts) {
       const resultsDiv = document.getElementById('batchResults');
 
-      const summary = data.summary || {
-        total: data.results?.length || 0,
-        successful: data.results?.filter(r => r.success).length || 0,
-        averageRiskScore: 0
-      };
+      // Calculate summary from results if not provided
+      const results = data.results || [];
+      const totalTexts = results.length;
 
-      // Calculate average if not provided
-      if (!summary.averageRiskScore && data.results) {
-        const scores = data.results
-          .filter(r => r.success && r.analysis?.riskScore !== undefined)
-          .map(r => r.analysis.riskScore);
-        summary.averageRiskScore = scores.length > 0
-          ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
-          : 100;
-      }
+      // Calculate average score
+      const scores = results
+        .filter(r => r.success !== false && r.analysis?.riskScore !== undefined)
+        .map(r => r.analysis.riskScore);
+      const averageScore = scores.length > 0
+        ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+        : 100;
+
+      // Calculate total risks
+      const totalRisks = results.reduce((sum, r) =>
+        sum + (r.analysis?.categories?.length || 0), 0);
 
       resultsDiv.innerHTML = `
         <div class="batch-results-container">
           <!-- Summary -->
           <div class="batch-summary">
             <div class="batch-summary-item">
-              <span class="summary-number">${summary.total}</span>
+              <span class="summary-number">${totalTexts}</span>
               <span class="summary-label">Texte analysiert</span>
             </div>
             <div class="batch-summary-item">
-              <span class="summary-number ${summary.averageRiskScore >= 80 ? 'safe' : summary.averageRiskScore >= 50 ? 'warning' : 'danger'}">
-                ${summary.averageRiskScore}
+              <span class="summary-number ${averageScore >= 80 ? 'safe' : averageScore >= 50 ? 'warning' : 'danger'}">
+                ${averageScore}
               </span>
               <span class="summary-label">Durchschn. Score</span>
             </div>
             <div class="batch-summary-item">
-              <span class="summary-number">${summary.totalRisks || data.results?.reduce((sum, r) => sum + (r.analysis?.categories?.length || 0), 0) || 0}</span>
+              <span class="summary-number">${totalRisks}</span>
               <span class="summary-label">Risiken gesamt</span>
             </div>
           </div>
 
           <!-- Individual Results -->
           <div class="batch-results-list">
-            ${(data.results || []).map((result, i) => {
+            ${results.map((result, i) => {
               const text = originalTexts[i] || '';
               const preview = text.substring(0, 100) + (text.length > 100 ? '...' : '');
               const analysis = result.analysis || {};
@@ -1094,22 +1094,38 @@
         const response = await fetch(API_HEALTH_URL);
         const data = await response.json();
 
-        if (data.status === 'healthy') {
+        // Accept various healthy status values
+        const isHealthy = data.status === 'healthy' ||
+                          data.status === 'ok' ||
+                          data.status === 'up' ||
+                          response.ok;
+
+        if (isHealthy) {
+          const providerInfo = data.providers || {};
+          const openaiOk = providerInfo.openai?.status === 'ok' || providerInfo.openai?.available;
+          const anthropicOk = providerInfo.anthropic?.status === 'ok' || providerInfo.anthropic?.available;
+
           statusDiv.innerHTML = `
             <span class="status-dot healthy"></span>
             <span class="status-text">API Online</span>
-            ${data.providers ? `
+            ${(openaiOk || anthropicOk) ? `
               <span class="provider-status">
-                ${data.providers.openai?.status === 'ok' ? '🟢 OpenAI' : '🔴 OpenAI'}
-                ${data.providers.anthropic?.status === 'ok' ? '🟢 Claude' : ''}
+                ${openaiOk ? '🟢 OpenAI' : ''}
+                ${anthropicOk ? '🟢 Claude' : ''}
               </span>
             ` : ''}
           `;
           statusDiv.className = 'api-status healthy';
-        } else {
+        } else if (data.status === 'degraded') {
           statusDiv.innerHTML = `
             <span class="status-dot degraded"></span>
             <span class="status-text">Eingeschränkt</span>
+          `;
+          statusDiv.className = 'api-status degraded';
+        } else {
+          statusDiv.innerHTML = `
+            <span class="status-dot degraded"></span>
+            <span class="status-text">Status: ${data.status || 'unbekannt'}</span>
           `;
           statusDiv.className = 'api-status degraded';
         }
