@@ -1156,18 +1156,32 @@
 
         if (isHealthy) {
           const providerInfo = data.providers || {};
+          const quickCheck = data.quickCheck || {};
           const openaiOk = providerInfo.openai?.status === 'ok' || providerInfo.openai?.available;
           const anthropicOk = providerInfo.anthropic?.status === 'ok' || providerInfo.anthropic?.available;
 
+          // Build provider badges
+          let providerBadges = '';
+          if (openaiOk) providerBadges += '<span class="provider-badge openai">OpenAI</span>';
+          if (anthropicOk) providerBadges += '<span class="provider-badge anthropic">Claude</span>';
+
+          // Build quick check info
+          let quickCheckInfo = '';
+          if (quickCheck.enabled) {
+            quickCheckInfo = `
+              <span class="quick-check-badge" title="Live-Prüfung: ${quickCheck.patternsLoaded || 27} Patterns, Cache: ${quickCheck.cacheHitRate || '0%'}">
+                ⚡ Live
+              </span>
+            `;
+          }
+
           statusDiv.innerHTML = `
             <span class="status-dot healthy"></span>
-            <span class="status-text">API Online</span>
-            ${(openaiOk || anthropicOk) ? `
-              <span class="provider-status">
-                ${openaiOk ? '🟢 OpenAI' : ''}
-                ${anthropicOk ? '🟢 Claude' : ''}
-              </span>
-            ` : ''}
+            <span class="status-text">API v${data.version || '3.0'}</span>
+            <span class="status-badges">
+              ${providerBadges}
+              ${quickCheckInfo}
+            </span>
           `;
           statusDiv.className = 'api-status healthy';
         } else if (data.status === 'degraded') {
@@ -1394,12 +1408,16 @@
     function renderLivePreview(data, text) {
       const previewContent = document.getElementById('livePreviewContent');
       const normalized = normalizeApiResponse(data, text);
+      const meta = data.meta || {};
+      const processingTime = meta.processingTime ? `${meta.processingTime}ms` : '';
+      const cached = meta.cached ? ' (cached)' : '';
 
       if (normalized.categories.length === 0) {
         previewContent.innerHTML = `
           <div class="live-safe">
             <span class="live-safe-icon">✓</span>
             <span class="live-safe-text">Keine Risiken erkannt</span>
+            ${processingTime ? `<span class="live-time">${processingTime}${cached}</span>` : ''}
           </div>
         `;
       } else {
@@ -1413,6 +1431,7 @@
           <div class="live-warning ${highestSeverity}">
             <span class="live-warning-icon">⚠️</span>
             <span class="live-warning-text">${riskCount} ${riskCount === 1 ? 'Risiko' : 'Risiken'} erkannt</span>
+            ${processingTime ? `<span class="live-time">${processingTime}${cached}</span>` : ''}
             <div class="live-categories">
               ${normalized.categories.slice(0, 3).map(cat => {
                 const meta = CATEGORY_META[cat.type] || CATEGORY_META.generic;
