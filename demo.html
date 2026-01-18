@@ -156,8 +156,8 @@
   <script src="auth.js"></script>
 
   <script>
-    // API Konfiguration
-    const API_BASE_URL = "https://web-production-2e4ae.up.railway.app";
+    // API Konfiguration - Netlify Function als Proxy (umgeht CORS)
+    const API_ANALYZE_URL = "/.netlify/functions/analyze";
 
     // Modal Funktionen
     function openModal(id) {
@@ -188,7 +188,7 @@
       box.style.display = "block";
 
       try {
-        const response = await fetch(`${API_BASE_URL}/analyze`, {
+        const response = await fetch(API_ANALYZE_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text })

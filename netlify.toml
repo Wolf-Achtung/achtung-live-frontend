@@ -2,6 +2,7 @@
 
 [build]
   publish = "."
+  functions = "netlify/functions"
 
 # Prerendering deaktivieren (legacy feature wird eingestellt)
 [build.processing]
