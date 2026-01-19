@@ -4327,8 +4327,13 @@
     // ========================================
 
     const API_COACH_URL = `${API_BASE}/coach-chat`;
+    const API_COACH_TOPICS_URL = `${API_BASE}/coach-topics`;
+    const API_COACH_TOPIC_DETAIL_URL = `${API_BASE}/coach-topic-detail`;
+    const API_COACH_FEEDBACK_URL = `${API_BASE}/coach-feedback`;
+    const API_COACH_QUICK_TIPS_URL = `${API_BASE}/coach-quick-tips`;
     let coachSessionId = null;
     let coachConversation = [];
+    let currentMessageId = null;
     let isCoachTyping = false;
 
     // Knowledge base for client-side responses
@@ -4539,8 +4544,11 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
       // Show welcome message
       showWelcomeMessage();
 
-      // Load topics
-      loadCoachTopics();
+      // Load topics from API
+      loadCoachTopicsFromAPI();
+
+      // Load quick tips
+      loadQuickTips();
     }
 
     function showWelcomeMessage() {
@@ -4575,6 +4583,214 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
       `).join('');
     }
 
+    async function loadCoachTopicsFromAPI() {
+      const topicsList = document.getElementById('coachTopicsList');
+      if (!topicsList) return;
+
+      try {
+        const response = await fetch(API_COACH_TOPICS_URL);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.categories) {
+            // Flatten topics from all categories
+            const allTopics = data.categories.flatMap(cat =>
+              cat.topics.map(t => ({ ...t, category: cat.id, categoryIcon: cat.icon }))
+            );
+
+            topicsList.innerHTML = allTopics.slice(0, 6).map(topic => `
+              <button class="coach-topic-btn" onclick="openTopicDetail('${topic.id}')" title="${topic.description}">
+                <span class="topic-icon">${topic.icon}</span>
+                <div class="topic-info">
+                  <span class="topic-title">${topic.title}</span>
+                  <span class="topic-desc">${topic.description}</span>
+                </div>
+                <span class="topic-duration">${topic.duration || ''}</span>
+              </button>
+            `).join('');
+
+            // Store topics for later use
+            window.coachTopicsData = data;
+            return;
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback topics:', error.message);
+      }
+
+      // Fallback to local topics
+      loadCoachTopics();
+    }
+
+    async function openTopicDetail(topicId) {
+      // Show loading state
+      showTopicModal(topicId, null, true);
+
+      try {
+        const response = await fetch(`${API_COACH_TOPIC_DETAIL_URL}?topicId=${topicId}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            showTopicModal(topicId, data, false);
+            return;
+          }
+        }
+      } catch (error) {
+        console.log('Error loading topic:', error.message);
+      }
+
+      // Fallback: ask coach about the topic
+      closeTopicModal();
+      const topicQuestions = {
+        what_is_privacy: 'Was ist Datenschutz?',
+        gdpr_basics: 'Erkläre mir die DSGVO',
+        pii_explained: 'Was sind personenbezogene Daten?',
+        financial_data: 'Wie schütze ich meine Finanzdaten?',
+        phishing: 'Wie erkenne ich Phishing?',
+        identity_theft: 'Was ist Identitätsdiebstahl?',
+        deanonymization: 'Was ist Deanonymisierung?',
+        password_security: 'Wie erstelle ich sichere Passwörter?',
+        social_media_privacy: 'Wie schütze ich meine Social Media Profile?'
+      };
+      askCoach(topicQuestions[topicId] || `Erzähl mir mehr über ${topicId}`);
+    }
+
+    function showTopicModal(topicId, data, isLoading) {
+      let modal = document.getElementById('topicDetailModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'topicDetailModal';
+        modal.className = 'topic-modal-overlay';
+        document.body.appendChild(modal);
+      }
+
+      if (isLoading) {
+        modal.innerHTML = `
+          <div class="topic-modal">
+            <div class="topic-modal-header">
+              <h3>Lade Thema...</h3>
+              <button class="topic-modal-close" onclick="closeTopicModal()">✕</button>
+            </div>
+            <div class="topic-modal-content">
+              <div class="topic-loading">
+                <div class="loading-spinner"></div>
+                <p>Inhalte werden geladen...</p>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (data && data.topic && data.content) {
+        const topic = data.topic;
+        const content = data.content;
+
+        modal.innerHTML = `
+          <div class="topic-modal">
+            <div class="topic-modal-header">
+              <div class="topic-modal-title">
+                <span class="topic-icon-large">${topic.icon}</span>
+                <div>
+                  <h3>${topic.title}</h3>
+                  <span class="topic-meta">${topic.difficulty || 'beginner'} • ${topic.duration || '5 min'}</span>
+                </div>
+              </div>
+              <button class="topic-modal-close" onclick="closeTopicModal()">✕</button>
+            </div>
+            <div class="topic-modal-content">
+              <div class="topic-introduction">
+                <p>${content.introduction}</p>
+              </div>
+              ${content.sections ? content.sections.map(section => `
+                <div class="topic-section">
+                  <h4>${section.title}</h4>
+                  ${section.content ? `<p>${section.content}</p>` : ''}
+                  ${section.bulletPoints ? `
+                    <ul class="topic-bullets">
+                      ${section.bulletPoints.map(bp => `<li>${bp}</li>`).join('')}
+                    </ul>
+                  ` : ''}
+                  ${section.type === 'interactive' && section.quiz ? `
+                    <div class="topic-quiz" data-quiz='${JSON.stringify(section.quiz)}'>
+                      ${section.quiz.map((q, i) => `
+                        <div class="quiz-question" id="quiz-${topicId}-${i}">
+                          <p><strong>Quiz:</strong> ${q.question}</p>
+                          <div class="quiz-options">
+                            ${q.options.map((opt, j) => `
+                              <button class="quiz-option" onclick="checkQuizAnswer('${topicId}', ${i}, ${j}, ${q.correct})">
+                                ${opt}
+                              </button>
+                            `).join('')}
+                          </div>
+                          <div class="quiz-explanation" style="display: none;">
+                            <p>${q.explanation}</p>
+                          </div>
+                        </div>
+                      `).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('') : ''}
+              ${content.keyTakeaways ? `
+                <div class="topic-takeaways">
+                  <h4>🎯 Wichtige Erkenntnisse</h4>
+                  <ul>
+                    ${content.keyTakeaways.map(t => `<li>${t}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+              ${content.relatedTopics ? `
+                <div class="topic-related">
+                  <h4>Verwandte Themen</h4>
+                  <div class="related-topics-list">
+                    ${content.relatedTopics.map(rt => `
+                      <button class="related-topic-btn" onclick="closeTopicModal(); openTopicDetail('${rt}')">
+                        ${rt.replace(/_/g, ' ')}
+                      </button>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+            <div class="topic-modal-footer">
+              <button class="topic-ask-btn" onclick="closeTopicModal(); askCoach('Ich habe eine Frage zu ${topic.title}')">
+                💬 Frage stellen
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTopicModal() {
+      const modal = document.getElementById('topicDetailModal');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    function checkQuizAnswer(topicId, questionIndex, selectedAnswer, correctAnswer) {
+      const quizDiv = document.getElementById(`quiz-${topicId}-${questionIndex}`);
+      if (!quizDiv) return;
+
+      const options = quizDiv.querySelectorAll('.quiz-option');
+      const explanation = quizDiv.querySelector('.quiz-explanation');
+
+      options.forEach((opt, i) => {
+        opt.disabled = true;
+        if (i === correctAnswer) {
+          opt.classList.add('correct');
+        } else if (i === selectedAnswer && selectedAnswer !== correctAnswer) {
+          opt.classList.add('incorrect');
+        }
+      });
+
+      if (explanation) {
+        explanation.style.display = 'block';
+      }
+    }
+
     function selectCoachTopic(topicId) {
       const topicQuestions = {
         basics: 'Was sind personenbezogene Daten?',
@@ -4588,6 +4804,49 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
       if (topicQuestions[topicId]) {
         askCoach(topicQuestions[topicId]);
       }
+    }
+
+    async function loadQuickTips() {
+      const tipContainer = document.getElementById('coachDailyTip');
+      if (!tipContainer) return;
+
+      try {
+        const response = await fetch(API_COACH_QUICK_TIPS_URL);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.tips && data.tips.length > 0) {
+            const tip = data.tips[0];
+            const challenge = data.dailyChallenge;
+
+            tipContainer.innerHTML = `
+              <div class="tip-icon">${tip.icon}</div>
+              <div class="tip-content">
+                <p>${tip.content}</p>
+                ${tip.actionButton ? `
+                  <button class="tip-action-btn" onclick="openTopicDetail('${tip.actionButton.params?.topicId || 'password_security'}')">
+                    ${tip.actionButton.text}
+                  </button>
+                ` : ''}
+              </div>
+              ${challenge ? `
+                <div class="daily-challenge">
+                  <div class="challenge-header">
+                    <span class="challenge-icon">${challenge.icon || '🏆'}</span>
+                    <span class="challenge-title">${challenge.title}</span>
+                  </div>
+                  <p class="challenge-desc">${challenge.description}</p>
+                  <span class="challenge-reward">${challenge.reward}</span>
+                </div>
+              ` : ''}
+            `;
+            return;
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback tip:', error.message);
+      }
+
+      // Fallback - already has static content in HTML
     }
 
     async function handleCoachSubmit(e) {
@@ -4690,23 +4949,77 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
       const messageEl = document.createElement('div');
       messageEl.className = `coach-message ${role}`;
+      const messageId = 'msg_' + Date.now();
+      messageEl.id = messageId;
 
       const avatar = role === 'coach' ? '🤖' : '👤';
       const formattedContent = formatCoachMessage(content);
+
+      // Add feedback buttons for coach messages
+      const feedbackHtml = role === 'coach' ? `
+        <div class="message-feedback" data-message-id="${messageId}">
+          <button class="feedback-btn helpful" onclick="submitFeedback('${messageId}', 'helpful')" title="Hilfreich">
+            <span>👍</span>
+          </button>
+          <button class="feedback-btn not-helpful" onclick="submitFeedback('${messageId}', 'not_helpful')" title="Nicht hilfreich">
+            <span>👎</span>
+          </button>
+        </div>
+      ` : '';
 
       messageEl.innerHTML = `
         <div class="message-avatar">${avatar}</div>
         <div class="message-content">
           <div class="message-bubble">${formattedContent}</div>
-          <div class="message-time">${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</div>
+          <div class="message-meta">
+            <span class="message-time">${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</span>
+            ${feedbackHtml}
+          </div>
         </div>
       `;
 
       messagesDiv.appendChild(messageEl);
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
+      // Update current message ID for feedback
+      if (role === 'coach') {
+        currentMessageId = messageId;
+      }
+
       // Store in conversation history
-      coachConversation.push({ role, content, timestamp: new Date().toISOString() });
+      coachConversation.push({ id: messageId, role, content, timestamp: new Date().toISOString() });
+    }
+
+    async function submitFeedback(messageId, rating) {
+      const feedbackDiv = document.querySelector(`[data-message-id="${messageId}"]`);
+      if (!feedbackDiv) return;
+
+      // Disable buttons and show selected state
+      const buttons = feedbackDiv.querySelectorAll('.feedback-btn');
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.classList.contains(rating === 'helpful' ? 'helpful' : 'not-helpful')) {
+          btn.classList.add('selected');
+        }
+      });
+
+      try {
+        await fetch(API_COACH_FEEDBACK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: coachSessionId,
+            messageId: messageId,
+            rating: rating
+          })
+        });
+
+        // Show thank you message
+        feedbackDiv.innerHTML = `<span class="feedback-thanks">Danke für dein Feedback!</span>`;
+      } catch (error) {
+        console.log('Feedback error:', error.message);
+        feedbackDiv.innerHTML = `<span class="feedback-thanks">Danke!</span>`;
+      }
     }
 
     function formatCoachMessage(content) {
@@ -4770,8 +5083,162 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
     }
 
     function toggleCoachMenu() {
-      // Placeholder for menu functionality
-      alert('Menü-Funktionen kommen in der nächsten Version!');
+      let menu = document.getElementById('coachMenuDropdown');
+
+      if (menu) {
+        // Toggle existing menu
+        menu.classList.toggle('show');
+        return;
+      }
+
+      // Create menu
+      menu = document.createElement('div');
+      menu.id = 'coachMenuDropdown';
+      menu.className = 'coach-menu-dropdown show';
+      menu.innerHTML = `
+        <button class="coach-menu-item" onclick="clearCoachHistory()">
+          <span class="menu-icon">🗑️</span>
+          <span>Chat löschen</span>
+        </button>
+        <button class="coach-menu-item" onclick="exportCoachHistory()">
+          <span class="menu-icon">📥</span>
+          <span>Chat exportieren</span>
+        </button>
+        <button class="coach-menu-item" onclick="openAllTopics()">
+          <span class="menu-icon">📚</span>
+          <span>Alle Themen</span>
+        </button>
+        <div class="coach-menu-divider"></div>
+        <button class="coach-menu-item" onclick="showCoachHelp()">
+          <span class="menu-icon">❓</span>
+          <span>Hilfe</span>
+        </button>
+      `;
+
+      // Add menu to header
+      const header = document.querySelector('.coach-chat-header');
+      if (header) {
+        header.style.position = 'relative';
+        header.appendChild(menu);
+      }
+
+      // Close menu when clicking outside
+      document.addEventListener('click', function closeMenu(e) {
+        if (!e.target.closest('.coach-menu-dropdown') && !e.target.closest('.coach-menu-btn')) {
+          const dropdown = document.getElementById('coachMenuDropdown');
+          if (dropdown) {
+            dropdown.classList.remove('show');
+          }
+          document.removeEventListener('click', closeMenu);
+        }
+      });
+    }
+
+    function clearCoachHistory() {
+      coachConversation = [];
+      const messagesDiv = document.getElementById('coachMessages');
+      if (messagesDiv) {
+        messagesDiv.innerHTML = '';
+      }
+      showWelcomeMessage();
+      toggleCoachMenu();
+    }
+
+    function exportCoachHistory() {
+      if (coachConversation.length === 0) {
+        alert('Keine Nachrichten zum Exportieren vorhanden.');
+        return;
+      }
+
+      const exportData = {
+        sessionId: coachSessionId,
+        exportedAt: new Date().toISOString(),
+        messages: coachConversation.map(msg => ({
+          role: msg.role === 'coach' ? 'Privacy Coach' : 'Du',
+          message: msg.content,
+          time: msg.timestamp
+        }))
+      };
+
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `privacy-coach-chat-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      toggleCoachMenu();
+    }
+
+    function openAllTopics() {
+      toggleCoachMenu();
+
+      // Create topics overview modal
+      let modal = document.getElementById('topicsOverviewModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'topicsOverviewModal';
+        modal.className = 'topic-modal-overlay';
+        document.body.appendChild(modal);
+      }
+
+      const topicsData = window.coachTopicsData;
+      let topicsHtml = '';
+
+      if (topicsData && topicsData.categories) {
+        topicsHtml = topicsData.categories.map(cat => `
+          <div class="topics-category">
+            <h4>${cat.icon} ${cat.name}</h4>
+            <div class="topics-grid">
+              ${cat.topics.map(topic => `
+                <button class="topic-card" onclick="closeTopicsOverview(); openTopicDetail('${topic.id}')">
+                  <span class="topic-card-icon">${topic.icon}</span>
+                  <span class="topic-card-title">${topic.title}</span>
+                  <span class="topic-card-meta">${topic.difficulty} • ${topic.duration}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        // Fallback
+        topicsHtml = COACH_TOPICS.map(topic => `
+          <button class="topic-card" onclick="closeTopicsOverview(); selectCoachTopic('${topic.id}')">
+            <span class="topic-card-icon">${topic.icon}</span>
+            <span class="topic-card-title">${topic.title}</span>
+            <span class="topic-card-desc">${topic.description}</span>
+          </button>
+        `).join('');
+      }
+
+      modal.innerHTML = `
+        <div class="topic-modal large">
+          <div class="topic-modal-header">
+            <h3>📚 Alle Lern-Themen</h3>
+            <button class="topic-modal-close" onclick="closeTopicsOverview()">✕</button>
+          </div>
+          <div class="topic-modal-content">
+            ${topicsHtml}
+          </div>
+        </div>
+      `;
+
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTopicsOverview() {
+      const modal = document.getElementById('topicsOverviewModal');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    function showCoachHelp() {
+      toggleCoachMenu();
+      askCoach('Wie kann ich den Privacy Coach am besten nutzen? Zeige mir was du kannst!');
     }
 
     function attachTextForAnalysis() {

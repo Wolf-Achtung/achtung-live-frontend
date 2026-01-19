@@ -4531,6 +4531,516 @@ body.simple-language .simple-lang {
   }
 }
 
+/* Phase 10: Additional Styles */
+
+/* Message Feedback */
+.message-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.message-feedback {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.coach-message:hover .message-feedback {
+  opacity: 1;
+}
+
+.feedback-btn {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  opacity: 0.6;
+}
+
+.feedback-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.feedback-btn.selected {
+  opacity: 1;
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.feedback-btn.correct {
+  background: rgba(76, 175, 80, 0.2);
+}
+
+.feedback-btn.incorrect {
+  background: rgba(244, 67, 54, 0.2);
+}
+
+.feedback-btn:disabled {
+  cursor: default;
+}
+
+.feedback-thanks {
+  font-size: 12px;
+  color: #4caf50;
+  font-style: italic;
+}
+
+/* Coach Menu Dropdown */
+.coach-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+}
+
+.coach-menu-dropdown.show {
+  display: block;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.coach-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+
+.coach-menu-item:hover {
+  background: #f5f5f5;
+}
+
+.coach-menu-item .menu-icon {
+  font-size: 16px;
+}
+
+.coach-menu-divider {
+  height: 1px;
+  background: #eee;
+  margin: 4px 0;
+}
+
+/* Topic Modal */
+.topic-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.topic-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalAppear 0.3s ease;
+}
+
+.topic-modal.large {
+  max-width: 900px;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.topic-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.topic-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topic-icon-large {
+  font-size: 36px;
+}
+
+.topic-modal-title h3 {
+  margin: 0;
+  font-size: 1.3em;
+}
+
+.topic-meta {
+  font-size: 12px;
+  color: #888;
+  text-transform: capitalize;
+}
+
+.topic-modal-close {
+  background: #f5f5f5;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.topic-modal-close:hover {
+  background: #eee;
+}
+
+.topic-modal-content {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.topic-introduction {
+  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.topic-introduction p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.topic-section {
+  margin-bottom: 20px;
+}
+
+.topic-section h4 {
+  margin: 0 0 12px 0;
+  color: #333;
+}
+
+.topic-section p {
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+}
+
+.topic-bullets {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.topic-bullets li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.topic-quiz {
+  background: #fff8e1;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.quiz-question p {
+  margin: 0 0 12px 0;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quiz-option {
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: #2196f3;
+  background: #e3f2fd;
+}
+
+.quiz-option.correct {
+  border-color: #4caf50;
+  background: #e8f5e9;
+}
+
+.quiz-option.incorrect {
+  border-color: #f44336;
+  background: #ffebee;
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-explanation {
+  margin-top: 12px;
+  padding: 12px;
+  background: #e8f5e9;
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+}
+
+.topic-takeaways {
+  background: #e8f5e9;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.topic-takeaways h4 {
+  margin: 0 0 12px 0;
+}
+
+.topic-takeaways ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.topic-takeaways li {
+  margin-bottom: 8px;
+}
+
+.topic-related {
+  margin-top: 20px;
+}
+
+.topic-related h4 {
+  margin: 0 0 12px 0;
+}
+
+.related-topics-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.related-topic-btn {
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  text-transform: capitalize;
+}
+
+.related-topic-btn:hover {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.topic-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: center;
+}
+
+.topic-ask-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.topic-ask-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+.topic-loading {
+  text-align: center;
+  padding: 40px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f0f0f0;
+  border-top-color: #2196f3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Topics Overview Modal */
+.topics-category {
+  margin-bottom: 24px;
+}
+
+.topics-category h4 {
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #eee;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.topic-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  background: #f9f9f9;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.topic-card:hover {
+  border-color: #2196f3;
+  background: #e3f2fd;
+  transform: translateY(-2px);
+}
+
+.topic-card-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.topic-card-title {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.topic-card-meta,
+.topic-card-desc {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Quick Tips Enhanced */
+.tip-action-btn {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: #5d4037;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.tip-action-btn:hover {
+  background: #4e342e;
+}
+
+.daily-challenge {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #d7ccc8;
+}
+
+.challenge-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.challenge-icon {
+  font-size: 18px;
+}
+
+.challenge-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: #5d4037;
+}
+
+.challenge-desc {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  color: #795548;
+}
+
+.challenge-reward {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #4caf50;
+  color: white;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Topic Duration in Sidebar */
+.topic-duration {
+  font-size: 11px;
+  color: #888;
+  margin-left: auto;
+}
+
 /* ========================================
    Phase 13: Privacy Policy Analyzer
    ======================================== */
