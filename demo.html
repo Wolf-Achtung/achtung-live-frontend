@@ -112,6 +112,8 @@
       <button class="tab-btn" data-tab="footprint" role="tab" aria-selected="false" aria-controls="footprintTab" data-i18n="tabs.footprint">🔍 Footprint</button>
       <button class="tab-btn" data-tab="coach" role="tab" aria-selected="false" aria-controls="coachTab" data-i18n="tabs.coach">🤖 Coach</button>
       <button class="tab-btn" data-tab="policy" role="tab" aria-selected="false" aria-controls="policyTab" data-i18n="tabs.policy">📜 Policy</button>
+      <button class="tab-btn" data-tab="alerts" role="tab" aria-selected="false" aria-controls="alertsTab" data-i18n="tabs.alerts">🚨 Alerts</button>
+      <button class="tab-btn" data-tab="templates" role="tab" aria-selected="false" aria-controls="templatesTab" data-i18n="tabs.templates">📋 Templates</button>
     </div>
 
     <!-- Single Text Tab -->
@@ -934,6 +936,178 @@
             </button>
           </div>
 
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Breach Alerts Tab (Phase 9) -->
+    <div id="alertsTab" class="tab-content" role="tabpanel" aria-labelledby="alerts-tab">
+      <h2 data-i18n="alerts.title">🚨 Data Breach Alerts</h2>
+      <p class="alerts-description" data-i18n="alerts.description">Werde benachrichtigt, wenn deine E-Mail in einem Datenleck auftaucht</p>
+
+      <div class="alerts-container">
+        <!-- Subscribe Section -->
+        <div class="alerts-subscribe-section">
+          <div class="subscribe-card">
+            <div class="subscribe-icon">🔔</div>
+            <h3>Monitoring aktivieren</h3>
+            <p>Erhalte sofortige Benachrichtigungen bei neuen Datenlecks</p>
+            <form id="alertsSubscribeForm" class="subscribe-form">
+              <div class="input-group">
+                <input type="email" id="alertsEmail" placeholder="deine@email.de" required>
+                <button type="submit" class="subscribe-btn">
+                  <span class="btn-text">Überwachen</span>
+                  <span class="btn-loading" style="display:none;">...</span>
+                </button>
+              </div>
+              <div class="subscribe-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="alertsInstant" checked>
+                  <span>Sofort-Benachrichtigung</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="alertsWeekly">
+                  <span>Wöchentliche Zusammenfassung</span>
+                </label>
+              </div>
+            </form>
+            <div id="alertsSubscribeResult" class="subscribe-result" style="display:none;"></div>
+          </div>
+
+          <!-- Status Check -->
+          <div class="status-check-card">
+            <h4>Status prüfen</h4>
+            <form id="alertsStatusForm" class="status-form">
+              <input type="email" id="alertsStatusEmail" placeholder="E-Mail prüfen...">
+              <button type="submit" class="status-btn">Prüfen</button>
+            </form>
+            <div id="alertsStatusResult" class="status-result" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Recent Breaches Section -->
+        <div class="recent-breaches-section">
+          <div class="section-header">
+            <h3>🔥 Aktuelle Datenlecks</h3>
+            <span class="last-updated" id="breachesLastUpdated">Lädt...</span>
+          </div>
+          <div class="breaches-stats">
+            <div class="stat-item">
+              <span class="stat-value" id="breachesThisMonth">--</span>
+              <span class="stat-label">Lecks diesen Monat</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="breachesAffectedUsers">--</span>
+              <span class="stat-label">Betroffene Nutzer</span>
+            </div>
+          </div>
+          <div class="breaches-list" id="recentBreachesList">
+            <div class="loading-placeholder">Lade aktuelle Datenlecks...</div>
+          </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="alerts-how-it-works">
+          <h4>So funktioniert's</h4>
+          <div class="steps-grid">
+            <div class="step-item">
+              <span class="step-number">1</span>
+              <span class="step-icon">📧</span>
+              <span class="step-text">E-Mail registrieren</span>
+            </div>
+            <div class="step-item">
+              <span class="step-number">2</span>
+              <span class="step-icon">✅</span>
+              <span class="step-text">Bestätigen</span>
+            </div>
+            <div class="step-item">
+              <span class="step-number">3</span>
+              <span class="step-icon">🔍</span>
+              <span class="step-text">24/7 Monitoring</span>
+            </div>
+            <div class="step-item">
+              <span class="step-number">4</span>
+              <span class="step-icon">🚨</span>
+              <span class="step-text">Sofort-Alert</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Templates Tab (Phase 11) -->
+    <div id="templatesTab" class="tab-content" role="tabpanel" aria-labelledby="templates-tab">
+      <h2 data-i18n="templates.title">📋 Privacy Templates</h2>
+      <p class="templates-description" data-i18n="templates.description">Sichere Textvorlagen für Social Media, Bewerbungen und mehr</p>
+
+      <div class="templates-container">
+        <!-- Categories -->
+        <div class="templates-categories" id="templatesCategoriesGrid">
+          <div class="loading-placeholder">Lade Kategorien...</div>
+        </div>
+
+        <!-- Templates Browser -->
+        <div class="templates-browser" id="templatesBrowser" style="display:none;">
+          <div class="browser-header">
+            <button class="back-btn" onclick="showTemplateCategories()">← Zurück</button>
+            <h3 id="templatesCategoryTitle">Kategorie</h3>
+          </div>
+          <div class="templates-list" id="templatesList"></div>
+        </div>
+
+        <!-- Template Detail -->
+        <div class="template-detail" id="templateDetail" style="display:none;">
+          <div class="detail-header">
+            <button class="back-btn" onclick="backToTemplatesList()">← Zurück</button>
+            <h3 id="templateDetailTitle">Template</h3>
+            <div class="privacy-badge" id="templatePrivacyBadge">
+              <span class="badge-score">--</span>
+              <span class="badge-label">Privacy Score</span>
+            </div>
+          </div>
+
+          <!-- Variants -->
+          <div class="template-variants" id="templateVariants"></div>
+
+          <!-- Customizer -->
+          <div class="template-customizer" id="templateCustomizer" style="display:none;">
+            <h4>Anpassen</h4>
+            <div class="customizer-fields" id="customizerFields"></div>
+          </div>
+
+          <!-- Preview -->
+          <div class="template-preview">
+            <h4>Vorschau</h4>
+            <div class="preview-content" id="templatePreviewContent"></div>
+            <button class="copy-btn" onclick="copyTemplateToClipboard()">
+              <span>📋 Kopieren</span>
+            </button>
+          </div>
+
+          <!-- Tips -->
+          <div class="template-tips" id="templateTips"></div>
+        </div>
+
+        <!-- Text Analyzer -->
+        <div class="templates-analyzer">
+          <div class="analyzer-header">
+            <h4>🔍 Eigenen Text prüfen</h4>
+            <p>Lass deinen Text auf Datenschutz-Risiken analysieren</p>
+          </div>
+          <form id="templatesAnalyzeForm" class="analyzer-form">
+            <textarea id="templatesAnalyzeText" placeholder="Füge deinen Text ein, z.B. deine Social Media Bio..." rows="4"></textarea>
+            <div class="analyzer-context">
+              <label>Kontext:</label>
+              <select id="templatesAnalyzeContext">
+                <option value="social_media_bio">Social Media Bio</option>
+                <option value="job_application">Bewerbung</option>
+                <option value="online_form">Online-Formular</option>
+                <option value="email">E-Mail</option>
+              </select>
+            </div>
+            <button type="submit" class="analyze-btn">Analysieren</button>
+          </form>
+          <div id="templatesAnalyzeResult" class="analyze-result" style="display:none;"></div>
         </div>
       </div>
     </div>
@@ -5904,6 +6078,468 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
     }
 
     // ========================================
+    // Phase 9: Data Breach Alerts
+    // ========================================
+
+    const API_ALERTS_SUBSCRIBE_URL = `${API_BASE}/alerts-subscribe`;
+    const API_ALERTS_STATUS_URL = `${API_BASE}/alerts-status`;
+    const API_ALERTS_RECENT_URL = `${API_BASE}/alerts-recent`;
+
+    function initDataBreachAlerts() {
+      const subscribeForm = document.getElementById('alertsSubscribeForm');
+      const statusForm = document.getElementById('alertsStatusForm');
+
+      if (subscribeForm) {
+        subscribeForm.addEventListener('submit', handleAlertsSubscribe);
+      }
+
+      if (statusForm) {
+        statusForm.addEventListener('submit', handleAlertsStatus);
+      }
+
+      // Load recent breaches
+      loadRecentBreaches();
+    }
+
+    async function handleAlertsSubscribe(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('alertsEmail').value.trim();
+      const instant = document.getElementById('alertsInstant').checked;
+      const weekly = document.getElementById('alertsWeekly').checked;
+      const resultDiv = document.getElementById('alertsSubscribeResult');
+      const btn = e.target.querySelector('.subscribe-btn');
+
+      if (!email) return;
+
+      btn.querySelector('.btn-text').style.display = 'none';
+      btn.querySelector('.btn-loading').style.display = 'inline';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(API_ALERTS_SUBSCRIBE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            notificationPreferences: {
+              instant: instant,
+              weekly_digest: weekly,
+              severity_threshold: 'medium'
+            }
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          resultDiv.innerHTML = `
+            <div class="result-success">
+              <span class="result-icon">✅</span>
+              <div>
+                <strong>${data.message}</strong>
+                ${data.note ? `<p class="result-note">${data.note}</p>` : ''}
+              </div>
+            </div>
+          `;
+          document.getElementById('alertsEmail').value = '';
+        } else {
+          throw new Error(data.error || 'Registrierung fehlgeschlagen');
+        }
+
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <div class="result-error">
+            <span class="result-icon">❌</span>
+            <span>${error.message}</span>
+          </div>
+        `;
+      }
+
+      resultDiv.style.display = 'block';
+      btn.querySelector('.btn-text').style.display = 'inline';
+      btn.querySelector('.btn-loading').style.display = 'none';
+      btn.disabled = false;
+    }
+
+    async function handleAlertsStatus(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('alertsStatusEmail').value.trim();
+      const resultDiv = document.getElementById('alertsStatusResult');
+
+      if (!email) return;
+
+      resultDiv.innerHTML = '<span class="loading-text">Prüfe...</span>';
+      resultDiv.style.display = 'block';
+
+      try {
+        const response = await fetch(`${API_ALERTS_STATUS_URL}?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+
+        if (data.success) {
+          if (data.status === 'active') {
+            resultDiv.innerHTML = `
+              <div class="status-active">
+                <span class="status-icon">🟢</span>
+                <div>
+                  <strong>Monitoring aktiv</strong>
+                  <p>Seit: ${new Date(data.subscribedAt).toLocaleDateString('de-DE')}</p>
+                  ${data.breachesFound > 0 ? `<p class="breach-count">⚠️ ${data.breachesFound} Datenleck(s) gefunden</p>` : '<p class="no-breaches">✅ Keine Datenlecks gefunden</p>'}
+                </div>
+              </div>
+            `;
+          } else {
+            resultDiv.innerHTML = `
+              <div class="status-inactive">
+                <span class="status-icon">⚪</span>
+                <span>${data.message}</span>
+              </div>
+            `;
+          }
+        }
+
+      } catch (error) {
+        resultDiv.innerHTML = `<span class="error-text">Fehler bei der Abfrage</span>`;
+      }
+    }
+
+    async function loadRecentBreaches() {
+      const listDiv = document.getElementById('recentBreachesList');
+      const lastUpdatedSpan = document.getElementById('breachesLastUpdated');
+      const thisMonthSpan = document.getElementById('breachesThisMonth');
+      const affectedSpan = document.getElementById('breachesAffectedUsers');
+
+      try {
+        const response = await fetch(API_ALERTS_RECENT_URL);
+        const data = await response.json();
+
+        if (data.success && data.breaches) {
+          thisMonthSpan.textContent = data.totalBreachesThisMonth || data.breaches.length;
+          affectedSpan.textContent = data.totalAffectedUsers || '--';
+          lastUpdatedSpan.textContent = `Aktualisiert: ${new Date(data.lastUpdated).toLocaleString('de-DE')}`;
+
+          listDiv.innerHTML = data.breaches.map(breach => `
+            <div class="breach-card severity-${breach.severity}">
+              <div class="breach-header">
+                <span class="breach-icon">${breach.icon || '🔓'}</span>
+                <div class="breach-info">
+                  <h4>${breach.name}</h4>
+                  <span class="breach-date">${new Date(breach.date).toLocaleDateString('de-DE')}</span>
+                </div>
+                <span class="severity-badge ${breach.severity}">${breach.severityInfo?.label || breach.severity}</span>
+              </div>
+              <div class="breach-details">
+                <p class="breach-description">${breach.description || ''}</p>
+                <div class="breach-stats">
+                  <span class="affected-users">👥 ${(breach.affectedUsers / 1000000).toFixed(1)}M betroffen</span>
+                </div>
+                <div class="breach-data-types">
+                  ${breach.dataTypes.map(dt => `<span class="data-type-tag">${breach.dataTypesInfo?.find(d => d.label)?.icon || '📄'} ${breach.dataTypesInfo?.find(d => d.label)?.label || dt}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+      } catch (error) {
+        console.log('Error loading breaches:', error);
+        listDiv.innerHTML = '<p class="error-text">Fehler beim Laden der Datenlecks</p>';
+      }
+    }
+
+    // ========================================
+    // Phase 11: Privacy Templates
+    // ========================================
+
+    const API_TEMPLATES_CATEGORIES_URL = `${API_BASE}/templates-categories`;
+    const API_TEMPLATES_LIST_URL = `${API_BASE}/templates-list`;
+    const API_TEMPLATES_DETAIL_URL = `${API_BASE}/templates-detail`;
+    const API_TEMPLATES_ANALYZE_URL = `${API_BASE}/templates-analyze`;
+
+    let currentTemplateCategory = null;
+    let currentTemplate = null;
+    let currentVariant = null;
+
+    function initPrivacyTemplates() {
+      const analyzeForm = document.getElementById('templatesAnalyzeForm');
+      if (analyzeForm) {
+        analyzeForm.addEventListener('submit', handleTemplateAnalyze);
+      }
+
+      // Load categories
+      loadTemplateCategories();
+    }
+
+    async function loadTemplateCategories() {
+      const grid = document.getElementById('templatesCategoriesGrid');
+
+      try {
+        const response = await fetch(API_TEMPLATES_CATEGORIES_URL);
+        const data = await response.json();
+
+        if (data.success && data.categories) {
+          grid.innerHTML = data.categories.map(cat => `
+            <button class="template-category-card" onclick="selectTemplateCategory('${cat.id}')" style="--cat-color: ${cat.color || '#2196f3'}">
+              <span class="category-icon">${cat.icon}</span>
+              <h4>${cat.name}</h4>
+              <p>${cat.description}</p>
+              <span class="template-count">${cat.templateCount} Templates</span>
+            </button>
+          `).join('');
+        }
+
+      } catch (error) {
+        console.log('Error loading categories:', error);
+        grid.innerHTML = '<p class="error-text">Fehler beim Laden der Kategorien</p>';
+      }
+    }
+
+    async function selectTemplateCategory(categoryId) {
+      currentTemplateCategory = categoryId;
+
+      const categoriesGrid = document.getElementById('templatesCategoriesGrid');
+      const browser = document.getElementById('templatesBrowser');
+      const list = document.getElementById('templatesList');
+      const title = document.getElementById('templatesCategoryTitle');
+
+      categoriesGrid.style.display = 'none';
+      browser.style.display = 'block';
+      list.innerHTML = '<div class="loading-placeholder">Lade Templates...</div>';
+
+      try {
+        const response = await fetch(`${API_TEMPLATES_LIST_URL}?categoryId=${categoryId}`);
+        const data = await response.json();
+
+        if (data.success) {
+          title.innerHTML = `${data.category.icon} ${data.category.name}`;
+
+          list.innerHTML = data.templates.map(t => `
+            <button class="template-list-item" onclick="selectTemplate('${t.id}')">
+              <div class="template-item-info">
+                <h4>${t.name}</h4>
+                <p>${t.description}</p>
+                <div class="template-tags">
+                  ${t.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+              </div>
+              <div class="template-item-meta">
+                <div class="privacy-score-mini" style="--score: ${t.privacyScore}%">
+                  <span class="score-value">${t.privacyScore}</span>
+                </div>
+                <span class="popularity">❤️ ${t.popularity}</span>
+              </div>
+            </button>
+          `).join('');
+        }
+
+      } catch (error) {
+        list.innerHTML = '<p class="error-text">Fehler beim Laden</p>';
+      }
+    }
+
+    function showTemplateCategories() {
+      document.getElementById('templatesCategoriesGrid').style.display = 'grid';
+      document.getElementById('templatesBrowser').style.display = 'none';
+      document.getElementById('templateDetail').style.display = 'none';
+    }
+
+    function backToTemplatesList() {
+      document.getElementById('templatesBrowser').style.display = 'block';
+      document.getElementById('templateDetail').style.display = 'none';
+    }
+
+    async function selectTemplate(templateId) {
+      const browser = document.getElementById('templatesBrowser');
+      const detail = document.getElementById('templateDetail');
+      const title = document.getElementById('templateDetailTitle');
+      const badge = document.getElementById('templatePrivacyBadge');
+      const variantsDiv = document.getElementById('templateVariants');
+      const tipsDiv = document.getElementById('templateTips');
+      const preview = document.getElementById('templatePreviewContent');
+      const customizer = document.getElementById('templateCustomizer');
+
+      browser.style.display = 'none';
+      detail.style.display = 'block';
+
+      try {
+        const response = await fetch(`${API_TEMPLATES_DETAIL_URL}?templateId=${templateId}`);
+        const data = await response.json();
+
+        if (data.success && data.template) {
+          currentTemplate = data.template;
+
+          title.textContent = data.template.name;
+          badge.querySelector('.badge-score').textContent = data.template.privacyScore;
+
+          // Render variants
+          variantsDiv.innerHTML = `
+            <h4>Varianten wählen</h4>
+            <div class="variants-grid">
+              ${data.template.variants.map((v, i) => `
+                <button class="variant-btn ${i === 0 ? 'active' : ''}" onclick="selectVariant('${v.id}', this)">
+                  <span class="variant-name">${v.name}</span>
+                  <span class="variant-tone">${v.tone}</span>
+                </button>
+              `).join('')}
+            </div>
+          `;
+
+          // Select first variant
+          if (data.template.variants.length > 0) {
+            currentVariant = data.template.variants[0];
+            preview.textContent = currentVariant.content;
+          }
+
+          // Render placeholders if customizable
+          if (data.template.customizable && data.template.placeholders) {
+            customizer.style.display = 'block';
+            const fieldsDiv = document.getElementById('customizerFields');
+            fieldsDiv.innerHTML = data.template.placeholders.map(p => `
+              <div class="customizer-field">
+                <label>${p.key.replace(/\{\{|\}\}/g, '')}</label>
+                <input type="text" data-placeholder="${p.key}" placeholder="${p.examples ? p.examples[0] : ''}" oninput="updateTemplatePreview()">
+                <span class="field-hint">${p.description}</span>
+              </div>
+            `).join('');
+          } else {
+            customizer.style.display = 'none';
+          }
+
+          // Render tips
+          if (data.template.tips || data.template.doNot) {
+            tipsDiv.innerHTML = `
+              ${data.template.tips ? `
+                <div class="tips-section tips-do">
+                  <h5>✅ Tipps</h5>
+                  <ul>${data.template.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+                </div>
+              ` : ''}
+              ${data.template.doNot ? `
+                <div class="tips-section tips-dont">
+                  <h5>❌ Vermeide</h5>
+                  <ul>${data.template.doNot.map(t => `<li>${t}</li>`).join('')}</ul>
+                </div>
+              ` : ''}
+            `;
+          }
+        }
+
+      } catch (error) {
+        detail.innerHTML = '<p class="error-text">Fehler beim Laden des Templates</p>';
+      }
+    }
+
+    function selectVariant(variantId, btn) {
+      if (!currentTemplate) return;
+
+      currentVariant = currentTemplate.variants.find(v => v.id === variantId);
+      if (!currentVariant) return;
+
+      // Update active state
+      document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update preview
+      updateTemplatePreview();
+    }
+
+    function updateTemplatePreview() {
+      if (!currentVariant) return;
+
+      let content = currentVariant.content;
+
+      // Replace placeholders with user input
+      document.querySelectorAll('#customizerFields input').forEach(input => {
+        const placeholder = input.dataset.placeholder;
+        const value = input.value || placeholder.replace(/\{\{|\}\}/g, '');
+        content = content.replace(new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'), value);
+      });
+
+      document.getElementById('templatePreviewContent').textContent = content;
+    }
+
+    function copyTemplateToClipboard() {
+      const content = document.getElementById('templatePreviewContent').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span>✅ Kopiert!</span>';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      });
+    }
+
+    async function handleTemplateAnalyze(e) {
+      e.preventDefault();
+
+      const text = document.getElementById('templatesAnalyzeText').value.trim();
+      const context = document.getElementById('templatesAnalyzeContext').value;
+      const resultDiv = document.getElementById('templatesAnalyzeResult');
+
+      if (!text) return;
+
+      resultDiv.innerHTML = '<div class="loading-text">Analysiere...</div>';
+      resultDiv.style.display = 'block';
+
+      try {
+        const response = await fetch(API_TEMPLATES_ANALYZE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, context })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.analysis) {
+          const a = data.analysis;
+          const gradeColor = a.grade === 'A' ? '#4caf50' : a.grade === 'B' ? '#8bc34a' : a.grade === 'C' ? '#ffc107' : a.grade === 'D' ? '#ff9800' : '#f44336';
+
+          resultDiv.innerHTML = `
+            <div class="analyze-result-card">
+              <div class="result-header">
+                <div class="result-score" style="--grade-color: ${gradeColor}">
+                  <span class="score-value">${a.privacyScore}</span>
+                  <span class="score-grade">${a.grade}</span>
+                </div>
+                <div class="result-summary">
+                  <h4>Privacy Score</h4>
+                  <p>${a.issues.length === 0 ? 'Keine Datenschutz-Probleme gefunden!' : `${a.issues.length} Problem(e) gefunden`}</p>
+                </div>
+              </div>
+
+              ${a.issues.length > 0 ? `
+                <div class="result-issues">
+                  <h5>Gefundene Probleme:</h5>
+                  ${a.issues.map(issue => `
+                    <div class="issue-item severity-${issue.severity}">
+                      <span class="issue-found">"${issue.found}"</span>
+                      <span class="issue-suggestion">${issue.suggestion}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+
+              ${a.suggestedVersion && a.suggestedVersion !== text ? `
+                <div class="result-suggestion">
+                  <h5>💡 Verbesserter Text:</h5>
+                  <div class="suggested-text">${a.suggestedVersion}</div>
+                  <button class="copy-suggestion-btn" onclick="navigator.clipboard.writeText('${a.suggestedVersion.replace(/'/g, "\\'")}'); this.textContent = '✅ Kopiert!'">
+                    📋 Kopieren
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }
+
+      } catch (error) {
+        resultDiv.innerHTML = '<p class="error-text">Fehler bei der Analyse</p>';
+      }
+    }
+
+    // ========================================
     // Initialize Everything
     // ========================================
 
@@ -5931,6 +6567,12 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
       // Initialize Phase 13 features
       initPolicyAnalyzer();
+
+      // Initialize Phase 9 features
+      initDataBreachAlerts();
+
+      // Initialize Phase 11 features
+      initPrivacyTemplates();
 
       // Load saved language preference
       const savedLang = localStorage.getItem('achtung-lang') || 'de';
