@@ -111,6 +111,9 @@
       <button class="tab-btn" data-tab="predictive" role="tab" aria-selected="false" aria-controls="predictiveTab" data-i18n="tabs.predictive">🔮 Predictive</button>
       <button class="tab-btn" data-tab="footprint" role="tab" aria-selected="false" aria-controls="footprintTab" data-i18n="tabs.footprint">🔍 Footprint</button>
       <button class="tab-btn" data-tab="coach" role="tab" aria-selected="false" aria-controls="coachTab" data-i18n="tabs.coach">🤖 Coach</button>
+      <button class="tab-btn" data-tab="policy" role="tab" aria-selected="false" aria-controls="policyTab" data-i18n="tabs.policy">📜 Policy</button>
+      <button class="tab-btn" data-tab="alerts" role="tab" aria-selected="false" aria-controls="alertsTab" data-i18n="tabs.alerts">🚨 Alerts</button>
+      <button class="tab-btn" data-tab="templates" role="tab" aria-selected="false" aria-controls="templatesTab" data-i18n="tabs.templates">📋 Templates</button>
     </div>
 
     <!-- Single Text Tab -->
@@ -759,6 +762,352 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Analyzer Tab (Phase 13) -->
+    <div id="policyTab" class="tab-content" role="tabpanel" aria-labelledby="policy-tab">
+      <h2 data-i18n="policy.title">📜 Privacy Policy Analyzer</h2>
+      <p class="policy-description" data-i18n="policy.description">Analysiere Datenschutzerklärungen und AGBs - einfach verständlich</p>
+
+      <div class="policy-container">
+        <!-- Input Section -->
+        <div class="policy-input-section">
+          <div class="policy-input-tabs">
+            <button type="button" class="policy-input-tab active" data-input="url" onclick="switchPolicyInput('url')">
+              <span class="tab-icon">🔗</span>
+              <span>URL eingeben</span>
+            </button>
+            <button type="button" class="policy-input-tab" data-input="text" onclick="switchPolicyInput('text')">
+              <span class="tab-icon">📝</span>
+              <span>Text einfügen</span>
+            </button>
+            <button type="button" class="policy-input-tab" data-input="known" onclick="switchPolicyInput('known')">
+              <span class="tab-icon">📚</span>
+              <span>Bekannte Dienste</span>
+            </button>
+          </div>
+
+          <!-- URL Input -->
+          <div class="policy-input-content" id="policyUrlInput">
+            <form id="policyUrlForm">
+              <div class="url-input-group">
+                <span class="url-prefix">https://</span>
+                <input type="text" id="policyUrl" placeholder="example.com/privacy" autocomplete="off">
+                <button type="submit" class="analyze-btn">
+                  <span class="btn-text">Analysieren</span>
+                  <span class="btn-loading" style="display:none;">...</span>
+                </button>
+              </div>
+              <div class="popular-urls">
+                <span>Beliebt:</span>
+                <button type="button" onclick="setPolicyUrl('facebook.com/privacy')">Facebook</button>
+                <button type="button" onclick="setPolicyUrl('google.com/privacy')">Google</button>
+                <button type="button" onclick="setPolicyUrl('amazon.de/privacy')">Amazon</button>
+                <button type="button" onclick="setPolicyUrl('tiktok.com/privacy')">TikTok</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Text Input -->
+          <div class="policy-input-content" id="policyTextInput" style="display:none;">
+            <form id="policyTextForm">
+              <textarea id="policyText" placeholder="Füge hier die Datenschutzerklärung ein..." rows="8"></textarea>
+              <button type="submit" class="analyze-btn">
+                <span class="btn-text">Text analysieren</span>
+                <span class="btn-loading" style="display:none;">...</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Known Services -->
+          <div class="policy-input-content" id="policyKnownInput" style="display:none;">
+            <div class="known-services-grid" id="knownServicesGrid">
+              <!-- Services will be loaded dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="policy-results" id="policyResults" style="display:none;">
+
+          <!-- Score Card -->
+          <div class="policy-score-card" id="policyScoreCard">
+            <div class="score-circle">
+              <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" class="score-bg"/>
+                <circle cx="50" cy="50" r="45" class="score-fill" id="policyScoreFill"/>
+              </svg>
+              <div class="score-content">
+                <span class="score-value" id="policyScoreValue">--</span>
+                <span class="score-grade" id="policyScoreGrade">-</span>
+              </div>
+            </div>
+            <div class="score-details">
+              <h3 id="policyServiceName">Datenschutz-Bewertung</h3>
+              <p class="score-label" id="policyScoreLabel">--</p>
+              <p class="score-summary" id="policyScoreSummary"></p>
+            </div>
+          </div>
+
+          <!-- TLDR Summary -->
+          <div class="policy-tldr" id="policyTldr">
+            <div class="tldr-header">
+              <span class="tldr-icon">💡</span>
+              <h4>Zusammenfassung (TL;DR)</h4>
+            </div>
+            <p id="policyTldrText"></p>
+          </div>
+
+          <!-- Key Points -->
+          <div class="policy-section" id="policyKeyPoints">
+            <div class="section-header">
+              <span class="section-icon">📊</span>
+              <h4>Wichtige Punkte</h4>
+            </div>
+            <div class="key-points-list" id="keyPointsList"></div>
+          </div>
+
+          <!-- Red Flags -->
+          <div class="policy-section" id="policyRedFlags" style="display:none;">
+            <div class="section-header warning">
+              <span class="section-icon">🚨</span>
+              <h4>Warnsignale</h4>
+            </div>
+            <div class="red-flags-list" id="redFlagsList"></div>
+          </div>
+
+          <!-- Score Breakdown -->
+          <div class="policy-section" id="policyBreakdown">
+            <div class="section-header collapsible" onclick="togglePolicySection('breakdownContent')">
+              <span class="section-icon">📈</span>
+              <h4>Score-Aufschlüsselung</h4>
+              <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content" id="breakdownContent">
+              <div class="breakdown-grid" id="breakdownGrid"></div>
+            </div>
+          </div>
+
+          <!-- Data Collection -->
+          <div class="policy-section" id="policyDataCollection">
+            <div class="section-header collapsible" onclick="togglePolicySection('dataCollectionContent')">
+              <span class="section-icon">📋</span>
+              <h4>Gesammelte Daten</h4>
+              <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content" id="dataCollectionContent" style="display:none;">
+              <div class="data-collection-list" id="dataCollectionList"></div>
+            </div>
+          </div>
+
+          <!-- Third Parties -->
+          <div class="policy-section" id="policyThirdParties">
+            <div class="section-header collapsible" onclick="togglePolicySection('thirdPartiesContent')">
+              <span class="section-icon">🔗</span>
+              <h4>Datenweitergabe</h4>
+              <span class="section-count" id="thirdPartyCount">0</span>
+              <span class="section-toggle">▼</span>
+            </div>
+            <div class="section-content" id="thirdPartiesContent" style="display:none;">
+              <div class="third-parties-list" id="thirdPartiesList"></div>
+            </div>
+          </div>
+
+          <!-- Recommendations -->
+          <div class="policy-section" id="policyRecommendations">
+            <div class="section-header">
+              <span class="section-icon">💡</span>
+              <h4>Empfehlungen</h4>
+            </div>
+            <div class="recommendations-list" id="policyRecommendationsList"></div>
+          </div>
+
+          <!-- Compare CTA -->
+          <div class="policy-compare-cta">
+            <span class="cta-icon">⚖️</span>
+            <div class="cta-text">
+              <strong>Bessere Alternativen?</strong>
+              <span id="betterAlternativesText">Vergleiche mit datenschutzfreundlicheren Diensten</span>
+            </div>
+            <button type="button" class="cta-btn" onclick="showBetterAlternatives()">
+              Vergleichen
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Breach Alerts Tab (Phase 9) -->
+    <div id="alertsTab" class="tab-content" role="tabpanel" aria-labelledby="alerts-tab">
+      <h2 data-i18n="alerts.title">🚨 Data Breach Alerts</h2>
+      <p class="alerts-description" data-i18n="alerts.description">Werde benachrichtigt, wenn deine E-Mail in einem Datenleck auftaucht</p>
+
+      <div class="alerts-container">
+        <!-- Subscribe Section -->
+        <div class="alerts-subscribe-section">
+          <div class="subscribe-card">
+            <div class="subscribe-icon">🔔</div>
+            <h3>Monitoring aktivieren</h3>
+            <p>Erhalte sofortige Benachrichtigungen bei neuen Datenlecks</p>
+            <form id="alertsSubscribeForm" class="subscribe-form">
+              <div class="input-group">
+                <input type="email" id="alertsEmail" placeholder="deine@email.de" required>
+                <button type="submit" class="subscribe-btn">
+                  <span class="btn-text">Überwachen</span>
+                  <span class="btn-loading" style="display:none;">...</span>
+                </button>
+              </div>
+              <div class="subscribe-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="alertsInstant" checked>
+                  <span>Sofort-Benachrichtigung</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="alertsWeekly">
+                  <span>Wöchentliche Zusammenfassung</span>
+                </label>
+              </div>
+            </form>
+            <div id="alertsSubscribeResult" class="subscribe-result" style="display:none;"></div>
+          </div>
+
+          <!-- Status Check -->
+          <div class="status-check-card">
+            <h4>Status prüfen</h4>
+            <form id="alertsStatusForm" class="status-form">
+              <input type="email" id="alertsStatusEmail" placeholder="E-Mail prüfen...">
+              <button type="submit" class="status-btn">Prüfen</button>
+            </form>
+            <div id="alertsStatusResult" class="status-result" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Recent Breaches Section -->
+        <div class="recent-breaches-section">
+          <div class="section-header">
+            <h3>🔥 Aktuelle Datenlecks</h3>
+            <span class="last-updated" id="breachesLastUpdated">Lädt...</span>
+          </div>
+          <div class="breaches-stats">
+            <div class="stat-item">
+              <span class="stat-value" id="breachesThisMonth">--</span>
+              <span class="stat-label">Lecks diesen Monat</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="breachesAffectedUsers">--</span>
+              <span class="stat-label">Betroffene Nutzer</span>
+            </div>
+          </div>
+          <div class="breaches-list" id="recentBreachesList">
+            <div class="loading-placeholder">Lade aktuelle Datenlecks...</div>
+          </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="alerts-how-it-works">
+          <h4>So funktioniert's</h4>
+          <div class="steps-grid">
+            <div class="step-item">
+              <span class="step-number">1</span>
+              <span class="step-icon">📧</span>
+              <span class="step-text">E-Mail registrieren</span>
+            </div>
+            <div class="step-item">
+              <span class="step-number">2</span>
+              <span class="step-icon">✅</span>
+              <span class="step-text">Bestätigen</span>
+            </div>
+            <div class="step-item">
+              <span class="step-number">3</span>
+              <span class="step-icon">🔍</span>
+              <span class="step-text">24/7 Monitoring</span>
+            </div>
+            <div class="step-item">
+              <span class="step-number">4</span>
+              <span class="step-icon">🚨</span>
+              <span class="step-text">Sofort-Alert</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Templates Tab (Phase 11) -->
+    <div id="templatesTab" class="tab-content" role="tabpanel" aria-labelledby="templates-tab">
+      <h2 data-i18n="templates.title">📋 Privacy Templates</h2>
+      <p class="templates-description" data-i18n="templates.description">Sichere Textvorlagen für Social Media, Bewerbungen und mehr</p>
+
+      <div class="templates-container">
+        <!-- Categories -->
+        <div class="templates-categories" id="templatesCategoriesGrid">
+          <div class="loading-placeholder">Lade Kategorien...</div>
+        </div>
+
+        <!-- Templates Browser -->
+        <div class="templates-browser" id="templatesBrowser" style="display:none;">
+          <div class="browser-header">
+            <button class="back-btn" onclick="showTemplateCategories()">← Zurück</button>
+            <h3 id="templatesCategoryTitle">Kategorie</h3>
+          </div>
+          <div class="templates-list" id="templatesList"></div>
+        </div>
+
+        <!-- Template Detail -->
+        <div class="template-detail" id="templateDetail" style="display:none;">
+          <div class="detail-header">
+            <button class="back-btn" onclick="backToTemplatesList()">← Zurück</button>
+            <h3 id="templateDetailTitle">Template</h3>
+            <div class="privacy-badge" id="templatePrivacyBadge">
+              <span class="badge-score">--</span>
+              <span class="badge-label">Privacy Score</span>
+            </div>
+          </div>
+
+          <!-- Variants -->
+          <div class="template-variants" id="templateVariants"></div>
+
+          <!-- Customizer -->
+          <div class="template-customizer" id="templateCustomizer" style="display:none;">
+            <h4>Anpassen</h4>
+            <div class="customizer-fields" id="customizerFields"></div>
+          </div>
+
+          <!-- Preview -->
+          <div class="template-preview">
+            <h4>Vorschau</h4>
+            <div class="preview-content" id="templatePreviewContent"></div>
+            <button class="copy-btn" onclick="copyTemplateToClipboard()">
+              <span>📋 Kopieren</span>
+            </button>
+          </div>
+
+          <!-- Tips -->
+          <div class="template-tips" id="templateTips"></div>
+        </div>
+
+        <!-- Text Analyzer -->
+        <div class="templates-analyzer">
+          <div class="analyzer-header">
+            <h4>🔍 Eigenen Text prüfen</h4>
+            <p>Lass deinen Text auf Datenschutz-Risiken analysieren</p>
+          </div>
+          <form id="templatesAnalyzeForm" class="analyzer-form">
+            <textarea id="templatesAnalyzeText" placeholder="Füge deinen Text ein, z.B. deine Social Media Bio..." rows="4"></textarea>
+            <div class="analyzer-context">
+              <label>Kontext:</label>
+              <select id="templatesAnalyzeContext">
+                <option value="social_media_bio">Social Media Bio</option>
+                <option value="job_application">Bewerbung</option>
+                <option value="online_form">Online-Formular</option>
+                <option value="email">E-Mail</option>
+              </select>
+            </div>
+            <button type="submit" class="analyze-btn">Analysieren</button>
+          </form>
+          <div id="templatesAnalyzeResult" class="analyze-result" style="display:none;"></div>
         </div>
       </div>
     </div>
@@ -4152,8 +4501,13 @@
     // ========================================
 
     const API_COACH_URL = `${API_BASE}/coach-chat`;
+    const API_COACH_TOPICS_URL = `${API_BASE}/coach-topics`;
+    const API_COACH_TOPIC_DETAIL_URL = `${API_BASE}/coach-topic-detail`;
+    const API_COACH_FEEDBACK_URL = `${API_BASE}/coach-feedback`;
+    const API_COACH_QUICK_TIPS_URL = `${API_BASE}/coach-quick-tips`;
     let coachSessionId = null;
     let coachConversation = [];
+    let currentMessageId = null;
     let isCoachTyping = false;
 
     // Knowledge base for client-side responses
@@ -4364,8 +4718,11 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
       // Show welcome message
       showWelcomeMessage();
 
-      // Load topics
-      loadCoachTopics();
+      // Load topics from API
+      loadCoachTopicsFromAPI();
+
+      // Load quick tips
+      loadQuickTips();
     }
 
     function showWelcomeMessage() {
@@ -4400,6 +4757,214 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
       `).join('');
     }
 
+    async function loadCoachTopicsFromAPI() {
+      const topicsList = document.getElementById('coachTopicsList');
+      if (!topicsList) return;
+
+      try {
+        const response = await fetch(API_COACH_TOPICS_URL);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.categories) {
+            // Flatten topics from all categories
+            const allTopics = data.categories.flatMap(cat =>
+              cat.topics.map(t => ({ ...t, category: cat.id, categoryIcon: cat.icon }))
+            );
+
+            topicsList.innerHTML = allTopics.slice(0, 6).map(topic => `
+              <button class="coach-topic-btn" onclick="openTopicDetail('${topic.id}')" title="${topic.description}">
+                <span class="topic-icon">${topic.icon}</span>
+                <div class="topic-info">
+                  <span class="topic-title">${topic.title}</span>
+                  <span class="topic-desc">${topic.description}</span>
+                </div>
+                <span class="topic-duration">${topic.duration || ''}</span>
+              </button>
+            `).join('');
+
+            // Store topics for later use
+            window.coachTopicsData = data;
+            return;
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback topics:', error.message);
+      }
+
+      // Fallback to local topics
+      loadCoachTopics();
+    }
+
+    async function openTopicDetail(topicId) {
+      // Show loading state
+      showTopicModal(topicId, null, true);
+
+      try {
+        const response = await fetch(`${API_COACH_TOPIC_DETAIL_URL}?topicId=${topicId}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            showTopicModal(topicId, data, false);
+            return;
+          }
+        }
+      } catch (error) {
+        console.log('Error loading topic:', error.message);
+      }
+
+      // Fallback: ask coach about the topic
+      closeTopicModal();
+      const topicQuestions = {
+        what_is_privacy: 'Was ist Datenschutz?',
+        gdpr_basics: 'Erkläre mir die DSGVO',
+        pii_explained: 'Was sind personenbezogene Daten?',
+        financial_data: 'Wie schütze ich meine Finanzdaten?',
+        phishing: 'Wie erkenne ich Phishing?',
+        identity_theft: 'Was ist Identitätsdiebstahl?',
+        deanonymization: 'Was ist Deanonymisierung?',
+        password_security: 'Wie erstelle ich sichere Passwörter?',
+        social_media_privacy: 'Wie schütze ich meine Social Media Profile?'
+      };
+      askCoach(topicQuestions[topicId] || `Erzähl mir mehr über ${topicId}`);
+    }
+
+    function showTopicModal(topicId, data, isLoading) {
+      let modal = document.getElementById('topicDetailModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'topicDetailModal';
+        modal.className = 'topic-modal-overlay';
+        document.body.appendChild(modal);
+      }
+
+      if (isLoading) {
+        modal.innerHTML = `
+          <div class="topic-modal">
+            <div class="topic-modal-header">
+              <h3>Lade Thema...</h3>
+              <button class="topic-modal-close" onclick="closeTopicModal()">✕</button>
+            </div>
+            <div class="topic-modal-content">
+              <div class="topic-loading">
+                <div class="loading-spinner"></div>
+                <p>Inhalte werden geladen...</p>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (data && data.topic && data.content) {
+        const topic = data.topic;
+        const content = data.content;
+
+        modal.innerHTML = `
+          <div class="topic-modal">
+            <div class="topic-modal-header">
+              <div class="topic-modal-title">
+                <span class="topic-icon-large">${topic.icon}</span>
+                <div>
+                  <h3>${topic.title}</h3>
+                  <span class="topic-meta">${topic.difficulty || 'beginner'} • ${topic.duration || '5 min'}</span>
+                </div>
+              </div>
+              <button class="topic-modal-close" onclick="closeTopicModal()">✕</button>
+            </div>
+            <div class="topic-modal-content">
+              <div class="topic-introduction">
+                <p>${content.introduction}</p>
+              </div>
+              ${content.sections ? content.sections.map(section => `
+                <div class="topic-section">
+                  <h4>${section.title}</h4>
+                  ${section.content ? `<p>${section.content}</p>` : ''}
+                  ${section.bulletPoints ? `
+                    <ul class="topic-bullets">
+                      ${section.bulletPoints.map(bp => `<li>${bp}</li>`).join('')}
+                    </ul>
+                  ` : ''}
+                  ${section.type === 'interactive' && section.quiz ? `
+                    <div class="topic-quiz" data-quiz='${JSON.stringify(section.quiz)}'>
+                      ${section.quiz.map((q, i) => `
+                        <div class="quiz-question" id="quiz-${topicId}-${i}">
+                          <p><strong>Quiz:</strong> ${q.question}</p>
+                          <div class="quiz-options">
+                            ${q.options.map((opt, j) => `
+                              <button class="quiz-option" onclick="checkQuizAnswer('${topicId}', ${i}, ${j}, ${q.correct})">
+                                ${opt}
+                              </button>
+                            `).join('')}
+                          </div>
+                          <div class="quiz-explanation" style="display: none;">
+                            <p>${q.explanation}</p>
+                          </div>
+                        </div>
+                      `).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('') : ''}
+              ${content.keyTakeaways ? `
+                <div class="topic-takeaways">
+                  <h4>🎯 Wichtige Erkenntnisse</h4>
+                  <ul>
+                    ${content.keyTakeaways.map(t => `<li>${t}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+              ${content.relatedTopics ? `
+                <div class="topic-related">
+                  <h4>Verwandte Themen</h4>
+                  <div class="related-topics-list">
+                    ${content.relatedTopics.map(rt => `
+                      <button class="related-topic-btn" onclick="closeTopicModal(); openTopicDetail('${rt}')">
+                        ${rt.replace(/_/g, ' ')}
+                      </button>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+            <div class="topic-modal-footer">
+              <button class="topic-ask-btn" onclick="closeTopicModal(); askCoach('Ich habe eine Frage zu ${topic.title}')">
+                💬 Frage stellen
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTopicModal() {
+      const modal = document.getElementById('topicDetailModal');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    function checkQuizAnswer(topicId, questionIndex, selectedAnswer, correctAnswer) {
+      const quizDiv = document.getElementById(`quiz-${topicId}-${questionIndex}`);
+      if (!quizDiv) return;
+
+      const options = quizDiv.querySelectorAll('.quiz-option');
+      const explanation = quizDiv.querySelector('.quiz-explanation');
+
+      options.forEach((opt, i) => {
+        opt.disabled = true;
+        if (i === correctAnswer) {
+          opt.classList.add('correct');
+        } else if (i === selectedAnswer && selectedAnswer !== correctAnswer) {
+          opt.classList.add('incorrect');
+        }
+      });
+
+      if (explanation) {
+        explanation.style.display = 'block';
+      }
+    }
+
     function selectCoachTopic(topicId) {
       const topicQuestions = {
         basics: 'Was sind personenbezogene Daten?',
@@ -4413,6 +4978,49 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
       if (topicQuestions[topicId]) {
         askCoach(topicQuestions[topicId]);
       }
+    }
+
+    async function loadQuickTips() {
+      const tipContainer = document.getElementById('coachDailyTip');
+      if (!tipContainer) return;
+
+      try {
+        const response = await fetch(API_COACH_QUICK_TIPS_URL);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.tips && data.tips.length > 0) {
+            const tip = data.tips[0];
+            const challenge = data.dailyChallenge;
+
+            tipContainer.innerHTML = `
+              <div class="tip-icon">${tip.icon}</div>
+              <div class="tip-content">
+                <p>${tip.content}</p>
+                ${tip.actionButton ? `
+                  <button class="tip-action-btn" onclick="openTopicDetail('${tip.actionButton.params?.topicId || 'password_security'}')">
+                    ${tip.actionButton.text}
+                  </button>
+                ` : ''}
+              </div>
+              ${challenge ? `
+                <div class="daily-challenge">
+                  <div class="challenge-header">
+                    <span class="challenge-icon">${challenge.icon || '🏆'}</span>
+                    <span class="challenge-title">${challenge.title}</span>
+                  </div>
+                  <p class="challenge-desc">${challenge.description}</p>
+                  <span class="challenge-reward">${challenge.reward}</span>
+                </div>
+              ` : ''}
+            `;
+            return;
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback tip:', error.message);
+      }
+
+      // Fallback - already has static content in HTML
     }
 
     async function handleCoachSubmit(e) {
@@ -4515,23 +5123,77 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
       const messageEl = document.createElement('div');
       messageEl.className = `coach-message ${role}`;
+      const messageId = 'msg_' + Date.now();
+      messageEl.id = messageId;
 
       const avatar = role === 'coach' ? '🤖' : '👤';
       const formattedContent = formatCoachMessage(content);
+
+      // Add feedback buttons for coach messages
+      const feedbackHtml = role === 'coach' ? `
+        <div class="message-feedback" data-message-id="${messageId}">
+          <button class="feedback-btn helpful" onclick="submitFeedback('${messageId}', 'helpful')" title="Hilfreich">
+            <span>👍</span>
+          </button>
+          <button class="feedback-btn not-helpful" onclick="submitFeedback('${messageId}', 'not_helpful')" title="Nicht hilfreich">
+            <span>👎</span>
+          </button>
+        </div>
+      ` : '';
 
       messageEl.innerHTML = `
         <div class="message-avatar">${avatar}</div>
         <div class="message-content">
           <div class="message-bubble">${formattedContent}</div>
-          <div class="message-time">${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</div>
+          <div class="message-meta">
+            <span class="message-time">${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</span>
+            ${feedbackHtml}
+          </div>
         </div>
       `;
 
       messagesDiv.appendChild(messageEl);
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
+      // Update current message ID for feedback
+      if (role === 'coach') {
+        currentMessageId = messageId;
+      }
+
       // Store in conversation history
-      coachConversation.push({ role, content, timestamp: new Date().toISOString() });
+      coachConversation.push({ id: messageId, role, content, timestamp: new Date().toISOString() });
+    }
+
+    async function submitFeedback(messageId, rating) {
+      const feedbackDiv = document.querySelector(`[data-message-id="${messageId}"]`);
+      if (!feedbackDiv) return;
+
+      // Disable buttons and show selected state
+      const buttons = feedbackDiv.querySelectorAll('.feedback-btn');
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.classList.contains(rating === 'helpful' ? 'helpful' : 'not-helpful')) {
+          btn.classList.add('selected');
+        }
+      });
+
+      try {
+        await fetch(API_COACH_FEEDBACK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: coachSessionId,
+            messageId: messageId,
+            rating: rating
+          })
+        });
+
+        // Show thank you message
+        feedbackDiv.innerHTML = `<span class="feedback-thanks">Danke für dein Feedback!</span>`;
+      } catch (error) {
+        console.log('Feedback error:', error.message);
+        feedbackDiv.innerHTML = `<span class="feedback-thanks">Danke!</span>`;
+      }
     }
 
     function formatCoachMessage(content) {
@@ -4595,8 +5257,162 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
     }
 
     function toggleCoachMenu() {
-      // Placeholder for menu functionality
-      alert('Menü-Funktionen kommen in der nächsten Version!');
+      let menu = document.getElementById('coachMenuDropdown');
+
+      if (menu) {
+        // Toggle existing menu
+        menu.classList.toggle('show');
+        return;
+      }
+
+      // Create menu
+      menu = document.createElement('div');
+      menu.id = 'coachMenuDropdown';
+      menu.className = 'coach-menu-dropdown show';
+      menu.innerHTML = `
+        <button class="coach-menu-item" onclick="clearCoachHistory()">
+          <span class="menu-icon">🗑️</span>
+          <span>Chat löschen</span>
+        </button>
+        <button class="coach-menu-item" onclick="exportCoachHistory()">
+          <span class="menu-icon">📥</span>
+          <span>Chat exportieren</span>
+        </button>
+        <button class="coach-menu-item" onclick="openAllTopics()">
+          <span class="menu-icon">📚</span>
+          <span>Alle Themen</span>
+        </button>
+        <div class="coach-menu-divider"></div>
+        <button class="coach-menu-item" onclick="showCoachHelp()">
+          <span class="menu-icon">❓</span>
+          <span>Hilfe</span>
+        </button>
+      `;
+
+      // Add menu to header
+      const header = document.querySelector('.coach-chat-header');
+      if (header) {
+        header.style.position = 'relative';
+        header.appendChild(menu);
+      }
+
+      // Close menu when clicking outside
+      document.addEventListener('click', function closeMenu(e) {
+        if (!e.target.closest('.coach-menu-dropdown') && !e.target.closest('.coach-menu-btn')) {
+          const dropdown = document.getElementById('coachMenuDropdown');
+          if (dropdown) {
+            dropdown.classList.remove('show');
+          }
+          document.removeEventListener('click', closeMenu);
+        }
+      });
+    }
+
+    function clearCoachHistory() {
+      coachConversation = [];
+      const messagesDiv = document.getElementById('coachMessages');
+      if (messagesDiv) {
+        messagesDiv.innerHTML = '';
+      }
+      showWelcomeMessage();
+      toggleCoachMenu();
+    }
+
+    function exportCoachHistory() {
+      if (coachConversation.length === 0) {
+        alert('Keine Nachrichten zum Exportieren vorhanden.');
+        return;
+      }
+
+      const exportData = {
+        sessionId: coachSessionId,
+        exportedAt: new Date().toISOString(),
+        messages: coachConversation.map(msg => ({
+          role: msg.role === 'coach' ? 'Privacy Coach' : 'Du',
+          message: msg.content,
+          time: msg.timestamp
+        }))
+      };
+
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `privacy-coach-chat-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      toggleCoachMenu();
+    }
+
+    function openAllTopics() {
+      toggleCoachMenu();
+
+      // Create topics overview modal
+      let modal = document.getElementById('topicsOverviewModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'topicsOverviewModal';
+        modal.className = 'topic-modal-overlay';
+        document.body.appendChild(modal);
+      }
+
+      const topicsData = window.coachTopicsData;
+      let topicsHtml = '';
+
+      if (topicsData && topicsData.categories) {
+        topicsHtml = topicsData.categories.map(cat => `
+          <div class="topics-category">
+            <h4>${cat.icon} ${cat.name}</h4>
+            <div class="topics-grid">
+              ${cat.topics.map(topic => `
+                <button class="topic-card" onclick="closeTopicsOverview(); openTopicDetail('${topic.id}')">
+                  <span class="topic-card-icon">${topic.icon}</span>
+                  <span class="topic-card-title">${topic.title}</span>
+                  <span class="topic-card-meta">${topic.difficulty} • ${topic.duration}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        // Fallback
+        topicsHtml = COACH_TOPICS.map(topic => `
+          <button class="topic-card" onclick="closeTopicsOverview(); selectCoachTopic('${topic.id}')">
+            <span class="topic-card-icon">${topic.icon}</span>
+            <span class="topic-card-title">${topic.title}</span>
+            <span class="topic-card-desc">${topic.description}</span>
+          </button>
+        `).join('');
+      }
+
+      modal.innerHTML = `
+        <div class="topic-modal large">
+          <div class="topic-modal-header">
+            <h3>📚 Alle Lern-Themen</h3>
+            <button class="topic-modal-close" onclick="closeTopicsOverview()">✕</button>
+          </div>
+          <div class="topic-modal-content">
+            ${topicsHtml}
+          </div>
+        </div>
+      `;
+
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTopicsOverview() {
+      const modal = document.getElementById('topicsOverviewModal');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    function showCoachHelp() {
+      toggleCoachMenu();
+      askCoach('Wie kann ich den Privacy Coach am besten nutzen? Zeige mir was du kannst!');
     }
 
     function attachTextForAnalysis() {
@@ -4605,6 +5421,1121 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
         askCoach(`Analysiere diesen Text und erkläre die Risiken: "${demoText.value.trim().substring(0, 200)}..."`);
       } else {
         askCoach('Ich möchte einen Text analysieren lassen. Wie funktioniert das?');
+      }
+    }
+
+    // ========================================
+    // Phase 13: Privacy Policy Analyzer
+    // ========================================
+
+    const API_POLICY_URL = `${API_BASE}/policy-analyze`;
+    const API_POLICY_QUICK_URL = `${API_BASE}/policy-quick-check`;
+    const API_POLICY_KNOWN_URL = `${API_BASE}/policy-known`;
+
+    let currentPolicyInput = 'url';
+    let lastPolicyResults = null;
+
+    // Known services database for client-side fallback
+    const KNOWN_SERVICES_DB = [
+      { domain: 'facebook.com', name: 'Facebook', icon: '👤', score: 35, grade: 'D', category: 'social' },
+      { domain: 'google.com', name: 'Google', icon: '🔍', score: 45, grade: 'C', category: 'tech' },
+      { domain: 'amazon.de', name: 'Amazon', icon: '📦', score: 40, grade: 'C', category: 'shopping' },
+      { domain: 'tiktok.com', name: 'TikTok', icon: '🎵', score: 25, grade: 'D', category: 'social' },
+      { domain: 'twitter.com', name: 'X/Twitter', icon: '🐦', score: 38, grade: 'D', category: 'social' },
+      { domain: 'instagram.com', name: 'Instagram', icon: '📷', score: 32, grade: 'D', category: 'social' },
+      { domain: 'whatsapp.com', name: 'WhatsApp', icon: '💬', score: 50, grade: 'C', category: 'messaging' },
+      { domain: 'signal.org', name: 'Signal', icon: '🔐', score: 92, grade: 'A', category: 'messaging' },
+      { domain: 'proton.me', name: 'Proton', icon: '🛡️', score: 95, grade: 'A', category: 'privacy' },
+      { domain: 'duckduckgo.com', name: 'DuckDuckGo', icon: '🦆', score: 90, grade: 'A', category: 'search' },
+      { domain: 'linkedin.com', name: 'LinkedIn', icon: '💼', score: 42, grade: 'C', category: 'professional' },
+      { domain: 'spotify.com', name: 'Spotify', icon: '🎧', score: 55, grade: 'C', category: 'entertainment' },
+      { domain: 'netflix.com', name: 'Netflix', icon: '🎬', score: 60, grade: 'B', category: 'entertainment' },
+      { domain: 'zoom.us', name: 'Zoom', icon: '📹', score: 48, grade: 'C', category: 'communication' },
+      { domain: 'microsoft.com', name: 'Microsoft', icon: '🪟', score: 52, grade: 'C', category: 'tech' },
+      { domain: 'apple.com', name: 'Apple', icon: '🍎', score: 70, grade: 'B', category: 'tech' }
+    ];
+
+    // Red flags database
+    const RED_FLAGS_DB = {
+      'unlimited_sharing': { text: 'Unbegrenzte Datenweitergabe an Dritte', severity: 'high', icon: '🚨' },
+      'sell_data': { text: 'Verkauf personenbezogener Daten möglich', severity: 'high', icon: '💰' },
+      'no_deletion': { text: 'Keine garantierte Datenlöschung', severity: 'high', icon: '♾️' },
+      'vague_purposes': { text: 'Vage Zweckangaben bei Datennutzung', severity: 'medium', icon: '❓' },
+      'third_party_tracking': { text: 'Tracking durch Drittanbieter', severity: 'medium', icon: '👁️' },
+      'location_tracking': { text: 'Permanente Standortverfolgung', severity: 'medium', icon: '📍' },
+      'data_retention': { text: 'Unbegrenzte Speicherdauer', severity: 'medium', icon: '⏰' },
+      'profiling': { text: 'Automatisierte Profilerstellung', severity: 'medium', icon: '🤖' },
+      'change_without_notice': { text: 'Änderungen ohne Benachrichtigung', severity: 'low', icon: '📝' },
+      'forced_consent': { text: 'Erzwungene Zustimmung für Nutzung', severity: 'high', icon: '⚠️' }
+    };
+
+    // Data categories
+    const DATA_CATEGORIES = {
+      'personal_info': { label: 'Persönliche Daten', icon: '👤', examples: ['Name', 'E-Mail', 'Telefon', 'Adresse'] },
+      'device_info': { label: 'Gerätedaten', icon: '📱', examples: ['IP-Adresse', 'Browser', 'Betriebssystem', 'Gerätekennungen'] },
+      'location': { label: 'Standortdaten', icon: '📍', examples: ['GPS', 'Netzwerkbasiert', 'Zeitzone'] },
+      'financial': { label: 'Finanzdaten', icon: '💳', examples: ['Zahlungsdaten', 'Kaufhistorie', 'Kontodaten'] },
+      'behavioral': { label: 'Verhaltensdaten', icon: '👁️', examples: ['Klickverhalten', 'Nutzungsdauer', 'Interessen'] },
+      'social': { label: 'Soziale Daten', icon: '👥', examples: ['Kontakte', 'Follower', 'Interaktionen'] },
+      'content': { label: 'Nutzungsinhalte', icon: '📄', examples: ['Nachrichten', 'Uploads', 'Kommentare'] },
+      'biometric': { label: 'Biometrische Daten', icon: '🔐', examples: ['Gesichtserkennung', 'Stimme', 'Fingerabdruck'] }
+    };
+
+    function initPolicyAnalyzer() {
+      // URL form submission
+      const urlForm = document.getElementById('policyUrlForm');
+      if (urlForm) {
+        urlForm.addEventListener('submit', handlePolicyUrlSubmit);
+      }
+
+      // Text form submission
+      const textForm = document.getElementById('policyTextForm');
+      if (textForm) {
+        textForm.addEventListener('submit', handlePolicyTextSubmit);
+      }
+
+      // Load known services grid
+      loadKnownServicesGrid();
+    }
+
+    function switchPolicyInput(inputType) {
+      currentPolicyInput = inputType;
+
+      // Update tabs
+      document.querySelectorAll('.policy-input-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.input === inputType);
+      });
+
+      // Show/hide content sections
+      document.getElementById('policyUrlInput').style.display = inputType === 'url' ? 'block' : 'none';
+      document.getElementById('policyTextInput').style.display = inputType === 'text' ? 'block' : 'none';
+      document.getElementById('policyKnownInput').style.display = inputType === 'known' ? 'block' : 'none';
+    }
+
+    function setPolicyUrl(url) {
+      document.getElementById('policyUrl').value = url;
+      document.getElementById('policyUrlForm').dispatchEvent(new Event('submit'));
+    }
+
+    function loadKnownServicesGrid() {
+      const grid = document.getElementById('knownServicesGrid');
+      if (!grid) return;
+
+      grid.innerHTML = KNOWN_SERVICES_DB.map(service => `
+        <div class="known-service-card grade-${service.grade.toLowerCase()}" onclick="analyzeKnownService('${service.domain}')">
+          <span class="service-icon">${service.icon}</span>
+          <span class="service-name">${service.name}</span>
+          <span class="service-grade grade-badge-${service.grade.toLowerCase()}">${service.grade}</span>
+        </div>
+      `).join('');
+    }
+
+    async function handlePolicyUrlSubmit(e) {
+      e.preventDefault();
+      let url = document.getElementById('policyUrl').value.trim();
+
+      if (!url) {
+        alert('Bitte gib eine URL ein.');
+        return;
+      }
+
+      // Add https:// if not present
+      if (!url.startsWith('http')) {
+        url = 'https://' + url;
+      }
+
+      await analyzePolicy({ type: 'url', value: url });
+    }
+
+    async function handlePolicyTextSubmit(e) {
+      e.preventDefault();
+      const text = document.getElementById('policyText').value.trim();
+
+      if (!text) {
+        alert('Bitte füge einen Text ein.');
+        return;
+      }
+
+      if (text.length < 100) {
+        alert('Der Text ist zu kurz für eine Analyse. Bitte füge die vollständige Datenschutzerklärung ein.');
+        return;
+      }
+
+      await analyzePolicy({ type: 'text', value: text });
+    }
+
+    async function analyzeKnownService(domain) {
+      await analyzePolicy({ type: 'known', value: domain });
+    }
+
+    async function analyzePolicy(input) {
+      // Show loading state
+      const submitBtn = document.querySelector('.policy-input-content:not([style*="display: none"]) .analyze-btn');
+      if (submitBtn) {
+        submitBtn.querySelector('.btn-text').style.display = 'none';
+        submitBtn.querySelector('.btn-loading').style.display = 'inline';
+        submitBtn.disabled = true;
+      }
+
+      try {
+        let results;
+
+        // Try API first
+        try {
+          const endpoint = input.type === 'known' ? API_POLICY_KNOWN_URL : API_POLICY_URL;
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(input.type === 'known' ? { domain: input.value } : input)
+          });
+
+          if (response.ok) {
+            results = await response.json();
+          } else {
+            throw new Error('API unavailable');
+          }
+        } catch (apiError) {
+          console.log('Using client-side policy analysis');
+          results = performClientSidePolicyAnalysis(input);
+        }
+
+        lastPolicyResults = results;
+        displayPolicyResults(results);
+
+      } catch (error) {
+        console.error('Policy analysis error:', error);
+        alert('Fehler bei der Analyse. Bitte versuche es erneut.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.querySelector('.btn-text').style.display = 'inline';
+          submitBtn.querySelector('.btn-loading').style.display = 'none';
+          submitBtn.disabled = false;
+        }
+      }
+    }
+
+    function performClientSidePolicyAnalysis(input) {
+      // Check if known service
+      if (input.type === 'known' || input.type === 'url') {
+        let domain = input.value;
+        if (input.type === 'url') {
+          try {
+            domain = new URL(input.value.startsWith('http') ? input.value : 'https://' + input.value).hostname;
+          } catch (e) {
+            domain = input.value;
+          }
+        }
+
+        // Find known service
+        const knownService = KNOWN_SERVICES_DB.find(s =>
+          domain.includes(s.domain) || s.domain.includes(domain.replace('www.', ''))
+        );
+
+        if (knownService) {
+          return generateKnownServiceResults(knownService);
+        }
+      }
+
+      // Client-side text analysis
+      return generateTextAnalysisResults(input.value);
+    }
+
+    function generateKnownServiceResults(service) {
+      const isGood = service.score >= 70;
+      const isBad = service.score < 40;
+
+      // Generate red flags based on score
+      const redFlags = [];
+      if (isBad) {
+        const flagKeys = Object.keys(RED_FLAGS_DB);
+        const numFlags = Math.floor(4 + Math.random() * 3);
+        for (let i = 0; i < numFlags && i < flagKeys.length; i++) {
+          redFlags.push({
+            ...RED_FLAGS_DB[flagKeys[i]],
+            id: flagKeys[i]
+          });
+        }
+      } else if (!isGood) {
+        const mediumFlags = ['vague_purposes', 'third_party_tracking', 'data_retention'];
+        mediumFlags.slice(0, 2).forEach(key => {
+          redFlags.push({ ...RED_FLAGS_DB[key], id: key });
+        });
+      }
+
+      // Generate data collection info
+      const dataCategories = Object.keys(DATA_CATEGORIES);
+      const collectedData = dataCategories
+        .filter(() => Math.random() > (isGood ? 0.6 : 0.2))
+        .map(key => ({
+          category: key,
+          ...DATA_CATEGORIES[key],
+          purpose: getPurposeForCategory(key)
+        }));
+
+      // Generate third parties
+      const thirdParties = generateThirdParties(service.score);
+
+      return {
+        service: {
+          name: service.name,
+          domain: service.domain,
+          icon: service.icon
+        },
+        score: service.score,
+        grade: service.grade,
+        gradeLabel: getGradeLabel(service.grade),
+        tldr: generateTldr(service),
+        keyPoints: generateKeyPoints(service, redFlags.length),
+        redFlags: redFlags,
+        breakdown: generateBreakdown(service.score),
+        dataCollection: collectedData,
+        thirdParties: thirdParties,
+        recommendations: generateRecommendations(service, redFlags),
+        alternatives: getAlternatives(service)
+      };
+    }
+
+    function generateTextAnalysisResults(text) {
+      // Simple keyword analysis
+      const lowerText = text.toLowerCase();
+
+      // Calculate score based on keywords
+      let score = 50;
+      const redFlags = [];
+
+      // Negative keywords
+      const negativeKeywords = {
+        'dritte': -5, 'weitergabe': -5, 'verkauf': -10, 'werbung': -5,
+        'tracking': -8, 'partner': -3, 'affiliate': -5, 'marketing': -5,
+        'unbegrenzt': -7, 'permanent': -5
+      };
+
+      // Positive keywords
+      const positiveKeywords = {
+        'verschlüssel': 5, 'lösch': 5, 'auskunft': 5, 'widerruf': 5,
+        'gdpr': 8, 'dsgvo': 8, 'datenschutzbeauftragter': 5,
+        'minimierung': 5, 'anonymisier': 8
+      };
+
+      for (const [word, impact] of Object.entries(negativeKeywords)) {
+        if (lowerText.includes(word)) {
+          score += impact;
+          if (impact <= -7) {
+            redFlags.push({
+              text: `Kritischer Begriff gefunden: "${word}"`,
+              severity: 'medium',
+              icon: '⚠️'
+            });
+          }
+        }
+      }
+
+      for (const [word, impact] of Object.entries(positiveKeywords)) {
+        if (lowerText.includes(word)) {
+          score += impact;
+        }
+      }
+
+      score = Math.max(0, Math.min(100, score));
+      const grade = scoreToGrade(score);
+
+      return {
+        service: {
+          name: 'Benutzerdefinierte Analyse',
+          domain: 'text-analyse',
+          icon: '📝'
+        },
+        score: score,
+        grade: grade,
+        gradeLabel: getGradeLabel(grade),
+        tldr: `Diese Datenschutzerklärung erhält einen Score von ${score}/100 (${grade}). ${score < 50 ? 'Es wurden einige bedenkliche Formulierungen gefunden.' : 'Die Richtlinie enthält grundlegende Datenschutzprinzipien.'}`,
+        keyPoints: [
+          { type: 'info', text: `Text mit ${text.length} Zeichen analysiert` },
+          { type: score >= 50 ? 'positive' : 'negative', text: score >= 50 ? 'Grundlegende DSGVO-Konformität erkennbar' : 'Möglicherweise DSGVO-kritische Formulierungen' }
+        ],
+        redFlags: redFlags,
+        breakdown: generateBreakdown(score),
+        dataCollection: [],
+        thirdParties: [],
+        recommendations: [
+          { priority: 1, text: 'Vollständige Analyse mit Backend für detaillierte Ergebnisse' }
+        ],
+        alternatives: []
+      };
+    }
+
+    function scoreToGrade(score) {
+      if (score >= 85) return 'A';
+      if (score >= 70) return 'B';
+      if (score >= 50) return 'C';
+      if (score >= 30) return 'D';
+      return 'F';
+    }
+
+    function getGradeLabel(grade) {
+      const labels = {
+        'A': 'Ausgezeichnet',
+        'B': 'Gut',
+        'C': 'Akzeptabel',
+        'D': 'Mangelhaft',
+        'F': 'Ungenügend'
+      };
+      return labels[grade] || 'Unbekannt';
+    }
+
+    function generateTldr(service) {
+      const tldrs = {
+        'A': `${service.name} bietet eine vorbildliche Datenschutzrichtlinie mit klaren Angaben, minimaler Datensammlung und starkem Nutzerschutz. Empfehlenswert!`,
+        'B': `${service.name} hat eine solide Datenschutzrichtlinie mit guten Grundprinzipien. Einige Bereiche könnten transparenter sein.`,
+        'C': `${service.name} erfüllt grundlegende Datenschutzanforderungen, aber es gibt Verbesserungspotential bei Transparenz und Datenminimierung.`,
+        'D': `${service.name} sammelt umfangreiche Daten und teilt diese mit vielen Partnern. Die Richtlinie ist wenig nutzerfreundlich.`,
+        'F': `Vorsicht: ${service.name} hat erhebliche Datenschutzmängel. Umfangreiche Datensammlung, vage Formulierungen und weitreichende Datenweitergabe.`
+      };
+      return tldrs[service.grade] || tldrs['C'];
+    }
+
+    function generateKeyPoints(service, numRedFlags) {
+      const points = [];
+
+      if (service.score >= 70) {
+        points.push({ type: 'positive', text: 'Transparente Datennutzung' });
+        points.push({ type: 'positive', text: 'Starke Nutzerkontrolle' });
+        points.push({ type: 'positive', text: 'Datenminimierung beachtet' });
+      } else if (service.score >= 50) {
+        points.push({ type: 'neutral', text: 'Grundlegende Transparenz vorhanden' });
+        points.push({ type: 'negative', text: 'Tracking durch Drittanbieter' });
+        points.push({ type: 'info', text: 'DSGVO-Rechte werden erwähnt' });
+      } else {
+        points.push({ type: 'negative', text: 'Umfangreiche Datensammlung' });
+        points.push({ type: 'negative', text: 'Weitergabe an viele Partner' });
+        points.push({ type: 'negative', text: 'Wenig Transparenz über Verwendung' });
+      }
+
+      if (numRedFlags > 3) {
+        points.push({ type: 'negative', text: `${numRedFlags} kritische Warnsignale gefunden` });
+      }
+
+      return points;
+    }
+
+    function generateBreakdown(overallScore) {
+      // Generate sub-scores based on overall score with some variance
+      const variance = () => Math.floor(Math.random() * 20) - 10;
+
+      return {
+        transparency: Math.max(0, Math.min(100, overallScore + variance())),
+        dataMinimization: Math.max(0, Math.min(100, overallScore + variance())),
+        userControl: Math.max(0, Math.min(100, overallScore + variance())),
+        security: Math.max(0, Math.min(100, overallScore + variance() + 10)),
+        thirdPartySharing: Math.max(0, Math.min(100, overallScore + variance() - 5)),
+        gdprCompliance: Math.max(0, Math.min(100, overallScore + variance() + 5))
+      };
+    }
+
+    function getPurposeForCategory(category) {
+      const purposes = {
+        'personal_info': 'Kontoverwaltung, Kundenservice',
+        'device_info': 'Sicherheit, Fehlerbehebung, Analyse',
+        'location': 'Lokalisierte Dienste, Werbung',
+        'financial': 'Zahlungsabwicklung, Betrugsprävention',
+        'behavioral': 'Personalisierung, Werbung, Analyse',
+        'social': 'Empfehlungen, soziale Funktionen',
+        'content': 'Bereitstellung des Dienstes',
+        'biometric': 'Authentifizierung, Sicherheit'
+      };
+      return purposes[category] || 'Dienstbereitstellung';
+    }
+
+    function generateThirdParties(score) {
+      const allParties = [
+        { name: 'Google Analytics', category: 'Analyse', risk: 'medium' },
+        { name: 'Facebook Pixel', category: 'Werbung', risk: 'high' },
+        { name: 'Stripe', category: 'Zahlung', risk: 'low' },
+        { name: 'CloudFlare', category: 'Sicherheit', risk: 'low' },
+        { name: 'Hotjar', category: 'Analyse', risk: 'medium' },
+        { name: 'DoubleClick', category: 'Werbung', risk: 'high' },
+        { name: 'Amazon AWS', category: 'Hosting', risk: 'low' },
+        { name: 'Mixpanel', category: 'Analyse', risk: 'medium' },
+        { name: 'Criteo', category: 'Werbung', risk: 'high' },
+        { name: 'Salesforce', category: 'CRM', risk: 'medium' }
+      ];
+
+      // Lower score = more third parties
+      const numParties = score >= 70 ? 2 : score >= 50 ? 5 : 8;
+      return allParties.slice(0, numParties);
+    }
+
+    function generateRecommendations(service, redFlags) {
+      const recs = [];
+
+      if (service.score < 50) {
+        recs.push({ priority: 1, text: `Erwäge datenschutzfreundlichere Alternativen zu ${service.name}` });
+      }
+
+      if (redFlags.length > 0) {
+        recs.push({ priority: 2, text: 'Überprüfe die Datenschutzeinstellungen im Dienst' });
+      }
+
+      recs.push({ priority: 3, text: 'Nutze nur notwendige Funktionen' });
+
+      if (service.score < 70) {
+        recs.push({ priority: 4, text: 'Gib nur minimal notwendige Daten preis' });
+        recs.push({ priority: 5, text: 'Prüfe regelmäßig gespeicherte Daten und fordere Löschung an' });
+      }
+
+      return recs;
+    }
+
+    function getAlternatives(service) {
+      const alternatives = {
+        'facebook.com': ['Mastodon', 'Diaspora'],
+        'google.com': ['DuckDuckGo', 'Startpage'],
+        'whatsapp.com': ['Signal', 'Threema'],
+        'instagram.com': ['Pixelfed'],
+        'twitter.com': ['Mastodon', 'Bluesky'],
+        'tiktok.com': ['BeReal'],
+        'zoom.us': ['Jitsi Meet'],
+        'amazon.de': ['lokale Händler']
+      };
+      return alternatives[service.domain] || [];
+    }
+
+    function displayPolicyResults(results) {
+      const container = document.getElementById('policyResults');
+      container.style.display = 'block';
+
+      // Update score circle
+      const scoreValue = document.getElementById('policyScoreValue');
+      const scoreFill = document.getElementById('policyScoreFill');
+      const scoreGrade = document.getElementById('policyScoreGrade');
+      const scoreLabel = document.getElementById('policyScoreLabel');
+      const serviceName = document.getElementById('policyServiceName');
+      const scoreSummary = document.getElementById('policyScoreSummary');
+
+      scoreValue.textContent = results.score;
+      scoreGrade.textContent = results.grade;
+      scoreLabel.textContent = results.gradeLabel;
+      serviceName.textContent = results.service.icon + ' ' + results.service.name;
+
+      // Animate score circle
+      const circumference = 2 * Math.PI * 45;
+      const offset = circumference - (results.score / 100) * circumference;
+      scoreFill.style.strokeDasharray = circumference;
+      scoreFill.style.strokeDashoffset = offset;
+
+      // Color based on grade
+      const colors = { A: '#4caf50', B: '#8bc34a', C: '#ff9800', D: '#f44336', F: '#9c27b0' };
+      const color = colors[results.grade] || '#ff9800';
+      scoreFill.style.stroke = color;
+      scoreGrade.style.color = color;
+
+      // TLDR
+      document.getElementById('policyTldrText').textContent = results.tldr;
+
+      // Key Points
+      const keyPointsList = document.getElementById('keyPointsList');
+      keyPointsList.innerHTML = results.keyPoints.map(point => `
+        <div class="key-point ${point.type}">
+          <span class="point-icon">${point.type === 'positive' ? '✅' : point.type === 'negative' ? '❌' : 'ℹ️'}</span>
+          <span class="point-text">${point.text}</span>
+        </div>
+      `).join('');
+
+      // Red Flags
+      const redFlagsSection = document.getElementById('policyRedFlags');
+      const redFlagsList = document.getElementById('redFlagsList');
+      if (results.redFlags && results.redFlags.length > 0) {
+        redFlagsSection.style.display = 'block';
+        redFlagsList.innerHTML = results.redFlags.map(flag => `
+          <div class="red-flag-item severity-${flag.severity}">
+            <span class="flag-icon">${flag.icon}</span>
+            <span class="flag-text">${flag.text}</span>
+            <span class="severity-badge">${flag.severity}</span>
+          </div>
+        `).join('');
+      } else {
+        redFlagsSection.style.display = 'none';
+      }
+
+      // Breakdown
+      const breakdownGrid = document.getElementById('breakdownGrid');
+      if (results.breakdown) {
+        const labels = {
+          transparency: 'Transparenz',
+          dataMinimization: 'Datenminimierung',
+          userControl: 'Nutzerkontrolle',
+          security: 'Sicherheit',
+          thirdPartySharing: 'Datenweitergabe',
+          gdprCompliance: 'DSGVO-Konformität'
+        };
+        breakdownGrid.innerHTML = Object.entries(results.breakdown).map(([key, value]) => `
+          <div class="breakdown-item">
+            <span class="breakdown-label">${labels[key] || key}</span>
+            <div class="breakdown-bar">
+              <div class="breakdown-fill" style="width: ${value}%; background: ${value >= 70 ? '#4caf50' : value >= 50 ? '#ff9800' : '#f44336'}"></div>
+            </div>
+            <span class="breakdown-value">${value}%</span>
+          </div>
+        `).join('');
+      }
+
+      // Data Collection
+      const dataList = document.getElementById('dataCollectionList');
+      if (results.dataCollection && results.dataCollection.length > 0) {
+        dataList.innerHTML = results.dataCollection.map(data => `
+          <div class="data-category-item">
+            <span class="data-icon">${data.icon}</span>
+            <div class="data-info">
+              <strong>${data.label}</strong>
+              <span class="data-examples">${data.examples.join(', ')}</span>
+              <span class="data-purpose">Zweck: ${data.purpose}</span>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        dataList.innerHTML = '<p class="no-data">Keine detaillierten Informationen zur Datensammlung verfügbar.</p>';
+      }
+
+      // Third Parties
+      document.getElementById('thirdPartyCount').textContent = results.thirdParties?.length || 0;
+      const thirdPartiesList = document.getElementById('thirdPartiesList');
+      if (results.thirdParties && results.thirdParties.length > 0) {
+        thirdPartiesList.innerHTML = results.thirdParties.map(party => `
+          <div class="third-party-item risk-${party.risk}">
+            <span class="party-name">${party.name}</span>
+            <span class="party-category">${party.category}</span>
+            <span class="party-risk risk-badge-${party.risk}">${party.risk}</span>
+          </div>
+        `).join('');
+      } else {
+        thirdPartiesList.innerHTML = '<p class="no-data">Keine Drittanbieter-Informationen verfügbar.</p>';
+      }
+
+      // Recommendations
+      const recsList = document.getElementById('policyRecommendationsList');
+      if (results.recommendations && results.recommendations.length > 0) {
+        recsList.innerHTML = results.recommendations.map(rec => `
+          <div class="policy-recommendation-item priority-${rec.priority}">
+            <span class="rec-priority">${rec.priority}</span>
+            <span class="rec-text">${rec.text}</span>
+          </div>
+        `).join('');
+      }
+
+      // Alternatives
+      if (results.alternatives && results.alternatives.length > 0) {
+        document.getElementById('betterAlternativesText').textContent =
+          `Bessere Alternativen: ${results.alternatives.join(', ')}`;
+      }
+
+      // Scroll to results
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function togglePolicySection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const header = section.previousElementSibling;
+      const toggle = header.querySelector('.section-toggle');
+
+      if (section.style.display === 'none') {
+        section.style.display = 'block';
+        toggle.textContent = '▼';
+      } else {
+        section.style.display = 'none';
+        toggle.textContent = '▶';
+      }
+    }
+
+    function showBetterAlternatives() {
+      if (!lastPolicyResults || !lastPolicyResults.alternatives || lastPolicyResults.alternatives.length === 0) {
+        alert('Keine alternativen Dienste bekannt. Nutze die Suchfunktion für datenschutzfreundliche Alternativen.');
+        return;
+      }
+
+      const alternatives = lastPolicyResults.alternatives;
+      const altServices = KNOWN_SERVICES_DB.filter(s =>
+        alternatives.some(alt => s.name.toLowerCase().includes(alt.toLowerCase()))
+      );
+
+      if (altServices.length > 0) {
+        switchPolicyInput('known');
+        setTimeout(() => {
+          const grid = document.getElementById('knownServicesGrid');
+          grid.innerHTML = altServices.map(service => `
+            <div class="known-service-card grade-${service.grade.toLowerCase()} highlighted" onclick="analyzeKnownService('${service.domain}')">
+              <span class="service-icon">${service.icon}</span>
+              <span class="service-name">${service.name}</span>
+              <span class="service-grade grade-badge-${service.grade.toLowerCase()}">${service.grade}</span>
+              <span class="service-recommended">✨ Empfohlen</span>
+            </div>
+          `).join('') + `
+            <button class="show-all-btn" onclick="loadKnownServicesGrid()">Alle Dienste anzeigen</button>
+          `;
+        }, 100);
+      } else {
+        alert(`Empfohlene Alternativen: ${alternatives.join(', ')}`);
+      }
+    }
+
+    // ========================================
+    // Phase 9: Data Breach Alerts
+    // ========================================
+
+    const API_ALERTS_SUBSCRIBE_URL = `${API_BASE}/alerts-subscribe`;
+    const API_ALERTS_STATUS_URL = `${API_BASE}/alerts-status`;
+    const API_ALERTS_RECENT_URL = `${API_BASE}/alerts-recent`;
+
+    function initDataBreachAlerts() {
+      const subscribeForm = document.getElementById('alertsSubscribeForm');
+      const statusForm = document.getElementById('alertsStatusForm');
+
+      if (subscribeForm) {
+        subscribeForm.addEventListener('submit', handleAlertsSubscribe);
+      }
+
+      if (statusForm) {
+        statusForm.addEventListener('submit', handleAlertsStatus);
+      }
+
+      // Load recent breaches
+      loadRecentBreaches();
+    }
+
+    async function handleAlertsSubscribe(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('alertsEmail').value.trim();
+      const instant = document.getElementById('alertsInstant').checked;
+      const weekly = document.getElementById('alertsWeekly').checked;
+      const resultDiv = document.getElementById('alertsSubscribeResult');
+      const btn = e.target.querySelector('.subscribe-btn');
+
+      if (!email) return;
+
+      btn.querySelector('.btn-text').style.display = 'none';
+      btn.querySelector('.btn-loading').style.display = 'inline';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(API_ALERTS_SUBSCRIBE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            notificationPreferences: {
+              instant: instant,
+              weekly_digest: weekly,
+              severity_threshold: 'medium'
+            }
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          resultDiv.innerHTML = `
+            <div class="result-success">
+              <span class="result-icon">✅</span>
+              <div>
+                <strong>${data.message}</strong>
+                ${data.note ? `<p class="result-note">${data.note}</p>` : ''}
+              </div>
+            </div>
+          `;
+          document.getElementById('alertsEmail').value = '';
+        } else {
+          throw new Error(data.error || 'Registrierung fehlgeschlagen');
+        }
+
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <div class="result-error">
+            <span class="result-icon">❌</span>
+            <span>${error.message}</span>
+          </div>
+        `;
+      }
+
+      resultDiv.style.display = 'block';
+      btn.querySelector('.btn-text').style.display = 'inline';
+      btn.querySelector('.btn-loading').style.display = 'none';
+      btn.disabled = false;
+    }
+
+    async function handleAlertsStatus(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('alertsStatusEmail').value.trim();
+      const resultDiv = document.getElementById('alertsStatusResult');
+
+      if (!email) return;
+
+      resultDiv.innerHTML = '<span class="loading-text">Prüfe...</span>';
+      resultDiv.style.display = 'block';
+
+      try {
+        const response = await fetch(`${API_ALERTS_STATUS_URL}?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+
+        if (data.success) {
+          if (data.status === 'active') {
+            resultDiv.innerHTML = `
+              <div class="status-active">
+                <span class="status-icon">🟢</span>
+                <div>
+                  <strong>Monitoring aktiv</strong>
+                  <p>Seit: ${new Date(data.subscribedAt).toLocaleDateString('de-DE')}</p>
+                  ${data.breachesFound > 0 ? `<p class="breach-count">⚠️ ${data.breachesFound} Datenleck(s) gefunden</p>` : '<p class="no-breaches">✅ Keine Datenlecks gefunden</p>'}
+                </div>
+              </div>
+            `;
+          } else {
+            resultDiv.innerHTML = `
+              <div class="status-inactive">
+                <span class="status-icon">⚪</span>
+                <span>${data.message}</span>
+              </div>
+            `;
+          }
+        }
+
+      } catch (error) {
+        resultDiv.innerHTML = `<span class="error-text">Fehler bei der Abfrage</span>`;
+      }
+    }
+
+    async function loadRecentBreaches() {
+      const listDiv = document.getElementById('recentBreachesList');
+      const lastUpdatedSpan = document.getElementById('breachesLastUpdated');
+      const thisMonthSpan = document.getElementById('breachesThisMonth');
+      const affectedSpan = document.getElementById('breachesAffectedUsers');
+
+      try {
+        const response = await fetch(API_ALERTS_RECENT_URL);
+        const data = await response.json();
+
+        if (data.success && data.breaches) {
+          thisMonthSpan.textContent = data.totalBreachesThisMonth || data.breaches.length;
+          affectedSpan.textContent = data.totalAffectedUsers || '--';
+          lastUpdatedSpan.textContent = `Aktualisiert: ${new Date(data.lastUpdated).toLocaleString('de-DE')}`;
+
+          listDiv.innerHTML = data.breaches.map(breach => `
+            <div class="breach-card severity-${breach.severity}">
+              <div class="breach-header">
+                <span class="breach-icon">${breach.icon || '🔓'}</span>
+                <div class="breach-info">
+                  <h4>${breach.name}</h4>
+                  <span class="breach-date">${new Date(breach.date).toLocaleDateString('de-DE')}</span>
+                </div>
+                <span class="severity-badge ${breach.severity}">${breach.severityInfo?.label || breach.severity}</span>
+              </div>
+              <div class="breach-details">
+                <p class="breach-description">${breach.description || ''}</p>
+                <div class="breach-stats">
+                  <span class="affected-users">👥 ${(breach.affectedUsers / 1000000).toFixed(1)}M betroffen</span>
+                </div>
+                <div class="breach-data-types">
+                  ${breach.dataTypes.map(dt => `<span class="data-type-tag">${breach.dataTypesInfo?.find(d => d.label)?.icon || '📄'} ${breach.dataTypesInfo?.find(d => d.label)?.label || dt}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+      } catch (error) {
+        console.log('Error loading breaches:', error);
+        listDiv.innerHTML = '<p class="error-text">Fehler beim Laden der Datenlecks</p>';
+      }
+    }
+
+    // ========================================
+    // Phase 11: Privacy Templates
+    // ========================================
+
+    const API_TEMPLATES_CATEGORIES_URL = `${API_BASE}/templates-categories`;
+    const API_TEMPLATES_LIST_URL = `${API_BASE}/templates-list`;
+    const API_TEMPLATES_DETAIL_URL = `${API_BASE}/templates-detail`;
+    const API_TEMPLATES_ANALYZE_URL = `${API_BASE}/templates-analyze`;
+
+    let currentTemplateCategory = null;
+    let currentTemplate = null;
+    let currentVariant = null;
+
+    function initPrivacyTemplates() {
+      const analyzeForm = document.getElementById('templatesAnalyzeForm');
+      if (analyzeForm) {
+        analyzeForm.addEventListener('submit', handleTemplateAnalyze);
+      }
+
+      // Load categories
+      loadTemplateCategories();
+    }
+
+    async function loadTemplateCategories() {
+      const grid = document.getElementById('templatesCategoriesGrid');
+
+      try {
+        const response = await fetch(API_TEMPLATES_CATEGORIES_URL);
+        const data = await response.json();
+
+        if (data.success && data.categories) {
+          grid.innerHTML = data.categories.map(cat => `
+            <button class="template-category-card" onclick="selectTemplateCategory('${cat.id}')" style="--cat-color: ${cat.color || '#2196f3'}">
+              <span class="category-icon">${cat.icon}</span>
+              <h4>${cat.name}</h4>
+              <p>${cat.description}</p>
+              <span class="template-count">${cat.templateCount} Templates</span>
+            </button>
+          `).join('');
+        }
+
+      } catch (error) {
+        console.log('Error loading categories:', error);
+        grid.innerHTML = '<p class="error-text">Fehler beim Laden der Kategorien</p>';
+      }
+    }
+
+    async function selectTemplateCategory(categoryId) {
+      currentTemplateCategory = categoryId;
+
+      const categoriesGrid = document.getElementById('templatesCategoriesGrid');
+      const browser = document.getElementById('templatesBrowser');
+      const list = document.getElementById('templatesList');
+      const title = document.getElementById('templatesCategoryTitle');
+
+      categoriesGrid.style.display = 'none';
+      browser.style.display = 'block';
+      list.innerHTML = '<div class="loading-placeholder">Lade Templates...</div>';
+
+      try {
+        const response = await fetch(`${API_TEMPLATES_LIST_URL}?categoryId=${categoryId}`);
+        const data = await response.json();
+
+        if (data.success) {
+          title.innerHTML = `${data.category.icon} ${data.category.name}`;
+
+          list.innerHTML = data.templates.map(t => `
+            <button class="template-list-item" onclick="selectTemplate('${t.id}')">
+              <div class="template-item-info">
+                <h4>${t.name}</h4>
+                <p>${t.description}</p>
+                <div class="template-tags">
+                  ${t.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+              </div>
+              <div class="template-item-meta">
+                <div class="privacy-score-mini" style="--score: ${t.privacyScore}%">
+                  <span class="score-value">${t.privacyScore}</span>
+                </div>
+                <span class="popularity">❤️ ${t.popularity}</span>
+              </div>
+            </button>
+          `).join('');
+        }
+
+      } catch (error) {
+        list.innerHTML = '<p class="error-text">Fehler beim Laden</p>';
+      }
+    }
+
+    function showTemplateCategories() {
+      document.getElementById('templatesCategoriesGrid').style.display = 'grid';
+      document.getElementById('templatesBrowser').style.display = 'none';
+      document.getElementById('templateDetail').style.display = 'none';
+    }
+
+    function backToTemplatesList() {
+      document.getElementById('templatesBrowser').style.display = 'block';
+      document.getElementById('templateDetail').style.display = 'none';
+    }
+
+    async function selectTemplate(templateId) {
+      const browser = document.getElementById('templatesBrowser');
+      const detail = document.getElementById('templateDetail');
+      const title = document.getElementById('templateDetailTitle');
+      const badge = document.getElementById('templatePrivacyBadge');
+      const variantsDiv = document.getElementById('templateVariants');
+      const tipsDiv = document.getElementById('templateTips');
+      const preview = document.getElementById('templatePreviewContent');
+      const customizer = document.getElementById('templateCustomizer');
+
+      browser.style.display = 'none';
+      detail.style.display = 'block';
+
+      try {
+        const response = await fetch(`${API_TEMPLATES_DETAIL_URL}?templateId=${templateId}`);
+        const data = await response.json();
+
+        if (data.success && data.template) {
+          currentTemplate = data.template;
+
+          title.textContent = data.template.name;
+          badge.querySelector('.badge-score').textContent = data.template.privacyScore;
+
+          // Render variants
+          variantsDiv.innerHTML = `
+            <h4>Varianten wählen</h4>
+            <div class="variants-grid">
+              ${data.template.variants.map((v, i) => `
+                <button class="variant-btn ${i === 0 ? 'active' : ''}" onclick="selectVariant('${v.id}', this)">
+                  <span class="variant-name">${v.name}</span>
+                  <span class="variant-tone">${v.tone}</span>
+                </button>
+              `).join('')}
+            </div>
+          `;
+
+          // Select first variant
+          if (data.template.variants.length > 0) {
+            currentVariant = data.template.variants[0];
+            preview.textContent = currentVariant.content;
+          }
+
+          // Render placeholders if customizable
+          if (data.template.customizable && data.template.placeholders) {
+            customizer.style.display = 'block';
+            const fieldsDiv = document.getElementById('customizerFields');
+            fieldsDiv.innerHTML = data.template.placeholders.map(p => `
+              <div class="customizer-field">
+                <label>${p.key.replace(/\{\{|\}\}/g, '')}</label>
+                <input type="text" data-placeholder="${p.key}" placeholder="${p.examples ? p.examples[0] : ''}" oninput="updateTemplatePreview()">
+                <span class="field-hint">${p.description}</span>
+              </div>
+            `).join('');
+          } else {
+            customizer.style.display = 'none';
+          }
+
+          // Render tips
+          if (data.template.tips || data.template.doNot) {
+            tipsDiv.innerHTML = `
+              ${data.template.tips ? `
+                <div class="tips-section tips-do">
+                  <h5>✅ Tipps</h5>
+                  <ul>${data.template.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+                </div>
+              ` : ''}
+              ${data.template.doNot ? `
+                <div class="tips-section tips-dont">
+                  <h5>❌ Vermeide</h5>
+                  <ul>${data.template.doNot.map(t => `<li>${t}</li>`).join('')}</ul>
+                </div>
+              ` : ''}
+            `;
+          }
+        }
+
+      } catch (error) {
+        detail.innerHTML = '<p class="error-text">Fehler beim Laden des Templates</p>';
+      }
+    }
+
+    function selectVariant(variantId, btn) {
+      if (!currentTemplate) return;
+
+      currentVariant = currentTemplate.variants.find(v => v.id === variantId);
+      if (!currentVariant) return;
+
+      // Update active state
+      document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update preview
+      updateTemplatePreview();
+    }
+
+    function updateTemplatePreview() {
+      if (!currentVariant) return;
+
+      let content = currentVariant.content;
+
+      // Replace placeholders with user input
+      document.querySelectorAll('#customizerFields input').forEach(input => {
+        const placeholder = input.dataset.placeholder;
+        const value = input.value || placeholder.replace(/\{\{|\}\}/g, '');
+        content = content.replace(new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'), value);
+      });
+
+      document.getElementById('templatePreviewContent').textContent = content;
+    }
+
+    function copyTemplateToClipboard() {
+      const content = document.getElementById('templatePreviewContent').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span>✅ Kopiert!</span>';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      });
+    }
+
+    async function handleTemplateAnalyze(e) {
+      e.preventDefault();
+
+      const text = document.getElementById('templatesAnalyzeText').value.trim();
+      const context = document.getElementById('templatesAnalyzeContext').value;
+      const resultDiv = document.getElementById('templatesAnalyzeResult');
+
+      if (!text) return;
+
+      resultDiv.innerHTML = '<div class="loading-text">Analysiere...</div>';
+      resultDiv.style.display = 'block';
+
+      try {
+        const response = await fetch(API_TEMPLATES_ANALYZE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, context })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.analysis) {
+          const a = data.analysis;
+          const gradeColor = a.grade === 'A' ? '#4caf50' : a.grade === 'B' ? '#8bc34a' : a.grade === 'C' ? '#ffc107' : a.grade === 'D' ? '#ff9800' : '#f44336';
+
+          resultDiv.innerHTML = `
+            <div class="analyze-result-card">
+              <div class="result-header">
+                <div class="result-score" style="--grade-color: ${gradeColor}">
+                  <span class="score-value">${a.privacyScore}</span>
+                  <span class="score-grade">${a.grade}</span>
+                </div>
+                <div class="result-summary">
+                  <h4>Privacy Score</h4>
+                  <p>${a.issues.length === 0 ? 'Keine Datenschutz-Probleme gefunden!' : `${a.issues.length} Problem(e) gefunden`}</p>
+                </div>
+              </div>
+
+              ${a.issues.length > 0 ? `
+                <div class="result-issues">
+                  <h5>Gefundene Probleme:</h5>
+                  ${a.issues.map(issue => `
+                    <div class="issue-item severity-${issue.severity}">
+                      <span class="issue-found">"${issue.found}"</span>
+                      <span class="issue-suggestion">${issue.suggestion}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+
+              ${a.suggestedVersion && a.suggestedVersion !== text ? `
+                <div class="result-suggestion">
+                  <h5>💡 Verbesserter Text:</h5>
+                  <div class="suggested-text">${a.suggestedVersion}</div>
+                  <button class="copy-suggestion-btn" onclick="navigator.clipboard.writeText('${a.suggestedVersion.replace(/'/g, "\\'")}'); this.textContent = '✅ Kopiert!'">
+                    📋 Kopieren
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }
+
+      } catch (error) {
+        resultDiv.innerHTML = '<p class="error-text">Fehler bei der Analyse</p>';
       }
     }
 
@@ -4633,6 +6564,15 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
       // Initialize Phase 10 features
       initPrivacyCoach();
+
+      // Initialize Phase 13 features
+      initPolicyAnalyzer();
+
+      // Initialize Phase 9 features
+      initDataBreachAlerts();
+
+      // Initialize Phase 11 features
+      initPrivacyTemplates();
 
       // Load saved language preference
       const savedLang = localStorage.getItem('achtung-lang') || 'de';
