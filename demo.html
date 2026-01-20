@@ -147,7 +147,7 @@
 
  <div class="datenschutz-hinweis">
  <input type="checkbox" id="privacyPolicyDemo" required aria-describedby="privacyHelp">
- <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+ <label for="privacyPolicyDemo"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
  <span id="privacyHelp" class="simple-lang" style="display:none;">Du musst das ankreuzen, damit wir deinen Text prüfen dürfen.</span>
  </div>
  <button type="submit" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
@@ -186,7 +186,7 @@
 
  <div class="datenschutz-hinweis">
  <input type="checkbox" id="privacyPolicyBatch" required>
- <label for="privacyPolicyBatch">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+ <label for="privacyPolicyBatch"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
  </div>
 
  <button type="submit" id="batchSubmitBtn">
@@ -243,7 +243,7 @@
 
  <div class="datenschutz-hinweis">
  <input type="checkbox" id="privacyPolicyDoc" required>
- <label for="privacyPolicyDoc">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+ <label for="privacyPolicyDoc"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
  </div>
 
  <button type="submit" id="docSubmitBtn" disabled>
@@ -319,7 +319,7 @@
 
  <div class="datenschutz-hinweis">
  <input type="checkbox" id="privacyPolicyPredictive" required>
- <label for="privacyPolicyPredictive">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+ <label for="privacyPolicyPredictive"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
  </div>
 
  <button type="submit" id="predictiveSubmitBtn">
@@ -539,7 +539,7 @@
 
  <div class="datenschutz-hinweis">
  <input type="checkbox" id="privacyPolicyFootprint" required>
- <label for="privacyPolicyFootprint">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
+ <label for="privacyPolicyFootprint"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
  </div>
 
  <button type="submit" id="footprintSubmitBtn">
@@ -1280,6 +1280,14 @@
  // Modal Funktionen
  // ========================================
  function openModal(id) {
+ // Update privacy policy iframe based on current language
+ if (id === 'datenschutzModal') {
+   const iframe = document.querySelector('#datenschutzModal iframe');
+   if (iframe) {
+     const langSuffix = currentLang === 'de' ? '' : '-' + currentLang;
+     iframe.src = 'datenschutz-popup2' + langSuffix + '.html';
+   }
+ }
  document.getElementById(id).style.display = "block";
  }
 
