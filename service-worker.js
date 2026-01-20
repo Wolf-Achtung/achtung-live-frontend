@@ -16,8 +16,9 @@ const STATIC_ASSETS = [
   '/locales/de.json',
   '/locales/en.json',
   '/locales/fr.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/android-chrome-192x192.png',
+  '/android-chrome-512x512.png',
+  '/apple-touch-icon.png'
 ];
 
 // API endpoints that can be cached
