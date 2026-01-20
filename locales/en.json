@@ -82,6 +82,7 @@
     "privacyPolicy": "Privacy Policy",
     "privacyHelp": "You must check this so we can analyze your text.",
     "submit": "Analyze Text",
+    "spellCheck": "Check Spelling",
     "analyzing": "Analyzing..."
   },
   "batch": {

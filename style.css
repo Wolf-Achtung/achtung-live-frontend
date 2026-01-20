@@ -7239,3 +7239,195 @@ body.simple-language .simple-lang {
     grid-template-columns: 1fr;
   }
 }
+
+/* ========================================
+   Spell Check Feature
+   ======================================== */
+
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.spell-check-btn {
+  padding: 14px 24px;
+  background: white;
+  color: #800000;
+  border: 2px solid #800000;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.spell-check-btn:hover {
+  background: #800000;
+  color: white;
+}
+
+.spell-check-results {
+  margin-top: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: left;
+}
+
+.spell-check-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.spell-check-header h3 {
+  margin: 0;
+  color: #800000;
+}
+
+.spell-check-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.spell-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.spell-stat .count {
+  font-weight: 700;
+  color: #800000;
+}
+
+.correction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.correction-item {
+  padding: 12px 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 4px solid #800000;
+}
+
+.correction-item.spelling {
+  border-left-color: #d32f2f;
+}
+
+.correction-item.grammar {
+  border-left-color: #ff9800;
+}
+
+.correction-item.punctuation {
+  border-left-color: #2196f3;
+}
+
+.correction-item.style {
+  border-left-color: #9c27b0;
+}
+
+.correction-original {
+  font-family: monospace;
+  background: #ffebee;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #d32f2f;
+  text-decoration: line-through;
+}
+
+.correction-arrow {
+  margin: 0 8px;
+  color: #666;
+}
+
+.correction-suggestion {
+  font-family: monospace;
+  background: #e8f5e9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #2e7d32;
+  cursor: pointer;
+}
+
+.correction-suggestion:hover {
+  background: #c8e6c9;
+}
+
+.correction-message {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 6px;
+}
+
+.correction-type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.correction-type.spelling {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.correction-type.grammar {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.correction-type.punctuation {
+  background: #e3f2fd;
+  color: #2196f3;
+}
+
+.correction-type.style {
+  background: #f3e5f5;
+  color: #9c27b0;
+}
+
+.spell-check-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.apply-corrections-btn {
+  padding: 10px 20px;
+  background: #800000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.apply-corrections-btn:hover {
+  background: #a60000;
+}
+
+.no-errors {
+  text-align: center;
+  padding: 30px;
+  color: #2e7d32;
+}
+
+.no-errors h4 {
+  margin: 0 0 8px 0;
+  color: #2e7d32;
+}

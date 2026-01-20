@@ -82,6 +82,7 @@
     "privacyPolicy": "Politique de Confidentialité",
     "privacyHelp": "Vous devez cocher ceci pour que nous puissions analyser votre texte.",
     "submit": "Analyser le Texte",
+    "spellCheck": "Vérifier l'orthographe",
     "analyzing": "Analyse en cours..."
   },
   "batch": {
