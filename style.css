@@ -3342,7 +3342,17 @@ body.simple-language .simple-lang {
 
 .scan-type-btn.active {
   border-color: #800000;
-  background: rgba(128, 0, 0, 0.05);
+  background: rgba(128, 0, 0, 0.1);
+  color: #800000;
+}
+
+.scan-type-btn .scan-type-text {
+  color: #333;
+}
+
+.scan-type-btn.active .scan-type-text {
+  color: #800000;
+  font-weight: 700;
 }
 
 .scan-type-icon {
@@ -4402,9 +4412,10 @@ body.simple-language .simple-lang {
 .coach-sidebar-section h4 {
   margin: 0 0 12px 0;
   font-size: 14px;
-  color: #666;
+  color: #800000;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-weight: 700;
 }
 
 /* Quick Actions */
@@ -4466,7 +4477,7 @@ body.simple-language .simple-lang {
 }
 
 .coach-topic-btn .topic-icon {
-  font-size: 20px;
+  display: none !important;
 }
 
 .topic-info {
@@ -4487,21 +4498,22 @@ body.simple-language .simple-lang {
 /* Daily Tip */
 .coach-daily-tip {
   display: flex;
-  gap: 10px;
-  padding: 12px;
-  background: #ffebee;
-  border-radius: 8px;
+  gap: 12px;
+  padding: 16px;
+  background: #800000;
+  border-radius: 12px;
+  color: white;
 }
 
 .coach-daily-tip .tip-icon {
-  font-size: 24px;
+  display: none !important;
 }
 
 .coach-daily-tip .tip-content p {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #800000;
+  font-size: 14px;
+  line-height: 1.6;
+  color: white;
 }
 
 /* Responsive */
@@ -4995,25 +5007,26 @@ body.simple-language .simple-lang {
 
 /* Quick Tips Enhanced */
 .tip-action-btn {
-  margin-top: 8px;
-  padding: 6px 12px;
-  background: #800000;
-  color: white;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: white;
+  color: #800000;
   border: none;
   border-radius: 16px;
   cursor: pointer;
   font-size: 12px;
+  font-weight: 600;
   transition: all 0.2s;
 }
 
 .tip-action-btn:hover {
-  background: #600000;
+  background: #f5f5f5;
 }
 
 .daily-challenge {
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px dashed #ffcdd2;
+  border-top: 1px dashed rgba(255, 255, 255, 0.3);
 }
 
 .challenge-header {
@@ -5024,29 +5037,29 @@ body.simple-language .simple-lang {
 }
 
 .challenge-icon {
-  font-size: 18px;
+  display: none !important;
 }
 
 .challenge-title {
   font-weight: 600;
   font-size: 13px;
-  color: #800000;
+  color: white;
 }
 
 .challenge-desc {
   margin: 0 0 6px 0;
   font-size: 12px;
-  color: #800000;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .challenge-reward {
   display: inline-block;
-  padding: 2px 8px;
-  background: #800000;
-  color: white;
+  padding: 4px 10px;
+  background: white;
+  color: #800000;
   border-radius: 10px;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Topic Duration in Sidebar */
@@ -5888,6 +5901,7 @@ body.simple-language .simple-lang {
 .subscribe-card h3 {
   margin: 0 0 8px 0;
   font-size: 1.5em;
+  color: white !important;
 }
 
 .subscribe-card > p {
@@ -5983,6 +5997,7 @@ body.simple-language .simple-lang {
 
 .status-check-card h4 {
   margin: 0 0 16px 0;
+  color: #800000;
 }
 
 .status-form {
@@ -6000,16 +6015,17 @@ body.simple-language .simple-lang {
 
 .status-btn {
   padding: 12px;
-  background: #f5f5f5;
+  background: #800000;
+  color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
   transition: background 0.2s;
 }
 
 .status-btn:hover {
-  background: #eee;
+  background: #a60000;
 }
 
 .status-result {
@@ -6233,20 +6249,21 @@ body.simple-language .simple-lang {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding-top: 30px;
   position: relative;
 }
 
 .step-number {
   position: absolute;
-  top: -8px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   background: #800000;
   color: white;
   border-radius: 50%;
-  font-size: 0.8em;
+  font-size: 0.85em;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -6254,13 +6271,13 @@ body.simple-language .simple-lang {
 }
 
 .step-icon {
-  font-size: 32px;
-  margin: 16px 0 8px;
+  display: none !important;
 }
 
 .step-text {
-  font-size: 0.9em;
-  color: #666;
+  font-size: 0.95em;
+  color: #333;
+  margin-top: 8px;
 }
 
 /* ========================================
@@ -6304,9 +6321,7 @@ body.simple-language .simple-lang {
 }
 
 .template-category-card .category-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
-  display: block;
+  display: none !important;
 }
 
 .template-category-card h4 {
@@ -6911,11 +6926,12 @@ body.simple-language .simple-lang {
 
 .search-container input {
   width: 100%;
-  padding: 12px 16px 12px 44px;
+  padding: 12px 16px;
   border: 2px solid #eee;
   border-radius: 10px;
   font-size: 1em;
   transition: border-color 0.2s;
+  box-sizing: border-box;
 }
 
 .search-container input:focus {
