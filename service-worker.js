@@ -9,7 +9,7 @@ const PATTERNS_CACHE = `achtung-patterns-${CACHE_VERSION}`;
 // Static assets to cache on install
 const STATIC_ASSETS = [
   '/',
-  '/demo.html',
+  '/',
   '/style.css',
   '/auth.js',
   '/manifest.json',
@@ -116,7 +116,7 @@ async function handleStaticRequest(request) {
   } catch (error) {
     // Network failed, return offline page if available
     console.log('[SW] Network failed for:', request.url);
-    return caches.match('/demo.html');
+    return caches.match('/');
   }
 }
 
@@ -228,7 +228,7 @@ self.addEventListener('push', (event) => {
     badge: '/icons/icon-72.png',
     vibrate: [100, 50, 100],
     data: {
-      url: data.url || '/demo.html'
+      url: data.url || '/'
     },
     actions: [
       { action: 'open', title: 'Öffnen' },
@@ -249,7 +249,7 @@ self.addEventListener('notificationclick', (event) => {
     return;
   }
 
-  const urlToOpen = event.notification.data?.url || '/demo.html';
+  const urlToOpen = event.notification.data?.url || '/';
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true })

@@ -2,7 +2,7 @@
   "name": "achtung.live - Privacy Guard",
   "short_name": "achtung.live",
   "description": "Der Airbag für digitale Kommunikation. Prüft Texte auf sensible Daten.",
-  "start_url": "/demo.html",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
@@ -47,19 +47,19 @@
       "name": "Schnell-Check",
       "short_name": "Check",
       "description": "Text schnell prüfen",
-      "url": "/demo.html?mode=quick"
+      "url": "/?mode=quick"
     },
     {
       "name": "Batch-Analyse",
       "short_name": "Batch",
       "description": "Mehrere Texte analysieren",
-      "url": "/demo.html?tab=batch"
+      "url": "/?tab=batch"
     }
   ],
   "related_applications": [],
   "prefer_related_applications": false,
   "share_target": {
-    "action": "/demo.html",
+    "action": "/",
     "method": "GET",
     "params": {
       "text": "text"

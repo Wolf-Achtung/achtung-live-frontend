@@ -6,7 +6,7 @@ Dies ist das finale Web-Frontend von achtung.live – optimiert für den GitHub-
 ## Inhalte
 
 - index.html – Startseite mit KI-Hinweis-Link
-- demo.html – Redirect zur GPT-Demo
+- index.html – Redirect zur GPT-Demo
 - datenschutz.html – DSGVO-konforme Datenschutzerklärung
 - impressum.html – Impressum nach TMG
 - ki-hinweis.html – Transparenzseite gemäß EU AI Act
