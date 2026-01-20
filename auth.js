@@ -20,27 +20,10 @@ async function sha256(message) {
 
 /**
  * Prüft ob der Benutzer bereits authentifiziert ist
+ * HINWEIS: Login deaktiviert - Demo ist für alle zugänglich
  */
 function isAuthenticated() {
-  const authToken = sessionStorage.getItem('achtung_auth');
-  const authTime = sessionStorage.getItem('achtung_auth_time');
-
-  if (!authToken || !authTime) {
-    return false;
-  }
-
-  // Token läuft nach 24 Stunden ab
-  const now = Date.now();
-  const tokenAge = now - parseInt(authTime);
-  const maxAge = 24 * 60 * 60 * 1000; // 24 Stunden
-
-  if (tokenAge > maxAge) {
-    sessionStorage.removeItem('achtung_auth');
-    sessionStorage.removeItem('achtung_auth_time');
-    return false;
-  }
-
-  return authToken === 'valid';
+  return true; // Login deaktiviert - alle haben Zugang
 }
 
 /**
