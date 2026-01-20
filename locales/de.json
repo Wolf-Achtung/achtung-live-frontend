@@ -82,6 +82,7 @@
     "privacyPolicy": "Datenschutzerklärung",
     "privacyHelp": "Du musst das ankreuzen, damit wir deinen Text prüfen dürfen.",
     "submit": "Text analysieren",
+    "spellCheck": "Rechtschreibung prüfen",
     "analyzing": "Analysiere..."
   },
   "batch": {

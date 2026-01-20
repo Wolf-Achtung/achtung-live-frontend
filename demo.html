@@ -151,7 +151,11 @@
  <label for="privacyPolicyDemo"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
  <span id="privacyHelp" class="simple-lang" style="display:none;">Du musst das ankreuzen, damit wir deinen Text prüfen dürfen.</span>
  </div>
- <button type="submit" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
+ <div class="form-buttons">
+<button type="submit" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
+<button type="button" class="spell-check-btn" onclick="checkSpelling()" data-i18n="form.spellCheck">Rechtschreibung pruefen</button>
+</div>
+<div id="spellCheckResults" class="spell-check-results" style="display:none;"></div>
  </form>
 
  <!-- Risk Dashboard -->
@@ -1207,6 +1211,7 @@
  const API_REWRITE_URL = `${API_BASE}/rewrite`;
  const API_BATCH_URL = `${API_BASE}/analyze-batch`;
  const API_HEALTH_URL = `${API_BASE}/health`;
+const API_SPELL_CHECK_URL = `${API_BASE}/spell-check`;
 
  // Kategorie-Metadaten für das Dashboard (Phase 2: 25+ Kategorien)
  const CATEGORY_META = {
@@ -2131,6 +2136,110 @@
 
  // ========================================
  // Formular Handler
+
+// ========================================
+// Spell Check Function
+// ========================================
+
+async function checkSpelling() {
+  const text = document.getElementById('demoText').value;
+  const resultsDiv = document.getElementById('spellCheckResults');
+  
+  if (!text || text.trim().length < 3) {
+    alert('Bitte gib mindestens 3 Zeichen ein.');
+    return;
+  }
+
+  resultsDiv.style.display = 'block';
+  resultsDiv.innerHTML = '<p style="text-align:center;">Pruefe Rechtschreibung...</p>';
+
+  try {
+    const response = await fetch(API_SPELL_CHECK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, language: currentLang || 'de' })
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      resultsDiv.innerHTML = '<p class="error-text">Rechtschreibpruefung nicht verfuegbar.</p>';
+      return;
+    }
+
+    if (!data.hasErrors) {
+      resultsDiv.innerHTML = \`
+        <div class="no-errors">
+          <h4>Keine Fehler gefunden</h4>
+          <p>Dein Text ist grammatikalisch und orthografisch korrekt.</p>
+        </div>
+      \`;
+      return;
+    }
+
+    // Store corrected text for apply function
+    window.lastCorrectedText = data.correctedText;
+
+    resultsDiv.innerHTML = \`
+      <div class="spell-check-header">
+        <h3>Rechtschreib- und Grammatikpruefung</h3>
+        <div class="spell-check-stats">
+          <span class="spell-stat"><span class="count">\${data.stats.spelling}</span> Rechtschreibung</span>
+          <span class="spell-stat"><span class="count">\${data.stats.grammar}</span> Grammatik</span>
+          <span class="spell-stat"><span class="count">\${data.stats.punctuation}</span> Zeichensetzung</span>
+        </div>
+      </div>
+      <div class="correction-list">
+        \${data.corrections.map(c => \`
+          <div class="correction-item \${c.rule.type}">
+            <div>
+              <span class="correction-original">\${data.originalText.substring(c.offset, c.offset + c.length)}</span>
+              <span class="correction-arrow">→</span>
+              <span class="correction-suggestion" onclick="applySingleCorrection('\${c.offset}', '\${c.length}', '\${c.replacements[0] || ''}')">\${c.replacements[0] || '(entfernen)'}</span>
+              <span class="correction-type \${c.rule.type}">\${getTypeLabel(c.rule.type)}</span>
+            </div>
+            <div class="correction-message">\${c.message}</div>
+          </div>
+        \`).join('')}
+      </div>
+      <div class="spell-check-actions">
+        <button class="apply-corrections-btn" onclick="applyAllCorrections()">Alle Korrekturen uebernehmen</button>
+      </div>
+    \`;
+  } catch (error) {
+    console.error('Spell check error:', error);
+    resultsDiv.innerHTML = '<p class="error-text">Fehler bei der Rechtschreibpruefung.</p>';
+  }
+}
+
+function getTypeLabel(type) {
+  const labels = {
+    'spelling': 'Rechtschreibung',
+    'grammar': 'Grammatik',
+    'punctuation': 'Zeichensetzung',
+    'style': 'Stil',
+    'other': 'Sonstiges'
+  };
+  return labels[type] || type;
+}
+
+function applyAllCorrections() {
+  if (window.lastCorrectedText) {
+    document.getElementById('demoText').value = window.lastCorrectedText;
+    document.getElementById('spellCheckResults').style.display = 'none';
+  }
+}
+
+function applySingleCorrection(offset, length, replacement) {
+  const textarea = document.getElementById('demoText');
+  const text = textarea.value;
+  const start = parseInt(offset);
+  const end = start + parseInt(length);
+  textarea.value = text.substring(0, start) + replacement + text.substring(end);
+  // Re-run spell check
+  checkSpelling();
+}
+
  // ========================================
 
  document.getElementById("demoForm").addEventListener("submit", async function (e) {
@@ -6185,7 +6294,7 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
  <span class="affected-users"> ${(breach.affectedUsers / 1000000).toFixed(1)}M betroffen</span>
  </div>
  <div class="breach-data-types">
- ${breach.dataTypes.map(dt => `<span class="data-type-tag">${breach.dataTypesInfo?.find(d => d.label)?.icon || ''} ${breach.dataTypesInfo?.find(d => d.label)?.label || dt}</span>`).join('')}
+ ${(breach.dataTypes || []).map(dt => `<span class="data-type-tag">${breach.dataTypesInfo?.find(d => d.label)?.icon || ''} ${breach.dataTypesInfo?.find(d => d.label)?.label || dt}</span>`).join('')}
  </div>
  </div>
  </div>
