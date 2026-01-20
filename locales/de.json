@@ -33,7 +33,17 @@
     "single": "Einzeltext",
     "batch": "Batch-Analyse",
     "document": "Dokument",
-    "predictive": "🔮 Predictive"
+    "predictive": "Prediktiv",
+    "footprint": "Footprint",
+    "coach": "Coach",
+    "policy": "Policy",
+    "alerts": "Alerts",
+    "templates": "Templates"
+  },
+  "cases": {
+    "viewExamples": "Fallbeispiele ansehen",
+    "title": "Fallbeispiele",
+    "close": "Schließen"
   },
   "predictive": {
     "title": "🔮 Predictive Privacy",
