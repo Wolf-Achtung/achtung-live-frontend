@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - achtung.live</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 40px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .login-container h1 {
+      text-align: center;
+      color: #800000;
+      margin-bottom: 30px;
+    }
+    .login-form input {
+      width: 100%;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      border: 2px solid #eee;
+      border-radius: 8px;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+    .login-form input:focus {
+      border-color: #800000;
+      outline: none;
+    }
+    .login-form button {
+      width: 100%;
+      padding: 14px;
+      background: #800000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .login-form button:hover {
+      background: #a60000;
+    }
+    .login-error {
+      color: #d32f2f;
+      text-align: center;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .admin-dashboard {
+      display: none;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #eee;
+    }
+    .admin-header h1 {
+      color: #800000;
+      margin: 0;
+    }
+    .logout-btn {
+      padding: 10px 20px;
+      background: #666;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    .stat-card h3 {
+      margin: 0 0 10px 0;
+      color: #666;
+      font-size: 0.9em;
+      text-transform: uppercase;
+    }
+    .stat-card .value {
+      font-size: 2.5em;
+      font-weight: 700;
+      color: #800000;
+    }
+    .stat-card.warning .value {
+      color: #ff9800;
+    }
+    .stat-card.danger .value {
+      color: #d32f2f;
+    }
+    .admin-section {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .admin-section h2 {
+      margin: 0 0 20px 0;
+      color: #800000;
+      font-size: 1.3em;
+    }
+    .log-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .log-table th, .log-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .log-table th {
+      background: #f9f9f9;
+      font-weight: 600;
+      color: #333;
+    }
+    .log-table tr:hover {
+      background: #f9f9f9;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+    .badge.blocked {
+      background: #ffebee;
+      color: #d32f2f;
+    }
+    .badge.warning {
+      background: #fff3e0;
+      color: #ff9800;
+    }
+    .badge.safe {
+      background: #e8f5e9;
+      color: #4caf50;
+    }
+    .api-status-display {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 16px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .api-status-display .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #4caf50;
+    }
+    .api-status-display .status-dot.offline {
+      background: #d32f2f;
+    }
+    .settings-form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+    .settings-form input[type="number"],
+    .settings-form input[type="text"] {
+      width: 100%;
+      max-width: 300px;
+      padding: 10px 14px;
+      border: 2px solid #eee;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    .settings-form .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .settings-form button {
+      padding: 12px 24px;
+      background: #800000;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .tab-nav-admin {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    .tab-nav-admin button {
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      font-weight: 500;
+      border-radius: 6px;
+    }
+    .tab-nav-admin button.active {
+      background: #800000;
+      color: white;
+    }
+    .admin-tab {
+      display: none;
+    }
+    .admin-tab.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Login Form -->
+    <div class="login-container" id="loginContainer">
+      <h1>[achtung.live] Admin</h1>
+      <div class="login-error" id="loginError">Falsches Passwort</div>
+      <form class="login-form" onsubmit="handleLogin(event)">
+        <input type="text" id="adminUser" placeholder="Benutzername" required>
+        <input type="password" id="adminPass" placeholder="Passwort" required>
+        <button type="submit">Anmelden</button>
+      </form>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard">
+      <div class="admin-header">
+        <h1>[achtung.live] Admin Dashboard</h1>
+        <button class="logout-btn" onclick="handleLogout()">Abmelden</button>
+      </div>
+
+      <!-- API Status -->
+      <div class="api-status-display">
+        <div class="status-dot" id="apiStatusDot"></div>
+        <span id="apiStatusText">API v14.0.0 - Online</span>
+        <span style="margin-left: auto; color: #666;" id="lastUpdate">Letztes Update: --</span>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Anfragen heute</h3>
+          <div class="value" id="statRequests">0</div>
+        </div>
+        <div class="stat-card warning">
+          <h3>Moderiert</h3>
+          <div class="value" id="statModerated">0</div>
+        </div>
+        <div class="stat-card danger">
+          <h3>Blockiert</h3>
+          <div class="value" id="statBlocked">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Rate Limited</h3>
+          <div class="value" id="statRateLimited">0</div>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tab-nav-admin">
+        <button class="active" onclick="showAdminTab('logs')">Aktivitaets-Log</button>
+        <button onclick="showAdminTab('moderation')">Moderation</button>
+        <button onclick="showAdminTab('settings')">Einstellungen</button>
+      </div>
+
+      <!-- Logs Tab -->
+      <div class="admin-tab active" id="tab-logs">
+        <div class="admin-section">
+          <h2>Letzte Aktivitaeten</h2>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Zeit</th>
+                <th>IP</th>
+                <th>Aktion</th>
+                <th>Status</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="activityLog">
+              <tr>
+                <td colspan="5" style="text-align: center; color: #666;">Lade Logs...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Moderation Tab -->
+      <div class="admin-tab" id="tab-moderation">
+        <div class="admin-section">
+          <h2>Moderierte Inhalte</h2>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Zeit</th>
+                <th>Kategorie</th>
+                <th>Inhalt (gekuerzt)</th>
+                <th>Score</th>
+                <th>Aktion</th>
+              </tr>
+            </thead>
+            <tbody id="moderationLog">
+              <tr>
+                <td colspan="5" style="text-align: center; color: #666;">Keine moderierten Inhalte</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="admin-section">
+          <h2>Blacklist-Woerter</h2>
+          <p style="color: #666; margin-bottom: 16px;">Woerter die automatisch blockiert werden (kommagetrennt)</p>
+          <textarea id="blacklistWords" rows="4" style="width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; font-family: monospace;"></textarea>
+          <button onclick="saveBlacklist()" style="margin-top: 12px; padding: 10px 20px; background: #800000; color: white; border: none; border-radius: 6px; cursor: pointer;">Speichern</button>
+        </div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div class="admin-tab" id="tab-settings">
+        <div class="admin-section">
+          <h2>Rate Limiting</h2>
+          <form class="settings-form" onsubmit="saveSettings(event)">
+            <label>Max. Anfragen pro Minute (pro IP)</label>
+            <input type="number" id="rateLimit" value="30" min="1" max="1000">
+
+            <label>Max. Anfragen pro Tag (pro IP)</label>
+            <input type="number" id="rateLimitDaily" value="500" min="1" max="10000">
+
+            <label style="margin-top: 20px;">AI-Moderation</label>
+            <div class="checkbox-group">
+              <input type="checkbox" id="enableAiModeration" checked>
+              <span>OpenAI Moderation API aktivieren</span>
+            </div>
+
+            <label>Moderation-Schwellenwert (0.0 - 1.0)</label>
+            <input type="number" id="moderationThreshold" value="0.7" min="0" max="1" step="0.1">
+
+            <label style="margin-top: 20px;">Logging</label>
+            <div class="checkbox-group">
+              <input type="checkbox" id="enableLogging" checked>
+              <span>Aktivitaets-Logging aktivieren</span>
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" id="logBlockedOnly">
+              <span>Nur blockierte Anfragen loggen</span>
+            </div>
+
+            <button type="submit" style="margin-top: 20px;">Einstellungen speichern</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple admin authentication (in production: use proper backend auth)
+    const ADMIN_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'; // 'admin' hashed
+
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('adminUser').value;
+      const pass = document.getElementById('adminPass').value;
+      const hash = await sha256(pass);
+
+      // In production: verify against backend
+      if (user === 'admin' && hash === ADMIN_HASH) {
+        sessionStorage.setItem('adminAuth', 'true');
+        showDashboard();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('adminAuth');
+      location.reload();
+    }
+
+    function showDashboard() {
+      document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('adminDashboard').style.display = 'block';
+      loadDashboardData();
+    }
+
+    function showAdminTab(tabId) {
+      document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-nav-admin button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    async function loadDashboardData() {
+      try {
+        // Load stats from API
+        const response = await fetch('/.netlify/functions/admin-stats');
+        if (response.ok) {
+          const data = await response.json();
+          document.getElementById('statRequests').textContent = data.requestsToday || 0;
+          document.getElementById('statModerated').textContent = data.moderatedToday || 0;
+          document.getElementById('statBlocked').textContent = data.blockedToday || 0;
+          document.getElementById('statRateLimited').textContent = data.rateLimitedToday || 0;
+          document.getElementById('lastUpdate').textContent = 'Letztes Update: ' + new Date().toLocaleTimeString();
+        }
+
+        // Load activity logs
+        const logsResponse = await fetch('/.netlify/functions/admin-logs');
+        if (logsResponse.ok) {
+          const logs = await logsResponse.json();
+          renderActivityLogs(logs.activities || []);
+        }
+
+        // Load settings
+        const settingsResponse = await fetch('/.netlify/functions/admin-settings');
+        if (settingsResponse.ok) {
+          const settings = await settingsResponse.json();
+          applySettings(settings);
+        }
+      } catch (error) {
+        console.log('Dashboard data not available:', error);
+        // Show demo data
+        showDemoData();
+      }
+    }
+
+    function showDemoData() {
+      document.getElementById('statRequests').textContent = '127';
+      document.getElementById('statModerated').textContent = '3';
+      document.getElementById('statBlocked').textContent = '1';
+      document.getElementById('statRateLimited').textContent = '0';
+      document.getElementById('lastUpdate').textContent = 'Letztes Update: ' + new Date().toLocaleTimeString();
+
+      const demoLogs = [
+        { time: '14:32:15', ip: '192.168.1.***', action: 'Text-Analyse', status: 'safe', details: '45 Zeichen' },
+        { time: '14:31:42', ip: '10.0.0.***', action: 'Text-Analyse', status: 'warning', details: 'Moderation: flagged' },
+        { time: '14:30:18', ip: '172.16.0.***', action: 'Batch-Analyse', status: 'safe', details: '5 Texte' },
+        { time: '14:28:55', ip: '192.168.1.***', action: 'Text-Analyse', status: 'blocked', details: 'Blacklist-Match' },
+        { time: '14:25:33', ip: '10.0.0.***', action: 'Dokument-Upload', status: 'safe', details: 'PDF, 2.3 MB' },
+      ];
+      renderActivityLogs(demoLogs);
+    }
+
+    function renderActivityLogs(logs) {
+      const tbody = document.getElementById('activityLog');
+      if (logs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #666;">Keine Aktivitaeten</td></tr>';
+        return;
+      }
+      tbody.innerHTML = logs.map(log => `
+        <tr>
+          <td>${log.time}</td>
+          <td>${log.ip}</td>
+          <td>${log.action}</td>
+          <td><span class="badge ${log.status}">${log.status}</span></td>
+          <td>${log.details}</td>
+        </tr>
+      `).join('');
+    }
+
+    function applySettings(settings) {
+      if (settings.rateLimit) document.getElementById('rateLimit').value = settings.rateLimit;
+      if (settings.rateLimitDaily) document.getElementById('rateLimitDaily').value = settings.rateLimitDaily;
+      if (settings.enableAiModeration !== undefined) document.getElementById('enableAiModeration').checked = settings.enableAiModeration;
+      if (settings.moderationThreshold) document.getElementById('moderationThreshold').value = settings.moderationThreshold;
+      if (settings.enableLogging !== undefined) document.getElementById('enableLogging').checked = settings.enableLogging;
+      if (settings.logBlockedOnly !== undefined) document.getElementById('logBlockedOnly').checked = settings.logBlockedOnly;
+      if (settings.blacklist) document.getElementById('blacklistWords').value = settings.blacklist.join(', ');
+    }
+
+    async function saveSettings(e) {
+      e.preventDefault();
+      const settings = {
+        rateLimit: parseInt(document.getElementById('rateLimit').value),
+        rateLimitDaily: parseInt(document.getElementById('rateLimitDaily').value),
+        enableAiModeration: document.getElementById('enableAiModeration').checked,
+        moderationThreshold: parseFloat(document.getElementById('moderationThreshold').value),
+        enableLogging: document.getElementById('enableLogging').checked,
+        logBlockedOnly: document.getElementById('logBlockedOnly').checked
+      };
+
+      try {
+        await fetch('/.netlify/functions/admin-settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(settings)
+        });
+        alert('Einstellungen gespeichert!');
+      } catch (error) {
+        console.log('Settings saved locally');
+        localStorage.setItem('adminSettings', JSON.stringify(settings));
+        alert('Einstellungen lokal gespeichert!');
+      }
+    }
+
+    async function saveBlacklist() {
+      const words = document.getElementById('blacklistWords').value
+        .split(',')
+        .map(w => w.trim().toLowerCase())
+        .filter(w => w.length > 0);
+
+      try {
+        await fetch('/.netlify/functions/admin-blacklist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ blacklist: words })
+        });
+        alert('Blacklist gespeichert!');
+      } catch (error) {
+        localStorage.setItem('blacklist', JSON.stringify(words));
+        alert('Blacklist lokal gespeichert!');
+      }
+    }
+
+    // Check auth on load
+    if (sessionStorage.getItem('adminAuth') === 'true') {
+      showDashboard();
+    }
+
+    // Auto-refresh every 30 seconds
+    setInterval(() => {
+      if (sessionStorage.getItem('adminAuth') === 'true') {
+        loadDashboardData();
+      }
+    }, 30000);
+  </script>
+</body>
+</html>
