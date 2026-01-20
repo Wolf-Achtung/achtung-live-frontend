@@ -2168,19 +2168,19 @@ async function checkSpelling() {
     }
 
     if (!data.hasErrors) {
-      resultsDiv.innerHTML = \`
+      resultsDiv.innerHTML = `
         <div class="no-errors">
           <h4>Keine Fehler gefunden</h4>
           <p>Dein Text ist grammatikalisch und orthografisch korrekt.</p>
         </div>
-      \`;
+      `;
       return;
     }
 
     // Store corrected text for apply function
     window.lastCorrectedText = data.correctedText;
 
-    resultsDiv.innerHTML = \`
+    resultsDiv.innerHTML = `
       <div class="spell-check-header">
         <h3>Rechtschreib- und Grammatikpruefung</h3>
         <div class="spell-check-stats">
@@ -2190,7 +2190,7 @@ async function checkSpelling() {
         </div>
       </div>
       <div class="correction-list">
-        \${data.corrections.map(c => \`
+        \${data.corrections.map(c => `
           <div class="correction-item \${c.rule.type}">
             <div>
               <span class="correction-original">\${data.originalText.substring(c.offset, c.offset + c.length)}</span>
@@ -2200,12 +2200,12 @@ async function checkSpelling() {
             </div>
             <div class="correction-message">\${c.message}</div>
           </div>
-        \`).join('')}
+        `).join('')}
       </div>
       <div class="spell-check-actions">
         <button class="apply-corrections-btn" onclick="applyAllCorrections()">Alle Korrekturen uebernehmen</button>
       </div>
-    \`;
+    `;
   } catch (error) {
     console.error('Spell check error:', error);
     resultsDiv.innerHTML = '<p class="error-text">Fehler bei der Rechtschreibpruefung.</p>';
