@@ -33,7 +33,17 @@
     "single": "Texte Unique",
     "batch": "Analyse par Lot",
     "document": "Document",
-    "predictive": "🔮 Prédictif"
+    "predictive": "Prédictif",
+    "footprint": "Empreinte",
+    "coach": "Coach",
+    "policy": "Politique",
+    "alerts": "Alertes",
+    "templates": "Modèles"
+  },
+  "cases": {
+    "viewExamples": "Voir Exemples",
+    "title": "Études de Cas",
+    "close": "Fermer"
   },
   "predictive": {
     "title": "🔮 Vie Privée Prédictive",

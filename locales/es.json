@@ -33,7 +33,17 @@
     "single": "Texto Único",
     "batch": "Análisis por Lotes",
     "document": "Documento",
-    "predictive": "🔮 Predictivo"
+    "predictive": "Predictivo",
+    "footprint": "Huella Digital",
+    "coach": "Coach",
+    "policy": "Política",
+    "alerts": "Alertas",
+    "templates": "Plantillas"
+  },
+  "cases": {
+    "viewExamples": "Ver Ejemplos",
+    "title": "Casos de Estudio",
+    "close": "Cerrar"
   },
   "predictive": {
     "title": "🔮 Privacidad Predictiva",

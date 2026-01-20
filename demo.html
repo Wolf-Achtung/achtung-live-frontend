@@ -114,7 +114,7 @@
 
  <!-- Single Text Tab -->
  <div id="singleTab" class="tab-content active" role="tabpanel" aria-labelledby="single-tab">
- <h2 id="formTitle">Jetzt live testen!</h2>
+ <h2 id="formTitle" data-i18n="form.title">Jetzt live testen!</h2>
  <p class="simple-lang form-description" id="formDescSimple" style="display:none;">
  Schreibe deinen Text unten. Wir sagen dir, ob private Daten drin sind.
  </p>
@@ -132,13 +132,13 @@
 
  <!-- Kontext-Auswahl -->
  <div class="context-selector">
- <label for="contextSelect">Wo soll dieser Text verwendet werden?</label>
+ <label for="contextSelect" data-i18n="form.contextLabel">Wo soll dieser Text verwendet werden?</label>
  <select id="contextSelect" aria-describedby="contextHelp">
- <option value="private">Privater Chat (1:1)</option>
- <option value="whatsapp">WhatsApp Gruppe</option>
- <option value="email">E-Mail</option>
- <option value="linkedin">LinkedIn / Beruflich</option>
- <option value="public">Öffentlicher Post (Social Media)</option>
+ <option value="private" data-i18n="form.contexts.private">Privater Chat (1:1)</option>
+ <option value="whatsapp" data-i18n="form.contexts.whatsapp">WhatsApp Gruppe</option>
+ <option value="email" data-i18n="form.contexts.email">E-Mail</option>
+ <option value="linkedin" data-i18n="form.contexts.linkedin">LinkedIn / Beruflich</option>
+ <option value="public" data-i18n="form.contexts.public">Öffentlicher Post (Social Media)</option>
  </select>
  <span id="contextHelp" class="simple-lang context-help" style="display:none;">
  Wähle aus, wo du den Text posten möchtest. Das hilft uns, besser zu prüfen.
@@ -150,7 +150,7 @@
  <label for="privacyPolicyDemo">Ich akzeptiere die <a href="#" onclick="openModal('datenschutzModal'); return false;">Datenschutzerklärung</a>.</label>
  <span id="privacyHelp" class="simple-lang" style="display:none;">Du musst das ankreuzen, damit wir deinen Text prüfen dürfen.</span>
  </div>
- <button type="submit" aria-label="Text auf sensible Daten prüfen">Text analysieren</button>
+ <button type="submit" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
  </form>
 
  <!-- Risk Dashboard -->
@@ -159,8 +159,8 @@
 
  <!-- Batch Analysis Tab -->
  <div id="batchTab" class="tab-content" role="tabpanel" aria-labelledby="batch-tab">
- <h2>Batch-Analyse</h2>
- <p class="batch-description">Analysiere mehrere Texte gleichzeitig (max. 20 Texte)</p>
+ <h2 data-i18n="batch.title">Batch-Analyse</h2>
+ <p class="batch-description" data-i18n="batch.description">Analysiere mehrere Texte gleichzeitig (max. 20 Texte)</p>
  <p class="simple-lang batch-description-simple" style="display:none;">Prüfe viele Texte auf einmal. Maximal 20 Stück.</p>
 
  <form id="batchForm">
@@ -1064,7 +1064,7 @@
  <option value="social_media_bio">Social Media Bio</option>
  <option value="job_application">Bewerbung</option>
  <option value="online_form">Online-Formular</option>
- <option value="email">E-Mail</option>
+ <option value="email" data-i18n="form.contexts.email">E-Mail</option>
  </select>
  </div>
  <button type="submit" class="analyze-btn">Analysieren</button>
@@ -1075,7 +1075,7 @@
  </div>
 
  <div style="text-align:center; margin-top:40px;">
- <button onclick="openModal('caseModal')">Fallbeispiele ansehen</button>
+ <button onclick="openModal('caseModal')" data-i18n="cases.viewExamples">Fallbeispiele ansehen</button>
  </div>
  </main>
 
