@@ -2184,21 +2184,21 @@ async function checkSpelling() {
       <div class="spell-check-header">
         <h3>Rechtschreib- und Grammatikpruefung</h3>
         <div class="spell-check-stats">
-          <span class="spell-stat"><span class="count">\${data.stats.spelling}</span> Rechtschreibung</span>
-          <span class="spell-stat"><span class="count">\${data.stats.grammar}</span> Grammatik</span>
-          <span class="spell-stat"><span class="count">\${data.stats.punctuation}</span> Zeichensetzung</span>
+          <span class="spell-stat"><span class="count">${data.stats.spelling}</span> Rechtschreibung</span>
+          <span class="spell-stat"><span class="count">${data.stats.grammar}</span> Grammatik</span>
+          <span class="spell-stat"><span class="count">${data.stats.punctuation}</span> Zeichensetzung</span>
         </div>
       </div>
       <div class="correction-list">
-        \${data.corrections.map(c => `
-          <div class="correction-item \${c.rule.type}">
+        ${data.corrections.map(c => `
+          <div class="correction-item ${c.rule.type}">
             <div>
-              <span class="correction-original">\${data.originalText.substring(c.offset, c.offset + c.length)}</span>
+              <span class="correction-original">${data.originalText.substring(c.offset, c.offset + c.length)}</span>
               <span class="correction-arrow">→</span>
-              <span class="correction-suggestion" onclick="applySingleCorrection('\${c.offset}', '\${c.length}', '\${c.replacements[0] || ''}')">\${c.replacements[0] || '(entfernen)'}</span>
-              <span class="correction-type \${c.rule.type}">\${getTypeLabel(c.rule.type)}</span>
+              <span class="correction-suggestion" onclick="applySingleCorrection('${c.offset}', '${c.length}', '${c.replacements[0] || ''}')">${c.replacements[0] || '(entfernen)'}</span>
+              <span class="correction-type ${c.rule.type}">${getTypeLabel(c.rule.type)}</span>
             </div>
-            <div class="correction-message">\${c.message}</div>
+            <div class="correction-message">${c.message}</div>
           </div>
         `).join('')}
       </div>
