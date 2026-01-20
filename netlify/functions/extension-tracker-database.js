@@ -199,9 +199,9 @@ const TRACKER_DATABASE = {
     }
   },
   riskLevels: {
-    low: { color: '#4caf50', label: 'Niedriges Risiko', description: 'Technisch notwendig' },
-    medium: { color: '#ff9800', label: 'Mittleres Risiko', description: 'Sammelt Nutzungsdaten' },
-    high: { color: '#f44336', label: 'Hohes Risiko', description: 'Umfassendes Tracking, Profilbildung' }
+    low: { color: '#800000', label: 'Niedriges Risiko', description: 'Technisch notwendig' },
+    medium: { color: '#a60000', label: 'Mittleres Risiko', description: 'Sammelt Nutzungsdaten' },
+    high: { color: '#800000', label: 'Hohes Risiko', description: 'Umfassendes Tracking, Profilbildung' }
   },
   version: '1.0',
   totalTrackers: 20,

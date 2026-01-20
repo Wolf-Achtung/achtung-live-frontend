@@ -71,6 +71,13 @@ input:focus {
   outline: none;
 }
 
+/* Global checkbox styling */
+input[type="checkbox"] {
+  accent-color: #800000;
+  width: 18px;
+  height: 18px;
+}
+
 /* Buttons */
 
 .button-link {
@@ -452,7 +459,7 @@ input[type="submit"]:hover {
 .privacy-score-section {
   padding: 30px;
   text-align: center;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #f8f9fa;
   border-bottom: 1px solid #dee2e6;
 }
 
@@ -479,17 +486,17 @@ input[type="submit"]:hover {
 }
 
 .privacy-score-circle.safe {
-  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  background: #ffebee;
   border: 4px solid #800000;
 }
 
 .privacy-score-circle.warning {
-  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  background: #ffebee;
   border: 4px solid #a60000;
 }
 
 .privacy-score-circle.danger {
-  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  background: #ffebee;
   border: 4px solid #dc3545;
 }
 
@@ -741,7 +748,7 @@ input[type="submit"]:hover {
 /* Smart Rewrite Section */
 .rewrite-section {
   padding: 20px;
-  background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
+  background: #ffebee;
 }
 
 .rewrite-header {
@@ -1245,7 +1252,7 @@ input[type="submit"]:hover {
   display: flex;
   justify-content: space-around;
   padding: 25px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #f8f9fa;
   border-bottom: 1px solid #dee2e6;
 }
 
@@ -1439,7 +1446,7 @@ input[type="submit"]:hover {
   justify-content: center;
   gap: 8px;
   padding: 14px 20px;
-  background: linear-gradient(135deg, #800000 0%, #a00000 100%);
+  background: #800000;
   color: white;
   border: none;
   border-radius: 8px;
@@ -1580,7 +1587,7 @@ input[type="submit"]:hover {
   justify-content: center;
   gap: 15px;
   padding: 8px 15px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #f8f9fa;
   border-bottom: 1px solid #dee2e6;
   z-index: 1001;
   flex-wrap: wrap;
@@ -1802,7 +1809,7 @@ body.simple-language .simple-lang {
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: linear-gradient(135deg, #e7f5ff 0%, #d0ebff 100%);
+  background: #ffebee;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
@@ -1835,7 +1842,7 @@ body.simple-language .simple-lang {
    ======================================== */
 
 .live-preview {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: 8px;
   padding: 15px;
@@ -2074,7 +2081,7 @@ body.simple-language .simple-lang {
   align-items: center;
   gap: 12px;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #800000 0%, #a00000 100%);
+  background: #800000;
   color: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
@@ -2551,7 +2558,7 @@ body.simple-language .simple-lang {
 
 /* Summary Card */
 .predictive-summary-card {
-  background: linear-gradient(135deg, #800000 0%, #764ba2 100%);
+  background: #800000;
   border-radius: 16px;
   padding: 25px;
   color: white;
@@ -2958,7 +2965,7 @@ body.simple-language .simple-lang {
   left: 5%;
   right: 5%;
   height: 4px;
-  background: linear-gradient(90deg, #800000, #a60000, #f44336, #9c27b0);
+  background: #800000;
   border-radius: 2px;
 }
 
@@ -3160,7 +3167,7 @@ body.simple-language .simple-lang {
 
 .confidence-fill {
   height: 100%;
-  background: linear-gradient(90deg, #800000, #a60000);
+  background: #800000;
   border-radius: 4px;
   transition: width 0.5s ease;
 }
@@ -3210,7 +3217,7 @@ body.simple-language .simple-lang {
   justify-content: center;
   gap: 10px;
   padding: 20px;
-  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+  background: #800000;
   border-radius: 12px;
   color: white;
   font-size: 16px;
@@ -3274,7 +3281,7 @@ body.simple-language .simple-lang {
     right: auto;
     width: 4px;
     height: auto;
-    background: linear-gradient(180deg, #800000, #a60000, #f44336, #9c27b0);
+    background: #800000;
   }
 
   .timeline-point {
@@ -3441,7 +3448,7 @@ body.simple-language .simple-lang {
 
 /* Footprint Results */
 .footprint-summary-card {
-  background: linear-gradient(135deg, #800000, #a00000);
+  background: #800000;
   color: white;
   padding: 25px;
   border-radius: 15px;
@@ -3898,7 +3905,7 @@ body.simple-language .simple-lang {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #800000, #8bc34a);
+  background: #800000;
   border-radius: 5px;
   transition: width 0.5s ease;
 }
@@ -3911,7 +3918,7 @@ body.simple-language .simple-lang {
 .bulk-optout-btn {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #800000, #a00000);
+  background: #800000;
   color: white;
   border: none;
   border-radius: 8px;
@@ -4002,7 +4009,7 @@ body.simple-language .simple-lang {
   align-items: center;
   gap: 20px;
   padding: 20px;
-  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  background: #ffebee;
   border-radius: 12px;
   margin-top: 25px;
 }
@@ -4104,7 +4111,7 @@ body.simple-language .simple-lang {
   align-items: center;
   gap: 12px;
   padding: 15px 20px;
-  background: linear-gradient(135deg, #800000, #a00000);
+  background: #800000;
   color: white;
 }
 
@@ -4204,7 +4211,7 @@ body.simple-language .simple-lang {
 }
 
 .coach-message.coach .message-avatar {
-  background: linear-gradient(135deg, #800000, #a00000);
+  background: #800000;
 }
 
 .message-content {
@@ -4220,7 +4227,7 @@ body.simple-language .simple-lang {
 }
 
 .coach-message.user .message-bubble {
-  background: linear-gradient(135deg, #800000, #a00000);
+  background: #800000;
   color: white;
 }
 
@@ -4358,7 +4365,7 @@ body.simple-language .simple-lang {
 .coach-send-btn {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #800000, #a00000);
+  background: #800000;
   color: white;
   border: none;
   border-radius: 50%;
@@ -4482,7 +4489,7 @@ body.simple-language .simple-lang {
   display: flex;
   gap: 10px;
   padding: 12px;
-  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  background: #ffebee;
   border-radius: 8px;
 }
 
@@ -4750,7 +4757,7 @@ body.simple-language .simple-lang {
 }
 
 .topic-introduction {
-  background: linear-gradient(135deg, #ffebee, #f3e5f5);
+  background: #ffebee;
   padding: 16px;
   border-radius: 12px;
   margin-bottom: 20px;
@@ -4898,7 +4905,7 @@ body.simple-language .simple-lang {
 
 .topic-ask-btn {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #800000, #800000);
+  background: #800000;
   color: white;
   border: none;
   border-radius: 25px;
@@ -5103,7 +5110,7 @@ body.simple-language .simple-lang {
 }
 
 .policy-input-tab.active {
-  background: linear-gradient(135deg, #800000, #764ba2);
+  background: #800000;
   color: white;
 }
 
@@ -5144,7 +5151,7 @@ body.simple-language .simple-lang {
 
 .analyze-btn {
   padding: 14px 24px;
-  background: linear-gradient(135deg, #800000, #764ba2);
+  background: #800000;
   color: white;
   border: none;
   font-weight: 600;
@@ -5239,27 +5246,27 @@ body.simple-language .simple-lang {
 
 .known-service-card.grade-a {
   border-color: #800000;
-  background: linear-gradient(to bottom, rgba(76, 175, 80, 0.05), rgba(76, 175, 80, 0.02));
+  background: #ffebee);
 }
 
 .known-service-card.grade-b {
   border-color: #8bc34a;
-  background: linear-gradient(to bottom, rgba(139, 195, 74, 0.05), rgba(139, 195, 74, 0.02));
+  background: #ffebee);
 }
 
 .known-service-card.grade-c {
   border-color: #a60000;
-  background: linear-gradient(to bottom, rgba(255, 152, 0, 0.05), rgba(255, 152, 0, 0.02));
+  background: #ffebee);
 }
 
 .known-service-card.grade-d {
   border-color: #f44336;
-  background: linear-gradient(to bottom, rgba(244, 67, 54, 0.05), rgba(244, 67, 54, 0.02));
+  background: #ffebee);
 }
 
 .known-service-card.grade-f {
   border-color: #9c27b0;
-  background: linear-gradient(to bottom, rgba(156, 39, 176, 0.05), rgba(156, 39, 176, 0.02));
+  background: #ffebee);
 }
 
 .known-service-card.highlighted {
@@ -5407,7 +5414,7 @@ body.simple-language .simple-lang {
 
 /* TLDR Section */
 .policy-tldr {
-  background: linear-gradient(135deg, #f8f9ff, #fff5f8);
+  background: #f8f9fa;
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
@@ -5752,7 +5759,7 @@ body.simple-language .simple-lang {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: linear-gradient(135deg, #ffebee, #f1f8e9);
+  background: #ffebee;
   padding: 20px;
   border-radius: 12px;
   margin-top: 16px;
@@ -5866,7 +5873,7 @@ body.simple-language .simple-lang {
 }
 
 .subscribe-card {
-  background: linear-gradient(135deg, #800000, #764ba2);
+  background: #800000;
   color: white;
   padding: 32px;
   border-radius: 16px;
@@ -6981,7 +6988,7 @@ body.simple-language .simple-lang {
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #800000, #764ba2);
+  background: #800000;
   color: white;
   border: none;
   border-radius: 10px;
