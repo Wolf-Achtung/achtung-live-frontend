@@ -411,6 +411,69 @@ input[type="submit"]:hover {
   }
 }
 
+/* Experten-Toggle Bereich */
+.expert-toggle-section {
+  text-align: center;
+  margin: 20px auto 10px;
+  max-width: 700px;
+}
+
+.expert-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 2px solid #ccc;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 1rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.expert-toggle-btn:hover {
+  border-color: #800000;
+  color: #800000;
+}
+
+.expert-toggle-btn[aria-expanded="true"] {
+  border-color: #800000;
+  color: #800000;
+  background: #fdf5f5;
+}
+
+.expert-toggle-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.expert-toggle-btn[aria-expanded="true"] .expert-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.expert-toggle-hint {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* Aufklappbarer Experten-Inhalt */
+.expert-content {
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Link-Button Liste */
 .link-button-list {
   display: flex;
