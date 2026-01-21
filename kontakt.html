@@ -64,15 +64,15 @@
 
     .category-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       margin-bottom: 25px;
     }
 
     .category-card {
-      padding: 15px;
+      padding: 14px 10px;
       border: 2px solid #e0e0e0;
-      border-radius: 10px;
+      border-radius: 6px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
@@ -81,7 +81,7 @@
 
     .category-card:hover {
       border-color: #800000;
-      background: #fdf5f5;
+      color: #800000;
     }
 
     .category-card.selected {
@@ -90,15 +90,15 @@
       color: #fff;
     }
 
-    .category-card .icon {
-      font-size: 1.5rem;
-      display: block;
-      margin-bottom: 5px;
+    .category-card .label {
+      font-size: 0.95rem;
+      font-weight: 500;
     }
 
-    .category-card .label {
-      font-size: 0.9rem;
-      font-weight: 500;
+    @media (max-width: 500px) {
+      .category-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     .submit-btn {
@@ -183,27 +183,21 @@
       <label>Worum geht es?</label>
       <div class="category-cards">
         <div class="category-card" data-value="frage" onclick="selectCategory(this)">
-          <span class="icon">❓</span>
           <span class="label">Frage</span>
         </div>
         <div class="category-card" data-value="feedback" onclick="selectCategory(this)">
-          <span class="icon">💬</span>
           <span class="label">Feedback</span>
         </div>
         <div class="category-card" data-value="verbesserung" onclick="selectCategory(this)">
-          <span class="icon">💡</span>
           <span class="label">Idee / Vorschlag</span>
         </div>
         <div class="category-card" data-value="fehler" onclick="selectCategory(this)">
-          <span class="icon">🐛</span>
           <span class="label">Fehler melden</span>
         </div>
         <div class="category-card" data-value="datenschutz" onclick="selectCategory(this)">
-          <span class="icon">🔒</span>
           <span class="label">Datenschutz</span>
         </div>
         <div class="category-card" data-value="sonstiges" onclick="selectCategory(this)">
-          <span class="icon">📝</span>
           <span class="label">Sonstiges</span>
         </div>
       </div>
@@ -255,9 +249,9 @@
 <div id="dankeModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('dankeModal')">&times;</span>
-    <h3>Danke für deine Nachricht! 🎉</h3>
+    <h3>Danke für deine Nachricht!</h3>
     <p>Wir haben deine Anfrage erhalten und melden uns so schnell wie möglich bei dir.</p>
-    <p style="margin-top: 15px;"><a href="index.html" style="color: #800000;">← Zurück zur Startseite</a></p>
+    <p style="margin-top: 15px;"><a href="index.html" style="color: #800000;">Zurück zur Startseite</a></p>
   </div>
 </div>
 
