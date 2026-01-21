@@ -99,9 +99,17 @@
    </div>
  </div>
 
+ <!-- Experten-Bereich Toggle -->
+ <div class="expert-toggle-section">
+   <button class="expert-toggle-btn" id="expertToggle" aria-expanded="false" aria-controls="expertContent">
+     <span class="expert-toggle-text">Ich weiß, was ich prüfen will</span>
+     <span class="expert-toggle-arrow">▼</span>
+   </button>
+   <p class="expert-toggle-hint">Direkt zur Text-Analyse ohne Assistent</p>
+ </div>
 
- <!-- Geschützter Inhalt -->
- <main class="main-content protected-content" role="main">
+ <!-- Geschützter Inhalt (aufklappbar) -->
+ <main class="main-content protected-content expert-content" id="expertContent" role="main" style="display: none;">
  <!-- API Status Indicator -->
  <!-- API Status hidden from public users -->
 <div id="apiStatus" class="api-status" role="status" aria-live="polite" style="display:none;"></div>
@@ -1216,6 +1224,41 @@
  <script src="auth.js"></script>
 
  <script>
+ // ========================================
+ // Experten-Bereich Toggle
+ // ========================================
+ document.addEventListener('DOMContentLoaded', function() {
+   const expertToggle = document.getElementById('expertToggle');
+   const expertContent = document.getElementById('expertContent');
+
+   if (expertToggle && expertContent) {
+     expertToggle.addEventListener('click', function() {
+       const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+       if (isExpanded) {
+         // Zuklappen
+         expertContent.style.display = 'none';
+         this.setAttribute('aria-expanded', 'false');
+       } else {
+         // Aufklappen
+         expertContent.style.display = 'block';
+         this.setAttribute('aria-expanded', 'true');
+         // Smooth scroll zum Inhalt
+         setTimeout(() => {
+           expertContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+         }, 100);
+       }
+     });
+
+     // URL-Parameter prüfen: ?expert=1 öffnet direkt
+     const urlParams = new URLSearchParams(window.location.search);
+     if (urlParams.get('expert') === '1') {
+       expertContent.style.display = 'block';
+       expertToggle.setAttribute('aria-expanded', 'true');
+     }
+   }
+ });
+
  // ========================================
  // API Konfiguration
  // ========================================
