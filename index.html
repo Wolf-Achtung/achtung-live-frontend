@@ -89,23 +89,22 @@
 
  <!-- Schutz-Assistent Banner für unerfahrene Nutzer -->
  <div class="assistent-banner" role="complementary" aria-label="Hilfe-Assistent">
-   <div class="assistent-banner-content">
-     <span class="assistent-banner-icon">🛡️</span>
-     <div class="assistent-banner-text">
-       <strong>Unsicher, wo du anfangen sollst?</strong>
-       <span>Unser Schutz-Assistent führt dich Schritt für Schritt.</span>
-     </div>
-     <a href="assistent.html" class="assistent-banner-btn">Hilfe starten →</a>
-   </div>
+ <div class="assistent-banner-content">
+ <div class="assistent-banner-text">
+ <strong>Unsicher, wo du anfangen sollst?</strong>
+ <span>Unser Schutz-Assistent führt dich Schritt für Schritt.</span>
+ </div>
+ <a href="assistent.html" class="assistent-banner-btn">Hilfe starten</a>
+ </div>
  </div>
 
  <!-- Experten-Bereich Toggle -->
  <div class="expert-toggle-section">
-   <button class="expert-toggle-btn" id="expertToggle" aria-expanded="false" aria-controls="expertContent">
-     <span class="expert-toggle-text">Ich weiß, was ich prüfen will</span>
-     <span class="expert-toggle-arrow">▼</span>
-   </button>
-   <p class="expert-toggle-hint">Direkt zur Text-Analyse ohne Assistent</p>
+ <button class="expert-toggle-btn" id="expertToggle" aria-expanded="false" aria-controls="expertContent">
+ <span class="expert-toggle-text">Ich weiß, was ich prüfen will</span>
+ <span class="expert-toggle-arrow"></span>
+ </button>
+ <p class="expert-toggle-hint">Direkt zur Text-Analyse ohne Assistent</p>
  </div>
 
  <!-- Geschützter Inhalt (aufklappbar) -->
@@ -538,7 +537,7 @@
  </div>
 
  <button type="button" class="toggle-advanced-btn" onclick="toggleAdvancedInputs()">
- <span class="toggle-icon">▼</span>
+ <span class="toggle-icon"></span>
  <span data-i18n="footprint.moreOptions">Weitere Optionen</span>
  </button>
 
@@ -614,7 +613,7 @@
  <div class="section-header collapsible" onclick="toggleSection('breachResultsContent')">
  <h3 data-i18n="footprint.breachesTitle">Datenlecks</h3>
  <span class="section-count" id="breachCount">0</span>
- <span class="section-toggle">▼</span>
+ <span class="section-toggle"></span>
  </div>
  <div class="section-content" id="breachResultsContent">
  <div class="breach-list" id="breachList"></div>
@@ -626,7 +625,7 @@
  <div class="section-header collapsible" onclick="toggleSection('socialResultsContent')">
  <h3 data-i18n="footprint.socialTitle">Social Media Profile</h3>
  <span class="section-count" id="socialCount">0</span>
- <span class="section-toggle">▼</span>
+ <span class="section-toggle"></span>
  </div>
  <div class="section-content" id="socialResultsContent">
  <div class="social-profiles-list" id="socialProfilesList"></div>
@@ -638,7 +637,7 @@
  <div class="section-header collapsible" onclick="toggleSection('databrokerResultsContent')">
  <h3 data-i18n="footprint.databrokersTitle">Data Broker</h3>
  <span class="section-count" id="databrokerCount">0</span>
- <span class="section-toggle">▼</span>
+ <span class="section-toggle"></span>
  </div>
  <div class="section-content" id="databrokerResultsContent">
  <div class="databroker-list" id="databrokerList"></div>
@@ -867,7 +866,7 @@
  <div class="policy-section" id="policyBreakdown">
  <div class="section-header collapsible" onclick="togglePolicySection('breakdownContent')">
  <h4>Score-Aufschlüsselung</h4>
- <span class="section-toggle">▼</span>
+ <span class="section-toggle"></span>
  </div>
  <div class="section-content" id="breakdownContent">
  <div class="breakdown-grid" id="breakdownGrid"></div>
@@ -878,7 +877,7 @@
  <div class="policy-section" id="policyDataCollection">
  <div class="section-header collapsible" onclick="togglePolicySection('dataCollectionContent')">
  <h4>Gesammelte Daten</h4>
- <span class="section-toggle">▼</span>
+ <span class="section-toggle"></span>
  </div>
  <div class="section-content" id="dataCollectionContent" style="display:none;">
  <div class="data-collection-list" id="dataCollectionList"></div>
@@ -890,7 +889,7 @@
  <div class="section-header collapsible" onclick="togglePolicySection('thirdPartiesContent')">
  <h4>Datenweitergabe</h4>
  <span class="section-count" id="thirdPartyCount">0</span>
- <span class="section-toggle">▼</span>
+ <span class="section-toggle"></span>
  </div>
  <div class="section-content" id="thirdPartiesContent" style="display:none;">
  <div class="third-parties-list" id="thirdPartiesList"></div>
@@ -1036,7 +1035,7 @@
  <!-- Templates Browser -->
  <div class="templates-browser" id="templatesBrowser" style="display:none;">
  <div class="browser-header">
- <button class="back-btn" onclick="showTemplateCategories()">← Zurück</button>
+ <button class="back-btn" onclick="showTemplateCategories()">Zurück</button>
  <h3 id="templatesCategoryTitle">Kategorie</h3>
  </div>
  <div class="templates-list" id="templatesList"></div>
@@ -1045,7 +1044,7 @@
  <!-- Template Detail -->
  <div class="template-detail" id="templateDetail" style="display:none;">
  <div class="detail-header">
- <button class="back-btn" onclick="backToTemplatesList()">← Zurück</button>
+ <button class="back-btn" onclick="backToTemplatesList()">Zurück</button>
  <h3 id="templateDetailTitle">Template</h3>
  <div class="privacy-badge" id="templatePrivacyBadge">
  <span class="badge-score">--</span>
@@ -1205,12 +1204,12 @@
  </div>
 
  <nav class="footer-nav">
-    <a href="info.html">Über uns</a> •
-    <a href="gefahr.html">Risiken</a> •
-    <a href="datenschutz.html">Datenschutz</a> •
-    <a href="impressum.html">Impressum</a> •
-    <a href="kontakt.html">Kontakt</a>
-  </nav>
+ <a href="info.html">Über uns</a> •
+ <a href="gefahr.html">Risiken</a> •
+ <a href="datenschutz.html">Datenschutz</a> •
+ <a href="impressum.html">Impressum</a> •
+ <a href="kontakt.html">Kontakt</a>
+ </nav>
 
  <div class="copyright">
  © 2026 achtung.live
@@ -1225,35 +1224,35 @@
  // Experten-Bereich Toggle
  // ========================================
  document.addEventListener('DOMContentLoaded', function() {
-   const expertToggle = document.getElementById('expertToggle');
-   const expertContent = document.getElementById('expertContent');
+ const expertToggle = document.getElementById('expertToggle');
+ const expertContent = document.getElementById('expertContent');
 
-   if (expertToggle && expertContent) {
-     expertToggle.addEventListener('click', function() {
-       const isExpanded = this.getAttribute('aria-expanded') === 'true';
+ if (expertToggle && expertContent) {
+ expertToggle.addEventListener('click', function() {
+ const isExpanded = this.getAttribute('aria-expanded') === 'true';
 
-       if (isExpanded) {
-         // Zuklappen
-         expertContent.style.display = 'none';
-         this.setAttribute('aria-expanded', 'false');
-       } else {
-         // Aufklappen
-         expertContent.style.display = 'block';
-         this.setAttribute('aria-expanded', 'true');
-         // Smooth scroll zum Inhalt
-         setTimeout(() => {
-           expertContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-         }, 100);
-       }
-     });
+ if (isExpanded) {
+ // Zuklappen
+ expertContent.style.display = 'none';
+ this.setAttribute('aria-expanded', 'false');
+ } else {
+ // Aufklappen
+ expertContent.style.display = 'block';
+ this.setAttribute('aria-expanded', 'true');
+ // Smooth scroll zum Inhalt
+ setTimeout(() => {
+ expertContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+ }, 100);
+ }
+ });
 
-     // URL-Parameter prüfen: ?expert=1 öffnet direkt
-     const urlParams = new URLSearchParams(window.location.search);
-     if (urlParams.get('expert') === '1') {
-       expertContent.style.display = 'block';
-       expertToggle.setAttribute('aria-expanded', 'true');
-     }
-   }
+ // URL-Parameter prüfen: ?expert=1 öffnet direkt
+ const urlParams = new URLSearchParams(window.location.search);
+ if (urlParams.get('expert') === '1') {
+ expertContent.style.display = 'block';
+ expertToggle.setAttribute('aria-expanded', 'true');
+ }
+ }
  });
 
  // ========================================
@@ -1284,7 +1283,7 @@ const API_SPELL_CHECK_URL = `${API_BASE}/spell-check`;
  // Gesundheit
  health_insurance: { label: "Krankenversicherung", icon: "", group: "health" },
  medical_record: { label: "Medizinische Daten", icon: "", group: "health" },
- health: { label: "Gesundheitsdaten", icon: "🩺", group: "health" },
+ health: { label: "Gesundheitsdaten", icon: "", group: "health" },
 
  // Digital
  ip_address: { label: "IP-Adresse", icon: "", group: "digital" },
@@ -1341,11 +1340,11 @@ const API_SPELL_CHECK_URL = `${API_BASE}/spell-check`;
  function openModal(id) {
  // Update privacy policy iframe based on current language
  if (id === 'datenschutzModal') {
-   const iframe = document.querySelector('#datenschutzModal iframe');
-   if (iframe) {
-     const langSuffix = currentLang === 'de' ? '' : '-' + currentLang;
-     iframe.src = 'datenschutz-popup2' + langSuffix + '.html';
-   }
+ const iframe = document.querySelector('#datenschutzModal iframe');
+ if (iframe) {
+ const langSuffix = currentLang === 'de' ? '' : '-' + currentLang;
+ iframe.src = 'datenschutz-popup2' + langSuffix + '.html';
+ }
  }
  document.getElementById(id).style.display = "block";
  }
@@ -1629,7 +1628,7 @@ const API_SPELL_CHECK_URL = `${API_BASE}/spell-check`;
  ${rewrite.changes && rewrite.changes.length > 0 ? `
  <div class="rewrite-changes">
  ${rewrite.changes.map(change => {
- const changeText = typeof change === 'string' ? change : `${change.original} → ${change.replacement}`;
+ const changeText = typeof change === 'string' ? change : `${change.original} ${change.replacement}`;
  return `<span class="rewrite-change-tag">${escapeHtml(changeText)}</span>`;
  }).join('')}
  </div>
@@ -1840,7 +1839,7 @@ const API_SPELL_CHECK_URL = `${API_BASE}/spell-check`;
  // Show changes
  if (data.changes && data.changes.length > 0) {
  changesDiv.innerHTML = data.changes.map(change => {
- const changeText = typeof change === 'string' ? change : `${change.original} → ${change.replacement}`;
+ const changeText = typeof change === 'string' ? change : `${change.original} ${change.replacement}`;
  return `<span class="rewrite-change-tag">${escapeHtml(changeText)}</span>`;
  }).join('');
  } else {
@@ -2195,102 +2194,102 @@ const API_SPELL_CHECK_URL = `${API_BASE}/spell-check`;
 // ========================================
 
 async function checkSpelling() {
-  const text = document.getElementById('demoText').value;
-  const resultsDiv = document.getElementById('spellCheckResults');
-  
-  if (!text || text.trim().length < 3) {
-    alert('Bitte gib mindestens 3 Zeichen ein.');
-    return;
-  }
+ const text = document.getElementById('demoText').value;
+ const resultsDiv = document.getElementById('spellCheckResults');
+ 
+ if (!text || text.trim().length < 3) {
+ alert('Bitte gib mindestens 3 Zeichen ein.');
+ return;
+ }
 
-  resultsDiv.style.display = 'block';
-  resultsDiv.innerHTML = '<p style="text-align:center;">Pruefe Rechtschreibung...</p>';
+ resultsDiv.style.display = 'block';
+ resultsDiv.innerHTML = '<p style="text-align:center;">Pruefe Rechtschreibung...</p>';
 
-  try {
-    const response = await fetch(API_SPELL_CHECK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, language: currentLang || 'de' })
-    });
+ try {
+ const response = await fetch(API_SPELL_CHECK_URL, {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ text, language: currentLang || 'de' })
+ });
 
-    const data = await response.json();
+ const data = await response.json();
 
-    if (!data.success) {
-      resultsDiv.innerHTML = '<p class="error-text">Rechtschreibpruefung nicht verfuegbar.</p>';
-      return;
-    }
+ if (!data.success) {
+ resultsDiv.innerHTML = '<p class="error-text">Rechtschreibpruefung nicht verfuegbar.</p>';
+ return;
+ }
 
-    if (!data.hasErrors) {
-      resultsDiv.innerHTML = `
-        <div class="no-errors">
-          <h4>Keine Fehler gefunden</h4>
-          <p>Dein Text ist grammatikalisch und orthografisch korrekt.</p>
-        </div>
-      `;
-      return;
-    }
+ if (!data.hasErrors) {
+ resultsDiv.innerHTML = `
+ <div class="no-errors">
+ <h4>Keine Fehler gefunden</h4>
+ <p>Dein Text ist grammatikalisch und orthografisch korrekt.</p>
+ </div>
+ `;
+ return;
+ }
 
-    // Store corrected text for apply function
-    window.lastCorrectedText = data.correctedText;
+ // Store corrected text for apply function
+ window.lastCorrectedText = data.correctedText;
 
-    resultsDiv.innerHTML = `
-      <div class="spell-check-header">
-        <h3>Rechtschreib- und Grammatikpruefung</h3>
-        <div class="spell-check-stats">
-          <span class="spell-stat"><span class="count">${data.stats.spelling}</span> Rechtschreibung</span>
-          <span class="spell-stat"><span class="count">${data.stats.grammar}</span> Grammatik</span>
-          <span class="spell-stat"><span class="count">${data.stats.punctuation}</span> Zeichensetzung</span>
-        </div>
-      </div>
-      <div class="correction-list">
-        ${data.corrections.map(c => `
-          <div class="correction-item ${c.rule.type}">
-            <div>
-              <span class="correction-original">${data.originalText.substring(c.offset, c.offset + c.length)}</span>
-              <span class="correction-arrow">→</span>
-              <span class="correction-suggestion" onclick="applySingleCorrection('${c.offset}', '${c.length}', '${c.replacements[0] || ''}')">${c.replacements[0] || '(entfernen)'}</span>
-              <span class="correction-type ${c.rule.type}">${getTypeLabel(c.rule.type)}</span>
-            </div>
-            <div class="correction-message">${c.message}</div>
-          </div>
-        `).join('')}
-      </div>
-      <div class="spell-check-actions">
-        <button class="apply-corrections-btn" onclick="applyAllCorrections()">Alle Korrekturen uebernehmen</button>
-      </div>
-    `;
-  } catch (error) {
-    console.error('Spell check error:', error);
-    resultsDiv.innerHTML = '<p class="error-text">Fehler bei der Rechtschreibpruefung.</p>';
-  }
+ resultsDiv.innerHTML = `
+ <div class="spell-check-header">
+ <h3>Rechtschreib- und Grammatikpruefung</h3>
+ <div class="spell-check-stats">
+ <span class="spell-stat"><span class="count">${data.stats.spelling}</span> Rechtschreibung</span>
+ <span class="spell-stat"><span class="count">${data.stats.grammar}</span> Grammatik</span>
+ <span class="spell-stat"><span class="count">${data.stats.punctuation}</span> Zeichensetzung</span>
+ </div>
+ </div>
+ <div class="correction-list">
+ ${data.corrections.map(c => `
+ <div class="correction-item ${c.rule.type}">
+ <div>
+ <span class="correction-original">${data.originalText.substring(c.offset, c.offset + c.length)}</span>
+ <span class="correction-arrow"></span>
+ <span class="correction-suggestion" onclick="applySingleCorrection('${c.offset}', '${c.length}', '${c.replacements[0] || ''}')">${c.replacements[0] || '(entfernen)'}</span>
+ <span class="correction-type ${c.rule.type}">${getTypeLabel(c.rule.type)}</span>
+ </div>
+ <div class="correction-message">${c.message}</div>
+ </div>
+ `).join('')}
+ </div>
+ <div class="spell-check-actions">
+ <button class="apply-corrections-btn" onclick="applyAllCorrections()">Alle Korrekturen uebernehmen</button>
+ </div>
+ `;
+ } catch (error) {
+ console.error('Spell check error:', error);
+ resultsDiv.innerHTML = '<p class="error-text">Fehler bei der Rechtschreibpruefung.</p>';
+ }
 }
 
 function getTypeLabel(type) {
-  const labels = {
-    'spelling': 'Rechtschreibung',
-    'grammar': 'Grammatik',
-    'punctuation': 'Zeichensetzung',
-    'style': 'Stil',
-    'other': 'Sonstiges'
-  };
-  return labels[type] || type;
+ const labels = {
+ 'spelling': 'Rechtschreibung',
+ 'grammar': 'Grammatik',
+ 'punctuation': 'Zeichensetzung',
+ 'style': 'Stil',
+ 'other': 'Sonstiges'
+ };
+ return labels[type] || type;
 }
 
 function applyAllCorrections() {
-  if (window.lastCorrectedText) {
-    document.getElementById('demoText').value = window.lastCorrectedText;
-    document.getElementById('spellCheckResults').style.display = 'none';
-  }
+ if (window.lastCorrectedText) {
+ document.getElementById('demoText').value = window.lastCorrectedText;
+ document.getElementById('spellCheckResults').style.display = 'none';
+ }
 }
 
 function applySingleCorrection(offset, length, replacement) {
-  const textarea = document.getElementById('demoText');
-  const text = textarea.value;
-  const start = parseInt(offset);
-  const end = start + parseInt(length);
-  textarea.value = text.substring(0, start) + replacement + text.substring(end);
-  // Re-run spell check
-  checkSpelling();
+ const textarea = document.getElementById('demoText');
+ const text = textarea.value;
+ const start = parseInt(offset);
+ const end = start + parseInt(length);
+ textarea.value = text.substring(0, start) + replacement + text.substring(end);
+ // Re-run spell check
+ checkSpelling();
 }
 
  // ========================================
@@ -4064,7 +4063,7 @@ function applySingleCorrection(offset, length, replacement) {
  <div class="permanent-risk-item">
  <span class="perm-icon">${r.icon || ''}</span>
  <span class="perm-type">${r.dataType}</span>
- <span class="perm-risk">→ ${r.risk}</span>
+ <span class="perm-risk"> ${r.risk}</span>
  <span class="perm-desc">${r.description}</span>
  </div>
  `).join('');
@@ -4195,7 +4194,7 @@ function applySingleCorrection(offset, length, replacement) {
  btn.querySelector('.toggle-icon').textContent = '▲';
  } else {
  advanced.style.display = 'none';
- btn.querySelector('.toggle-icon').textContent = '▼';
+ btn.querySelector('.toggle-icon').textContent = '';
  }
  }
 
@@ -4204,7 +4203,7 @@ function applySingleCorrection(offset, length, replacement) {
  const header = section.previousElementSibling;
  if (section.style.display === 'none') {
  section.style.display = 'block';
- header.querySelector('.section-toggle').textContent = '▼';
+ header.querySelector('.section-toggle').textContent = '';
  } else {
  section.style.display = 'none';
  header.querySelector('.section-toggle').textContent = '▶';
@@ -4544,7 +4543,7 @@ function applySingleCorrection(offset, length, replacement) {
  </div>
  ` : ''}
  <div class="profile-link">
- <a href="${profile.url}" target="_blank" rel="noopener">Profil öffnen →</a>
+ <a href="${profile.url}" target="_blank" rel="noopener">Profil öffnen</a>
  </div>
  </div>
  `).join('');
@@ -4570,7 +4569,7 @@ function applySingleCorrection(offset, length, replacement) {
  <span class="difficulty difficulty-${broker.difficulty}">${broker.difficulty}</span>
  <span class="time-estimate">~${broker.optOut.estimatedDays} Tage</span>
  <a href="${broker.optOut.url}" target="_blank" rel="noopener" class="optout-link">
- Opt-out starten →
+ Opt-out starten
  </a>
  </div>
  </div>
@@ -4677,10 +4676,10 @@ Du bist einer von 1000 - sehr gut versteckt!
 
  **Beispiel:**
 "28-jähriger Programmierer in Berlin-Mitte"
-→ Vielleicht nur 5 Personen (k=5) - riskant!
+ Vielleicht nur 5 Personen (k=5) - riskant!
 
 "20-30 Jahre, IT-Branche, Berlin"
-→ Tausende Personen (k=10.000+) - sicher!
+ Tausende Personen (k=10.000+) - sicher!
 
  **Merke:** Je höher k, desto besser dein Datenschutz!`
  },
@@ -6155,7 +6154,7 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
  if (section.style.display === 'none') {
  section.style.display = 'block';
- toggle.textContent = '▼';
+ toggle.textContent = '';
  } else {
  section.style.display = 'none';
  toggle.textContent = '▶';
