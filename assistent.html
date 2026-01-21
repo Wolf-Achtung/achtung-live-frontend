@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Schutz-Assistent | achtung.live – Dein persönlicher Helfer für digitale Sicherheit">
+  <meta name="robots" content="index,follow">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Schutz-Assistent | achtung.live</title>
+  <style>
+    /* Assistent-spezifische Styles */
+    .assistent-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .assistent-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 30px;
+      margin-bottom: 20px;
+    }
+
+    .assistent-avatar {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #800000, #a00000);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 20px;
+      box-shadow: 0 4px 15px rgba(128,0,0,0.3);
+    }
+
+    .assistent-greeting {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .assistent-greeting h2 {
+      color: #333;
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .assistent-greeting p {
+      color: #666;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin: 15px 0;
+    }
+
+    .assistent-question {
+      background: #f8f9fa;
+      border-left: 4px solid #800000;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .assistent-question p {
+      font-size: 1.15rem;
+      color: #333;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .assistent-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .assistent-option {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 20px;
+      background: #fff;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      font-size: 1.05rem;
+      color: #333;
+    }
+
+    .assistent-option:hover {
+      border-color: #800000;
+      background: #fdf5f5;
+      transform: translateX(5px);
+    }
+
+    .assistent-option:focus {
+      outline: 3px solid #800000;
+      outline-offset: 2px;
+    }
+
+    .assistent-option .option-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .assistent-option .option-text {
+      flex: 1;
+    }
+
+    .assistent-option .option-text strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .assistent-option .option-text small {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    /* Lösung/Anleitung */
+    .assistent-solution {
+      display: none;
+    }
+
+    .assistent-solution.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .solution-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .solution-header .icon {
+      font-size: 2.5rem;
+    }
+
+    .solution-header h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.4rem;
+    }
+
+    .solution-steps {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .solution-steps li {
+      position: relative;
+      padding: 20px 20px 20px 70px;
+      margin-bottom: 15px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .solution-steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      background: #800000;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .solution-steps li strong {
+      color: #800000;
+    }
+
+    .solution-tip {
+      background: #fff8e1;
+      border-left: 4px solid #ffc107;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .solution-tip strong {
+      color: #f57c00;
+    }
+
+    .solution-warning {
+      background: #ffebee;
+      border-left: 4px solid #c62828;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .solution-warning strong {
+      color: #c62828;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .btn-primary {
+      background: #800000;
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: #a00000;
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #333;
+      border: 2px solid #ddd;
+      padding: 13px 25px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      border-color: #800000;
+      color: #800000;
+    }
+
+    /* Progress Indicator */
+    .progress-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 25px;
+    }
+
+    .progress-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      transition: all 0.3s;
+    }
+
+    .progress-dot.active {
+      background: #800000;
+      transform: scale(1.2);
+    }
+
+    .progress-dot.completed {
+      background: #4caf50;
+    }
+
+    /* Zurück-Button */
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 10px 0;
+      margin-bottom: 15px;
+    }
+
+    .back-button:hover {
+      color: #800000;
+    }
+
+    /* Feedback */
+    .feedback-section {
+      text-align: center;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-top: 25px;
+    }
+
+    .feedback-section p {
+      margin-bottom: 15px;
+      color: #666;
+    }
+
+    .feedback-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .feedback-btn {
+      padding: 12px 25px;
+      border: 2px solid #e0e0e0;
+      background: #fff;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .feedback-btn:hover {
+      border-color: #800000;
+    }
+
+    .feedback-btn.positive:hover {
+      background: #e8f5e9;
+      border-color: #4caf50;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .assistent-card {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .assistent-option {
+        padding: 15px;
+      }
+
+      .solution-steps li {
+        padding-left: 60px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1><a href="index.html" class="achtung-logo">[achtung.live]</a></h1>
+  <p class="claim">Der Airbag für digitale Kommunikation</p>
+</header>
+
+<main class="assistent-container">
+
+  <!-- Schritt 1: Begrüßung -->
+  <div id="step-welcome" class="assistent-card assistent-step active">
+    <div class="assistent-avatar">🛡️</div>
+
+    <div class="assistent-greeting">
+      <h2>Hallo! Ich bin dein Schutz-Assistent.</h2>
+      <p>Ich helfe dir, deine Daten zu schützen. Ganz einfach, Schritt für Schritt.</p>
+      <div class="trust-badge">
+        ✓ Sicher &nbsp;•&nbsp; ✓ Keine Daten werden gespeichert &nbsp;•&nbsp; ✓ Kostenlos
+      </div>
+    </div>
+
+    <div class="assistent-question">
+      <p>Was möchtest du heute tun?</p>
+    </div>
+
+    <div class="assistent-options">
+      <button class="assistent-option" onclick="showStep('text-check')">
+        <span class="option-icon">🔍</span>
+        <span class="option-text">
+          <strong>Text prüfen bevor ich ihn verschicke</strong>
+          <small>E-Mail, WhatsApp, Social Media Post...</small>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('suspicious')">
+        <span class="option-icon">⚠️</span>
+        <span class="option-text">
+          <strong>Ich habe eine verdächtige Nachricht bekommen</strong>
+          <small>Phishing, Betrug, seltsame Links...</small>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('share-sensitive')">
+        <span class="option-icon">💳</span>
+        <span class="option-text">
+          <strong>Ich muss sensible Daten teilen</strong>
+          <small>IBAN, Passwort, Adresse, Kreditkarte...</small>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('password-help')">
+        <span class="option-icon">🔐</span>
+        <span class="option-text">
+          <strong>Passwörter & Konten absichern</strong>
+          <small>Sichere Passwörter, Zwei-Faktor-Auth...</small>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('unsure')">
+        <span class="option-icon">❓</span>
+        <span class="option-text">
+          <strong>Ich bin unsicher und brauche Hilfe</strong>
+          <small>Lass uns gemeinsam herausfinden, was du brauchst</small>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Schritt: Text prüfen -->
+  <div id="step-text-check" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('welcome')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+      <span class="progress-dot"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">🔍</span>
+      <h3>Text prüfen – So geht's</h3>
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Bevor du eine Nachricht verschickst, prüfe ich sie auf sensible Daten wie Namen, Adressen, Bankdaten oder private Informationen.
+    </p>
+
+    <ol class="solution-steps">
+      <li>Klicke unten auf <strong>"Jetzt Text prüfen"</strong></li>
+      <li>Füge deinen Text in das Eingabefeld ein (kopieren & einfügen)</li>
+      <li>Klicke auf <strong>"Text analysieren"</strong></li>
+      <li>Ich zeige dir, welche sensiblen Daten gefunden wurden</li>
+      <li>Du kannst die Daten <strong>automatisch ersetzen</strong> lassen</li>
+    </ol>
+
+    <div class="solution-tip">
+      <strong>💡 Tipp:</strong> Du kannst auch Bilder oder Screenshots hochladen – ich erkenne auch dort sensible Daten!
+    </div>
+
+    <div class="action-buttons">
+      <a href="index.html" class="btn-primary">🔍 Jetzt Text prüfen</a>
+      <button class="btn-secondary" onclick="showStep('welcome')">Andere Frage stellen</button>
+    </div>
+  </div>
+
+  <!-- Schritt: Verdächtige Nachricht -->
+  <div id="step-suspicious" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('welcome')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+      <span class="progress-dot"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">⚠️</span>
+      <h3>Verdächtige Nachricht erhalten</h3>
+    </div>
+
+    <div class="solution-warning">
+      <strong>⚠️ Wichtig:</strong> Klicke NICHT auf Links in der Nachricht und antworte NICHT darauf!
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Viele Betrüger versuchen, dich mit gefälschten Nachrichten zu täuschen. So erkennst du Betrug:
+    </p>
+
+    <ol class="solution-steps">
+      <li><strong>Absender prüfen:</strong> Ist die E-Mail-Adresse oder Nummer wirklich echt? Betrüger nutzen oft ähnlich aussehende Adressen.</li>
+      <li><strong>Dringlichkeit hinterfragen:</strong> "Sofort handeln!" oder "Ihr Konto wird gesperrt!" sind typische Tricks.</li>
+      <li><strong>Links nicht anklicken:</strong> Fahre mit der Maus über den Link (ohne zu klicken) – zeigt er eine seltsame Adresse?</li>
+      <li><strong>Im Zweifel: Direkt beim Anbieter nachfragen.</strong> Gehe selbst auf die echte Website (nicht über den Link!).</li>
+    </ol>
+
+    <div class="solution-tip">
+      <strong>💡 Tipp:</strong> Du kannst den Text der verdächtigen Nachricht in unser Tool einfügen. Wir zeigen dir, ob darin Phishing-Muster erkannt werden.
+    </div>
+
+    <div class="action-buttons">
+      <a href="index.html" class="btn-primary">🔍 Nachricht analysieren</a>
+      <a href="gefahr.html" class="btn-secondary">📖 Mehr über Gefahren lernen</a>
+    </div>
+  </div>
+
+  <!-- Schritt: Sensible Daten teilen -->
+  <div id="step-share-sensitive" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('welcome')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+      <span class="progress-dot"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">💳</span>
+      <h3>Sensible Daten sicher teilen</h3>
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Welche Daten möchtest du teilen?
+    </p>
+
+    <div class="assistent-options">
+      <button class="assistent-option" onclick="showStep('share-iban')">
+        <span class="option-icon">🏦</span>
+        <span class="option-text">
+          <strong>IBAN / Bankverbindung</strong>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('share-card')">
+        <span class="option-icon">💳</span>
+        <span class="option-text">
+          <strong>Kreditkartendaten</strong>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('share-address')">
+        <span class="option-icon">🏠</span>
+        <span class="option-text">
+          <strong>Adresse / Wohnort</strong>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('share-password')">
+        <span class="option-icon">🔑</span>
+        <span class="option-text">
+          <strong>Zugangsdaten / Passwörter</strong>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('share-health')">
+        <span class="option-icon">🩺</span>
+        <span class="option-text">
+          <strong>Gesundheitsdaten / Arztberichte</strong>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Schritt: IBAN teilen -->
+  <div id="step-share-iban" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('share-sensitive')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">🏦</span>
+      <h3>IBAN sicher teilen</h3>
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Deine IBAN ist weniger geheim als du denkst – aber trotzdem solltest du vorsichtig sein.
+    </p>
+
+    <ol class="solution-steps">
+      <li><strong>Prüfe den Empfänger:</strong> Ist es wirklich die Person/Firma, die du erwartest?</li>
+      <li><strong>Nutze sichere Kanäle:</strong> Am besten per verschlüsselter Nachricht (Signal, WhatsApp) oder telefonisch.</li>
+      <li><strong>Vermeide öffentliche Posts:</strong> Niemals IBAN in Social Media oder öffentlichen Foren posten!</li>
+      <li><strong>Bei Unsicherheit:</strong> Teile die IBAN in zwei Nachrichten auf (erste Hälfte, dann zweite).</li>
+    </ol>
+
+    <div class="solution-tip">
+      <strong>💡 Gut zu wissen:</strong> Allein mit der IBAN kann niemand Geld von deinem Konto abheben. Aber Betrüger könnten versuchen, gefälschte Lastschriften einzureichen – die kannst du aber 8 Wochen lang zurückbuchen lassen.
+    </div>
+
+    <div class="action-buttons">
+      <a href="hilfe-iban.html" class="btn-primary">📖 Ausführliche Anleitung</a>
+      <button class="btn-secondary" onclick="showStep('welcome')">Andere Frage stellen</button>
+    </div>
+  </div>
+
+  <!-- Schritt: Kreditkarte teilen -->
+  <div id="step-share-card" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('share-sensitive')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">💳</span>
+      <h3>Kreditkartendaten – VORSICHT!</h3>
+    </div>
+
+    <div class="solution-warning">
+      <strong>⚠️ Achtung:</strong> Kreditkartendaten solltest du NIEMALS per E-Mail, Chat oder Telefon teilen!
+    </div>
+
+    <ol class="solution-steps">
+      <li><strong>Nur auf sicheren Websites eingeben:</strong> Achte auf das Schloss-Symbol 🔒 in der Adresszeile.</li>
+      <li><strong>Niemals per Nachricht senden:</strong> Nicht per E-Mail, WhatsApp, SMS oder ähnlichem!</li>
+      <li><strong>Bei Telefonanrufen:</strong> Banken fragen NIEMALS am Telefon nach deiner vollständigen Kartennummer!</li>
+      <li><strong>Nutze virtuelle Karten:</strong> Viele Banken bieten Einmal-Kartennummern für Online-Einkäufe.</li>
+    </ol>
+
+    <div class="solution-tip">
+      <strong>💡 Tipp:</strong> Wenn jemand dich auffordert, Kreditkartendaten zu schicken, ist das fast immer Betrug. Echte Unternehmen haben sichere Zahlungsseiten.
+    </div>
+
+    <div class="action-buttons">
+      <a href="hilfe-kreditkarte.html" class="btn-primary">📖 Ausführliche Anleitung</a>
+      <button class="btn-secondary" onclick="showStep('welcome')">Andere Frage stellen</button>
+    </div>
+  </div>
+
+  <!-- Schritt: Adresse teilen -->
+  <div id="step-share-address" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('share-sensitive')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">🏠</span>
+      <h3>Adresse & Standort schützen</h3>
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Deine Adresse verrät, wo du wohnst – das sollte nicht jeder wissen.
+    </p>
+
+    <ol class="solution-steps">
+      <li><strong>Überlege genau:</strong> Muss die Person wirklich meine vollständige Adresse kennen?</li>
+      <li><strong>Alternativen nutzen:</strong> Packstation, Postfach oder Abholstation für Pakete.</li>
+      <li><strong>Niemals öffentlich posten:</strong> Keine Adresse in Social Media, Foren oder öffentlichen Chats!</li>
+      <li><strong>Standort in Fotos deaktivieren:</strong> Viele Handys speichern den Ort im Foto – schalte das aus.</li>
+    </ol>
+
+    <div class="solution-warning">
+      <strong>⚠️ Besondere Vorsicht:</strong> Poste nie Urlaubsbilder mit dem Hinweis, dass du nicht zu Hause bist. Einbrecher nutzen das aus!
+    </div>
+
+    <div class="action-buttons">
+      <a href="hilfe-standort.html" class="btn-primary">📖 Ausführliche Anleitung</a>
+      <a href="hilfe-urlaub.html" class="btn-secondary">✈️ Urlaubs-Tipps</a>
+    </div>
+  </div>
+
+  <!-- Schritt: Passwörter teilen (NICHT!) -->
+  <div id="step-share-password" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('share-sensitive')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">🔑</span>
+      <h3>Passwörter – NIEMALS teilen!</h3>
+    </div>
+
+    <div class="solution-warning">
+      <strong>⚠️ Goldene Regel:</strong> Teile dein Passwort mit NIEMANDEM. Auch nicht mit Familie, Freunden oder dem "Support".
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Wer nach deinem Passwort fragt, ist entweder ein Betrüger oder hat keine Ahnung von Sicherheit.
+    </p>
+
+    <ol class="solution-steps">
+      <li><strong>Echte Firmen fragen niemals nach Passwörtern.</strong> Weder per Mail, noch per Telefon, noch per Chat.</li>
+      <li><strong>Auch IT-Support braucht dein Passwort nicht.</strong> Sie können Passwörter zurücksetzen, ohne es zu kennen.</li>
+      <li><strong>Passwort wurde gefragt?</strong> Das ist ein Betrugsversuch. Melde es!</li>
+    </ol>
+
+    <div class="solution-tip">
+      <strong>💡 Ausnahme:</strong> Gemeinsame Streaming-Konten (Netflix & Co.) in der Familie. Aber auch hier: besser getrennte Profile mit eigenen PINs.
+    </div>
+
+    <div class="action-buttons">
+      <a href="hilfe-passwort.html" class="btn-primary">🔐 Sichere Passwörter erstellen</a>
+      <button class="btn-secondary" onclick="showStep('welcome')">Andere Frage stellen</button>
+    </div>
+  </div>
+
+  <!-- Schritt: Gesundheitsdaten teilen -->
+  <div id="step-share-health" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('share-sensitive')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">🩺</span>
+      <h3>Gesundheitsdaten schützen</h3>
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Diagnosen, Arztberichte und Medikamente sind sehr private Informationen, die gegen dich verwendet werden könnten.
+    </p>
+
+    <ol class="solution-steps">
+      <li><strong>Nur verschlüsselt senden:</strong> Nutze sichere Messenger wie Signal oder passwortgeschützte PDFs.</li>
+      <li><strong>Empfänger prüfen:</strong> Ist es wirklich dein Arzt oder die Krankenkasse?</li>
+      <li><strong>Nicht in Social Media:</strong> Auch "anonym" können Krankheiten zu dir zurückverfolgt werden.</li>
+      <li><strong>Arbeitgeber geht es nichts an:</strong> Du musst Diagnosen nicht nennen – nur die Krankschreibung zählt.</li>
+    </ol>
+
+    <div class="solution-warning">
+      <strong>⚠️ Warum wichtig?</strong> Versicherungen, Arbeitgeber oder Kriminelle könnten deine Gesundheitsdaten gegen dich verwenden.
+    </div>
+
+    <div class="action-buttons">
+      <a href="hilfe-depression.html" class="btn-primary">📖 Ausführliche Anleitung</a>
+      <a href="hilfe-medikament.html" class="btn-secondary">💊 Medikamenten-Tipps</a>
+    </div>
+  </div>
+
+  <!-- Schritt: Passwort-Hilfe -->
+  <div id="step-password-help" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('welcome')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+      <span class="progress-dot"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">🔐</span>
+      <h3>Passwörter & Konten absichern</h3>
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Sichere Passwörter sind dein wichtigster Schutz im Internet. So machst du es richtig:
+    </p>
+
+    <ol class="solution-steps">
+      <li><strong>Für jeden Dienst ein eigenes Passwort.</strong> Wird eines gehackt, sind die anderen sicher.</li>
+      <li><strong>Mindestens 12 Zeichen</strong> – je länger, desto besser. Sätze funktionieren gut!</li>
+      <li><strong>Passwort-Manager nutzen:</strong> Der merkt sich alle Passwörter für dich. Du brauchst nur noch eines.</li>
+      <li><strong>Zwei-Faktor-Authentifizierung (2FA) aktivieren:</strong> Extra Code per SMS oder App – viel sicherer!</li>
+    </ol>
+
+    <div class="solution-tip">
+      <strong>💡 Einfacher Trick:</strong> Denke dir einen Satz aus: "Meine Oma backt jeden Sonntag 3 leckere Kuchen!" → MObjs3lK! – leicht zu merken, schwer zu knacken.
+    </div>
+
+    <div class="action-buttons">
+      <a href="hilfe-passwort.html" class="btn-primary">📖 Ausführliche Anleitung</a>
+      <button class="btn-secondary" onclick="showStep('welcome')">Andere Frage stellen</button>
+    </div>
+  </div>
+
+  <!-- Schritt: Unsicher -->
+  <div id="step-unsure" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('welcome')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+      <span class="progress-dot"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">🤝</span>
+      <h3>Kein Problem – ich helfe dir!</h3>
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Erzähl mir mehr über deine Situation. Was ist passiert oder was möchtest du tun?
+    </p>
+
+    <div class="assistent-options">
+      <button class="assistent-option" onclick="showStep('text-check')">
+        <span class="option-icon">✉️</span>
+        <span class="option-text">
+          <strong>Ich möchte eine Nachricht verschicken</strong>
+          <small>und bin unsicher, ob das sicher ist</small>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('suspicious')">
+        <span class="option-icon">📩</span>
+        <span class="option-text">
+          <strong>Ich habe eine komische Nachricht bekommen</strong>
+          <small>und weiß nicht, ob sie echt ist</small>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('share-sensitive')">
+        <span class="option-icon">📋</span>
+        <span class="option-text">
+          <strong>Jemand will meine Daten haben</strong>
+          <small>und ich bin unsicher, ob ich sie geben soll</small>
+        </span>
+      </button>
+
+      <button class="assistent-option" onclick="showStep('learn-more')">
+        <span class="option-icon">📚</span>
+        <span class="option-text">
+          <strong>Ich möchte einfach mehr lernen</strong>
+          <small>über digitale Sicherheit</small>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Schritt: Mehr lernen -->
+  <div id="step-learn-more" class="assistent-card assistent-step">
+    <button class="back-button" onclick="showStep('unsure')">← Zurück</button>
+
+    <div class="progress-bar">
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot completed"></span>
+      <span class="progress-dot active"></span>
+    </div>
+
+    <div class="solution-header">
+      <span class="icon">📚</span>
+      <h3>Super, dass du mehr lernen möchtest!</h3>
+    </div>
+
+    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">
+      Hier findest du alle Hilfe-Themen auf einen Blick:
+    </p>
+
+    <div class="assistent-options" style="gap: 8px;">
+      <a href="hilfe-passwort.html" class="assistent-option" style="text-decoration: none;">
+        <span class="option-icon">🔒</span>
+        <span class="option-text"><strong>Passwörter schützen</strong></span>
+      </a>
+      <a href="hilfe-iban.html" class="assistent-option" style="text-decoration: none;">
+        <span class="option-icon">🏦</span>
+        <span class="option-text"><strong>IBAN sicher teilen</strong></span>
+      </a>
+      <a href="hilfe-kreditkarte.html" class="assistent-option" style="text-decoration: none;">
+        <span class="option-icon">💳</span>
+        <span class="option-text"><strong>Kreditkarten schützen</strong></span>
+      </a>
+      <a href="gefahr.html" class="assistent-option" style="text-decoration: none;">
+        <span class="option-icon">⚠️</span>
+        <span class="option-text"><strong>Gefahren verstehen</strong></span>
+      </a>
+    </div>
+
+    <div class="action-buttons" style="margin-top: 25px;">
+      <a href="hilfe.html" class="btn-primary">📖 Alle Hilfe-Themen</a>
+      <a href="index.html" class="btn-secondary">🔍 Text prüfen</a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+
+  <div class="schutztext">
+    [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
+  </div>
+
+  <nav class="footer-nav">
+    <a href="info.html">Info</a> •
+    <a href="gefahr.html">Gefahr</a> •
+    <a href="assistent.html" class="hilfe-highlight">🛡️ Hilfe</a> •
+    <a href="index.html" class="demo-highlight">Demo</a> •
+    <a href="ki-hinweis.html">KI-Hinweis</a> •
+    <a href="datenschutz.html">Datenschutz</a> •
+    <a href="kontakt.html">Kontakt</a> •
+    <a href="impressum.html">Impressum</a>
+  </nav>
+
+  <div class="copyright">
+    © 2026 achtung.live
+  </div>
+</footer>
+
+<script>
+// Zeigt einen bestimmten Schritt an
+function showStep(stepId) {
+  // Alle Schritte ausblenden
+  document.querySelectorAll('.assistent-step').forEach(step => {
+    step.classList.remove('active');
+    step.style.display = 'none';
+  });
+
+  // Gewünschten Schritt einblenden
+  const targetStep = document.getElementById('step-' + stepId);
+  if (targetStep) {
+    targetStep.style.display = 'block';
+    targetStep.classList.add('active');
+    // Scroll nach oben
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// Initial: Nur Willkommensschritt anzeigen
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.assistent-step').forEach(step => {
+    step.style.display = 'none';
+  });
+  document.getElementById('step-welcome').style.display = 'block';
+});
+
+// Tastaturnavigation: ESC geht zurück
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    const activeStep = document.querySelector('.assistent-step.active');
+    if (activeStep && activeStep.id !== 'step-welcome') {
+      const backButton = activeStep.querySelector('.back-button');
+      if (backButton) {
+        backButton.click();
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
