@@ -127,3 +127,21 @@ function closeModal() {
   const modal = document.getElementById("hilfeModal");
   modal.classList.remove("show");
 }
+
+// Tastatursteuerung: ESC schließt das Modal
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape' || event.key === 'Esc') {
+    const modal = document.getElementById("hilfeModal");
+    if (modal && modal.classList.contains('show')) {
+      closeModal();
+    }
+  }
+});
+
+// Klick außerhalb des Modals schließt es
+document.addEventListener('click', function(event) {
+  const modal = document.getElementById("hilfeModal");
+  if (event.target === modal) {
+    closeModal();
+  }
+});
