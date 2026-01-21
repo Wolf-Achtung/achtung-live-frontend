@@ -268,6 +268,19 @@ input[type="submit"]:hover {
   font-weight: bold;
 }
 
+.footer-nav a.hilfe-highlight {
+  background: linear-gradient(135deg, #2e7d32, #4caf50);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-nav a.hilfe-highlight:hover {
+  background: linear-gradient(135deg, #1b5e20, #388e3c);
+}
+
 /* Highlight-Klasse für Logo-Text */
 .highlight {
   color: #990000;
@@ -322,6 +335,80 @@ input[type="submit"]:hover {
 
 .hilfe-button:active {
   transform: translateY(0);
+}
+
+/* Assistent Banner */
+.assistent-banner {
+  background: linear-gradient(135deg, #f8f4f4 0%, #fff 100%);
+  border: 2px solid #800000;
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin: 15px auto 25px;
+  max-width: 700px;
+  box-shadow: 0 2px 10px rgba(128,0,0,0.1);
+}
+
+.assistent-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.assistent-banner-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.assistent-banner-text {
+  flex: 1;
+  min-width: 200px;
+  text-align: left;
+}
+
+.assistent-banner-text strong {
+  display: block;
+  color: #800000;
+  font-size: 1.05rem;
+  margin-bottom: 2px;
+}
+
+.assistent-banner-text span {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.assistent-banner-btn {
+  background: #800000;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.assistent-banner-btn:hover {
+  background: #a00000;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .assistent-banner-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .assistent-banner-text {
+    text-align: center;
+  }
+
+  .assistent-banner-btn {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 /* Link-Button Liste */
