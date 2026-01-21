@@ -20,19 +20,19 @@
 <main>
   <h2>Hilfe zu sensiblen Themen</h2>
 
-  <div class="button-container">
-    <button onclick="openModal('passwort')">Passwörter schützen</button>
-    <button onclick="openModal('iban')">IBAN sicher mitteilen</button>
-    <button onclick="openModal('kreditkarte')">Kreditkartendaten schützen</button>
-    <button onclick="openModal('emotionen')">Emotionale Nachrichten absichern</button>
-    <button onclick="openModal('standort')">Standortdaten anonymisieren</button>
-    <button onclick="openModal('urlaub')">Urlaubspläne diskret halten</button>
-    <button onclick="openModal('chef')">Über Chef & Firma sicher reden</button>
-    <button onclick="openModal('screenshot')">Screenshots absichern</button>
-    <button onclick="openModal('krankheit')">Gesundheitsinfos schützen</button>
-    <button onclick="openModal('medikament')">Medikamente anonym teilen</button>
-    <button onclick="openModal('whatsapp')">WhatsApp & Messenger-Tipps</button>
-    <button onclick="openModal('sicher_senden')">Sicher Nachrichten senden</button>
+  <div class="button-container hilfe-links">
+    <a href="hilfe-passwort.html" class="hilfe-button">🔒 Passwörter schützen</a>
+    <a href="hilfe-iban.html" class="hilfe-button">🏦 IBAN sicher mitteilen</a>
+    <a href="hilfe-kreditkarte.html" class="hilfe-button">💳 Kreditkartendaten schützen</a>
+    <a href="hilfe-kind.html" class="hilfe-button">💬 Emotionen & Kinderfotos</a>
+    <a href="hilfe-standort.html" class="hilfe-button">📍 Standortdaten schützen</a>
+    <a href="hilfe-urlaub.html" class="hilfe-button">✈️ Urlaubspläne diskret halten</a>
+    <a href="hilfe-chef.html" class="hilfe-button">💼 Über Chef & Firma reden</a>
+    <a href="hilfe-screenshot.html" class="hilfe-button">📸 Screenshots absichern</a>
+    <a href="hilfe-depression.html" class="hilfe-button">🩺 Gesundheitsinfos schützen</a>
+    <a href="hilfe-medikament.html" class="hilfe-button">💊 Medikamente anonym teilen</a>
+    <a href="hilfe-whatsapp.html" class="hilfe-button">📱 WhatsApp & Messenger-Tipps</a>
+    <a href="hilfe-sicher-senden.html" class="hilfe-button">🔐 Sicher Nachrichten senden</a>
   </div>
 
   <section class="weiterfuehrende-links">
@@ -52,12 +52,6 @@
   </section>
 </main>
 
-<div id="modal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <div id="modal-text"></div>
-  </div>
-</div>
 
 <footer class="site-footer">
   <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
@@ -81,31 +75,6 @@
   </div>
 </footer>
 
-<script>
-const hilfeTexte = {
-  passwort: "Verwende starke, einzigartige Passwörter. Nutze Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen. Teile deine Passwörter niemals mit anderen Personen. Tipp: Ein Passwort-Manager hilft dir, alles sicher zu speichern.",
-  iban: "Deine IBAN enthält sensible Bankinformationen. Teile sie nur, wenn es unbedingt nötig ist. Über öffentliche Plattformen oder Chats sollten solche Daten niemals gesendet werden.",
-  kreditkarte: "Kreditkartendaten sollten ausschließlich auf sicheren (https://) Seiten eingegeben werden. Vermeide es, Kartennummern, Ablaufdatum und CVV-Code über Messenger oder E-Mail zu teilen.",
-  emotionen: "Emotionale Nachrichten können schnell missverstanden werden. Denk daran: Was einmal geschrieben ist, kann leicht weitergeleitet werden. Überlege zweimal, bevor du impulsiv Nachrichten mit Gefühlen oder Kritik verschickst.",
-  standort: "Standortdaten können Aufschluss über deine Wohnorte, Arbeitswege und Aufenthaltsorte geben. Teile deinen Live-Standort nur mit Personen, denen du absolut vertraust.",
-  urlaub: "Urlaubsankündigungen sind oft ein Risiko: Sie können Kriminellen signalisieren, dass dein Zuhause leersteht. Teile Urlaubspläne besser nur privat und nicht in öffentlichen Posts oder großen Gruppen.",
-  chef: "Wenn du dich über deine Firma oder deinen Chef austauschen möchtest, wähle neutrale Formulierungen und vermeide personenbezogene Details. Ein unbedachter Kommentar kann Konsequenzen haben.",
-  screenshot: "Screenshots enthalten oft Metadaten oder sensible Informationen. Überlege genau, bevor du sie versendest. Besser: persönliche Daten und Bildbereiche unkenntlich machen.",
-  krankheit: "Gesundheitsangaben sind hochsensible Daten. Teilst du Diagnosen oder Arztberichte, dann achte darauf, keine Namen, Adressen oder detaillierte Befunde ungesichert zu übermitteln.",
-  medikament: "Medikamentenangaben können Rückschlüsse auf Erkrankungen oder psychische Zustände zulassen. Teile solche Infos nur in vertrauensvollen und gesicherten Kanälen.",
-  whatsapp: "Bei WhatsApp und anderen Messengern ist die Ende-zu-Ende-Verschlüsselung aktiv. Achte trotzdem darauf, was du teilst: Backups können auf Servern landen, die weniger geschützt sind.",
-  sicher_senden: "Wenn du sensible Daten verschickst: Nutze sichere Messenger, verschlüssele Anhänge und verwende nach Möglichkeit zeitlich begrenzte Links oder Zugriffscodes."
-};
-
-function openModal(key) {
-  document.getElementById('modal-text').innerText = hilfeTexte[key];
-  document.getElementById('modal').style.display = "flex";
-}
-
-function closeModal() {
-  document.getElementById('modal').style.display = "none";
-}
-</script>
 
 </body>
 </html>

@@ -295,6 +295,35 @@ input[type="submit"]:hover {
   min-width: 200px;
 }
 
+/* Hilfe-Button Links */
+.hilfe-links {
+  gap: 12px;
+}
+
+.hilfe-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  padding: 12px 20px;
+  background: #800000;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.hilfe-button:hover {
+  background: #a00000;
+  transform: translateY(-1px);
+}
+
+.hilfe-button:active {
+  transform: translateY(0);
+}
+
 /* Link-Button Liste */
 .link-button-list {
   display: flex;
