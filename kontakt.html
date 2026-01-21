@@ -1,368 +1,368 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kontakt | achtung.live – Schreib uns deine Fragen, Ideen oder Feedback!">
-  <meta name="robots" content="index,follow">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <title>Kontakt | achtung.live</title>
-  <style>
-    .contact-intro {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #555;
-    }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="description" content="Kontakt | achtung.live – Schreib uns deine Fragen, Ideen oder Feedback!">
+ <meta name="robots" content="index,follow">
+ <link rel="stylesheet" href="style.css">
+ <link rel="icon" type="image/x-icon" href="favicon.ico">
+ <title>Kontakt | achtung.live</title>
+ <style>
+ .contact-intro {
+ text-align: center;
+ margin-bottom: 30px;
+ color: #555;
+ }
 
-    .contact-form {
-      max-width: 600px;
-      margin: 0 auto;
-    }
+ .contact-form {
+ max-width: 600px;
+ margin: 0 auto;
+ }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+ .form-group {
+ margin-bottom: 20px;
+ }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-      color: #333;
-    }
+ .form-group label {
+ display: block;
+ margin-bottom: 6px;
+ font-weight: 500;
+ color: #333;
+ }
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px 15px;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.2s;
-      box-sizing: border-box;
-    }
+ .form-group input,
+ .form-group select,
+ .form-group textarea {
+ width: 100%;
+ padding: 12px 15px;
+ border: 2px solid #e0e0e0;
+ border-radius: 8px;
+ font-size: 1rem;
+ transition: border-color 0.2s;
+ box-sizing: border-box;
+ }
 
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: #800000;
-    }
+ .form-group input:focus,
+ .form-group select:focus,
+ .form-group textarea:focus {
+ outline: none;
+ border-color: #800000;
+ }
 
-    .form-group textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
+ .form-group textarea {
+ resize: vertical;
+ min-height: 120px;
+ }
 
-    .form-group small {
-      display: block;
-      margin-top: 5px;
-      color: #888;
-      font-size: 0.85rem;
-    }
+ .form-group small {
+ display: block;
+ margin-top: 5px;
+ color: #888;
+ font-size: 0.85rem;
+ }
 
-    .category-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 25px;
-    }
+ .category-cards {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 10px;
+ margin-bottom: 25px;
+ }
 
-    .category-card {
-      padding: 14px 10px;
-      border: 2px solid #e0e0e0;
-      border-radius: 6px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: #fff;
-    }
+ .category-card {
+ padding: 14px 10px;
+ border: 2px solid #e0e0e0;
+ border-radius: 6px;
+ text-align: center;
+ cursor: pointer;
+ transition: all 0.2s;
+ background: #fff;
+ }
 
-    .category-card:hover {
-      border-color: #800000;
-      color: #800000;
-    }
+ .category-card:hover {
+ border-color: #800000;
+ color: #800000;
+ }
 
-    .category-card.selected {
-      border-color: #800000;
-      background: #800000;
-      color: #fff;
-    }
+ .category-card.selected {
+ border-color: #800000;
+ background: #800000;
+ color: #fff;
+ }
 
-    .category-card .label {
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
+ .category-card .label {
+ font-size: 0.95rem;
+ font-weight: 500;
+ }
 
-    @media (max-width: 500px) {
-      .category-cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+ @media (max-width: 500px) {
+ .category-cards {
+ grid-template-columns: repeat(2, 1fr);
+ }
+ }
 
-    .submit-btn {
-      width: 100%;
-      padding: 15px;
-      background: #800000;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+ .submit-btn {
+ width: 100%;
+ padding: 15px;
+ background: #800000;
+ color: #fff;
+ border: none;
+ border-radius: 8px;
+ font-size: 1.1rem;
+ font-weight: 500;
+ cursor: pointer;
+ transition: background 0.2s;
+ }
 
-    .submit-btn:hover {
-      background: #a00000;
-    }
+ .submit-btn:hover {
+ background: #a00000;
+ }
 
-    .privacy-check {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin: 20px 0;
-    }
+ .privacy-check {
+ display: flex;
+ align-items: flex-start;
+ gap: 10px;
+ margin: 20px 0;
+ }
 
-    .privacy-check input {
-      margin-top: 3px;
-      width: auto;
-    }
+ .privacy-check input {
+ margin-top: 3px;
+ width: auto;
+ }
 
-    .privacy-check label {
-      font-size: 0.9rem;
-      color: #555;
-    }
+ .privacy-check label {
+ font-size: 0.9rem;
+ color: #555;
+ }
 
-    .privacy-check a {
-      color: #800000;
-    }
+ .privacy-check a {
+ color: #800000;
+ }
 
-    .contact-alternatives {
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 1px solid #eee;
-      text-align: center;
-    }
+ .contact-alternatives {
+ margin-top: 40px;
+ padding-top: 30px;
+ border-top: 1px solid #eee;
+ text-align: center;
+ }
 
-    .contact-alternatives h3 {
-      color: #800000;
-      margin-bottom: 15px;
-    }
+ .contact-alternatives h3 {
+ color: #800000;
+ margin-bottom: 15px;
+ }
 
-    .contact-alternatives p {
-      color: #666;
-      font-size: 0.95rem;
-    }
-  </style>
+ .contact-alternatives p {
+ color: #666;
+ font-size: 0.95rem;
+ }
+ </style>
 </head>
 
 <body>
 
 <header>
-  <h1><a href="index.html" class="achtung-logo">[achtung.live]</a></h1>
-  <p class="claim">Der Airbag für digitale Kommunikation</p>
+ <h1><a href="index.html" class="achtung-logo">[achtung.live]</a></h1>
+ <p class="claim">Der Airbag für digitale Kommunikation</p>
 </header>
 
 <main class="main-content">
-  <h2>Kontakt</h2>
+ <h2>Kontakt</h2>
 
-  <p class="contact-intro">
-    Wir freuen uns über deine Nachricht! Wähle ein Thema und schreib uns.
-  </p>
+ <p class="contact-intro">
+ Wir freuen uns über deine Nachricht! Wähle ein Thema und schreib uns.
+ </p>
 
-  <form id="contactForm" name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
-    <input type="hidden" name="form-name" value="kontakt">
-    <p class="hidden" style="display:none;">
-      <label>Nicht ausfüllen: <input name="bot-field"></label>
-    </p>
+ <form id="contactForm" name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+ <input type="hidden" name="form-name" value="kontakt">
+ <p class="hidden" style="display:none;">
+ <label>Nicht ausfüllen: <input name="bot-field"></label>
+ </p>
 
-    <!-- Thema auswählen -->
-    <div class="form-group">
-      <label>Worum geht es?</label>
-      <div class="category-cards">
-        <div class="category-card" data-value="frage" onclick="selectCategory(this)">
-          <span class="label">Frage</span>
-        </div>
-        <div class="category-card" data-value="feedback" onclick="selectCategory(this)">
-          <span class="label">Feedback</span>
-        </div>
-        <div class="category-card" data-value="verbesserung" onclick="selectCategory(this)">
-          <span class="label">Idee / Vorschlag</span>
-        </div>
-        <div class="category-card" data-value="fehler" onclick="selectCategory(this)">
-          <span class="label">Fehler melden</span>
-        </div>
-        <div class="category-card" data-value="datenschutz" onclick="selectCategory(this)">
-          <span class="label">Datenschutz</span>
-        </div>
-        <div class="category-card" data-value="sonstiges" onclick="selectCategory(this)">
-          <span class="label">Sonstiges</span>
-        </div>
-      </div>
-      <input type="hidden" name="thema" id="themaInput" required>
-    </div>
+ <!-- Thema auswählen -->
+ <div class="form-group">
+ <label>Worum geht es?</label>
+ <div class="category-cards">
+ <div class="category-card" data-value="frage" onclick="selectCategory(this)">
+ <span class="label">Frage</span>
+ </div>
+ <div class="category-card" data-value="feedback" onclick="selectCategory(this)">
+ <span class="label">Feedback</span>
+ </div>
+ <div class="category-card" data-value="verbesserung" onclick="selectCategory(this)">
+ <span class="label">Idee / Vorschlag</span>
+ </div>
+ <div class="category-card" data-value="fehler" onclick="selectCategory(this)">
+ <span class="label">Fehler melden</span>
+ </div>
+ <div class="category-card" data-value="datenschutz" onclick="selectCategory(this)">
+ <span class="label">Datenschutz</span>
+ </div>
+ <div class="category-card" data-value="sonstiges" onclick="selectCategory(this)">
+ <span class="label">Sonstiges</span>
+ </div>
+ </div>
+ <input type="hidden" name="thema" id="themaInput" required>
+ </div>
 
-    <!-- Name -->
-    <div class="form-group">
-      <label for="name">Dein Name</label>
-      <input type="text" id="name" name="name" placeholder="Wie dürfen wir dich ansprechen?" required>
-    </div>
+ <!-- Name -->
+ <div class="form-group">
+ <label for="name">Dein Name</label>
+ <input type="text" id="name" name="name" placeholder="Wie dürfen wir dich ansprechen?" required>
+ </div>
 
-    <!-- E-Mail -->
-    <div class="form-group">
-      <label for="email">Deine E-Mail</label>
-      <input type="email" id="email" name="email" placeholder="Für unsere Antwort" required>
-      <small>Wir geben deine E-Mail nicht weiter.</small>
-    </div>
+ <!-- E-Mail -->
+ <div class="form-group">
+ <label for="email">Deine E-Mail</label>
+ <input type="email" id="email" name="email" placeholder="Für unsere Antwort" required>
+ <small>Wir geben deine E-Mail nicht weiter.</small>
+ </div>
 
-    <!-- Nachricht -->
-    <div class="form-group">
-      <label for="message">Deine Nachricht</label>
-      <textarea id="message" name="message" placeholder="Was möchtest du uns mitteilen?" rows="6" required></textarea>
-    </div>
+ <!-- Nachricht -->
+ <div class="form-group">
+ <label for="message">Deine Nachricht</label>
+ <textarea id="message" name="message" placeholder="Was möchtest du uns mitteilen?" rows="6" required></textarea>
+ </div>
 
-    <!-- Datenschutz -->
-    <div class="privacy-check">
-      <input type="checkbox" id="privacyPolicy" required>
-      <label for="privacyPolicy">
-        Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Daten einverstanden.
-      </label>
-    </div>
+ <!-- Datenschutz -->
+ <div class="privacy-check">
+ <input type="checkbox" id="privacyPolicy" required>
+ <label for="privacyPolicy">
+ Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Daten einverstanden.
+ </label>
+ </div>
 
-    <button type="submit" class="submit-btn">Nachricht absenden</button>
-  </form>
+ <button type="submit" class="submit-btn">Nachricht absenden</button>
+ </form>
 
-  <div id="formMessage" class="form-message" style="display:none;"></div>
+ <div id="formMessage" class="form-message" style="display:none;"></div>
 
-  <div class="contact-alternatives">
-    <h3>Weitere Kontaktmöglichkeiten</h3>
-    <p>
-      Impressum & rechtliche Angaben findest du <a href="impressum.html">hier</a>.<br>
-      Fragen zum Datenschutz? Direkt zum <a href="datenschutz.html">Datenschutz</a>.
-    </p>
-  </div>
+ <div class="contact-alternatives">
+ <h3>Weitere Kontaktmöglichkeiten</h3>
+ <p>
+ Impressum & rechtliche Angaben findest du <a href="impressum.html">hier</a>.<br>
+ Fragen zum Datenschutz? Direkt zum <a href="datenschutz.html">Datenschutz</a>.
+ </p>
+ </div>
 </main>
 
 <!-- Danke-Popup -->
 <div id="dankeModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('dankeModal')">&times;</span>
-    <h3>Danke für deine Nachricht!</h3>
-    <p>Wir haben deine Anfrage erhalten und melden uns so schnell wie möglich bei dir.</p>
-    <p style="margin-top: 15px;"><a href="index.html" style="color: #800000;">Zurück zur Startseite</a></p>
-  </div>
+ <div class="modal-content">
+ <span class="close" onclick="closeModal('dankeModal')">&times;</span>
+ <h3>Danke für deine Nachricht!</h3>
+ <p>Wir haben deine Anfrage erhalten und melden uns so schnell wie möglich bei dir.</p>
+ <p style="margin-top: 15px;"><a href="index.html" style="color: #800000;">Zurück zur Startseite</a></p>
+ </div>
 </div>
 
 <footer class="site-footer">
-  <div class="europe">🇪🇺 Aus Europa. Für Alle.</div>
+ <div class="europe">Aus Europa. Für Alle.</div>
 
-  <div class="schutztext">
-    [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
-  </div>
+ <div class="schutztext">
+ [<span style="color: #800000;">achtung.live</span>] schützt, was zählt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
+ </div>
 
-  <nav class="footer-nav">
-    <a href="info.html">Über uns</a> •
-    <a href="gefahr.html">Risiken</a> •
-    <a href="datenschutz.html">Datenschutz</a> •
-    <a href="impressum.html">Impressum</a> •
-    <a href="kontakt.html">Kontakt</a>
-  </nav>
+ <nav class="footer-nav">
+ <a href="info.html">Über uns</a> •
+ <a href="gefahr.html">Risiken</a> •
+ <a href="datenschutz.html">Datenschutz</a> •
+ <a href="impressum.html">Impressum</a> •
+ <a href="kontakt.html">Kontakt</a>
+ </nav>
 
-  <div class="copyright">
-    © 2026 achtung.live
-  </div>
+ <div class="copyright">
+ © 2026 achtung.live
+ </div>
 </footer>
 
 <script>
 // Kategorie auswählen
 function selectCategory(element) {
-  // Alle Karten deselektieren
-  document.querySelectorAll('.category-card').forEach(card => {
-    card.classList.remove('selected');
-  });
-  // Gewählte Karte selektieren
-  element.classList.add('selected');
-  // Hidden Input aktualisieren
-  document.getElementById('themaInput').value = element.dataset.value;
+ // Alle Karten deselektieren
+ document.querySelectorAll('.category-card').forEach(card => {
+ card.classList.remove('selected');
+ });
+ // Gewählte Karte selektieren
+ element.classList.add('selected');
+ // Hidden Input aktualisieren
+ document.getElementById('themaInput').value = element.dataset.value;
 }
 
 // URL-Parameter prüfen (z.B. kontakt.html?thema=datenschutz)
 document.addEventListener('DOMContentLoaded', function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const thema = urlParams.get('thema');
+ const urlParams = new URLSearchParams(window.location.search);
+ const thema = urlParams.get('thema');
 
-  if (thema) {
-    const card = document.querySelector(`.category-card[data-value="${thema}"]`);
-    if (card) {
-      selectCategory(card);
-    }
-  }
+ if (thema) {
+ const card = document.querySelector(`.category-card[data-value="${thema}"]`);
+ if (card) {
+ selectCategory(card);
+ }
+ }
 });
 
 // Modal Funktionen
 function openModal(id) {
-  document.getElementById(id).style.display = "block";
+ document.getElementById(id).style.display = "block";
 }
 
 function closeModal(id) {
-  document.getElementById(id).style.display = "none";
+ document.getElementById(id).style.display = "none";
 }
 
 // Formular absenden
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
+ e.preventDefault();
 
-  // Prüfen ob Thema gewählt wurde
-  if (!document.getElementById('themaInput').value) {
-    alert('Bitte wähle ein Thema aus.');
-    return;
-  }
+ // Prüfen ob Thema gewählt wurde
+ if (!document.getElementById('themaInput').value) {
+ alert('Bitte wähle ein Thema aus.');
+ return;
+ }
 
-  const form = e.target;
-  const formData = new FormData(form);
-  const messageBox = document.getElementById('formMessage');
+ const form = e.target;
+ const formData = new FormData(form);
+ const messageBox = document.getElementById('formMessage');
 
-  try {
-    const response = await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
-    });
+ try {
+ const response = await fetch('/', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+ body: new URLSearchParams(formData).toString()
+ });
 
-    if (response.ok) {
-      form.reset();
-      document.querySelectorAll('.category-card').forEach(card => {
-        card.classList.remove('selected');
-      });
-      openModal('dankeModal');
-    } else {
-      messageBox.style.display = 'block';
-      messageBox.style.color = '#800000';
-      messageBox.textContent = 'Es gab ein Problem. Bitte versuche es erneut.';
-    }
-  } catch (error) {
-    messageBox.style.display = 'block';
-    messageBox.style.color = '#800000';
-    messageBox.textContent = 'Netzwerkfehler. Bitte prüfe deine Verbindung.';
-  }
+ if (response.ok) {
+ form.reset();
+ document.querySelectorAll('.category-card').forEach(card => {
+ card.classList.remove('selected');
+ });
+ openModal('dankeModal');
+ } else {
+ messageBox.style.display = 'block';
+ messageBox.style.color = '#800000';
+ messageBox.textContent = 'Es gab ein Problem. Bitte versuche es erneut.';
+ }
+ } catch (error) {
+ messageBox.style.display = 'block';
+ messageBox.style.color = '#800000';
+ messageBox.textContent = 'Netzwerkfehler. Bitte prüfe deine Verbindung.';
+ }
 });
 
 // Modal schließen bei Klick außerhalb
 window.onclick = function(event) {
-  if (event.target.classList.contains('modal')) {
-    event.target.style.display = 'none';
-  }
+ if (event.target.classList.contains('modal')) {
+ event.target.style.display = 'none';
+ }
 };
 
 // ESC schließt Modal
 document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.style.display = 'none';
-    });
-  }
+ if (event.key === 'Escape') {
+ document.querySelectorAll('.modal').forEach(modal => {
+ modal.style.display = 'none';
+ });
+ }
 });
 </script>
 
