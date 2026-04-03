@@ -172,7 +172,18 @@
  </div>
  <div class="form-buttons">
 <button type="submit" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
-<button type="button" class="spell-check-btn" onclick="checkSpelling()" data-i18n="form.spellCheck">Rechtschreibung pruefen</button>
+<button type="button" class="spell-check-btn" onclick="checkSpelling()" data-i18n="form.spellCheck">Textkorrektur</button>
+</div>
+<!-- Edit-Level Selector for Text Correction -->
+<div id="spellCheckOptions" class="spell-check-options" style="display:none;">
+ <div class="sc-level-selector">
+  <label data-i18n="spellCheck.levelLabel">Korrektur-Level:</label>
+  <div class="sc-level-buttons">
+   <button type="button" class="sc-level-btn active" data-level="L0" title="Orthografie, Grammatik, Zeichensetzung">L0 Proofread</button>
+   <button type="button" class="sc-level-btn" data-level="L1" title="+ Redundanzen, kleine Glaettungen">L1 Klarheit</button>
+   <button type="button" class="sc-level-btn" data-level="L2" title="+ Satzbau, Uebergaenge, Schachtelsaetze">L2 Line Edit</button>
+  </div>
+ </div>
 </div>
 <div id="spellCheckResults" class="spell-check-results" style="display:none;"></div>
  </form>
@@ -1253,6 +1264,9 @@
  expertToggle.setAttribute('aria-expanded', 'true');
  }
  }
+
+ // Initialize spell-check options
+ initSpellCheckOptions();
  });
 
  // ========================================
@@ -2193,37 +2207,80 @@ const API_SPELL_CHECK_URL = `${API_BASE}/spell-check`;
 // Spell Check Function
 // ========================================
 
+// Current spell-check edit level
+let currentSpellLevel = 'L0';
+
+// Toggle spell-check options panel and level buttons
+function initSpellCheckOptions() {
+ const btn = document.querySelector('.spell-check-btn');
+ const optionsDiv = document.getElementById('spellCheckOptions');
+ if (!optionsDiv) return;
+
+ // Level button handlers
+ optionsDiv.querySelectorAll('.sc-level-btn').forEach(b => {
+  b.addEventListener('click', function() {
+   optionsDiv.querySelectorAll('.sc-level-btn').forEach(x => x.classList.remove('active'));
+   this.classList.add('active');
+   currentSpellLevel = this.dataset.level;
+  });
+ });
+}
+
 async function checkSpelling() {
  const text = document.getElementById('demoText').value;
  const resultsDiv = document.getElementById('spellCheckResults');
- 
+ const optionsDiv = document.getElementById('spellCheckOptions');
+
  if (!text || text.trim().length < 3) {
  alert('Bitte gib mindestens 3 Zeichen ein.');
  return;
  }
 
+ // Show options panel on first use
+ if (optionsDiv) optionsDiv.style.display = 'block';
+
  resultsDiv.style.display = 'block';
- resultsDiv.innerHTML = '<p style="text-align:center;">Pruefe Rechtschreibung...</p>';
+ resultsDiv.innerHTML = '<p style="text-align:center;">Pruefe Text (Level: ' + currentSpellLevel + ')...</p>';
 
  try {
  const response = await fetch(API_SPELL_CHECK_URL, {
  method: 'POST',
  headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({ text, language: currentLang || 'de' })
+ body: JSON.stringify({
+  text,
+  language: currentLang || 'de',
+  level: currentSpellLevel,
+  config: {}
+ })
  });
 
  const data = await response.json();
 
  if (!data.success) {
- resultsDiv.innerHTML = '<p class="error-text">Rechtschreibpruefung nicht verfuegbar.</p>';
+ resultsDiv.innerHTML = '<p class="error-text">Textkorrektur nicht verfuegbar.</p>';
  return;
  }
 
  if (!data.hasErrors) {
+ const rb = data.readability || {};
  resultsDiv.innerHTML = `
- <div class="no-errors">
+ <div class="sc-result-clean">
+ <div class="sc-success-icon">&#10003;</div>
  <h4>Keine Fehler gefunden</h4>
  <p>Dein Text ist grammatikalisch und orthografisch korrekt.</p>
+ ${rb.fleschDE !== undefined ? `
+ <div class="sc-readability-summary">
+  <div class="sc-readability-score">
+   <span class="sc-score-value">${rb.fleschDE}</span>
+   <span class="sc-score-label">${rb.fleschLabel || ''}</span>
+  </div>
+  <div class="sc-readability-details">
+   <span>CEFR: <strong>${rb.cefr || '?'}</strong> (${rb.cefrLabel || ''})</span>
+   <span>${rb.wordCount || 0} Woerter, ${rb.sentenceCount || 0} Saetze</span>
+   <span>Ø Satzlaenge: ${rb.avgSentenceLength || 0} Woerter</span>
+  </div>
+ </div>
+ ` : ''}
  </div>
  `;
  return;
@@ -2232,35 +2289,70 @@ async function checkSpelling() {
  // Store corrected text for apply function
  window.lastCorrectedText = data.correctedText;
 
+ const rb = data.readability || {};
+ const stats = data.stats || {};
+ const patterns = data.patterns || [];
+
  resultsDiv.innerHTML = `
+ ${data.executiveSummary ? `<div class="sc-executive-summary"><p>${escapeHtml(data.executiveSummary)}</p></div>` : ''}
  <div class="spell-check-header">
- <h3>Rechtschreib- und Grammatikpruefung</h3>
+ <h3>Textkorrektur (${currentSpellLevel})</h3>
  <div class="spell-check-stats">
- <span class="spell-stat"><span class="count">${data.stats.spelling}</span> Rechtschreibung</span>
- <span class="spell-stat"><span class="count">${data.stats.grammar}</span> Grammatik</span>
- <span class="spell-stat"><span class="count">${data.stats.punctuation}</span> Zeichensetzung</span>
+  <span class="spell-stat"><span class="count">${stats.spelling || 0}</span> Rechtschreibung</span>
+  <span class="spell-stat"><span class="count">${stats.grammar || 0}</span> Grammatik</span>
+  <span class="spell-stat"><span class="count">${stats.punctuation || 0}</span> Zeichensetzung</span>
+  <span class="spell-stat"><span class="count">${stats.style || 0}</span> Stil</span>
  </div>
+ ${stats.bySeverity ? `
+ <div class="sc-severity-bar">
+  ${stats.bySeverity.critical ? `<span class="sc-sev sc-sev-critical">${stats.bySeverity.critical} kritisch</span>` : ''}
+  ${stats.bySeverity.medium ? `<span class="sc-sev sc-sev-medium">${stats.bySeverity.medium} mittel</span>` : ''}
+  ${stats.bySeverity.small ? `<span class="sc-sev sc-sev-small">${stats.bySeverity.small} klein</span>` : ''}
  </div>
+ ` : ''}
+ </div>
+ ${rb.fleschDE !== undefined ? `
+ <div class="sc-readability-bar">
+  <span class="sc-rb-item">Lesbarkeit: <strong>${rb.fleschDE}</strong> (${rb.fleschLabel || ''})</span>
+  <span class="sc-rb-item">CEFR: <strong>${rb.cefr || '?'}</strong></span>
+  <span class="sc-rb-item">${rb.wordCount || 0} W. / ${rb.sentenceCount || 0} S.</span>
+  <span class="sc-rb-item">Ø ${rb.avgSentenceLength || 0} W./Satz</span>
+  ${rb.distribution && rb.distribution.veryLong > 0 ? `<span class="sc-rb-warn">${rb.distribution.veryLong} sehr lange Saetze (&gt;25 W.)</span>` : ''}
+ </div>
+ ` : ''}
  <div class="correction-list">
  ${data.corrections.map(c => `
- <div class="correction-item ${c.rule.type}">
- <div>
- <span class="correction-original">${data.originalText.substring(c.offset, c.offset + c.length)}</span>
- <span class="correction-arrow"></span>
- <span class="correction-suggestion" onclick="applySingleCorrection('${c.offset}', '${c.length}', '${c.replacements[0] || ''}')">${c.replacements[0] || '(entfernen)'}</span>
- <span class="correction-type ${c.rule.type}">${getTypeLabel(c.rule.type)}</span>
- </div>
- <div class="correction-message">${c.message}</div>
+ <div class="correction-item ${c.rule.type} sc-sev-border-${c.severity || 'small'}">
+  <div class="correction-main">
+  <span class="correction-original">${escapeHtml(c.original || data.originalText.substring(c.offset, c.offset + c.length))}</span>
+  <span class="correction-arrow">&#8594;</span>
+  <span class="correction-suggestion" onclick="applySingleCorrection('${c.offset}', '${c.length}', '${escapeAttr(c.replacements[0] || '')}')">${escapeHtml(c.replacements[0] || '(entfernen)')}</span>
+  <span class="correction-type ${c.rule.type}">${getTypeLabel(c.rule.type)}</span>
+  ${c.severity === 'critical' ? '<span class="sc-badge-critical">kritisch</span>' : ''}
+  </div>
+  <div class="correction-message">${escapeHtml(c.message)}</div>
  </div>
  `).join('')}
  </div>
+ ${patterns.length > 0 ? `
+ <div class="sc-patterns">
+  <h4>Wiederkehrende Muster &amp; Tipps</h4>
+  ${patterns.map(p => `
+  <div class="sc-pattern-item">
+   <strong>${escapeHtml(p.pattern)}</strong> (${p.frequency}x)
+   <div class="sc-pattern-tip">${escapeHtml(p.tip)}</div>
+  </div>
+  `).join('')}
+ </div>
+ ` : ''}
  <div class="spell-check-actions">
  <button class="apply-corrections-btn" onclick="applyAllCorrections()">Alle Korrekturen uebernehmen</button>
+ <button class="sc-copy-btn" onclick="copyCorrectedText()">Korrigierten Text kopieren</button>
  </div>
  `;
  } catch (error) {
- console.error('Spell check error:', error);
- resultsDiv.innerHTML = '<p class="error-text">Fehler bei der Rechtschreibpruefung.</p>';
+ console.error('Text correction error:', error);
+ resultsDiv.innerHTML = '<p class="error-text">Fehler bei der Textkorrektur. Bitte versuche es erneut.</p>';
  }
 }
 
@@ -2273,6 +2365,16 @@ function getTypeLabel(type) {
  'other': 'Sonstiges'
  };
  return labels[type] || type;
+}
+
+function escapeHtml(str) {
+ if (!str) return '';
+ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function escapeAttr(str) {
+ if (!str) return '';
+ return str.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\\/g, '\\\\');
 }
 
 function applyAllCorrections() {
@@ -2288,8 +2390,16 @@ function applySingleCorrection(offset, length, replacement) {
  const start = parseInt(offset);
  const end = start + parseInt(length);
  textarea.value = text.substring(0, start) + replacement + text.substring(end);
- // Re-run spell check
  checkSpelling();
+}
+
+function copyCorrectedText() {
+ if (window.lastCorrectedText) {
+ navigator.clipboard.writeText(window.lastCorrectedText).then(() => {
+  const btn = document.querySelector('.sc-copy-btn');
+  if (btn) { btn.textContent = 'Kopiert!'; setTimeout(() => { btn.textContent = 'Korrigierten Text kopieren'; }, 2000); }
+ });
+ }
 }
 
  // ========================================
