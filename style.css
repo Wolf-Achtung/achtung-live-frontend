@@ -7610,3 +7610,288 @@ body.simple-language .simple-lang {
   margin: 0 0 8px 0;
   color: #2e7d32;
 }
+
+/* ========================================
+   Enhanced Text Correction Styles (v14)
+   ======================================== */
+
+/* Level Selector */
+.spell-check-options {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #fdf5f5;
+  border-radius: 10px;
+  border: 1px solid #e8d5d5;
+}
+
+.sc-level-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sc-level-selector label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.sc-level-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.sc-level-btn {
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background: white;
+  color: #666;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sc-level-btn:hover {
+  border-color: #800000;
+  color: #800000;
+}
+
+.sc-level-btn.active {
+  background: #800000;
+  color: white;
+  border-color: #800000;
+}
+
+/* Executive Summary */
+.sc-executive-summary {
+  background: #f8f4f0;
+  border-left: 4px solid #800000;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.92rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+.sc-executive-summary p {
+  margin: 0;
+}
+
+/* Severity Bar */
+.sc-severity-bar {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.sc-sev {
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.sc-sev-critical {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.sc-sev-medium {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.sc-sev-small {
+  background: #e8eaf6;
+  color: #3949ab;
+}
+
+/* Severity border on correction items */
+.sc-sev-border-critical {
+  border-left-color: #c62828 !important;
+  border-left-width: 5px !important;
+}
+
+.sc-sev-border-medium {
+  border-left-color: #ff9800 !important;
+}
+
+.sc-sev-border-small {
+  border-left-color: #7986cb !important;
+}
+
+.sc-badge-critical {
+  display: inline-block;
+  padding: 1px 7px;
+  background: #c62828;
+  color: white;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.correction-main {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* Readability Bar */
+.sc-readability-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.sc-rb-item strong {
+  color: #333;
+}
+
+.sc-rb-warn {
+  color: #e65100;
+  font-weight: 600;
+}
+
+/* Readability Summary (no-errors view) */
+.sc-readability-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.sc-readability-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sc-score-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.sc-score-label {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.sc-readability-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #555;
+  text-align: left;
+}
+
+.sc-result-clean {
+  text-align: center;
+  padding: 30px;
+}
+
+.sc-success-icon {
+  font-size: 2.5rem;
+  color: #2e7d32;
+  margin-bottom: 8px;
+}
+
+/* Patterns & Tips */
+.sc-patterns {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: #fffde7;
+  border-radius: 8px;
+  border: 1px solid #fff9c4;
+}
+
+.sc-patterns h4 {
+  margin: 0 0 10px 0;
+  color: #f57f17;
+  font-size: 0.95rem;
+}
+
+.sc-pattern-item {
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+}
+
+.sc-pattern-item:last-child {
+  margin-bottom: 0;
+}
+
+.sc-pattern-tip {
+  color: #666;
+  margin-top: 3px;
+  padding-left: 12px;
+  border-left: 2px solid #fff9c4;
+  font-size: 0.84rem;
+}
+
+/* Copy Button */
+.sc-copy-btn {
+  padding: 10px 20px;
+  background: white;
+  color: #800000;
+  border: 2px solid #800000;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.sc-copy-btn:hover {
+  background: #800000;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .spell-check-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .spell-check-stats {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sc-level-selector {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sc-readability-bar {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sc-readability-summary {
+    flex-direction: column;
+  }
+
+  .spell-check-actions {
+    flex-direction: column;
+  }
+
+  .sc-severity-bar {
+    flex-wrap: wrap;
+  }
+}
