@@ -456,6 +456,114 @@ G) Pattern feedback
 
 ---
 
+## Review-Ergänzungen (Code-Analyse)
+
+Die folgenden 5 Punkte ergeben sich aus der Analyse des bestehenden Codes und ergänzen das Briefing um praxisrelevante Details.
+
+### A) LanguageTool Free API Limits
+
+**Problem:** Das Briefing erwähnt nicht, dass die LanguageTool Free API strikte Rate-Limits hat:
+- ~20 Requests/Minute
+- ~40 KB pro Request
+- Keine Garantie für Verfügbarkeit
+
+**Auswirkung auf L0:** `text-correct` mit L0 nutzt LanguageTool als Basis. Bei mehreren gleichzeitigen Nutzern werden die Limits schnell erreicht.
+
+**Empfehlung:**
+- **Kurzfristig:** LanguageTool Premium API-Key beschaffen (~19€/Monat für 100.000 Requests)
+- **Mittelfristig:** Self-Hosted LanguageTool-Instanz auf Railway (Docker-Image verfügbar: `erikvl87/languagetool`)
+- **Fallback:** Bei Rate-Limit-Fehler (HTTP 429) → nur AI-gestützte Korrektur ohne LanguageTool-Vorlauf
+
+### B) text-correct Routing: Hybridansatz
+
+**Problem:** Das Briefing definiert `/api/v2/text-correct` als Railway-Endpoint. Aber für L0 (rein LanguageTool) könnte die Netlify Function das direkt erledigen – wie `spell-check.js` es heute schon tut.
+
+**Empfehlung – Hybridansatz:**
+
+```
+L0 (Proofread):
+  → Netlify Function "text-correct.js"
+  → Ruft LanguageTool API direkt auf
+  → Berechnet Readability lokal (Formeln)
+  → Kein Railway-Roundtrip nötig
+  → Latenz: ~500ms statt ~1500ms
+
+L1-L3 (AI-gestützt):
+  → Netlify Function "text-correct.js"
+  → Ruft zuerst LanguageTool (Voranalyse)
+  → Leitet LanguageTool-Ergebnis + Text an Railway weiter
+  → Railway führt AI-Prompt aus
+  → Latenz: ~1500-3000ms
+```
+
+**Vorteil:** L0 ist sofort schneller und kostengünstiger. Railway wird nur bei AI-Bedarf belastet.
+
+### C) Readability: Lokale Berechnung statt Backend-Roundtrip
+
+**Problem:** Flesch-DE und Wiener Sachtextformel sind reine mathematische Formeln (Silben/Wörter/Sätze zählen). Ein Railway-Roundtrip ist dafür unnötig.
+
+**Flesch-DE Formel:**
+```
+FRE_DE = 180 - (avgSentenceLength) - (58.5 × avgSyllablesPerWord)
+```
+
+**Wiener Sachtextformel (1. Variante):**
+```
+WSTF = 0.1935 × MS + 0.1672 × SL + 0.1297 × IW - 0.0327 × ES - 0.875
+(MS = % Wörter ≥3 Silben, SL = avg Satzlänge, IW = % Wörter ≥6 Buchstaben, ES = % einsilbige Wörter)
+```
+
+**Empfehlung:**
+- **Option 1:** Readability als Netlify Function (kein Railway) → Latenz ~100ms
+- **Option 2:** Readability als Client-seitige Berechnung im Frontend → Latenz ~10ms
+- **Option 3:** Readability im `text-correct` Response einbetten (wie im Briefing definiert) → kein separater Endpoint nötig
+
+Option 3 ist empfohlen: Der `/api/v2/readability`-Endpoint bleibt als eigenständige Netlify Function für Fälle, wo nur die Lesbarkeit geprüft werden soll (ohne Korrektur). Aber die Berechnung selbst erfolgt lokal in der Function, nicht via Railway.
+
+### D) Bestehende Sicherheitslücken adressieren
+
+**Problem:** Die Code-Analyse hat folgende Schwachstellen im bestehenden Setup aufgedeckt, die bei den neuen Endpoints von Anfang an vermieden werden müssen:
+
+| Schwachstelle | Besteht in | Maßnahme für neue Endpoints |
+|---|---|---|
+| **Kein Rate-Limiting** | `spell-check.js` | Rate-Limit pro IP: 30 Req/Min für `text-correct`, 10 Req/Min für `text-improve` |
+| **CORS `*`** | Alle Netlify Functions | Explizite Origin-Whitelist: `achtung.live`, `*.achtung.live`, `localhost:*` |
+| **Kein Input-Length-Limit** | `spell-check.js` | Max 10.000 Zeichen für `text-correct`, 5.000 für `text-improve` |
+| **`script.js` umgeht Proxy** | Frontend direkt → LanguageTool | Neue Endpoints NUR über Proxy, keine direkten API-Calls im Frontend |
+| **Keine Fehler-Normalisierung** | Verschiedene Error-Formate | Einheitliches Error-Response-Format für alle v2-Endpoints |
+
+**Einheitliches Error-Response-Format:**
+```json
+{
+  "success": false,
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "Zu viele Anfragen. Bitte warte 30 Sekunden.",
+    "retryAfter": 30
+  }
+}
+```
+
+### E) Aufwand-Korrektur P0
+
+**Problem:** Die Schätzung P0 = 5-8 PT für `text-correct` mit L0+L1 zusammen ist etwas grob.
+
+**Differenzierte Schätzung:**
+
+| Teilaufgabe | Aufwand | Begründung |
+|---|---|---|
+| L0 (LanguageTool + Readability-Formeln) | 2-3 PT | Bestehender `spell-check.js` als Vorlage, Readability sind reine Formeln |
+| L1 (AI-Prompt-Integration) | 3-4 PT | Prompt-Engineering, Railway-Endpoint, Response-Mapping, Testfälle |
+| Netlify Proxy Function | 0.5 PT | Analog zu bestehenden Functions |
+| Error Handling + Rate Limiting | 1 PT | Einheitliches Format, IP-basiertes Limiting |
+| **Gesamt L0+L1** | **6.5-8.5 PT** | Passt zum oberen Bereich der Schätzung |
+
+**Empfehlung:** L0 und L1 als separate Sprints umsetzen:
+- **Sprint 1 (2-3 PT):** L0 live bringen → sofortiger Nutzen, kein AI-Kosten
+- **Sprint 2 (4-5.5 PT):** L1 nachrüsten → AI-Erweiterung mit höherem Aufwand
+
+---
+
 ## Zusammenfassung
 
 Das Frontend baut eine Weiche ein, die Nutzer zwischen **Datenschutz-Analyse** und **Textkorrektur** wählen lässt. Das Backend muss:
@@ -465,3 +573,11 @@ Das Frontend baut eine Weiche ein, die Nutzer zwischen **Datenschutz-Analyse** u
 3. Den DE-Referenz-Prompt (oben) als System-Prompt implementieren
 4. Lesbarkeitsmetriken berechnen (Flesch-DE, Wiener Sachtextformel)
 5. Später: AI-Rewrite für Stil (`text-improve`) und mehrsprachige Plugins
+
+### Ergänzte Empfehlungen aus der Code-Analyse:
+
+6. **LanguageTool Premium** oder Self-Hosted einplanen (Free API zu limitiert für Produktion)
+7. **Hybridansatz** beim Routing: L0 direkt in Netlify, L1+ über Railway
+8. **Readability lokal** berechnen (Netlify Function oder Client-seitig), nicht via Railway
+9. **Sicherheit** von Anfang an: Rate-Limiting, CORS-Whitelist, Input-Limits, einheitliche Fehler
+10. **L0 und L1 getrennt** ausrollen für schnelleren ersten Nutzen
