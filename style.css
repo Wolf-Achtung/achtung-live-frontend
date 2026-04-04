@@ -30,15 +30,15 @@ h1, h2, h3, h4, h5 {
 }
 
 header {
-  margin-top: 40px;
-  margin-bottom: 30px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .achtung-logo {
   color: #800000;
   font-weight: bold;
   font-size: 2.4em;
-  margin: 30px 0 8px 0;
+  margin: 10px 0 6px 0;
   text-align: center;
 }
 
@@ -1756,20 +1756,59 @@ input[type="submit"]:hover {
    Phase 3: Accessibility Toolbar
    ======================================== */
 
-.accessibility-toolbar {
+/* A11y Toggle Button (collapsed toolbar) */
+.a11y-toggle-btn {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #dee2e6;
+  background: #f8f9fa;
+  cursor: pointer;
+  z-index: 1002;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  padding: 8px 15px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.a11y-toggle-btn:hover,
+.a11y-toggle-btn.active {
+  background: #800000;
+  color: white;
+  border-color: #800000;
+}
+
+.a11y-toggle-icon {
+  font-size: 18px;
+}
+
+.accessibility-toolbar {
+  position: fixed;
+  top: 60px;
+  right: 12px;
+  left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 18px;
   background: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
   z-index: 1001;
-  flex-wrap: wrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  max-width: 320px;
+}
+
+.a11y-toolbar-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
 }
 
 .a11y-group {
@@ -1821,10 +1860,7 @@ input[type="submit"]:hover {
   font-size: 12px;
 }
 
-/* Adjust body padding for fixed toolbar */
-body {
-  padding-top: 50px;
-}
+/* No fixed toolbar padding needed - toolbar is now collapsible */
 
 /* Screen Reader Only */
 .sr-only {
@@ -2161,8 +2197,10 @@ body.simple-language .simple-lang {
 
 @media (max-width: 768px) {
   .accessibility-toolbar {
-    padding: 6px 10px;
-    gap: 8px;
+    padding: 10px 14px;
+    right: 8px;
+    top: 56px;
+    max-width: 280px;
   }
 
   .a11y-group {
@@ -2182,10 +2220,6 @@ body.simple-language .simple-lang {
     display: none;
   }
 
-  body {
-    padding-top: 45px;
-  }
-
   .live-warning {
     flex-direction: column;
     align-items: flex-start;
@@ -2199,15 +2233,15 @@ body.simple-language .simple-lang {
 
 @media (max-width: 480px) {
   .accessibility-toolbar {
-    justify-content: space-between;
+    max-width: calc(100vw - 24px);
+    right: 8px;
   }
 
-  .a11y-group:first-child {
-    order: 1;
-  }
-
-  body {
-    padding-top: 85px;
+  .a11y-toggle-btn {
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
   }
 }
 
@@ -7901,60 +7935,61 @@ body.simple-language .simple-lang {
    ======================================== */
 
 .mode-switch-section {
-  max-width: 700px;
-  margin: 0 auto 20px;
+  max-width: 800px;
+  margin: 10px auto 10px;
   padding: 0 20px;
   text-align: center;
 }
 
 .mode-switch-title {
-  font-size: 1.2em;
+  font-size: 1.4em;
   color: #0a2b59;
-  margin-bottom: 16px;
-  font-weight: 600;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 
 .mode-switch-cards {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   justify-content: center;
 }
 
 .mode-card {
   flex: 1;
-  max-width: 300px;
-  padding: 20px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
+  max-width: 340px;
+  padding: 30px 24px 26px;
+  border: 3px solid #e0e0e0;
+  border-radius: 16px;
   background: white;
   cursor: pointer;
   transition: all 0.25s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   text-align: center;
 }
 
 .mode-card:hover {
   border-color: #800000;
-  box-shadow: 0 4px 16px rgba(128, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(128, 0, 0, 0.12);
+  transform: translateY(-3px);
 }
 
 .mode-card.active {
   border-color: #800000;
   background: linear-gradient(135deg, #fdf5f5, #fff);
-  box-shadow: 0 4px 20px rgba(128, 0, 0, 0.15);
+  box-shadow: 0 6px 28px rgba(128, 0, 0, 0.18);
 }
 
 .mode-card-icon {
-  font-size: 2em;
+  font-size: 2.8em;
   display: block;
+  margin-bottom: 4px;
 }
 
 .mode-card-label {
-  font-size: 1.1em;
+  font-size: 1.25em;
   font-weight: 700;
   color: #0a2b59;
 }
@@ -7964,8 +7999,26 @@ body.simple-language .simple-lang {
 }
 
 .mode-card-desc {
-  font-size: 0.85em;
+  font-size: 0.9em;
   color: #666;
+  line-height: 1.4;
+}
+
+/* Help link under mode switch */
+.mode-help-link {
+  text-align: center;
+  margin: 12px auto 6px;
+  font-size: 0.88em;
+}
+
+.mode-help-link a {
+  color: #800000;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.mode-help-link a:hover {
+  text-decoration: underline;
 }
 
 /* ========================================
