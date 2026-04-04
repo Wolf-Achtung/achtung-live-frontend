@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="description" content="Erweiterte Datenschutz-Tools | achtung.live">
+ <meta name="robots" content="index,follow">
+ <meta name="theme-color" content="#800000">
+ <link rel="stylesheet" href="style.css">
+ <link rel="icon" type="image/x-icon" href="favicon.ico">
+ <title>Erweiterte Tools | achtung.live</title>
+</head>
+<body>
+
+<header role="banner">
+ <h1><a href="index.html" style="text-decoration:none;"><span class="achtung-logo">[achtung.live]</span></a></h1>
+ <p class="claim">Erweiterte Datenschutz-Tools</p>
+</header>
+
+<main class="main-content" role="main">
+ <!-- Tab Navigation -->
+ <div class="tab-nav" role="tablist" aria-label="Analyse-Modus wählen">
+ <button class="tab-btn active" data-tab="single" role="tab" aria-selected="true" aria-controls="singleTab" data-i18n="tabs.single">Einzeltext</button>
+ <button class="tab-btn" data-tab="batch" role="tab" aria-selected="false" aria-controls="batchTab" data-i18n="tabs.batch">Batch-Analyse</button>
+ <button class="tab-btn" data-tab="document" role="tab" aria-selected="false" aria-controls="documentTab" data-i18n="tabs.document">Dokument</button>
+ <button class="tab-btn" data-tab="predictive" role="tab" aria-selected="false" aria-controls="predictiveTab" data-i18n="tabs.predictive"> Predictive</button>
+ <button class="tab-btn" data-tab="footprint" role="tab" aria-selected="false" aria-controls="footprintTab" data-i18n="tabs.footprint"> Footprint</button>
+ <button class="tab-btn" data-tab="coach" role="tab" aria-selected="false" aria-controls="coachTab" data-i18n="tabs.coach"> Coach</button>
+ <button class="tab-btn" data-tab="policy" role="tab" aria-selected="false" aria-controls="policyTab" data-i18n="tabs.policy"> Policy</button>
+ <button class="tab-btn" data-tab="alerts" role="tab" aria-selected="false" aria-controls="alertsTab" data-i18n="tabs.alerts"> Alerts</button>
+ <button class="tab-btn" data-tab="templates" role="tab" aria-selected="false" aria-controls="templatesTab" data-i18n="tabs.templates"> Templates</button>
+ </div>
+
+ <!-- Single Text Tab -->
+ <div id="singleTab" class="tab-content active" role="tabpanel" aria-labelledby="single-tab">
+ <h2 id="formTitle" data-i18n="form.title">Jetzt live testen!</h2>
+ <p class="simple-lang form-description" id="formDescSimple" style="display:none;">
+ Schreibe deinen Text unten. Wir sagen dir, ob private Daten drin sind.
+ </p>
+ <form id="demoForm" aria-describedby="formTitle">
+ <label for="demoText" class="sr-only">Dein Text zur Prüfung</label>
+ <textarea id="demoText" placeholder="Schreibe hier deinen Text und lass ihn direkt überprüfen..." rows="6" required aria-label="Text eingeben zur Datenschutz-Prüfung"></textarea>
+
+ <!-- Live Preview (for real-time checking) -->
+ <div id="livePreview" class="live-preview" style="display:none;" role="status" aria-live="polite">
+ <div class="live-preview-header">
+ <span class="live-preview-title">Live-Vorschau</span>
+ </div>
+ <div id="livePreviewContent" class="live-preview-content"></div>
+ </div>
+
+ <!-- Kontext-Auswahl -->
+ <div class="context-selector">
+ <label for="contextSelect" data-i18n="form.contextLabel">Wo soll dieser Text verwendet werden?</label>
+ <select id="contextSelect" aria-describedby="contextHelp">
+ <option value="private" data-i18n="form.contexts.private">Privater Chat (1:1)</option>
+ <option value="whatsapp" data-i18n="form.contexts.whatsapp">WhatsApp Gruppe</option>
+ <option value="email" data-i18n="form.contexts.email">E-Mail</option>
+ <option value="linkedin" data-i18n="form.contexts.linkedin">LinkedIn / Beruflich</option>
+ <option value="public" data-i18n="form.contexts.public">Öffentlicher Post (Social Media)</option>
+ </select>
+ <span id="contextHelp" class="simple-lang context-help" style="display:none;">
+ Wähle aus, wo du den Text posten möchtest. Das hilft uns, besser zu prüfen.
+ </span>
+ </div>
+
+ <div class="datenschutz-hinweis">
+ <input type="checkbox" id="privacyPolicyDemo" required aria-describedby="privacyHelp">
+ <label for="privacyPolicyDemo"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
+ <span id="privacyHelp" class="simple-lang" style="display:none;">Du musst das ankreuzen, damit wir deinen Text prüfen dürfen.</span>
+ </div>
+ <div class="form-buttons">
+<button type="submit" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
+</div>
+ </form>
+
+ <!-- Risk Dashboard -->
+ <div id="riskDashboard" style="display:none;" role="region" aria-label="Analyse-Ergebnisse"></div>
+ </div>
+
+ <!-- Batch Analysis Tab -->
+ <div id="batchTab" class="tab-content" role="tabpanel" aria-labelledby="batch-tab">
+ <h2 data-i18n="batch.title">Batch-Analyse</h2>
+ <p class="batch-description" data-i18n="batch.description">Analysiere mehrere Texte gleichzeitig (max. 20 Texte)</p>
+ <p class="simple-lang batch-description-simple" style="display:none;">Prüfe viele Texte auf einmal. Maximal 20 Stück.</p>
+
+ <form id="batchForm">
+ <div class="batch-input-area">
+ <div class="batch-textarea-container">
+ <textarea id="batchTexts" placeholder="Füge mehrere Texte ein, getrennt durch eine Leerzeile (2x Enter)..." rows="8"></textarea>
+ <div class="batch-counter">
+ <span id="textCount">0</span> / 20 Texte
+ </div>
+ </div>
+
+ <div class="batch-divider">
+ <span>oder</span>
+ </div>
+
+ <div class="batch-upload-area" id="dropZone">
+ <div class="upload-icon"></div>
+ <div class="upload-text">Datei hierher ziehen</div>
+ <div class="upload-subtext">oder klicken zum Auswählen (.txt, .csv)</div>
+ <input type="file" id="batchFile" accept=".txt,.csv" hidden>
+ </div>
+ </div>
+
+ <div class="datenschutz-hinweis">
+ <input type="checkbox" id="privacyPolicyBatch" required>
+ <label for="privacyPolicyBatch"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
+ </div>
+
+ <button type="submit" id="batchSubmitBtn">
+ <span class="btn-text">Alle Texte analysieren</span>
+ <span class="btn-loading" style="display:none;">Analysiere...</span>
+ </button>
+ </form>
+
+ <!-- Batch Results -->
+ <div id="batchResults" style="display:none;"></div>
+ </div>
+
+ <!-- Document Analysis Tab -->
+ <div id="documentTab" class="tab-content" role="tabpanel" aria-labelledby="document-tab">
+ <h2 data-i18n="document.title">Dokument-Analyse</h2>
+ <p class="doc-description" data-i18n="document.description">Lade ein Bild oder PDF hoch zur Analyse</p>
+ <p class="simple-lang doc-description-simple" style="display:none;" data-i18n="document.descriptionSimple">Lade ein Foto oder PDF hoch. Wir prüfen den Text darin.</p>
+
+ <form id="documentForm">
+ <div class="document-upload-area" id="docDropZone">
+ <div class="upload-icon"></div>
+ <div class="upload-text" data-i18n="document.dropzone">Bild oder PDF hierher ziehen</div>
+ <div class="upload-subtext" data-i18n="document.dropzoneHint">oder klicken zum Auswählen (PNG, JPG, PDF)</div>
+ <div class="upload-maxsize" data-i18n="document.maxSize">Maximal 10 MB für Bilder, 25 MB für PDFs</div>
+ <input type="file" id="documentFile" accept="image/png,image/jpeg,image/webp,application/pdf" hidden>
+ </div>
+
+ <!-- Document Preview -->
+ <div id="documentPreview" class="document-preview" style="display:none;">
+ <div class="doc-preview-header">
+ <span class="doc-preview-name" id="docFileName"></span>
+ <span class="doc-preview-size" id="docFileSize"></span>
+ <button type="button" class="doc-remove-btn" onclick="removeDocument()">&times;</button>
+ </div>
+ <div class="doc-preview-content">
+ <img id="docPreviewImage" class="doc-preview-img" style="display:none;" alt="Dokument-Vorschau">
+ <div id="docPreviewPdf" class="doc-preview-pdf" style="display:none;">
+ <span class="pdf-text">PDF-Dokument</span>
+ </div>
+ </div>
+ </div>
+
+ <!-- OCR Options -->
+ <div class="ocr-options" id="ocrOptions" style="display:none;">
+ <label class="ocr-option">
+ <input type="checkbox" id="enableOcr" checked>
+ <span>Text erkennen (OCR)</span>
+ </label>
+ <label class="ocr-option">
+ <input type="checkbox" id="enableSentiment">
+ <span>Stimmungsanalyse</span>
+ </label>
+ </div>
+
+ <div class="datenschutz-hinweis">
+ <input type="checkbox" id="privacyPolicyDoc" required>
+ <label for="privacyPolicyDoc"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
+ </div>
+
+ <button type="submit" id="docSubmitBtn" disabled>
+ <span class="btn-text" data-i18n="form.submit">Dokument analysieren</span>
+ <span class="btn-loading" style="display:none;" data-i18n="document.analyzing">Analysiere...</span>
+ </button>
+ </form>
+
+ <!-- Document Results -->
+ <div id="documentResults" style="display:none;">
+ <div class="doc-results-container">
+ <!-- Extracted Text Section -->
+ <div class="doc-extracted-text" id="extractedTextSection" style="display:none;">
+ <div class="extracted-header">
+ <span class="extracted-title" data-i18n="document.extractedText">Erkannter Text</span>
+ <span class="extracted-confidence" id="ocrConfidence"></span>
+ </div>
+ <div class="extracted-content" id="extractedText"></div>
+ </div>
+
+ <!-- Sentiment Section -->
+ <div class="doc-sentiment" id="sentimentSection" style="display:none;">
+ <div class="sentiment-header" data-i18n="document.sentiment">Stimmung</div>
+ <div class="sentiment-result" id="sentimentResult"></div>
+ </div>
+
+ <!-- Risk Dashboard for Document -->
+ <div id="docRiskDashboard"></div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Predictive Privacy Tab (Phase 5) -->
+ <div id="predictiveTab" class="tab-content" role="tabpanel" aria-labelledby="predictive-tab">
+ <h2 data-i18n="predictive.title"> Predictive Privacy</h2>
+ <p class="predictive-description" data-i18n="predictive.description">Analysiere zukünftige Risiken deiner Daten</p>
+ <p class="simple-lang predictive-description-simple" style="display:none;" data-i18n="predictive.descriptionSimple">Wir zeigen dir, was in der Zukunft mit deinen Daten passieren könnte.</p>
+
+ <form id="predictiveForm">
+ <label for="predictiveText" class="sr-only">Text für Predictive Privacy Analyse</label>
+ <textarea id="predictiveText" placeholder="Schreibe hier deinen Text... Wir zeigen dir, wie identifizierbar du bist und was in Zukunft passieren könnte." rows="6" required></textarea>
+
+ <!-- Analysis Options -->
+ <div class="predictive-options">
+ <label class="predictive-option">
+ <input type="checkbox" id="optDeanon" checked>
+ <span class="option-text" data-i18n="predictive.optDeanon">Deanonymisierungs-Risiko</span>
+ </label>
+ <label class="predictive-option">
+ <input type="checkbox" id="optBreach" checked>
+ <span class="option-text" data-i18n="predictive.optBreach">Breach-Simulation</span>
+ </label>
+ <label class="predictive-option">
+ <input type="checkbox" id="optFuture" checked>
+ <span class="option-icon">⏳</span>
+ <span class="option-text" data-i18n="predictive.optFuture">Zukunfts-Risiko</span>
+ </label>
+ <label class="predictive-option">
+ <input type="checkbox" id="optCorrelation" checked>
+ <span class="option-text" data-i18n="predictive.optCorrelation">Korrelations-Angriffe</span>
+ </label>
+ </div>
+
+ <!-- Time Horizon Selector -->
+ <div class="time-horizon-selector">
+ <label data-i18n="predictive.timeHorizon">Zeithorizont:</label>
+ <div class="time-horizon-buttons">
+ <button type="button" class="time-btn active" data-years="1">1 Jahr</button>
+ <button type="button" class="time-btn" data-years="5">5 Jahre</button>
+ <button type="button" class="time-btn" data-years="10">10 Jahre</button>
+ </div>
+ </div>
+
+ <div class="datenschutz-hinweis">
+ <input type="checkbox" id="privacyPolicyPredictive" required>
+ <label for="privacyPolicyPredictive"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
+ </div>
+
+ <button type="submit" id="predictiveSubmitBtn">
+ <span class="btn-text" data-i18n="predictive.analyze"> Zukunft analysieren</span>
+ <span class="btn-loading" style="display:none;">Analysiere...</span>
+ </button>
+ </form>
+
+ <!-- Predictive Results -->
+ <div id="predictiveResults" style="display:none;">
+
+ <!-- Summary Card -->
+ <div class="predictive-summary-card" id="predictiveSummary">
+ <div class="summary-header">
+ <span class="summary-title" data-i18n="predictive.summaryTitle">Zusammenfassung</span>
+ </div>
+ <div class="summary-content">
+ <div class="summary-risk-badge" id="summaryRiskBadge"></div>
+ <div class="summary-text" id="summaryText"></div>
+ <div class="summary-quickfix" id="summaryQuickFix"></div>
+ </div>
+ </div>
+
+ <!-- Deanonymization Risk Section -->
+ <div class="predictive-section" id="deanonSection">
+ <div class="section-header">
+ <h3 data-i18n="predictive.deanonTitle">Deanonymisierungs-Risiko</h3>
+ </div>
+ <div class="deanon-content">
+ <!-- k-Anonymity Gauge -->
+ <div class="k-anonymity-gauge">
+ <div class="gauge-circle" id="kAnonGauge">
+ <svg viewBox="0 0 100 100">
+ <circle cx="50" cy="50" r="45" class="gauge-bg"/>
+ <circle cx="50" cy="50" r="45" class="gauge-fill" id="kAnonFill"/>
+ </svg>
+ <div class="gauge-value">
+ <span class="gauge-k" id="kAnonValue">k=?</span>
+ <span class="gauge-label" data-i18n="predictive.anonymity">Anonymität</span>
+ </div>
+ </div>
+ <div class="gauge-explanation" id="kAnonExplanation"></div>
+ </div>
+
+ <!-- Unique Data Points -->
+ <div class="unique-datapoints" id="uniqueDatapoints">
+ <h4 data-i18n="predictive.datapoints">Gefundene Datenpunkte</h4>
+ <div class="datapoints-list" id="datapointsList"></div>
+ </div>
+
+ <!-- Combined Risk -->
+ <div class="combined-risk" id="combinedRisk">
+ <div class="combined-risk-header">
+ <span class="combined-risk-score" id="combinedRiskScore"></span>
+ <span class="combined-risk-label" data-i18n="predictive.combinedRisk">Kombiniertes Risiko</span>
+ </div>
+ <div class="combined-risk-explanation" id="combinedRiskExplanation"></div>
+ <div class="combined-risk-recommendation" id="combinedRiskRecommendation"></div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Breach Simulation Section -->
+ <div class="predictive-section" id="breachSection">
+ <div class="section-header">
+ <h3 data-i18n="predictive.breachTitle">Breach-Simulation</h3>
+ </div>
+ <div class="breach-content">
+ <div class="breach-scenarios" id="breachScenarios"></div>
+ <div class="breach-overall" id="breachOverall">
+ <div class="breach-overall-score" id="breachOverallScore"></div>
+ <div class="breach-worst-case" id="breachWorstCase"></div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Future Risk Timeline Section -->
+ <div class="predictive-section" id="futureSection">
+ <div class="section-header">
+ <span class="section-icon">⏳</span>
+ <h3 data-i18n="predictive.futureTitle">Zukunfts-Risiko</h3>
+ </div>
+ <div class="future-content">
+ <!-- Interactive Timeline -->
+ <div class="future-timeline" id="futureTimeline">
+ <div class="timeline-track">
+ <div class="timeline-point now" data-year="0">
+ <span class="timeline-label">Jetzt</span>
+ <span class="timeline-score" id="scoreNow"></span>
+ </div>
+ <div class="timeline-point" data-year="1">
+ <span class="timeline-label">1 Jahr</span>
+ <span class="timeline-score" id="score1y"></span>
+ </div>
+ <div class="timeline-point" data-year="5">
+ <span class="timeline-label">5 Jahre</span>
+ <span class="timeline-score" id="score5y"></span>
+ </div>
+ <div class="timeline-point" data-year="10">
+ <span class="timeline-label">10 Jahre</span>
+ <span class="timeline-score" id="score10y"></span>
+ </div>
+ </div>
+ </div>
+
+ <!-- Future Threats -->
+ <div class="future-threats" id="futureThreats"></div>
+
+ <!-- Permanent Risks -->
+ <div class="permanent-risks" id="permanentRisks">
+ <h4 data-i18n="predictive.permanentRisks"> Dauerhafte Risiken</h4>
+ <div class="permanent-risks-list" id="permanentRisksList"></div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Correlation Attack Section -->
+ <div class="predictive-section" id="correlationSection">
+ <div class="section-header">
+ <h3 data-i18n="predictive.correlationTitle">Korrelations-Angriffe</h3>
+ </div>
+ <div class="correlation-content">
+ <div class="correlation-methods" id="correlationMethods"></div>
+ <div class="attack-surface" id="attackSurface">
+ <div class="attack-surface-score" id="attackSurfaceScore"></div>
+ <div class="attack-surface-weakest" id="attackSurfaceWeakest"></div>
+ <div class="attack-surface-recommendation" id="attackSurfaceRecommendation"></div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Privacy Lifespan -->
+ <div class="privacy-lifespan" id="privacyLifespan">
+ <span class="lifespan-text" id="lifespanText"></span>
+ </div>
+
+ </div>
+ </div>
+
+ <!-- Digital Footprint Scanner Tab (Phase 7) -->
+ <div id="footprintTab" class="tab-content" role="tabpanel" aria-labelledby="footprint-tab">
+ <h2 data-i18n="footprint.title"> Digital Footprint Scanner</h2>
+ <p class="footprint-description" data-i18n="footprint.description">Finde heraus, wo deine Daten im Internet auftauchen</p>
+ <p class="simple-lang footprint-description-simple" style="display:none;" data-i18n="footprint.descriptionSimple">Wir suchen nach deinen Daten im Internet und zeigen dir, wo sie sind.</p>
+
+ <form id="footprintForm">
+ <!-- Scan Type Selector -->
+ <div class="footprint-scan-type">
+ <label data-i18n="footprint.scanType">Scan-Typ:</label>
+ <div class="scan-type-buttons">
+ <button type="button" class="scan-type-btn active" data-type="quick">
+ <span class="scan-type-text">Quick-Scan</span>
+ </button>
+ <button type="button" class="scan-type-btn" data-type="full">
+ <span class="scan-type-text">Full-Scan</span>
+ </button>
+ </div>
+ </div>
+
+ <!-- Input Fields -->
+ <div class="footprint-inputs">
+ <div class="footprint-input-group">
+ <label for="footprintEmail">
+ <span data-i18n="footprint.email">E-Mail-Adresse</span>
+ <span class="required">*</span>
+ </label>
+ <input type="email" id="footprintEmail" placeholder="deine@email.de" required>
+ </div>
+
+ <div class="footprint-input-group">
+ <label for="footprintName">
+ <span data-i18n="footprint.name">Name (optional)</span>
+ </label>
+ <input type="text" id="footprintName" placeholder="Max Mustermann">
+ </div>
+
+ <div class="footprint-input-group">
+ <label for="footprintUsername">
+ <span class="input-icon">@</span>
+ <span data-i18n="footprint.username">Username (optional)</span>
+ </label>
+ <input type="text" id="footprintUsername" placeholder="maxmuster">
+ </div>
+
+ <div class="footprint-input-group collapsible" id="advancedInputs" style="display:none;">
+ <label for="footprintPhone">
+ <span data-i18n="footprint.phone">Telefon (optional)</span>
+ </label>
+ <input type="tel" id="footprintPhone" placeholder="+49 123 456789">
+ </div>
+ </div>
+
+ <button type="button" class="toggle-advanced-btn" onclick="toggleAdvancedInputs()">
+ <span class="toggle-icon"></span>
+ <span data-i18n="footprint.moreOptions">Weitere Optionen</span>
+ </button>
+
+ <!-- Scan Options -->
+ <div class="footprint-options">
+ <label class="footprint-option">
+ <input type="checkbox" id="optBreaches" checked>
+ <span class="option-text" data-i18n="footprint.optBreaches">Datenlecks prüfen</span>
+ </label>
+ <label class="footprint-option">
+ <input type="checkbox" id="optSocial" checked>
+ <span class="option-text" data-i18n="footprint.optSocial">Social Media scannen</span>
+ </label>
+ <label class="footprint-option">
+ <input type="checkbox" id="optDatabrokers" checked>
+ <span class="option-text" data-i18n="footprint.optDatabrokers">Data Broker prüfen</span>
+ </label>
+ <label class="footprint-option">
+ <input type="checkbox" id="optDarkweb">
+ <span class="option-text" data-i18n="footprint.optDarkweb">Dark Web (Premium)</span>
+ </label>
+ </div>
+
+ <div class="datenschutz-hinweis">
+ <input type="checkbox" id="privacyPolicyFootprint" required>
+ <label for="privacyPolicyFootprint"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
+ </div>
+
+ <button type="submit" id="footprintSubmitBtn">
+ <span class="btn-text" data-i18n="footprint.scan"> Footprint scannen</span>
+ <span class="btn-loading" style="display:none;">Scanne...</span>
+ </button>
+ </form>
+
+ <!-- Footprint Results -->
+ <div id="footprintResults" style="display:none;">
+
+ <!-- Summary Card -->
+ <div class="footprint-summary-card" id="footprintSummary">
+ <div class="summary-header">
+ <span class="summary-title" data-i18n="footprint.summaryTitle">Dein digitaler Fußabdruck</span>
+ </div>
+ <div class="summary-content">
+ <div class="footprint-risk-circle" id="footprintRiskCircle">
+ <svg viewBox="0 0 100 100">
+ <circle cx="50" cy="50" r="45" class="risk-bg"/>
+ <circle cx="50" cy="50" r="45" class="risk-fill" id="footprintRiskFill"/>
+ </svg>
+ <div class="risk-value">
+ <span class="risk-score" id="footprintRiskScore">--</span>
+ <span class="risk-label">Risiko</span>
+ </div>
+ </div>
+ <div class="summary-stats">
+ <div class="stat-item">
+ <span class="stat-value" id="statExposures">0</span>
+ <span class="stat-label" data-i18n="footprint.exposures">Fundstellen</span>
+ </div>
+ <div class="stat-item critical">
+ <span class="stat-value" id="statCritical">0</span>
+ <span class="stat-label" data-i18n="footprint.critical">Kritisch</span>
+ </div>
+ <div class="stat-item">
+ <span class="stat-value" id="statActions">0</span>
+ <span class="stat-label" data-i18n="footprint.actions">Aktionen nötig</span>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Breach Results Section -->
+ <div class="footprint-section" id="breachResultsSection" style="display:none;">
+ <div class="section-header collapsible" onclick="toggleSection('breachResultsContent')">
+ <h3 data-i18n="footprint.breachesTitle">Datenlecks</h3>
+ <span class="section-count" id="breachCount">0</span>
+ <span class="section-toggle"></span>
+ </div>
+ <div class="section-content" id="breachResultsContent">
+ <div class="breach-list" id="breachList"></div>
+ </div>
+ </div>
+
+ <!-- Social Media Section -->
+ <div class="footprint-section" id="socialResultsSection" style="display:none;">
+ <div class="section-header collapsible" onclick="toggleSection('socialResultsContent')">
+ <h3 data-i18n="footprint.socialTitle">Social Media Profile</h3>
+ <span class="section-count" id="socialCount">0</span>
+ <span class="section-toggle"></span>
+ </div>
+ <div class="section-content" id="socialResultsContent">
+ <div class="social-profiles-list" id="socialProfilesList"></div>
+ </div>
+ </div>
+
+ <!-- Data Brokers Section -->
+ <div class="footprint-section" id="databrokerResultsSection" style="display:none;">
+ <div class="section-header collapsible" onclick="toggleSection('databrokerResultsContent')">
+ <h3 data-i18n="footprint.databrokersTitle">Data Broker</h3>
+ <span class="section-count" id="databrokerCount">0</span>
+ <span class="section-toggle"></span>
+ </div>
+ <div class="section-content" id="databrokerResultsContent">
+ <div class="databroker-list" id="databrokerList"></div>
+ <div class="databroker-summary" id="databrokerSummary">
+ <div class="optout-progress">
+ <span class="progress-label" data-i18n="footprint.optoutProgress">Opt-out Fortschritt:</span>
+ <div class="progress-bar">
+ <div class="progress-fill" id="optoutProgressFill"></div>
+ </div>
+ <span class="progress-value" id="optoutProgressValue">0%</span>
+ </div>
+ <button type="button" class="bulk-optout-btn" id="bulkOptoutBtn" onclick="startBulkOptout()">
+ <span data-i18n="footprint.bulkOptout">Alle Opt-outs starten</span>
+ </button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Recommendations Section -->
+ <div class="footprint-section" id="recommendationsSection">
+ <div class="section-header">
+ <h3 data-i18n="footprint.recommendationsTitle">Empfehlungen</h3>
+ </div>
+ <div class="section-content">
+ <div class="recommendations-list" id="recommendationsList"></div>
+ </div>
+ </div>
+
+ <!-- Monitoring CTA -->
+ <div class="monitoring-cta" id="monitoringCta">
+ <div class="cta-icon"></div>
+ <div class="cta-content">
+ <h4 data-i18n="footprint.monitoringTitle">Kontinuierliches Monitoring</h4>
+ <p data-i18n="footprint.monitoringDesc">Werde sofort benachrichtigt, wenn deine Daten in neuen Leaks auftauchen.</p>
+ </div>
+ <button type="button" class="cta-btn" onclick="setupMonitoring()">
+ <span data-i18n="footprint.enableMonitoring">Aktivieren</span>
+ </button>
+ </div>
+
+ </div>
+ </div>
+
+ <!-- Smart Privacy Coach Tab (Phase 10) -->
+ <div id="coachTab" class="tab-content" role="tabpanel" aria-labelledby="coach-tab">
+ <h2 data-i18n="coach.title"> Smart Privacy Coach</h2>
+ <p class="coach-description" data-i18n="coach.description">Dein persönlicher KI-Assistent für Datenschutz-Fragen</p>
+
+ <div class="coach-container">
+ <!-- Chat Interface -->
+ <div class="coach-chat-container">
+ <div class="coach-chat-header">
+ <div class="coach-avatar"></div>
+ <div class="coach-info">
+ <span class="coach-name">Privacy Coach</span>
+ <span class="coach-status online">Online</span>
+ </div>
+ <button class="coach-menu-btn" onclick="toggleCoachMenu()" title="Menü">⋮</button>
+ </div>
+
+ <div class="coach-chat-messages" id="coachMessages">
+ <!-- Welcome message will be inserted here -->
+ </div>
+
+ <div class="coach-suggestions" id="coachSuggestions">
+ <!-- Quick suggestions will be inserted here -->
+ </div>
+
+ <form class="coach-input-form" id="coachInputForm">
+ <div class="coach-input-container">
+ <button type="button" class="coach-attach-btn" onclick="attachTextForAnalysis()" title="Text zur Analyse anhängen"></button>
+ <input type="text" id="coachInput" placeholder="Stelle eine Frage zum Datenschutz..." autocomplete="off">
+ <button type="submit" class="coach-send-btn" title="Senden">
+ </button>
+ </div>
+ </form>
+ </div>
+
+ <!-- Sidebar with Topics -->
+ <div class="coach-sidebar">
+ <div class="coach-sidebar-section">
+ <h4 data-i18n="coach.quickActions">Schnellaktionen</h4>
+ <div class="coach-quick-actions">
+ <button class="quick-action-btn" onclick="askCoach('Was sind personenbezogene Daten?')">
+ <span>Grundlagen lernen</span>
+ </button>
+ <button class="quick-action-btn" onclick="askCoach('Erkläre mir k-Anonymität einfach')">
+ <span>k-Anonymität</span>
+ </button>
+ <button class="quick-action-btn" onclick="askCoach('Wie erkenne ich Phishing?')">
+ <span>Phishing erkennen</span>
+ </button>
+ <button class="quick-action-btn" onclick="askCoach('Welche Daten sollte ich nie teilen?')">
+ <span>Risiko-Daten</span>
+ </button>
+ </div>
+ </div>
+
+ <div class="coach-sidebar-section">
+ <h4 data-i18n="coach.learnTopics">Lern-Themen</h4>
+ <div class="coach-topics-list" id="coachTopicsList">
+ <!-- Topics will be loaded dynamically -->
+ </div>
+ </div>
+
+ <div class="coach-sidebar-section">
+ <h4 data-i18n="coach.tipOfDay">Tipp des Tages</h4>
+ <div class="coach-daily-tip" id="coachDailyTip">
+ <div class="tip-icon"></div>
+ <div class="tip-content">
+ <p>Verwende für jeden Dienst ein einzigartiges Passwort. Ein Passwort-Manager hilft dabei!</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Privacy Policy Analyzer Tab (Phase 13) -->
+ <div id="policyTab" class="tab-content" role="tabpanel" aria-labelledby="policy-tab">
+ <h2 data-i18n="policy.title"> Privacy Policy Analyzer</h2>
+ <p class="policy-description" data-i18n="policy.description">Analysiere Datenschutzerklärungen und AGBs - einfach verständlich</p>
+
+ <div class="policy-container">
+ <!-- Input Section -->
+ <div class="policy-input-section">
+ <div class="policy-input-tabs">
+ <button type="button" class="policy-input-tab active" data-input="url" onclick="switchPolicyInput('url')">
+ <span>URL eingeben</span>
+ </button>
+ <button type="button" class="policy-input-tab" data-input="text" onclick="switchPolicyInput('text')">
+ <span>Text einfügen</span>
+ </button>
+ <button type="button" class="policy-input-tab" data-input="known" onclick="switchPolicyInput('known')">
+ <span>Bekannte Dienste</span>
+ </button>
+ </div>
+
+ <!-- URL Input -->
+ <div class="policy-input-content" id="policyUrlInput">
+ <form id="policyUrlForm">
+ <div class="url-input-group">
+ <span class="url-prefix">https://</span>
+ <input type="text" id="policyUrl" placeholder="example.com/privacy" autocomplete="off">
+ <button type="submit" class="analyze-btn">
+ <span class="btn-text">Analysieren</span>
+ <span class="btn-loading" style="display:none;">...</span>
+ </button>
+ </div>
+ <div class="popular-urls">
+ <span>Beliebt:</span>
+ <button type="button" onclick="setPolicyUrl('facebook.com/privacy')">Facebook</button>
+ <button type="button" onclick="setPolicyUrl('google.com/privacy')">Google</button>
+ <button type="button" onclick="setPolicyUrl('amazon.de/privacy')">Amazon</button>
+ <button type="button" onclick="setPolicyUrl('tiktok.com/privacy')">TikTok</button>
+ </div>
+ </form>
+ </div>
+
+ <!-- Text Input -->
+ <div class="policy-input-content" id="policyTextInput" style="display:none;">
+ <form id="policyTextForm">
+ <textarea id="policyText" placeholder="Füge hier die Datenschutzerklärung ein..." rows="8"></textarea>
+ <button type="submit" class="analyze-btn">
+ <span class="btn-text">Text analysieren</span>
+ <span class="btn-loading" style="display:none;">...</span>
+ </button>
+ </form>
+ </div>
+
+ <!-- Known Services -->
+ <div class="policy-input-content" id="policyKnownInput" style="display:none;">
+ <div class="known-services-grid" id="knownServicesGrid">
+ <!-- Services will be loaded dynamically -->
+ </div>
+ </div>
+ </div>
+
+ <!-- Results Section -->
+ <div class="policy-results" id="policyResults" style="display:none;">
+
+ <!-- Score Card -->
+ <div class="policy-score-card" id="policyScoreCard">
+ <div class="score-circle">
+ <svg viewBox="0 0 100 100">
+ <circle cx="50" cy="50" r="45" class="score-bg"/>
+ <circle cx="50" cy="50" r="45" class="score-fill" id="policyScoreFill"/>
+ </svg>
+ <div class="score-content">
+ <span class="score-value" id="policyScoreValue">--</span>
+ <span class="score-grade" id="policyScoreGrade">-</span>
+ </div>
+ </div>
+ <div class="score-details">
+ <h3 id="policyServiceName">Datenschutz-Bewertung</h3>
+ <p class="score-label" id="policyScoreLabel">--</p>
+ <p class="score-summary" id="policyScoreSummary"></p>
+ </div>
+ </div>
+
+ <!-- TLDR Summary -->
+ <div class="policy-tldr" id="policyTldr">
+ <div class="tldr-header">
+ <h4>Zusammenfassung (TL;DR)</h4>
+ </div>
+ <p id="policyTldrText"></p>
+ </div>
+
+ <!-- Key Points -->
+ <div class="policy-section" id="policyKeyPoints">
+ <div class="section-header">
+ <h4>Wichtige Punkte</h4>
+ </div>
+ <div class="key-points-list" id="keyPointsList"></div>
+ </div>
+
+ <!-- Red Flags -->
+ <div class="policy-section" id="policyRedFlags" style="display:none;">
+ <div class="section-header warning">
+ <h4>Warnsignale</h4>
+ </div>
+ <div class="red-flags-list" id="redFlagsList"></div>
+ </div>
+
+ <!-- Score Breakdown -->
+ <div class="policy-section" id="policyBreakdown">
+ <div class="section-header collapsible" onclick="togglePolicySection('breakdownContent')">
+ <h4>Score-Aufschlüsselung</h4>
+ <span class="section-toggle"></span>
+ </div>
+ <div class="section-content" id="breakdownContent">
+ <div class="breakdown-grid" id="breakdownGrid"></div>
+ </div>
+ </div>
+
+ <!-- Data Collection -->
+ <div class="policy-section" id="policyDataCollection">
+ <div class="section-header collapsible" onclick="togglePolicySection('dataCollectionContent')">
+ <h4>Gesammelte Daten</h4>
+ <span class="section-toggle"></span>
+ </div>
+ <div class="section-content" id="dataCollectionContent" style="display:none;">
+ <div class="data-collection-list" id="dataCollectionList"></div>
+ </div>
+ </div>
+
+ <!-- Third Parties -->
+ <div class="policy-section" id="policyThirdParties">
+ <div class="section-header collapsible" onclick="togglePolicySection('thirdPartiesContent')">
+ <h4>Datenweitergabe</h4>
+ <span class="section-count" id="thirdPartyCount">0</span>
+ <span class="section-toggle"></span>
+ </div>
+ <div class="section-content" id="thirdPartiesContent" style="display:none;">
+ <div class="third-parties-list" id="thirdPartiesList"></div>
+ </div>
+ </div>
+
+ <!-- Recommendations -->
+ <div class="policy-section" id="policyRecommendations">
+ <div class="section-header">
+ <h4>Empfehlungen</h4>
+ </div>
+ <div class="recommendations-list" id="policyRecommendationsList"></div>
+ </div>
+
+ <!-- Compare CTA -->
+ <div class="policy-compare-cta">
+ <div class="cta-text">
+ <strong>Bessere Alternativen?</strong>
+ <span id="betterAlternativesText">Vergleiche mit datenschutzfreundlicheren Diensten</span>
+ </div>
+ <button type="button" class="cta-btn" onclick="showBetterAlternatives()">
+ Vergleichen
+ </button>
+ </div>
+
+ </div>
+ </div>
+ </div>
+
+ <!-- Data Breach Alerts Tab (Phase 9) -->
+ <div id="alertsTab" class="tab-content" role="tabpanel" aria-labelledby="alerts-tab">
+ <h2 data-i18n="alerts.title"> Data Breach Alerts</h2>
+ <p class="alerts-description" data-i18n="alerts.description">Werde benachrichtigt, wenn deine E-Mail in einem Datenleck auftaucht</p>
+
+ <div class="alerts-container">
+ <!-- Subscribe Section -->
+ <div class="alerts-subscribe-section">
+ <div class="subscribe-card">
+ <div class="subscribe-icon"></div>
+ <h3>Monitoring aktivieren</h3>
+ <p>Erhalte sofortige Benachrichtigungen bei neuen Datenlecks</p>
+ <form id="alertsSubscribeForm" class="subscribe-form">
+ <div class="input-group">
+ <input type="email" id="alertsEmail" placeholder="deine@email.de" required>
+ <button type="submit" class="subscribe-btn">
+ <span class="btn-text">Überwachen</span>
+ <span class="btn-loading" style="display:none;">...</span>
+ </button>
+ </div>
+ <div class="subscribe-options">
+ <label class="checkbox-label">
+ <input type="checkbox" id="alertsInstant" checked>
+ <span>Sofort-Benachrichtigung</span>
+ </label>
+ <label class="checkbox-label">
+ <input type="checkbox" id="alertsWeekly">
+ <span>Wöchentliche Zusammenfassung</span>
+ </label>
+ </div>
+ </form>
+ <div id="alertsSubscribeResult" class="subscribe-result" style="display:none;"></div>
+ </div>
+
+ <!-- Status Check -->
+ <div class="status-check-card">
+ <h4>Status prüfen</h4>
+ <form id="alertsStatusForm" class="status-form">
+ <input type="email" id="alertsStatusEmail" placeholder="E-Mail prüfen...">
+ <button type="submit" class="status-btn">Prüfen</button>
+ </form>
+ <div id="alertsStatusResult" class="status-result" style="display:none;"></div>
+ </div>
+ </div>
+
+ <!-- Recent Breaches Section -->
+ <div class="recent-breaches-section">
+ <div class="section-header">
+ <h3> Aktuelle Datenlecks</h3>
+ <span class="last-updated" id="breachesLastUpdated">Lädt...</span>
+ </div>
+ <div class="breaches-stats">
+ <div class="stat-item">
+ <span class="stat-value" id="breachesThisMonth">--</span>
+ <span class="stat-label">Lecks diesen Monat</span>
+ </div>
+ <div class="stat-item">
+ <span class="stat-value" id="breachesAffectedUsers">--</span>
+ <span class="stat-label">Betroffene Nutzer</span>
+ </div>
+ </div>
+ <div class="breaches-list" id="recentBreachesList">
+ <div class="loading-placeholder">Lade aktuelle Datenlecks...</div>
+ </div>
+ </div>
+
+ <!-- How It Works -->
+ <div class="alerts-how-it-works">
+ <h4>So funktioniert's</h4>
+ <div class="steps-grid">
+ <div class="step-item">
+ <span class="step-number">1</span>
+ <span class="step-text">E-Mail registrieren</span>
+ </div>
+ <div class="step-item">
+ <span class="step-number">2</span>
+ <span class="step-text">Bestätigen</span>
+ </div>
+ <div class="step-item">
+ <span class="step-number">3</span>
+ <span class="step-text">24/7 Monitoring</span>
+ </div>
+ <div class="step-item">
+ <span class="step-number">4</span>
+ <span class="step-text">Sofort-Alert</span>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Privacy Templates Tab (Phase 11) -->
+ <div id="templatesTab" class="tab-content" role="tabpanel" aria-labelledby="templates-tab">
+ <h2 data-i18n="templates.title"> Privacy Templates</h2>
+ <p class="templates-description" data-i18n="templates.description">Sichere Textvorlagen für Social Media, Bewerbungen und mehr</p>
+
+ <div class="templates-container">
+ <!-- Search and Actions Bar -->
+ <div class="templates-toolbar">
+ <div class="search-container">
+ <input type="text" id="templatesSearchInput" placeholder="Templates suchen..." autocomplete="off">
+ <div id="templatesSearchResults" class="search-results-dropdown" style="display:none;"></div>
+ </div>
+ <button class="gdpr-generator-btn" onclick="openGdprGenerator()">
+ <span>DSGVO-Generator</span>
+ </button>
+ </div>
+
+ <!-- Categories -->
+ <div class="templates-categories" id="templatesCategoriesGrid">
+ <div class="loading-placeholder">Lade Kategorien...</div>
+ </div>
+
+ <!-- Templates Browser -->
+ <div class="templates-browser" id="templatesBrowser" style="display:none;">
+ <div class="browser-header">
+ <button class="back-btn" onclick="showTemplateCategories()">Zurück</button>
+ <h3 id="templatesCategoryTitle">Kategorie</h3>
+ </div>
+ <div class="templates-list" id="templatesList"></div>
+ </div>
+
+ <!-- Template Detail -->
+ <div class="template-detail" id="templateDetail" style="display:none;">
+ <div class="detail-header">
+ <button class="back-btn" onclick="backToTemplatesList()">Zurück</button>
+ <h3 id="templateDetailTitle">Template</h3>
+ <div class="privacy-badge" id="templatePrivacyBadge">
+ <span class="badge-score">--</span>
+ <span class="badge-label">Privacy Score</span>
+ </div>
+ </div>
+
+ <!-- Variants -->
+ <div class="template-variants" id="templateVariants"></div>
+
+ <!-- Customizer -->
+ <div class="template-customizer" id="templateCustomizer" style="display:none;">
+ <h4>Anpassen</h4>
+ <div class="customizer-fields" id="customizerFields"></div>
+ </div>
+
+ <!-- Preview -->
+ <div class="template-preview">
+ <h4>Vorschau</h4>
+ <div class="preview-content" id="templatePreviewContent"></div>
+ <button class="copy-btn" onclick="copyTemplateToClipboard()">
+ <span> Kopieren</span>
+ </button>
+ </div>
+
+ <!-- Tips -->
+ <div class="template-tips" id="templateTips"></div>
+ </div>
+
+ <!-- Text Analyzer -->
+ <div class="templates-analyzer">
+ <div class="analyzer-header">
+ <h4> Eigenen Text prüfen</h4>
+ <p>Lass deinen Text auf Datenschutz-Risiken analysieren</p>
+ </div>
+ <form id="templatesAnalyzeForm" class="analyzer-form">
+ <textarea id="templatesAnalyzeText" placeholder="Füge deinen Text ein, z.B. deine Social Media Bio..." rows="4"></textarea>
+ <div class="analyzer-context">
+ <label>Kontext:</label>
+ <select id="templatesAnalyzeContext">
+ <option value="social_media_bio">Social Media Bio</option>
+ <option value="job_application">Bewerbung</option>
+ <option value="online_form">Online-Formular</option>
+ <option value="email" data-i18n="form.contexts.email">E-Mail</option>
+ </select>
+ </div>
+ <button type="submit" class="analyze-btn">Analysieren</button>
+ </form>
+ <div id="templatesAnalyzeResult" class="analyze-result" style="display:none;"></div>
+ </div>
+ </div>
+ </div>
+
+ <div style="text-align:center; margin-top:40px;">
+ <button onclick="openModal('caseModal')" data-i18n="cases.viewExamples">Fallbeispiele ansehen</button>
+ </div>
+ </main>
+</main>
+
+<!-- Popup für Datenschutz (needed for the consent links) -->
+<div id="datenschutzModal" class="modal">
+ <div class="modal-content">
+ <span class="close" onclick="closeModal('datenschutzModal')">&times;</span>
+ <h2>Datenschutzerklaerung</h2>
+ <p>Deine Texte werden nur zur Analyse verarbeitet und nicht gespeichert. Keine Weitergabe an Dritte. DSGVO-konform.</p>
+ <p><a href="datenschutz.html">Vollstaendige Datenschutzerklaerung lesen</a></p>
+ </div>
+</div>
+
+<footer class="site-footer">
+ <div class="europe">Aus Europa. Fuer Alle.</div>
+ <div class="schutztext">
+ [<span style="color: #800000;">achtung.live</span>] schuetzt, was zaehlt: unsere digitale Kommunikation. <br> In Echtzeit. Ohne Tracking. DSGVO & EU AI-Act-konform.
+ </div>
+ <nav class="footer-nav">
+ <a href="index.html">Startseite</a> &bull;
+ <a href="info.html">Ueber uns</a> &bull;
+ <a href="gefahr.html">Risiken</a> &bull;
+ <a href="datenschutz.html">Datenschutz</a> &bull;
+ <a href="impressum.html">Impressum</a> &bull;
+ <a href="kontakt.html">Kontakt</a>
+ </nav>
+ <div class="copyright">&copy; 2026 achtung.live</div>
+</footer>
+
+<!-- Scripts from index.html that the tabs need -->
+<script src="auth.js"></script>
+<script>
+ // Minimal script for tools page
+ const API_BASE = "/.netlify/functions";
+ const API_ANALYZE_URL = API_BASE + "/analyze";
+ const API_REWRITE_URL = API_BASE + "/rewrite";
+ const API_BATCH_URL = API_BASE + "/analyze-batch";
+ const API_HEALTH_URL = API_BASE + "/health";
+ const API_SPELL_CHECK_URL = API_BASE + "/spell-check";
+
+ // Modal functions
+ function openModal(id) {
+  const m = document.getElementById(id);
+  if (m) m.style.display = 'block';
+ }
+ function closeModal(id) {
+  const m = document.getElementById(id);
+  if (m) m.style.display = 'none';
+ }
+
+ // Tab navigation
+ document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+   btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(function(b) {
+     b.classList.remove('active');
+     b.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-content').forEach(function(c) {
+     c.classList.remove('active');
+    });
+    this.classList.add('active');
+    this.setAttribute('aria-selected', 'true');
+    var tabId = this.dataset.tab + 'Tab';
+    var tab = document.getElementById(tabId);
+    if (tab) tab.classList.add('active');
+   });
+  });
+ });
+
+ // Helper functions
+ function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ }
+</script>
+
+</body>
+</html>
