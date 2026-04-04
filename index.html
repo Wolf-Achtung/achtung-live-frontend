@@ -93,13 +93,13 @@
  </header>
 
  <!-- Modus-Weiche: Datenschutz vs. Textkorrektur -->
- <div class="mode-switch-section" role="navigation" aria-label="Modus waehlen">
- <h2 class="mode-switch-title">Was moechtest du pruefen?</h2>
+ <div class="mode-switch-section" role="navigation" aria-label="Modus wählen">
+ <h2 class="mode-switch-title">Was möchtest du prüfen?</h2>
  <div class="mode-switch-cards">
   <button class="mode-card active" id="modePrivacy" onclick="switchMode('privacy')" aria-pressed="true">
    <span class="mode-card-icon">&#128274;</span>
    <span class="mode-card-label">Datenschutz-Analyse</span>
-   <span class="mode-card-desc">Texte auf sensible Daten pruefen</span>
+   <span class="mode-card-desc">Texte auf sensible Daten prüfen</span>
   </button>
   <button class="mode-card" id="modeTextCorrect" onclick="switchMode('textcorrect')" aria-pressed="false">
    <span class="mode-card-icon">&#9998;</span>
@@ -111,7 +111,7 @@
 
  <!-- Hilfe-Link (kompakt, unter der Weiche) -->
  <div class="mode-help-link" id="modeHelpLink">
-  <a href="assistent.html">Unsicher? Unser Schutz-Assistent hilft dir Schritt fuer Schritt &#8594;</a>
+  <a href="assistent.html">Unsicher? Unser Schutz-Assistent hilft dir Schritt für Schritt &#8594;</a>
  </div>
 
  <!-- ========================================
@@ -129,7 +129,7 @@
  <!-- Tab: Textkorrektur (text-correct) -->
  <div id="tcCorrectTab" class="tc-tab-content active" role="tabpanel">
   <h2>Professionelle Textkorrektur</h2>
-  <p class="tc-description">Pruefe deinen Text auf Rechtschreibung, Grammatik, Zeichensetzung und Stil nach dem Amtlichen Regelwerk.</p>
+  <p class="tc-description">Prüfe deinen Text auf Rechtschreibung, Grammatik, Zeichensetzung und Stil nach dem Amtlichen Regelwerk.</p>
 
   <form id="tcCorrectForm" onsubmit="return false;">
    <label for="tcText" class="sr-only">Text zur Korrektur</label>
@@ -139,7 +139,7 @@
    <div class="tc-upload-area" id="tcDropZone">
     <div class="tc-upload-content">
      <span class="tc-upload-icon">&#128196;</span>
-     <span class="tc-upload-text">Datei hier ablegen oder <label for="tcFileInput" class="tc-upload-link">auswaehlen</label></span>
+     <span class="tc-upload-text">Datei hier ablegen oder <label for="tcFileInput" class="tc-upload-link">auswählen</label></span>
      <span class="tc-upload-hint">.txt, .md, .rtf, .pdf (max. 10.000 Zeichen)</span>
     </div>
     <input type="file" id="tcFileInput" accept=".txt,.md,.rtf,.pdf,.doc,.docx" hidden>
@@ -156,82 +156,92 @@
     <div class="tc-option-group">
      <label class="tc-option-label">Korrektur-Level:</label>
      <div class="tc-level-buttons">
-      <button type="button" class="tc-level-btn active" data-level="L0" title="Orthografie, Grammatik, Zeichensetzung, Typografie">
+      <button type="button" class="tc-level-btn active" data-level="L0" title="Rechtschreibung, Grammatik, Zeichensetzung">
        <span class="tc-level-name">L0</span>
-       <span class="tc-level-desc">Proofread</span>
+       <span class="tc-level-desc">Grundkorrektur</span>
       </button>
-      <button type="button" class="tc-level-btn" data-level="L1" title="+ Redundanzen entfernen, kleine Glaettungen">
+      <button type="button" class="tc-level-btn" data-level="L1" title="Zusätzlich: Redundanzen entfernen, sprachliche Glättungen">
        <span class="tc-level-name">L1</span>
        <span class="tc-level-desc">Klarheit</span>
       </button>
-      <button type="button" class="tc-level-btn" data-level="L2" title="+ Satzbau-Optimierung, Schachtelsaetze aufloesen">
+      <button type="button" class="tc-level-btn" data-level="L2" title="Zusätzlich: Satzbau verbessern, lange Sätze kürzen">
        <span class="tc-level-name">L2</span>
-       <span class="tc-level-desc">Line Edit</span>
+       <span class="tc-level-desc">Feinschliff</span>
       </button>
-      <button type="button" class="tc-level-btn" data-level="L3" title="+ Terminologie, Style Sheet, Strukturvorschlaege">
+      <button type="button" class="tc-level-btn" data-level="L3" title="Zusätzlich: Terminologie, Stil-Konsistenz, Strukturvorschläge">
        <span class="tc-level-name">L3</span>
-       <span class="tc-level-desc">Copyedit</span>
+       <span class="tc-level-desc">Profi-Lektorat</span>
       </button>
      </div>
     </div>
 
     <div class="tc-option-group">
-     <label class="tc-option-label">Sprachvariante:</label>
+     <label class="tc-option-label">Sprache:</label>
      <select id="tcVariant" class="tc-select">
       <option value="de-DE">Deutsch (DE)</option>
       <option value="de-AT">Deutsch (AT)</option>
       <option value="de-CH">Deutsch (CH)</option>
       <option value="en-US">English (US)</option>
       <option value="en-GB">English (GB)</option>
-      <option value="fr">Francais</option>
-      <option value="es">Espanol</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
       <option value="it">Italiano</option>
-     </select>
-    </div>
-
-    <div class="tc-option-group">
-     <label class="tc-option-label">Gender-Option:</label>
-     <select id="tcGender" class="tc-select">
-      <option value="G0">G0 - So lassen wie im Text</option>
-      <option value="G1" selected>G1 - Neutralisieren</option>
-      <option value="G2">G2 - Doppelnennung</option>
-      <option value="G3">G3 - Wortbinnenzeichen</option>
-     </select>
-    </div>
-
-    <div class="tc-option-group">
-     <label class="tc-option-label">Ausgabe-Modus:</label>
-     <select id="tcOutput" class="tc-select">
-      <option value="O1">O1 - Nur bereinigter Text</option>
-      <option value="O2" selected>O2 - Text + Aenderungen markiert</option>
-      <option value="O3">O3 - Text + Aenderungen + Rueckfragen</option>
-     </select>
-    </div>
-
-    <div class="tc-option-group">
-     <label class="tc-option-label">Register:</label>
-     <select id="tcRegister" class="tc-select">
-      <option value="business">Geschaeftlich</option>
-      <option value="wissenschaft">Wissenschaftlich</option>
-      <option value="behoerdlich">Behoerdlich</option>
-      <option value="marketing">Marketing</option>
-      <option value="kreativ">Kreativ</option>
-      <option value="neutral" selected>Neutral</option>
-     </select>
-    </div>
-
-    <div class="tc-option-group">
-     <label class="tc-option-label">Strenge:</label>
-     <select id="tcStrictness" class="tc-select">
-      <option value="low">Tolerant</option>
-      <option value="medium" selected>Mittel</option>
-      <option value="high">Streng</option>
      </select>
     </div>
    </div>
 
+   <!-- Erweiterte Einstellungen (eingeklappt) -->
+   <div class="tc-advanced-toggle">
+    <button type="button" class="tc-advanced-btn" onclick="toggleTcAdvanced()" id="tcAdvancedBtn">
+     <span class="tc-advanced-icon">&#9662;</span> Erweiterte Einstellungen
+    </button>
+   </div>
+   <div class="tc-advanced-options" id="tcAdvancedOptions" style="display:none;">
+    <div class="tc-options-grid">
+    <div class="tc-option-group">
+     <label class="tc-option-label" title="Wie soll gegendert werden?">Gendern:</label>
+     <select id="tcGender" class="tc-select">
+      <option value="G0">Nicht ändern</option>
+      <option value="G1" selected>Geschlechtsneutral</option>
+      <option value="G2">Doppelnennung (Leserinnen und Leser)</option>
+      <option value="G3">Genderstern / Doppelpunkt</option>
+     </select>
+    </div>
+
+    <div class="tc-option-group">
+     <label class="tc-option-label" title="Was soll angezeigt werden?">Ergebnis-Anzeige:</label>
+     <select id="tcOutput" class="tc-select">
+      <option value="O1">Nur korrigierten Text</option>
+      <option value="O2" selected>Text mit markierten Änderungen</option>
+      <option value="O3">Text + Änderungen + Rückfragen</option>
+     </select>
+    </div>
+
+    <div class="tc-option-group">
+     <label class="tc-option-label" title="Für welchen Zweck ist der Text?">Textart:</label>
+     <select id="tcRegister" class="tc-select">
+      <option value="neutral" selected>Allgemein</option>
+      <option value="business">Geschäftlich</option>
+      <option value="wissenschaft">Wissenschaftlich</option>
+      <option value="behoerdlich">Behördlich</option>
+      <option value="marketing">Marketing</option>
+      <option value="kreativ">Kreativ</option>
+     </select>
+    </div>
+
+    <div class="tc-option-group">
+     <label class="tc-option-label" title="Wie streng soll korrigiert werden?">Strenge:</label>
+     <select id="tcStrictness" class="tc-select">
+      <option value="low">Tolerant – nur klare Fehler</option>
+      <option value="medium" selected>Mittel – Empfehlungen</option>
+      <option value="high">Streng – alle Verbesserungen</option>
+     </select>
+    </div>
+    </div>
+   </div>
+
    <div class="tc-submit-row">
-    <button type="button" class="tc-submit-btn" onclick="runTextCorrection()">Text pruefen</button>
+    <button type="button" class="tc-submit-btn" onclick="runTextCorrection()">Text prüfen</button>
    </div>
   </form>
 
@@ -251,10 +261,10 @@
 
    <!-- Mode Selector -->
    <div class="tc-mode-grid">
-    <button type="button" class="tc-mode-btn active" data-mode="professional" title="Geschaeftstauglich optimieren">
+    <button type="button" class="tc-mode-btn active" data-mode="professional" title="Geschäftstauglich optimieren">
      <span class="tc-mode-icon">&#128188;</span>
      <span class="tc-mode-name">Professionell</span>
-     <span class="tc-mode-desc">Geschaeftstauglich</span>
+     <span class="tc-mode-desc">Geschäftstauglich</span>
     </button>
     <button type="button" class="tc-mode-btn" data-mode="formal" title="Formeller/professioneller umformulieren">
      <span class="tc-mode-icon">&#127891;</span>
@@ -264,12 +274,12 @@
     <button type="button" class="tc-mode-btn" data-mode="simple" title="Einfachere Sprache, Ziel A2/B1">
      <span class="tc-mode-icon">&#128218;</span>
      <span class="tc-mode-name">Einfach</span>
-     <span class="tc-mode-desc">Leicht verstaendlich</span>
+     <span class="tc-mode-desc">Leicht verständlich</span>
     </button>
-    <button type="button" class="tc-mode-btn" data-mode="shorter" title="Kuerzer und praegnanter">
+    <button type="button" class="tc-mode-btn" data-mode="shorter" title="Kürzer und prägnanter">
      <span class="tc-mode-icon">&#9986;</span>
-     <span class="tc-mode-name">Kuerzer</span>
-     <span class="tc-mode-desc">Praegnant &amp; kompakt</span>
+     <span class="tc-mode-name">Kürzer</span>
+     <span class="tc-mode-desc">Prägnant &amp; kompakt</span>
     </button>
     <button type="button" class="tc-mode-btn" data-mode="academic" title="Wissenschaftlicher Stil">
      <span class="tc-mode-icon">&#127979;</span>
@@ -303,7 +313,7 @@
    <div class="tc-char-count"><span id="tcReadCharCount">0</span> / 50.000 Zeichen</div>
 
    <div class="tc-submit-row">
-    <button type="button" class="tc-submit-btn" onclick="runReadability()">Lesbarkeit pruefen</button>
+    <button type="button" class="tc-submit-btn" onclick="runReadability()">Lesbarkeit prüfen</button>
    </div>
   </form>
 
@@ -319,13 +329,13 @@
 
  <div id="liveCheckIndicator" class="live-check-indicator" style="display:none;" role="status" aria-live="polite">
  <span class="live-dot"></span>
- <span class="live-text">Live-Pruefung aktiv</span>
+ <span class="live-text">Live-Prüfung aktiv</span>
  </div>
 
- <h2 id="formTitle" data-i18n="form.title">Text auf sensible Daten pruefen</h2>
+ <h2 id="formTitle" data-i18n="form.title">Text auf sensible Daten prüfen</h2>
  <form id="demoForm" aria-describedby="formTitle">
- <label for="demoText" class="sr-only">Dein Text zur Pruefung</label>
- <textarea id="demoText" placeholder="Schreibe oder kopiere deinen Text hier hinein..." rows="6" required aria-label="Text eingeben zur Datenschutz-Pruefung"></textarea>
+ <label for="demoText" class="sr-only">Dein Text zur Prüfung</label>
+ <textarea id="demoText" placeholder="Schreibe oder kopiere deinen Text hier hinein..." rows="6" required aria-label="Text eingeben zur Datenschutz-Prüfung"></textarea>
 
  <!-- Live Preview (for real-time checking) -->
  <div id="livePreview" class="live-preview" style="display:none;" role="status" aria-live="polite">
@@ -343,16 +353,16 @@
  <option value="whatsapp" data-i18n="form.contexts.whatsapp">WhatsApp Gruppe</option>
  <option value="email" data-i18n="form.contexts.email">E-Mail</option>
  <option value="linkedin" data-i18n="form.contexts.linkedin">LinkedIn / Beruflich</option>
- <option value="public" data-i18n="form.contexts.public">Oeffentlicher Post (Social Media)</option>
+ <option value="public" data-i18n="form.contexts.public">Öffentlicher Post (Social Media)</option>
  </select>
  </div>
 
  <div class="datenschutz-hinweis">
  <input type="checkbox" id="privacyPolicyDemo" required>
- <label for="privacyPolicyDemo"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklaerung</a>.</label>
+ <label for="privacyPolicyDemo"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
  </div>
  <div class="form-buttons">
- <button type="submit" aria-label="Text auf sensible Daten pruefen" data-i18n="form.submit">Text analysieren</button>
+ <button type="submit" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
  </div>
  </form>
 
@@ -1469,7 +1479,7 @@ async function checkSpelling() {
  if (optionsDiv) optionsDiv.style.display = 'block';
 
  resultsDiv.style.display = 'block';
- resultsDiv.innerHTML = '<p style="text-align:center;">Pruefe Text (Level: ' + currentSpellLevel + ')...</p>';
+ resultsDiv.innerHTML = '<p style="text-align:center;">Prüfe Text (Level: ' + currentSpellLevel + ')...</p>';
 
  try {
  const response = await fetch(API_SPELL_CHECK_URL, {
@@ -1486,7 +1496,7 @@ async function checkSpelling() {
  const data = await response.json();
 
  if (!data.success) {
- resultsDiv.innerHTML = '<p class="error-text">Textkorrektur nicht verfuegbar.</p>';
+ resultsDiv.innerHTML = '<p class="error-text">Textkorrektur nicht verfügbar.</p>';
  return;
  }
 
@@ -1505,8 +1515,8 @@ async function checkSpelling() {
   </div>
   <div class="sc-readability-details">
    <span>CEFR: <strong>${rb.cefr || '?'}</strong> (${rb.cefrLabel || ''})</span>
-   <span>${rb.wordCount || 0} Woerter, ${rb.sentenceCount || 0} Saetze</span>
-   <span>Ø Satzlaenge: ${rb.avgSentenceLength || 0} Woerter</span>
+   <span>${rb.wordCount || 0} Wörter, ${rb.sentenceCount || 0} Sätze</span>
+   <span>Ø Satzlänge: ${rb.avgSentenceLength || 0} Wörter</span>
   </div>
  </div>
  ` : ''}
@@ -1546,7 +1556,7 @@ async function checkSpelling() {
   <span class="sc-rb-item">CEFR: <strong>${rb.cefr || '?'}</strong></span>
   <span class="sc-rb-item">${rb.wordCount || 0} W. / ${rb.sentenceCount || 0} S.</span>
   <span class="sc-rb-item">Ø ${rb.avgSentenceLength || 0} W./Satz</span>
-  ${rb.distribution && rb.distribution.veryLong > 0 ? `<span class="sc-rb-warn">${rb.distribution.veryLong} sehr lange Saetze (&gt;25 W.)</span>` : ''}
+  ${rb.distribution && rb.distribution.veryLong > 0 ? `<span class="sc-rb-warn">${rb.distribution.veryLong} sehr lange Sätze (&gt;25 W.)</span>` : ''}
  </div>
  ` : ''}
  <div class="correction-list">
@@ -1575,7 +1585,7 @@ async function checkSpelling() {
  </div>
  ` : ''}
  <div class="spell-check-actions">
- <button class="apply-corrections-btn" onclick="applyAllCorrections()">Alle Korrekturen uebernehmen</button>
+ <button class="apply-corrections-btn" onclick="applyAllCorrections()">Alle Korrekturen übernehmen</button>
  <button class="sc-copy-btn" onclick="copyCorrectedText()">Korrigierten Text kopieren</button>
  </div>
  `;
@@ -1673,6 +1683,18 @@ function switchMode(mode) {
 // ========================================
 let tcCurrentLevel = 'L0';
 let tcCurrentImproveMode = 'professional';
+
+function toggleTcAdvanced() {
+ const opts = document.getElementById('tcAdvancedOptions');
+ const btn = document.getElementById('tcAdvancedBtn');
+ if (opts.style.display === 'none') {
+  opts.style.display = 'block';
+  btn.querySelector('.tc-advanced-icon').innerHTML = '&#9652;';
+ } else {
+  opts.style.display = 'none';
+  btn.querySelector('.tc-advanced-icon').innerHTML = '&#9662;';
+ }
+}
 
 function toggleA11yToolbar() {
  const toolbar = document.getElementById('a11yToolbar');
@@ -1775,7 +1797,7 @@ function initTcFileUpload() {
 function tcHandleFile(file) {
  const maxSize = 2 * 1024 * 1024; // 2MB
  if (file.size > maxSize) {
-  alert('Datei zu gross. Maximal 2 MB.');
+  alert('Datei zu groß. Maximal 2 MB.');
   return;
  }
 
@@ -1789,7 +1811,7 @@ function tcHandleFile(file) {
   reader.onload = (e) => {
    let text = e.target.result;
    if (text.length > 10000) {
-    alert('Text zu lang (' + text.length + ' Zeichen). Maximal 10.000 Zeichen. Text wird gekuerzt.');
+    alert('Text zu lang (' + text.length + ' Zeichen). Maximal 10.000 Zeichen. Text wird gekürzt.');
     text = text.substring(0, 10000);
    }
    textarea.value = text;
@@ -1800,9 +1822,9 @@ function tcHandleFile(file) {
   reader.readAsText(file);
  } else if (name.endsWith('.pdf')) {
   fileInfo.style.display = 'flex';
-  fileName.textContent = file.name + ' - PDF-Extraktion wird nicht lokal unterstuetzt. Bitte Text manuell kopieren.';
+  fileName.textContent = file.name + ' - PDF-Extraktion wird nicht lokal unterstützt. Bitte Text manuell kopieren.';
  } else {
-  alert('Nicht unterstuetztes Format. Bitte .txt, .md oder .rtf verwenden.');
+  alert('Nicht unterstütztes Format. Bitte .txt, .md oder .rtf verwenden.');
  }
 }
 
@@ -1826,7 +1848,7 @@ async function runTextCorrection() {
  }
 
  resultsDiv.style.display = 'block';
- resultsDiv.innerHTML = '<div class="tc-loading"><div class="tc-spinner"></div><p>Pruefe Text (Level: ' + tcCurrentLevel + ')...</p></div>';
+ resultsDiv.innerHTML = '<div class="tc-loading"><div class="tc-spinner"></div><p>Prüfe Text (Level: ' + tcCurrentLevel + ')...</p></div>';
 
  const config = {
   variant: document.getElementById('tcVariant').value,
@@ -1848,7 +1870,7 @@ async function runTextCorrection() {
 
   const data = await response.json();
   if (!data.success) {
-   resultsDiv.innerHTML = '<div class="tc-error">Textkorrektur nicht verfuegbar. Bitte versuche es spaeter erneut.</div>';
+   resultsDiv.innerHTML = '<div class="tc-error">Textkorrektur nicht verfügbar. Bitte versuche es später erneut.</div>';
    return;
   }
 
@@ -1938,11 +1960,11 @@ function renderTextCorrectResults(data, container) {
     </div>
    </div>
    <div class="tc-rb-details">
-    <span>${rb.wordCount || 0} Woerter</span>
-    <span>${rb.sentenceCount || 0} Saetze</span>
-    <span>${rb.paragraphCount || 1} Absaetze</span>
+    <span>${rb.wordCount || 0} Wörter</span>
+    <span>${rb.sentenceCount || 0} Sätze</span>
+    <span>${rb.paragraphCount || 1} Absätze</span>
     <span>&#216; ${rb.avgSentenceLength || 0} W./Satz</span>
-    ${rb.distribution && rb.distribution.veryLong > 0 ? `<span class="tc-rb-warn">${rb.distribution.veryLong} sehr lange Saetze (&gt;25 W.)</span>` : ''}
+    ${rb.distribution && rb.distribution.veryLong > 0 ? `<span class="tc-rb-warn">${rb.distribution.veryLong} sehr lange Sätze (&gt;25 W.)</span>` : ''}
    </div>
   </div>`;
  }
@@ -1956,7 +1978,7 @@ function renderTextCorrectResults(data, container) {
     ${styleSheet.address ? `<div class="tc-ss-item"><strong>Anrede:</strong> ${escapeHtml(styleSheet.address)}</div>` : ''}
     ${styleSheet.gender ? `<div class="tc-ss-item"><strong>Gender:</strong> ${escapeHtml(styleSheet.gender)}</div>` : ''}
     ${styleSheet.numbers ? `<div class="tc-ss-item"><strong>Zahlen:</strong> ${escapeHtml(styleSheet.numbers)}</div>` : ''}
-    ${styleSheet.quotes ? `<div class="tc-ss-item"><strong>Anfuehrungszeichen:</strong> ${escapeHtml(styleSheet.quotes)}</div>` : ''}
+    ${styleSheet.quotes ? `<div class="tc-ss-item"><strong>Anführungszeichen:</strong> ${escapeHtml(styleSheet.quotes)}</div>` : ''}
    </div>
    ${styleSheet.terminology ? `
    <div class="tc-ss-terminology">
@@ -1969,7 +1991,7 @@ function renderTextCorrectResults(data, container) {
  // Marked Changes
  if (data.markedChanges && data.markedChanges !== data.originalText) {
   html += `<div class="tc-marked-changes">
-   <h4>Aenderungen im Text</h4>
+   <h4>Änderungen im Text</h4>
    <div class="tc-marked-text">${renderMarkedChanges(data.markedChanges)}</div>
   </div>`;
  }
@@ -2016,14 +2038,14 @@ function renderTextCorrectResults(data, container) {
  // Queries (O3 mode)
  if (queries.length > 0) {
   html += `<div class="tc-queries">
-   <h4>Rueckfragen</h4>
+   <h4>Rückfragen</h4>
    <ol>${queries.map(q => `<li>${escapeHtml(typeof q === 'string' ? q : q.question || q.text || '')}</li>`).join('')}</ol>
   </div>`;
  }
 
  // Actions
  html += `<div class="tc-actions">
-  <button class="tc-action-btn tc-action-primary" onclick="tcApplyAll()">Alle Korrekturen uebernehmen</button>
+  <button class="tc-action-btn tc-action-primary" onclick="tcApplyAll()">Alle Korrekturen übernehmen</button>
   <button class="tc-action-btn tc-action-secondary" onclick="tcCopyText()">Korrigierten Text kopieren</button>
  </div>`;
 
@@ -2101,7 +2123,7 @@ async function runTextImprove() {
 
   const data = await response.json();
   if (!data.success) {
-   resultsDiv.innerHTML = '<div class="tc-error">Textverbesserung nicht verfuegbar. Bitte versuche es spaeter erneut.</div>';
+   resultsDiv.innerHTML = '<div class="tc-error">Textverbesserung nicht verfügbar. Bitte versuche es später erneut.</div>';
    return;
   }
 
@@ -2116,7 +2138,7 @@ async function runTextImprove() {
 
 function renderTextImproveResults(data, container) {
  const modeLabels = {
-  formal: 'Formell', simple: 'Einfach', shorter: 'Kuerzer',
+  formal: 'Formell', simple: 'Einfach', shorter: 'Kürzer',
   professional: 'Professionell', academic: 'Akademisch', creative: 'Kreativ'
  };
 
@@ -2137,7 +2159,7 @@ function renderTextImproveResults(data, container) {
     <span>Flesch: ${data.readabilityBefore.fleschDE || '?'}</span>
     <span>CEFR: ${data.readabilityBefore.cefr || '?'}</span>
    </div>` : ''}
-   ${data.wordCountBefore ? `<div class="tc-compare-wc">${data.wordCountBefore} Woerter</div>` : ''}
+   ${data.wordCountBefore ? `<div class="tc-compare-wc">${data.wordCountBefore} Wörter</div>` : ''}
   </div>
   <div class="tc-compare-divider">&#8594;</div>
   <div class="tc-compare-col">
@@ -2148,14 +2170,14 @@ function renderTextImproveResults(data, container) {
     <span>Flesch: ${data.readabilityAfter.fleschDE || '?'}</span>
     <span>CEFR: ${data.readabilityAfter.cefr || '?'}</span>
    </div>` : ''}
-   ${data.wordCountAfter ? `<div class="tc-compare-wc">${data.wordCountAfter} Woerter</div>` : ''}
+   ${data.wordCountAfter ? `<div class="tc-compare-wc">${data.wordCountAfter} Wörter</div>` : ''}
   </div>
  </div>`;
 
  // Changes
  if (data.changes && data.changes.length > 0) {
   html += `<div class="tc-improve-changes">
-   <h4>Aenderungen (${data.changes.length})</h4>
+   <h4>Änderungen (${data.changes.length})</h4>
    ${data.changes.map(c => `
    <div class="tc-improve-change">
     <div class="tc-improve-change-type">${escapeHtml(c.type || '')}</div>
@@ -2171,7 +2193,7 @@ function renderTextImproveResults(data, container) {
 
  // Actions
  html += `<div class="tc-actions">
-  <button class="tc-action-btn tc-action-primary" onclick="tcApplyImproved()">Verbesserten Text uebernehmen</button>
+  <button class="tc-action-btn tc-action-primary" onclick="tcApplyImproved()">Verbesserten Text übernehmen</button>
   <button class="tc-action-btn tc-action-secondary" onclick="tcCopyImproved()">Text kopieren</button>
  </div>`;
 
@@ -2227,7 +2249,7 @@ async function runReadability() {
 
   const data = await response.json();
   if (!data.success) {
-   resultsDiv.innerHTML = '<div class="tc-error">Lesbarkeitsanalyse nicht verfuegbar. Bitte versuche es spaeter erneut.</div>';
+   resultsDiv.innerHTML = '<div class="tc-error">Lesbarkeitsanalyse nicht verfügbar. Bitte versuche es später erneut.</div>';
    return;
   }
 
@@ -2282,16 +2304,16 @@ function renderReadabilityResults(data, container) {
   <!-- Statistics -->
   <div class="tc-rb-stats-grid">
    <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.characters || 0}</span><span class="tc-rb-stat-label">Zeichen</span></div>
-   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.words || 0}</span><span class="tc-rb-stat-label">Woerter</span></div>
-   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.sentences || 0}</span><span class="tc-rb-stat-label">Saetze</span></div>
-   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.paragraphs || 0}</span><span class="tc-rb-stat-label">Absaetze</span></div>
-   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.avgWordLength || 0}</span><span class="tc-rb-stat-label">&#216; Wortlaenge</span></div>
-   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.avgSentenceLength || 0}</span><span class="tc-rb-stat-label">&#216; Satzlaenge</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.words || 0}</span><span class="tc-rb-stat-label">Wörter</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.sentences || 0}</span><span class="tc-rb-stat-label">Sätze</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.paragraphs || 0}</span><span class="tc-rb-stat-label">Absätze</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.avgWordLength || 0}</span><span class="tc-rb-stat-label">&#216; Wortlänge</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.avgSentenceLength || 0}</span><span class="tc-rb-stat-label">&#216; Satzlänge</span></div>
   </div>
 
   <!-- Sentence distribution -->
   <div class="tc-rb-distribution">
-   <h4>Satzlaengen-Verteilung</h4>
+   <h4>Satzlängen-Verteilung</h4>
    <div class="tc-rb-dist-bars">
     <div class="tc-rb-dist-bar">
      <span class="tc-rb-dist-label">Kurz (&#8804;8 W.)</span>
@@ -2320,12 +2342,12 @@ function renderReadabilityResults(data, container) {
   ${stats.longestSentence ? `
   <div class="tc-rb-extremes">
    <div class="tc-rb-extreme">
-    <strong>Laengster Satz (${stats.longestSentence.length} W.):</strong>
+    <strong>Längster Satz (${stats.longestSentence.length} W.):</strong>
     <span>${escapeHtml(stats.longestSentence.text || '')}</span>
    </div>
    ${stats.shortestSentence ? `
    <div class="tc-rb-extreme">
-    <strong>Kuerzester Satz (${stats.shortestSentence.length} W.):</strong>
+    <strong>Kürzester Satz (${stats.shortestSentence.length} W.):</strong>
     <span>${escapeHtml(stats.shortestSentence.text || '')}</span>
    </div>` : ''}
   </div>` : ''}
