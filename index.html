@@ -87,8 +87,25 @@
  <p class="claim simple-lang" id="mainClaimSimple" data-i18n="header.taglineSimple" style="display:none;">Wir helfen dir, keine privaten Daten zu teilen.</p>
  </header>
 
+ <!-- Modus-Weiche: Datenschutz vs. Textkorrektur -->
+ <div class="mode-switch-section" role="navigation" aria-label="Modus waehlen">
+ <h2 class="mode-switch-title">Was moechtest du pruefen?</h2>
+ <div class="mode-switch-cards">
+  <button class="mode-card active" id="modePrivacy" onclick="switchMode('privacy')" aria-pressed="true">
+   <span class="mode-card-icon">&#128274;</span>
+   <span class="mode-card-label">Datenschutz-Analyse</span>
+   <span class="mode-card-desc">Texte auf sensible Daten pruefen</span>
+  </button>
+  <button class="mode-card" id="modeTextCorrect" onclick="switchMode('textcorrect')" aria-pressed="false">
+   <span class="mode-card-icon">&#9998;</span>
+   <span class="mode-card-label">Textkorrektur</span>
+   <span class="mode-card-desc">Rechtschreibung, Grammatik, Stil &amp; Lesbarkeit</span>
+  </button>
+ </div>
+ </div>
+
  <!-- Schutz-Assistent Banner für unerfahrene Nutzer -->
- <div class="assistent-banner" role="complementary" aria-label="Hilfe-Assistent">
+ <div class="assistent-banner" id="assistentBanner" role="complementary" aria-label="Hilfe-Assistent">
  <div class="assistent-banner-content">
  <div class="assistent-banner-text">
  <strong>Unsicher, wo du anfangen sollst?</strong>
@@ -98,14 +115,198 @@
  </div>
  </div>
 
- <!-- Experten-Bereich Toggle -->
- <div class="expert-toggle-section">
+ <!-- Experten-Bereich Toggle (Datenschutz-Modus) -->
+ <div class="expert-toggle-section" id="privacyToggleSection">
  <button class="expert-toggle-btn" id="expertToggle" aria-expanded="false" aria-controls="expertContent">
- <span class="expert-toggle-text">Ich weiß, was ich prüfen will</span>
+ <span class="expert-toggle-text">Ich weiss, was ich pruefen will</span>
  <span class="expert-toggle-arrow"></span>
  </button>
  <p class="expert-toggle-hint">Direkt zur Text-Analyse ohne Assistent</p>
  </div>
+
+ <!-- ========================================
+      Textkorrektur-Modus (NEU)
+      ======================================== -->
+ <div id="textcorrectContent" class="main-content textcorrect-content" style="display: none;">
+
+ <!-- Textkorrektur Tabs -->
+ <div class="tc-tab-nav" role="tablist" aria-label="Textkorrektur-Modus">
+  <button class="tc-tab-btn active" data-tctab="correct" role="tab" aria-selected="true">Textkorrektur</button>
+  <button class="tc-tab-btn" data-tctab="improve" role="tab" aria-selected="false">Stil verbessern</button>
+  <button class="tc-tab-btn" data-tctab="readability" role="tab" aria-selected="false">Lesbarkeit</button>
+ </div>
+
+ <!-- Tab: Textkorrektur (text-correct) -->
+ <div id="tcCorrectTab" class="tc-tab-content active" role="tabpanel">
+  <h2>Professionelle Textkorrektur</h2>
+  <p class="tc-description">Pruefe deinen Text auf Rechtschreibung, Grammatik, Zeichensetzung und Stil nach dem Amtlichen Regelwerk.</p>
+
+  <form id="tcCorrectForm" onsubmit="return false;">
+   <label for="tcText" class="sr-only">Text zur Korrektur</label>
+   <textarea id="tcText" placeholder="Schreibe oder kopiere deinen Text hier hinein..." rows="8" maxlength="10000" required></textarea>
+   <div class="tc-char-count"><span id="tcCharCount">0</span> / 10.000 Zeichen</div>
+
+   <!-- Edit-Level Selector -->
+   <div class="tc-options-grid">
+    <div class="tc-option-group">
+     <label class="tc-option-label">Korrektur-Level:</label>
+     <div class="tc-level-buttons">
+      <button type="button" class="tc-level-btn active" data-level="L0" title="Orthografie, Grammatik, Zeichensetzung, Typografie">
+       <span class="tc-level-name">L0</span>
+       <span class="tc-level-desc">Proofread</span>
+      </button>
+      <button type="button" class="tc-level-btn" data-level="L1" title="+ Redundanzen entfernen, kleine Glaettungen">
+       <span class="tc-level-name">L1</span>
+       <span class="tc-level-desc">Klarheit</span>
+      </button>
+      <button type="button" class="tc-level-btn" data-level="L2" title="+ Satzbau-Optimierung, Schachtelsaetze aufloesen">
+       <span class="tc-level-name">L2</span>
+       <span class="tc-level-desc">Line Edit</span>
+      </button>
+      <button type="button" class="tc-level-btn" data-level="L3" title="+ Terminologie, Style Sheet, Strukturvorschlaege">
+       <span class="tc-level-name">L3</span>
+       <span class="tc-level-desc">Copyedit</span>
+      </button>
+     </div>
+    </div>
+
+    <div class="tc-option-group">
+     <label class="tc-option-label">Sprachvariante:</label>
+     <select id="tcVariant" class="tc-select">
+      <option value="de-DE">Deutsch (DE)</option>
+      <option value="de-AT">Deutsch (AT)</option>
+      <option value="de-CH">Deutsch (CH)</option>
+      <option value="en-US">English (US)</option>
+      <option value="en-GB">English (GB)</option>
+      <option value="fr">Francais</option>
+      <option value="es">Espanol</option>
+      <option value="it">Italiano</option>
+     </select>
+    </div>
+
+    <div class="tc-option-group">
+     <label class="tc-option-label">Gender-Option:</label>
+     <select id="tcGender" class="tc-select">
+      <option value="G0">G0 - So lassen wie im Text</option>
+      <option value="G1" selected>G1 - Neutralisieren</option>
+      <option value="G2">G2 - Doppelnennung</option>
+      <option value="G3">G3 - Wortbinnenzeichen</option>
+     </select>
+    </div>
+
+    <div class="tc-option-group">
+     <label class="tc-option-label">Ausgabe-Modus:</label>
+     <select id="tcOutput" class="tc-select">
+      <option value="O1">O1 - Nur bereinigter Text</option>
+      <option value="O2" selected>O2 - Text + Aenderungen markiert</option>
+      <option value="O3">O3 - Text + Aenderungen + Rueckfragen</option>
+     </select>
+    </div>
+
+    <div class="tc-option-group">
+     <label class="tc-option-label">Register:</label>
+     <select id="tcRegister" class="tc-select">
+      <option value="business">Geschaeftlich</option>
+      <option value="wissenschaft">Wissenschaftlich</option>
+      <option value="behoerdlich">Behoerdlich</option>
+      <option value="marketing">Marketing</option>
+      <option value="kreativ">Kreativ</option>
+      <option value="neutral" selected>Neutral</option>
+     </select>
+    </div>
+
+    <div class="tc-option-group">
+     <label class="tc-option-label">Strenge:</label>
+     <select id="tcStrictness" class="tc-select">
+      <option value="low">Tolerant</option>
+      <option value="medium" selected>Mittel</option>
+      <option value="high">Streng</option>
+     </select>
+    </div>
+   </div>
+
+   <div class="tc-submit-row">
+    <button type="button" class="tc-submit-btn" onclick="runTextCorrection()">Text pruefen</button>
+   </div>
+  </form>
+
+  <!-- Results -->
+  <div id="tcCorrectResults" class="tc-results" style="display:none;"></div>
+ </div>
+
+ <!-- Tab: Stil verbessern (text-improve) -->
+ <div id="tcImproveTab" class="tc-tab-content" role="tabpanel">
+  <h2>Stil verbessern</h2>
+  <p class="tc-description">Lass deinen Text in einem anderen Stil umschreiben - von formell bis kreativ.</p>
+
+  <form id="tcImproveForm" onsubmit="return false;">
+   <label for="tcImproveText" class="sr-only">Text zum Verbessern</label>
+   <textarea id="tcImproveText" placeholder="Schreibe oder kopiere deinen Text hier hinein..." rows="6" maxlength="5000" required></textarea>
+   <div class="tc-char-count"><span id="tcImproveCharCount">0</span> / 5.000 Zeichen</div>
+
+   <!-- Mode Selector -->
+   <div class="tc-mode-grid">
+    <button type="button" class="tc-mode-btn active" data-mode="professional" title="Geschaeftstauglich optimieren">
+     <span class="tc-mode-icon">&#128188;</span>
+     <span class="tc-mode-name">Professionell</span>
+     <span class="tc-mode-desc">Geschaeftstauglich</span>
+    </button>
+    <button type="button" class="tc-mode-btn" data-mode="formal" title="Formeller/professioneller umformulieren">
+     <span class="tc-mode-icon">&#127891;</span>
+     <span class="tc-mode-name">Formell</span>
+     <span class="tc-mode-desc">Professioneller Ton</span>
+    </button>
+    <button type="button" class="tc-mode-btn" data-mode="simple" title="Einfachere Sprache, Ziel A2/B1">
+     <span class="tc-mode-icon">&#128218;</span>
+     <span class="tc-mode-name">Einfach</span>
+     <span class="tc-mode-desc">Leicht verstaendlich</span>
+    </button>
+    <button type="button" class="tc-mode-btn" data-mode="shorter" title="Kuerzer und praegnanter">
+     <span class="tc-mode-icon">&#9986;</span>
+     <span class="tc-mode-name">Kuerzer</span>
+     <span class="tc-mode-desc">Praegnant &amp; kompakt</span>
+    </button>
+    <button type="button" class="tc-mode-btn" data-mode="academic" title="Wissenschaftlicher Stil">
+     <span class="tc-mode-icon">&#127979;</span>
+     <span class="tc-mode-name">Akademisch</span>
+     <span class="tc-mode-desc">Wissenschaftlich</span>
+    </button>
+    <button type="button" class="tc-mode-btn" data-mode="creative" title="Lebendiger, bildhafter">
+     <span class="tc-mode-icon">&#127912;</span>
+     <span class="tc-mode-name">Kreativ</span>
+     <span class="tc-mode-desc">Lebendig &amp; bildhaft</span>
+    </button>
+   </div>
+
+   <div class="tc-submit-row">
+    <button type="button" class="tc-submit-btn" onclick="runTextImprove()">Stil verbessern</button>
+   </div>
+  </form>
+
+  <!-- Results -->
+  <div id="tcImproveResults" class="tc-results" style="display:none;"></div>
+ </div>
+
+ <!-- Tab: Lesbarkeit (readability) -->
+ <div id="tcReadabilityTab" class="tc-tab-content" role="tabpanel">
+  <h2>Lesbarkeitsanalyse</h2>
+  <p class="tc-description">Analysiere die Lesbarkeit deines Textes mit Flesch-DE, Wiener Sachtextformel und CEFR-Einstufung.</p>
+
+  <form id="tcReadabilityForm" onsubmit="return false;">
+   <label for="tcReadText" class="sr-only">Text zur Lesbarkeitsanalyse</label>
+   <textarea id="tcReadText" placeholder="Schreibe oder kopiere deinen Text hier hinein..." rows="6" maxlength="50000" required></textarea>
+   <div class="tc-char-count"><span id="tcReadCharCount">0</span> / 50.000 Zeichen</div>
+
+   <div class="tc-submit-row">
+    <button type="button" class="tc-submit-btn" onclick="runReadability()">Lesbarkeit pruefen</button>
+   </div>
+  </form>
+
+  <!-- Results -->
+  <div id="tcReadabilityResults" class="tc-results" style="display:none;"></div>
+ </div>
+
+ </div><!-- /textcorrectContent -->
 
  <!-- Geschützter Inhalt (aufklappbar) -->
  <main class="main-content protected-content expert-content" id="expertContent" role="main" style="display: none;">
@@ -1267,6 +1468,9 @@
 
  // Initialize spell-check options
  initSpellCheckOptions();
+
+ // Initialize textkorrektur mode
+ initTextkorrekturMode();
  });
 
  // ========================================
@@ -1278,6 +1482,9 @@
  const API_BATCH_URL = `${API_BASE}/analyze-batch`;
  const API_HEALTH_URL = `${API_BASE}/health`;
 const API_SPELL_CHECK_URL = `${API_BASE}/spell-check`;
+const API_TEXT_CORRECT_URL = `${API_BASE}/text-correct`;
+const API_TEXT_IMPROVE_URL = `${API_BASE}/text-improve`;
+const API_READABILITY_URL = `${API_BASE}/readability`;
 
  // Kategorie-Metadaten für das Dashboard (Phase 2: 25+ Kategorien)
  const CATEGORY_META = {
@@ -2400,6 +2607,643 @@ function copyCorrectedText() {
   if (btn) { btn.textContent = 'Kopiert!'; setTimeout(() => { btn.textContent = 'Korrigierten Text kopieren'; }, 2000); }
  });
  }
+}
+
+// ========================================
+// Mode Switch: Datenschutz vs. Textkorrektur
+// ========================================
+let currentMode = 'privacy';
+
+function switchMode(mode) {
+ currentMode = mode;
+ const privacyCard = document.getElementById('modePrivacy');
+ const textCard = document.getElementById('modeTextCorrect');
+ const assistentBanner = document.getElementById('assistentBanner');
+ const privacyToggle = document.getElementById('privacyToggleSection');
+ const expertContent = document.getElementById('expertContent');
+ const tcContent = document.getElementById('textcorrectContent');
+
+ if (mode === 'privacy') {
+  privacyCard.classList.add('active');
+  privacyCard.setAttribute('aria-pressed', 'true');
+  textCard.classList.remove('active');
+  textCard.setAttribute('aria-pressed', 'false');
+  if (assistentBanner) assistentBanner.style.display = '';
+  if (privacyToggle) privacyToggle.style.display = '';
+  if (tcContent) tcContent.style.display = 'none';
+ } else {
+  textCard.classList.add('active');
+  textCard.setAttribute('aria-pressed', 'true');
+  privacyCard.classList.remove('active');
+  privacyCard.setAttribute('aria-pressed', 'false');
+  if (assistentBanner) assistentBanner.style.display = 'none';
+  if (privacyToggle) privacyToggle.style.display = 'none';
+  if (expertContent) expertContent.style.display = 'none';
+  if (tcContent) tcContent.style.display = 'block';
+  setTimeout(() => {
+   if (tcContent) tcContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+ }
+
+ // URL params
+ const url = new URL(window.location);
+ url.searchParams.set('mode', mode);
+ history.replaceState(null, '', url);
+}
+
+// ========================================
+// Textkorrektur Mode Init
+// ========================================
+let tcCurrentLevel = 'L0';
+let tcCurrentImproveMode = 'professional';
+
+function initTextkorrekturMode() {
+ // Check URL params
+ const urlParams = new URLSearchParams(window.location.search);
+ if (urlParams.get('mode') === 'textcorrect') {
+  switchMode('textcorrect');
+ }
+
+ // Tab navigation
+ document.querySelectorAll('.tc-tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+   document.querySelectorAll('.tc-tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+   });
+   document.querySelectorAll('.tc-tab-content').forEach(c => c.classList.remove('active'));
+   this.classList.add('active');
+   this.setAttribute('aria-selected', 'true');
+   const tabId = this.dataset.tctab;
+   const tabMap = { correct: 'tcCorrectTab', improve: 'tcImproveTab', readability: 'tcReadabilityTab' };
+   document.getElementById(tabMap[tabId]).classList.add('active');
+  });
+ });
+
+ // Level buttons
+ document.querySelectorAll('.tc-level-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+   document.querySelectorAll('.tc-level-btn').forEach(b => b.classList.remove('active'));
+   this.classList.add('active');
+   tcCurrentLevel = this.dataset.level;
+  });
+ });
+
+ // Improve mode buttons
+ document.querySelectorAll('.tc-mode-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+   document.querySelectorAll('.tc-mode-btn').forEach(b => b.classList.remove('active'));
+   this.classList.add('active');
+   tcCurrentImproveMode = this.dataset.mode;
+  });
+ });
+
+ // Character counters
+ const tcText = document.getElementById('tcText');
+ const tcImproveText = document.getElementById('tcImproveText');
+ const tcReadText = document.getElementById('tcReadText');
+ if (tcText) tcText.addEventListener('input', () => {
+  document.getElementById('tcCharCount').textContent = tcText.value.length;
+ });
+ if (tcImproveText) tcImproveText.addEventListener('input', () => {
+  document.getElementById('tcImproveCharCount').textContent = tcImproveText.value.length;
+ });
+ if (tcReadText) tcReadText.addEventListener('input', () => {
+  document.getElementById('tcReadCharCount').textContent = tcReadText.value.length;
+ });
+}
+
+// ========================================
+// Text Correction (text-correct)
+// ========================================
+async function runTextCorrection() {
+ const text = document.getElementById('tcText').value;
+ const resultsDiv = document.getElementById('tcCorrectResults');
+
+ if (!text || text.trim().length < 3) {
+  alert('Bitte gib mindestens 3 Zeichen ein.');
+  return;
+ }
+
+ resultsDiv.style.display = 'block';
+ resultsDiv.innerHTML = '<div class="tc-loading"><div class="tc-spinner"></div><p>Pruefe Text (Level: ' + tcCurrentLevel + ')...</p></div>';
+
+ const config = {
+  variant: document.getElementById('tcVariant').value,
+  register: document.getElementById('tcRegister').value,
+  genderOption: document.getElementById('tcGender').value,
+  strictness: document.getElementById('tcStrictness').value,
+  outputMode: document.getElementById('tcOutput').value
+ };
+
+ // L0 uses local spell-check, L1-L3 use Railway backend
+ const apiUrl = tcCurrentLevel === 'L0' ? API_SPELL_CHECK_URL : API_TEXT_CORRECT_URL;
+
+ try {
+  const response = await fetch(apiUrl, {
+   method: 'POST',
+   headers: { 'Content-Type': 'application/json' },
+   body: JSON.stringify({ text, language: config.variant, level: tcCurrentLevel, config })
+  });
+
+  const data = await response.json();
+  if (!data.success) {
+   resultsDiv.innerHTML = '<div class="tc-error">Textkorrektur nicht verfuegbar. Bitte versuche es spaeter erneut.</div>';
+   return;
+  }
+
+  window.tcLastCorrectedText = data.correctedText;
+  renderTextCorrectResults(data, resultsDiv);
+
+ } catch (error) {
+  console.error('Text correction error:', error);
+  resultsDiv.innerHTML = '<div class="tc-error">Fehler bei der Textkorrektur. Bitte versuche es erneut.</div>';
+ }
+}
+
+function renderTextCorrectResults(data, container) {
+ const stats = data.stats || {};
+ const rb = data.readability || {};
+ const patterns = data.patterns || [];
+ const corrections = data.corrections || [];
+ const styleSheet = data.styleSheet || null;
+ const queries = data.queries || [];
+
+ let html = '';
+
+ // Executive Summary
+ if (data.executiveSummary) {
+  html += `<div class="tc-executive-summary"><p>${escapeHtml(data.executiveSummary)}</p></div>`;
+ }
+
+ // No errors
+ if (!data.hasErrors && corrections.length === 0) {
+  html += `
+  <div class="tc-result-clean">
+   <div class="tc-success-icon">&#10003;</div>
+   <h4>Keine Fehler gefunden</h4>
+   <p>Dein Text ist korrekt.</p>
+  </div>`;
+ }
+
+ // Stats bar
+ if (corrections.length > 0) {
+  html += `<div class="tc-stats-bar">
+   <div class="tc-stats-header">
+    <h3>Textkorrektur (${tcCurrentLevel})</h3>
+    <div class="tc-stats-counts">
+     <span class="tc-stat"><span class="tc-stat-count">${stats.spelling || 0}</span> Rechtschreibung</span>
+     <span class="tc-stat"><span class="tc-stat-count">${stats.grammar || 0}</span> Grammatik</span>
+     <span class="tc-stat"><span class="tc-stat-count">${stats.punctuation || 0}</span> Zeichensetzung</span>
+     <span class="tc-stat"><span class="tc-stat-count">${stats.style || 0}</span> Stil</span>
+     ${stats.gender ? `<span class="tc-stat"><span class="tc-stat-count">${stats.gender}</span> Gender</span>` : ''}
+     ${stats.consistency ? `<span class="tc-stat"><span class="tc-stat-count">${stats.consistency}</span> Konsistenz</span>` : ''}
+    </div>
+   </div>
+   ${stats.bySeverity ? `
+   <div class="tc-severity-bar">
+    ${stats.bySeverity.critical ? `<span class="tc-sev tc-sev-critical">${stats.bySeverity.critical} kritisch</span>` : ''}
+    ${stats.bySeverity.medium ? `<span class="tc-sev tc-sev-medium">${stats.bySeverity.medium} mittel</span>` : ''}
+    ${stats.bySeverity.small ? `<span class="tc-sev tc-sev-small">${stats.bySeverity.small} klein</span>` : ''}
+   </div>` : ''}
+  </div>`;
+ }
+
+ // Readability metrics
+ if (rb.fleschDE !== undefined) {
+  const fleschColor = rb.fleschDE >= 60 ? '#2e7d32' : rb.fleschDE >= 40 ? '#ff9800' : '#c62828';
+  html += `<div class="tc-readability-card">
+   <div class="tc-rb-scores">
+    <div class="tc-rb-score-item">
+     <div class="tc-rb-gauge" style="--gauge-color: ${fleschColor}">
+      <span class="tc-rb-value">${rb.fleschDE}</span>
+     </div>
+     <span class="tc-rb-label">Flesch-DE</span>
+     <span class="tc-rb-sublabel">${rb.fleschLabel || ''}</span>
+    </div>
+    ${rb.wienerSachtextformel !== undefined ? `
+    <div class="tc-rb-score-item">
+     <div class="tc-rb-gauge" style="--gauge-color: #1565c0">
+      <span class="tc-rb-value">${rb.wienerSachtextformel}</span>
+     </div>
+     <span class="tc-rb-label">Wiener STF</span>
+     <span class="tc-rb-sublabel">Schulstufe</span>
+    </div>` : ''}
+    <div class="tc-rb-score-item">
+     <div class="tc-rb-gauge" style="--gauge-color: #6a1b9a">
+      <span class="tc-rb-value">${rb.cefr || '?'}</span>
+     </div>
+     <span class="tc-rb-label">CEFR</span>
+     <span class="tc-rb-sublabel">${rb.cefrLabel || ''}</span>
+    </div>
+   </div>
+   <div class="tc-rb-details">
+    <span>${rb.wordCount || 0} Woerter</span>
+    <span>${rb.sentenceCount || 0} Saetze</span>
+    <span>${rb.paragraphCount || 1} Absaetze</span>
+    <span>&#216; ${rb.avgSentenceLength || 0} W./Satz</span>
+    ${rb.distribution && rb.distribution.veryLong > 0 ? `<span class="tc-rb-warn">${rb.distribution.veryLong} sehr lange Saetze (&gt;25 W.)</span>` : ''}
+   </div>
+  </div>`;
+ }
+
+ // Style Sheet (L3)
+ if (styleSheet) {
+  html += `<div class="tc-stylesheet">
+   <h4>Style Sheet</h4>
+   <div class="tc-stylesheet-grid">
+    ${styleSheet.variant ? `<div class="tc-ss-item"><strong>Variante:</strong> ${escapeHtml(styleSheet.variant)}</div>` : ''}
+    ${styleSheet.address ? `<div class="tc-ss-item"><strong>Anrede:</strong> ${escapeHtml(styleSheet.address)}</div>` : ''}
+    ${styleSheet.gender ? `<div class="tc-ss-item"><strong>Gender:</strong> ${escapeHtml(styleSheet.gender)}</div>` : ''}
+    ${styleSheet.numbers ? `<div class="tc-ss-item"><strong>Zahlen:</strong> ${escapeHtml(styleSheet.numbers)}</div>` : ''}
+    ${styleSheet.quotes ? `<div class="tc-ss-item"><strong>Anfuehrungszeichen:</strong> ${escapeHtml(styleSheet.quotes)}</div>` : ''}
+   </div>
+   ${styleSheet.terminology ? `
+   <div class="tc-ss-terminology">
+    <strong>Terminologie:</strong>
+    ${Object.entries(styleSheet.terminology).map(([k, v]) => `<span class="tc-ss-term">${escapeHtml(k)} &#8594; ${escapeHtml(v)}</span>`).join('')}
+   </div>` : ''}
+  </div>`;
+ }
+
+ // Marked Changes
+ if (data.markedChanges && data.markedChanges !== data.originalText) {
+  html += `<div class="tc-marked-changes">
+   <h4>Aenderungen im Text</h4>
+   <div class="tc-marked-text">${renderMarkedChanges(data.markedChanges)}</div>
+  </div>`;
+ }
+
+ // Corrections list
+ if (corrections.length > 0) {
+  html += `<div class="tc-correction-list">
+   <h4>Einzelne Korrekturen (${corrections.length})</h4>
+   ${corrections.map((c, i) => {
+    const original = c.original || '';
+    const replacement = c.replacement || (c.replacements && c.replacements[0]) || '';
+    const category = c.category || (c.rule && c.rule.type) || 'other';
+    const severity = c.severity || 'small';
+    const message = c.message || '';
+    const rule = c.rule && typeof c.rule === 'string' ? c.rule : (c.rule && c.rule.category) || '';
+    return `
+    <div class="tc-correction-item tc-cat-${category} tc-sev-border-${severity}">
+     <div class="tc-correction-main">
+      <span class="tc-correction-original">${escapeHtml(original)}</span>
+      <span class="tc-correction-arrow">&#8594;</span>
+      <span class="tc-correction-replacement" onclick="tcApplyCorrection(${i})">${escapeHtml(replacement || '(entfernen)')}</span>
+      <span class="tc-correction-cat tc-cat-badge-${category}">${getTcCategoryLabel(category)}</span>
+      ${severity === 'critical' ? '<span class="tc-badge-critical">kritisch</span>' : ''}
+     </div>
+     <div class="tc-correction-message">${escapeHtml(message)}</div>
+     ${rule ? `<div class="tc-correction-rule">${escapeHtml(typeof rule === 'string' ? rule : '')}</div>` : ''}
+    </div>`;
+   }).join('')}
+  </div>`;
+ }
+
+ // Patterns & Tips
+ if (patterns.length > 0) {
+  html += `<div class="tc-patterns">
+   <h4>Wiederkehrende Muster &amp; Lerntipps</h4>
+   ${patterns.map(p => `
+   <div class="tc-pattern-item">
+    <strong>${escapeHtml(p.pattern)}</strong> (${p.frequency}x)
+    <div class="tc-pattern-tip">${escapeHtml(p.tip)}</div>
+   </div>`).join('')}
+  </div>`;
+ }
+
+ // Queries (O3 mode)
+ if (queries.length > 0) {
+  html += `<div class="tc-queries">
+   <h4>Rueckfragen</h4>
+   <ol>${queries.map(q => `<li>${escapeHtml(typeof q === 'string' ? q : q.question || q.text || '')}</li>`).join('')}</ol>
+  </div>`;
+ }
+
+ // Actions
+ html += `<div class="tc-actions">
+  <button class="tc-action-btn tc-action-primary" onclick="tcApplyAll()">Alle Korrekturen uebernehmen</button>
+  <button class="tc-action-btn tc-action-secondary" onclick="tcCopyText()">Korrigierten Text kopieren</button>
+ </div>`;
+
+ // Processing time
+ if (data.meta && data.meta.processingTime) {
+  html += `<div class="tc-meta">Verarbeitung: ${data.meta.processingTime}ms | Provider: ${data.meta.provider || 'languagetool'}</div>`;
+ }
+
+ container.innerHTML = html;
+}
+
+function renderMarkedChanges(text) {
+ // Convert ~~old~~ **new** to styled HTML
+ return text
+  .replace(/~~(.*?)~~/g, '<del class="tc-del">$1</del>')
+  .replace(/\*\*(.*?)\*\*/g, '<ins class="tc-ins">$1</ins>');
+}
+
+function getTcCategoryLabel(cat) {
+ const labels = {
+  spelling: 'Rechtschreibung', grammar: 'Grammatik', punctuation: 'Zeichensetzung',
+  style: 'Stil', gender: 'Gender', consistency: 'Konsistenz', other: 'Sonstiges'
+ };
+ return labels[cat] || cat;
+}
+
+function tcApplyAll() {
+ if (window.tcLastCorrectedText) {
+  document.getElementById('tcText').value = window.tcLastCorrectedText;
+  document.getElementById('tcCorrectResults').style.display = 'none';
+  document.getElementById('tcCharCount').textContent = window.tcLastCorrectedText.length;
+ }
+}
+
+function tcApplyCorrection(index) {
+ // Re-run correction after single apply (simplified approach)
+ tcApplyAll();
+}
+
+function tcCopyText() {
+ if (window.tcLastCorrectedText) {
+  navigator.clipboard.writeText(window.tcLastCorrectedText).then(() => {
+   const btns = document.querySelectorAll('.tc-action-secondary');
+   btns.forEach(btn => { btn.textContent = 'Kopiert!'; setTimeout(() => { btn.textContent = 'Korrigierten Text kopieren'; }, 2000); });
+  });
+ }
+}
+
+// ========================================
+// Text Improve (text-improve)
+// ========================================
+async function runTextImprove() {
+ const text = document.getElementById('tcImproveText').value;
+ const resultsDiv = document.getElementById('tcImproveResults');
+
+ if (!text || text.trim().length < 3) {
+  alert('Bitte gib mindestens 3 Zeichen ein.');
+  return;
+ }
+
+ resultsDiv.style.display = 'block';
+ resultsDiv.innerHTML = '<div class="tc-loading"><div class="tc-spinner"></div><p>Verbessere Text (' + tcCurrentImproveMode + ')...</p></div>';
+
+ try {
+  const response = await fetch(API_TEXT_IMPROVE_URL, {
+   method: 'POST',
+   headers: { 'Content-Type': 'application/json' },
+   body: JSON.stringify({
+    text,
+    language: document.getElementById('tcVariant') ? document.getElementById('tcVariant').value : 'de-DE',
+    mode: tcCurrentImproveMode,
+    config: { register: 'neutral', preserveTerminology: true }
+   })
+  });
+
+  const data = await response.json();
+  if (!data.success) {
+   resultsDiv.innerHTML = '<div class="tc-error">Textverbesserung nicht verfuegbar. Bitte versuche es spaeter erneut.</div>';
+   return;
+  }
+
+  window.tcLastImprovedText = data.improvedText;
+  renderTextImproveResults(data, resultsDiv);
+
+ } catch (error) {
+  console.error('Text improve error:', error);
+  resultsDiv.innerHTML = '<div class="tc-error">Fehler bei der Textverbesserung. Bitte versuche es erneut.</div>';
+ }
+}
+
+function renderTextImproveResults(data, container) {
+ const modeLabels = {
+  formal: 'Formell', simple: 'Einfach', shorter: 'Kuerzer',
+  professional: 'Professionell', academic: 'Akademisch', creative: 'Kreativ'
+ };
+
+ let html = '';
+
+ // Mode badge
+ html += `<div class="tc-improve-header">
+  <h3>Ergebnis: ${modeLabels[data.mode] || data.mode}</h3>
+ </div>`;
+
+ // Before/After comparison
+ html += `<div class="tc-compare">
+  <div class="tc-compare-col">
+   <div class="tc-compare-label">Original</div>
+   <div class="tc-compare-text tc-compare-original">${escapeHtml(data.originalText)}</div>
+   ${data.readabilityBefore ? `
+   <div class="tc-compare-stats">
+    <span>Flesch: ${data.readabilityBefore.fleschDE || '?'}</span>
+    <span>CEFR: ${data.readabilityBefore.cefr || '?'}</span>
+   </div>` : ''}
+   ${data.wordCountBefore ? `<div class="tc-compare-wc">${data.wordCountBefore} Woerter</div>` : ''}
+  </div>
+  <div class="tc-compare-divider">&#8594;</div>
+  <div class="tc-compare-col">
+   <div class="tc-compare-label tc-compare-label-new">Verbessert</div>
+   <div class="tc-compare-text tc-compare-improved">${escapeHtml(data.improvedText)}</div>
+   ${data.readabilityAfter ? `
+   <div class="tc-compare-stats">
+    <span>Flesch: ${data.readabilityAfter.fleschDE || '?'}</span>
+    <span>CEFR: ${data.readabilityAfter.cefr || '?'}</span>
+   </div>` : ''}
+   ${data.wordCountAfter ? `<div class="tc-compare-wc">${data.wordCountAfter} Woerter</div>` : ''}
+  </div>
+ </div>`;
+
+ // Changes
+ if (data.changes && data.changes.length > 0) {
+  html += `<div class="tc-improve-changes">
+   <h4>Aenderungen (${data.changes.length})</h4>
+   ${data.changes.map(c => `
+   <div class="tc-improve-change">
+    <div class="tc-improve-change-type">${escapeHtml(c.type || '')}</div>
+    <div class="tc-improve-change-detail">
+     <span class="tc-del">${escapeHtml(c.original || '')}</span>
+     <span class="tc-arrow">&#8594;</span>
+     <span class="tc-ins-text">${escapeHtml(c.replacement || '')}</span>
+    </div>
+    ${c.reason ? `<div class="tc-improve-change-reason">${escapeHtml(c.reason)}</div>` : ''}
+   </div>`).join('')}
+  </div>`;
+ }
+
+ // Actions
+ html += `<div class="tc-actions">
+  <button class="tc-action-btn tc-action-primary" onclick="tcApplyImproved()">Verbesserten Text uebernehmen</button>
+  <button class="tc-action-btn tc-action-secondary" onclick="tcCopyImproved()">Text kopieren</button>
+ </div>`;
+
+ // Processing time
+ if (data.meta && data.meta.processingTime) {
+  html += `<div class="tc-meta">Verarbeitung: ${data.meta.processingTime}ms</div>`;
+ }
+
+ container.innerHTML = html;
+}
+
+function tcApplyImproved() {
+ if (window.tcLastImprovedText) {
+  document.getElementById('tcImproveText').value = window.tcLastImprovedText;
+  document.getElementById('tcImproveResults').style.display = 'none';
+  document.getElementById('tcImproveCharCount').textContent = window.tcLastImprovedText.length;
+ }
+}
+
+function tcCopyImproved() {
+ if (window.tcLastImprovedText) {
+  navigator.clipboard.writeText(window.tcLastImprovedText).then(() => {
+   const btns = document.querySelectorAll('#tcImproveResults .tc-action-secondary');
+   btns.forEach(btn => { btn.textContent = 'Kopiert!'; setTimeout(() => { btn.textContent = 'Text kopieren'; }, 2000); });
+  });
+ }
+}
+
+// ========================================
+// Readability (readability)
+// ========================================
+async function runReadability() {
+ const text = document.getElementById('tcReadText').value;
+ const resultsDiv = document.getElementById('tcReadabilityResults');
+
+ if (!text || text.trim().length < 10) {
+  alert('Bitte gib mindestens 10 Zeichen ein.');
+  return;
+ }
+
+ resultsDiv.style.display = 'block';
+ resultsDiv.innerHTML = '<div class="tc-loading"><div class="tc-spinner"></div><p>Analysiere Lesbarkeit...</p></div>';
+
+ try {
+  const response = await fetch(API_READABILITY_URL, {
+   method: 'POST',
+   headers: { 'Content-Type': 'application/json' },
+   body: JSON.stringify({
+    text,
+    language: document.getElementById('tcVariant') ? document.getElementById('tcVariant').value : 'de-DE'
+   })
+  });
+
+  const data = await response.json();
+  if (!data.success) {
+   resultsDiv.innerHTML = '<div class="tc-error">Lesbarkeitsanalyse nicht verfuegbar. Bitte versuche es spaeter erneut.</div>';
+   return;
+  }
+
+  renderReadabilityResults(data, resultsDiv);
+
+ } catch (error) {
+  console.error('Readability error:', error);
+  resultsDiv.innerHTML = '<div class="tc-error">Fehler bei der Lesbarkeitsanalyse. Bitte versuche es erneut.</div>';
+ }
+}
+
+function renderReadabilityResults(data, container) {
+ const scores = data.scores || {};
+ const stats = data.statistics || {};
+ const dist = data.distribution || {};
+ const suggestions = data.suggestions || [];
+
+ const fleschColor = (scores.fleschDE || 0) >= 60 ? '#2e7d32' : (scores.fleschDE || 0) >= 40 ? '#ff9800' : '#c62828';
+ const fleschPct = Math.min(100, Math.max(0, scores.fleschDE || 0));
+
+ let html = '';
+
+ // Score cards
+ html += `<div class="tc-rb-dashboard">
+  <div class="tc-rb-main-scores">
+   <div class="tc-rb-big-score">
+    <svg viewBox="0 0 120 120" class="tc-rb-circle">
+     <circle cx="60" cy="60" r="52" fill="none" stroke="#eee" stroke-width="8"/>
+     <circle cx="60" cy="60" r="52" fill="none" stroke="${fleschColor}" stroke-width="8"
+      stroke-dasharray="${fleschPct * 3.27} 327" stroke-dashoffset="0"
+      transform="rotate(-90 60 60)" stroke-linecap="round"/>
+    </svg>
+    <div class="tc-rb-big-value">${scores.fleschDE || 0}</div>
+    <div class="tc-rb-big-label">Flesch-DE</div>
+    <div class="tc-rb-big-sublabel">${scores.fleschLabel || ''}</div>
+   </div>
+
+   <div class="tc-rb-side-scores">
+    <div class="tc-rb-score-card">
+     <span class="tc-rb-card-value">${scores.wienerSachtextformel || '?'}</span>
+     <span class="tc-rb-card-label">Wiener Sachtextformel</span>
+     <span class="tc-rb-card-sub">Schulstufe</span>
+    </div>
+    <div class="tc-rb-score-card">
+     <span class="tc-rb-card-value tc-rb-cefr">${scores.cefr || '?'}</span>
+     <span class="tc-rb-card-label">CEFR-Stufe</span>
+     <span class="tc-rb-card-sub">${scores.cefrLabel || ''}</span>
+    </div>
+   </div>
+  </div>
+
+  <!-- Statistics -->
+  <div class="tc-rb-stats-grid">
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.characters || 0}</span><span class="tc-rb-stat-label">Zeichen</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.words || 0}</span><span class="tc-rb-stat-label">Woerter</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.sentences || 0}</span><span class="tc-rb-stat-label">Saetze</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.paragraphs || 0}</span><span class="tc-rb-stat-label">Absaetze</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.avgWordLength || 0}</span><span class="tc-rb-stat-label">&#216; Wortlaenge</span></div>
+   <div class="tc-rb-stat"><span class="tc-rb-stat-val">${stats.avgSentenceLength || 0}</span><span class="tc-rb-stat-label">&#216; Satzlaenge</span></div>
+  </div>
+
+  <!-- Sentence distribution -->
+  <div class="tc-rb-distribution">
+   <h4>Satzlaengen-Verteilung</h4>
+   <div class="tc-rb-dist-bars">
+    <div class="tc-rb-dist-bar">
+     <span class="tc-rb-dist-label">Kurz (&#8804;8 W.)</span>
+     <div class="tc-rb-dist-track"><div class="tc-rb-dist-fill tc-rb-dist-short" style="width: ${getDistPct(dist.shortSentences, stats.sentences)}%"></div></div>
+     <span class="tc-rb-dist-count">${dist.shortSentences || 0}</span>
+    </div>
+    <div class="tc-rb-dist-bar">
+     <span class="tc-rb-dist-label">Mittel (9-15 W.)</span>
+     <div class="tc-rb-dist-track"><div class="tc-rb-dist-fill tc-rb-dist-medium" style="width: ${getDistPct(dist.mediumSentences, stats.sentences)}%"></div></div>
+     <span class="tc-rb-dist-count">${dist.mediumSentences || 0}</span>
+    </div>
+    <div class="tc-rb-dist-bar">
+     <span class="tc-rb-dist-label">Lang (16-25 W.)</span>
+     <div class="tc-rb-dist-track"><div class="tc-rb-dist-fill tc-rb-dist-long" style="width: ${getDistPct(dist.longSentences, stats.sentences)}%"></div></div>
+     <span class="tc-rb-dist-count">${dist.longSentences || 0}</span>
+    </div>
+    <div class="tc-rb-dist-bar">
+     <span class="tc-rb-dist-label">Sehr lang (&gt;25 W.)</span>
+     <div class="tc-rb-dist-track"><div class="tc-rb-dist-fill tc-rb-dist-verylong" style="width: ${getDistPct(dist.veryLongSentences, stats.sentences)}%"></div></div>
+     <span class="tc-rb-dist-count">${dist.veryLongSentences || 0}</span>
+    </div>
+   </div>
+  </div>
+
+  <!-- Longest/shortest sentence -->
+  ${stats.longestSentence ? `
+  <div class="tc-rb-extremes">
+   <div class="tc-rb-extreme">
+    <strong>Laengster Satz (${stats.longestSentence.length} W.):</strong>
+    <span>${escapeHtml(stats.longestSentence.text || '')}</span>
+   </div>
+   ${stats.shortestSentence ? `
+   <div class="tc-rb-extreme">
+    <strong>Kuerzester Satz (${stats.shortestSentence.length} W.):</strong>
+    <span>${escapeHtml(stats.shortestSentence.text || '')}</span>
+   </div>` : ''}
+  </div>` : ''}
+
+  <!-- Suggestions -->
+  ${suggestions.length > 0 ? `
+  <div class="tc-rb-suggestions">
+   <h4>Empfehlungen</h4>
+   <ul>${suggestions.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
+  </div>` : ''}
+ </div>`;
+
+ container.innerHTML = html;
+}
+
+function getDistPct(count, total) {
+ if (!total || !count) return 0;
+ return Math.round((count / total) * 100);
 }
 
  // ========================================
