@@ -337,9 +337,27 @@
  </div>
 
  <h2 id="formTitle" data-i18n="form.title">Text auf sensible Daten prüfen</h2>
+ <p class="privacy-description">Prüfe deinen Text auf sensible persönliche Daten wie Namen, Adressen, Telefonnummern und Bankdaten, bevor du ihn teilst.</p>
+
  <form id="demoForm" aria-describedby="formTitle">
  <label for="demoText" class="sr-only">Dein Text zur Prüfung</label>
- <textarea id="demoText" placeholder="Schreibe oder kopiere deinen Text hier hinein..." rows="6" required aria-label="Text eingeben zur Datenschutz-Prüfung"></textarea>
+ <textarea id="demoText" class="privacy-textarea" placeholder="Schreibe oder kopiere deinen Text hier hinein..." rows="8" maxlength="10000" required aria-label="Text eingeben zur Datenschutz-Prüfung"></textarea>
+
+ <!-- File Upload -->
+ <div class="privacy-upload-area" id="privacyDropZone">
+  <div class="tc-upload-content">
+   <span class="tc-upload-icon">&#128196;</span>
+   <span class="tc-upload-text">Datei hier ablegen oder <label for="privacyFileInput" class="tc-upload-link">auswählen</label></span>
+   <span class="tc-upload-hint">.txt, .md, .rtf, .pdf (max. 10.000 Zeichen)</span>
+  </div>
+  <input type="file" id="privacyFileInput" accept=".txt,.md,.rtf,.pdf,.doc,.docx" hidden>
+ </div>
+ <div id="privacyFileInfo" class="tc-file-info" style="display:none;">
+  <span id="privacyFileName"></span>
+  <button type="button" class="tc-file-remove" onclick="privacyRemoveFile()">&times;</button>
+ </div>
+
+ <div class="privacy-char-count"><span id="privacyCharCount">0</span> / 10.000 Zeichen</div>
 
  <!-- Live Preview (for real-time checking) -->
  <div id="livePreview" class="live-preview" style="display:none;" role="status" aria-live="polite">
@@ -350,23 +368,38 @@
  </div>
 
  <!-- Kontext-Auswahl -->
- <div class="context-selector">
- <label for="contextSelect" data-i18n="form.contextLabel">Wo soll dieser Text verwendet werden?</label>
- <select id="contextSelect" aria-describedby="contextHelp">
- <option value="private" data-i18n="form.contexts.private">Privater Chat (1:1)</option>
- <option value="whatsapp" data-i18n="form.contexts.whatsapp">WhatsApp Gruppe</option>
- <option value="email" data-i18n="form.contexts.email">E-Mail</option>
- <option value="linkedin" data-i18n="form.contexts.linkedin">LinkedIn / Beruflich</option>
- <option value="public" data-i18n="form.contexts.public">Öffentlicher Post (Social Media)</option>
- </select>
+ <div class="privacy-options-grid">
+  <div class="privacy-option-group">
+   <label class="privacy-option-label" for="contextSelect" data-i18n="form.contextLabel">Wo soll dieser Text verwendet werden?</label>
+   <select id="contextSelect" class="privacy-select" aria-describedby="contextHelp">
+    <option value="private" data-i18n="form.contexts.private">Privater Chat (1:1)</option>
+    <option value="whatsapp" data-i18n="form.contexts.whatsapp">WhatsApp Gruppe</option>
+    <option value="email" data-i18n="form.contexts.email">E-Mail</option>
+    <option value="linkedin" data-i18n="form.contexts.linkedin">LinkedIn / Beruflich</option>
+    <option value="public" data-i18n="form.contexts.public">Öffentlicher Post (Social Media)</option>
+   </select>
+  </div>
+  <div class="privacy-option-group">
+   <label class="privacy-option-label">Prüf-Intensität:</label>
+   <div class="privacy-level-buttons">
+    <button type="button" class="privacy-level-btn active" data-sensitivity="standard" title="Standardprüfung auf gängige sensible Daten">
+     <span class="privacy-level-name">Standard</span>
+     <span class="privacy-level-desc">Gängige Daten</span>
+    </button>
+    <button type="button" class="privacy-level-btn" data-sensitivity="strict" title="Strenge Prüfung mit erweiterten Kategorien">
+     <span class="privacy-level-name">Streng</span>
+     <span class="privacy-level-desc">Erweiterte Prüfung</span>
+    </button>
+   </div>
+  </div>
  </div>
 
- <div class="datenschutz-hinweis">
+ <div class="privacy-consent">
  <input type="checkbox" id="privacyPolicyDemo" required>
  <label for="privacyPolicyDemo"><span data-i18n="form.privacyAccept">Ich akzeptiere die</span> <a href="#" onclick="openModal('datenschutzModal'); return false;" data-i18n="form.privacyPolicy">Datenschutzerklärung</a>.</label>
  </div>
- <div class="form-buttons">
- <button type="submit" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
+ <div class="privacy-submit-row">
+ <button type="submit" class="privacy-submit-btn" aria-label="Text auf sensible Daten prüfen" data-i18n="form.submit">Text analysieren</button>
  </div>
  </form>
 
@@ -504,6 +537,8 @@
  document.addEventListener('DOMContentLoaded', function() {
  // Initialize textkorrektur mode (handles URL params too)
  initTextkorrekturMode();
+ // Initialize privacy mode enhancements
+ initPrivacyMode();
 
  // Initialize spell-check options (legacy)
  if (typeof initSpellCheckOptions === 'function') initSpellCheckOptions();
@@ -1837,6 +1872,98 @@ function tcRemoveFile() {
  document.getElementById('tcCharCount').textContent = '0';
  document.getElementById('tcFileInfo').style.display = 'none';
  document.getElementById('tcFileInput').value = '';
+}
+
+// ========================================
+// Privacy Mode Enhancements
+// ========================================
+let privacySensitivity = 'standard';
+
+function initPrivacyMode() {
+ // Character counter
+ const demoText = document.getElementById('demoText');
+ if (demoText) {
+  demoText.addEventListener('input', () => {
+   document.getElementById('privacyCharCount').textContent = demoText.value.length;
+  });
+ }
+
+ // Sensitivity level buttons
+ document.querySelectorAll('.privacy-level-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+   document.querySelectorAll('.privacy-level-btn').forEach(b => b.classList.remove('active'));
+   this.classList.add('active');
+   privacySensitivity = this.dataset.sensitivity;
+  });
+ });
+
+ // File upload
+ initPrivacyFileUpload();
+}
+
+function initPrivacyFileUpload() {
+ const dropZone = document.getElementById('privacyDropZone');
+ const fileInput = document.getElementById('privacyFileInput');
+ if (!dropZone || !fileInput) return;
+
+ dropZone.addEventListener('click', () => fileInput.click());
+
+ dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.classList.add('privacy-dragover');
+ });
+ dropZone.addEventListener('dragleave', () => {
+  dropZone.classList.remove('privacy-dragover');
+ });
+ dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('privacy-dragover');
+  if (e.dataTransfer.files.length > 0) privacyHandleFile(e.dataTransfer.files[0]);
+ });
+ fileInput.addEventListener('change', () => {
+  if (fileInput.files.length > 0) privacyHandleFile(fileInput.files[0]);
+ });
+}
+
+function privacyHandleFile(file) {
+ const maxSize = 2 * 1024 * 1024;
+ if (file.size > maxSize) {
+  alert('Datei zu groß. Maximal 2 MB.');
+  return;
+ }
+
+ const name = file.name.toLowerCase();
+ const textarea = document.getElementById('demoText');
+ const fileInfo = document.getElementById('privacyFileInfo');
+ const fileName = document.getElementById('privacyFileName');
+
+ if (name.endsWith('.txt') || name.endsWith('.md') || name.endsWith('.rtf')) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+   let text = e.target.result;
+   if (text.length > 10000) {
+    alert('Text zu lang (' + text.length + ' Zeichen). Maximal 10.000 Zeichen. Text wird gekürzt.');
+    text = text.substring(0, 10000);
+   }
+   textarea.value = text;
+   document.getElementById('privacyCharCount').textContent = text.length;
+   fileInfo.style.display = 'flex';
+   fileName.textContent = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+  };
+  reader.readAsText(file);
+ } else if (name.endsWith('.pdf')) {
+  fileInfo.style.display = 'flex';
+  fileName.textContent = file.name + ' - PDF-Extraktion wird nicht lokal unterstützt. Bitte Text manuell kopieren.';
+ } else {
+  alert('Nicht unterstütztes Format. Bitte .txt, .md oder .rtf verwenden.');
+ }
+}
+
+function privacyRemoveFile() {
+ document.getElementById('demoText').value = '';
+ document.getElementById('privacyCharCount').textContent = '0';
+ document.getElementById('privacyFileInfo').style.display = 'none';
+ document.getElementById('privacyFileInput').value = '';
 }
 
 // ========================================
