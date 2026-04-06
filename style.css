@@ -463,6 +463,10 @@ input[type="submit"]:hover {
   animation: slideDown 0.3s ease;
 }
 
+.expert-content form {
+  max-width: 620px;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -483,15 +487,176 @@ input[type="submit"]:hover {
   margin: 15px 0;
 }
 
-/* Datenschutz-Hinweis im Formular */
-.datenschutz-hinweis {
+/* ========================================
+   Datenschutz-Analyse Formular (Privacy Mode)
+   ======================================== */
+
+.privacy-description {
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 0.95em;
+}
+
+.privacy-textarea {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #e0e0e0 !important;
+  border-radius: 10px !important;
+  font-size: 15px;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.2s;
+  background: #fafafa !important;
+  margin: 0 !important;
+}
+
+.privacy-textarea:focus {
+  border-color: #800000 !important;
+  outline: none;
+  background: white !important;
+}
+
+.privacy-upload-area {
+  margin: 8px 0 4px;
+  padding: 16px;
+  border: 2px dashed #d0d0d0;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fafafa;
+}
+
+.privacy-upload-area:hover,
+.privacy-upload-area.privacy-dragover {
+  border-color: #800000;
+  background: #fdf5f5;
+}
+
+.privacy-char-count {
+  text-align: right;
+  font-size: 0.8em;
+  color: #999;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.privacy-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f8f8f8;
+  border-radius: 10px;
+}
+
+.privacy-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.privacy-option-label {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #555;
+}
+
+.privacy-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9em;
+  background: white;
+  color: #333;
+  width: 100%;
+}
+
+.privacy-select:focus {
+  border-color: #800000;
+  outline: none;
+}
+
+.privacy-level-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.privacy-level-btn {
+  padding: 8px 14px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 90px;
+}
+
+.privacy-level-btn:hover {
+  border-color: #800000;
+}
+
+.privacy-level-btn.active {
+  border-color: #800000;
+  background: #800000;
+  color: white;
+}
+
+.privacy-level-name {
+  font-weight: 700;
+  font-size: 0.95em;
+}
+
+.privacy-level-desc {
+  font-size: 0.72em;
+  opacity: 0.8;
+}
+
+.privacy-consent {
   font-size: 14px;
   margin: 15px 0;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.datenschutz-hinweis a {
+.privacy-consent a {
   color: #800000;
+}
+
+.privacy-submit-row {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.privacy-submit-btn {
+  padding: 14px 40px;
+  background: #800000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.privacy-submit-btn:hover {
+  background: #a60000;
+}
+
+@media (max-width: 600px) {
+  .privacy-options-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Formular-Nachricht */
