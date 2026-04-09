@@ -137,13 +137,16 @@
    Global Navigation
    ======================================== */
 .global-nav {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: var(--z-nav);
   background: var(--color-bg-primary);
   border-bottom: 1px solid var(--color-border);
   padding: 0 var(--space-xl);
   box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
 }
 
 .global-nav-inner {
@@ -606,6 +609,7 @@ body {
   background-color: #ffffff;
   text-align: center;
   line-height: 1.6;
+  padding-top: 56px;
 }
 
 main {
