@@ -388,12 +388,41 @@
 
 <body>
 
+ <!-- Skip Navigation -->
+ <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
+ <!-- Global Navigation -->
+ <nav class="global-nav" role="navigation" aria-label="Hauptnavigation">
+  <div class="global-nav-inner">
+   <a href="index.html" class="nav-logo">[achtung.live]</a>
+   <ul class="nav-links nav-links-desktop">
+    <li><a href="index.html">Demo</a></li>
+    <li><a href="hilfe.html">Hilfe</a></li>
+    <li><a href="gefahr.html">Risiken</a></li>
+    <li><a href="info.html">Über uns</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+   </ul>
+   <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menü öffnen" aria-expanded="false">
+    <span class="nav-hamburger-line"></span>
+   </button>
+  </div>
+ </nav>
+ <div class="nav-mobile-overlay" id="navMobileOverlay">
+  <ul class="nav-links">
+   <li><a href="index.html" onclick="toggleMobileNav()">Demo</a></li>
+   <li><a href="hilfe.html" onclick="toggleMobileNav()">Hilfe</a></li>
+   <li><a href="gefahr.html" onclick="toggleMobileNav()">Risiken</a></li>
+   <li><a href="info.html" onclick="toggleMobileNav()">Über uns</a></li>
+   <li><a href="kontakt.html" onclick="toggleMobileNav()">Kontakt</a></li>
+  </ul>
+ </div>
+
 <header>
  <h1><a href="index.html" class="achtung-logo">[achtung.live]</a></h1>
  <p class="claim">Der Airbag für digitale Kommunikation</p>
 </header>
 
-<main class="assistent-container">
+<main id="main-content" class="assistent-container">
 
  <!-- Schritt 1: Begrüßung -->
  <div id="step-welcome" class="assistent-card assistent-step active">
@@ -938,6 +967,18 @@ document.addEventListener('keydown', function(event) {
  }
  }
 });
+</script>
+
+<script>
+function toggleMobileNav() {
+ var hamburger = document.getElementById('navHamburger');
+ var overlay = document.getElementById('navMobileOverlay');
+ var isOpen = overlay.classList.contains('open');
+ overlay.classList.toggle('open');
+ hamburger.classList.toggle('open');
+ hamburger.setAttribute('aria-expanded', !isOpen);
+ document.body.style.overflow = isOpen ? '' : 'hidden';
+}
 </script>
 
 </body>

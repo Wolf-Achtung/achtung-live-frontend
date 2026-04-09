@@ -12,12 +12,41 @@
 
 <body>
 
+ <!-- Skip Navigation -->
+ <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
+ <!-- Global Navigation -->
+ <nav class="global-nav" role="navigation" aria-label="Hauptnavigation">
+  <div class="global-nav-inner">
+   <a href="index.html" class="nav-logo">[achtung.live]</a>
+   <ul class="nav-links nav-links-desktop">
+    <li><a href="index.html">Demo</a></li>
+    <li><a href="hilfe.html">Hilfe</a></li>
+    <li><a href="gefahr.html" class="active">Risiken</a></li>
+    <li><a href="info.html">Über uns</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+   </ul>
+   <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menü öffnen" aria-expanded="false">
+    <span class="nav-hamburger-line"></span>
+   </button>
+  </div>
+ </nav>
+ <div class="nav-mobile-overlay" id="navMobileOverlay">
+  <ul class="nav-links">
+   <li><a href="index.html" onclick="toggleMobileNav()">Demo</a></li>
+   <li><a href="hilfe.html" onclick="toggleMobileNav()">Hilfe</a></li>
+   <li><a href="gefahr.html" class="active" onclick="toggleMobileNav()">Risiken</a></li>
+   <li><a href="info.html" onclick="toggleMobileNav()">Über uns</a></li>
+   <li><a href="kontakt.html" onclick="toggleMobileNav()">Kontakt</a></li>
+  </ul>
+ </div>
+
 <header>
  <h1><span class="achtung-logo">[achtung.live]</span></h1>
  <p class="claim">Digitale Risiken verstehen – und vermeiden</p>
 </header>
 
-<main class="main-content">
+<main id="main-content" class="main-content">
 
  <section class="gefahr-intro">
  <p>Das Internet bietet viele Möglichkeiten. Aber es gibt auch Risiken. Hier erfährst du, welche das sind – und wie du dich ganz einfach schützen kannst.</p>
@@ -50,7 +79,7 @@
  </article>
 
  <article class="gefahr-item">
- <h2>💰 Finanzbetrug</h2>
+ <h2>Finanzbetrug</h2>
  <p><strong>Was ist das?</strong><br>
  Kriminelle versuchen, an deine Bankdaten oder Kreditkarten-Informationen zu kommen – durch gefälschte Shops, falsche Gewinnspiele oder betrügerische Anrufe.</p>
  <p><strong>So schützt du dich:</strong></p>
@@ -128,6 +157,18 @@
  © 2026 achtung.live
  </div>
 </footer>
+
+<script>
+function toggleMobileNav() {
+ var hamburger = document.getElementById('navHamburger');
+ var overlay = document.getElementById('navMobileOverlay');
+ var isOpen = overlay.classList.contains('open');
+ overlay.classList.toggle('open');
+ hamburger.classList.toggle('open');
+ hamburger.setAttribute('aria-expanded', !isOpen);
+ document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+</script>
 
 </body>
 </html>
