@@ -16,6 +16,38 @@
  <title>Demo | achtung.live</title>
 </head>
 <body>
+ <!-- Skip Navigation -->
+ <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
+ <!-- Global Navigation -->
+ <nav class="global-nav" role="navigation" aria-label="Hauptnavigation">
+  <div class="global-nav-inner">
+   <a href="index.html" class="nav-logo">[achtung.live]</a>
+   <ul class="nav-links nav-links-desktop">
+    <li><a href="index.html" class="active">Demo</a></li>
+    <li><a href="hilfe.html">Hilfe</a></li>
+    <li><a href="gefahr.html">Risiken</a></li>
+    <li><a href="info.html">Über uns</a></li>
+    <li><a href="kontakt.html">Kontakt</a></li>
+   </ul>
+   <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menü öffnen" aria-expanded="false">
+    <span class="nav-hamburger-line"></span>
+   </button>
+  </div>
+ </nav>
+ <div class="nav-mobile-overlay" id="navMobileOverlay">
+  <ul class="nav-links">
+   <li><a href="index.html" onclick="toggleMobileNav()">Demo</a></li>
+   <li><a href="hilfe.html" onclick="toggleMobileNav()">Hilfe</a></li>
+   <li><a href="gefahr.html" onclick="toggleMobileNav()">Risiken</a></li>
+   <li><a href="info.html" onclick="toggleMobileNav()">Über uns</a></li>
+   <li><a href="kontakt.html" onclick="toggleMobileNav()">Kontakt</a></li>
+  </ul>
+ </div>
+
+ <!-- Toast Container -->
+ <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
  <!-- PWA Install Prompt (hidden by default) -->
  <div id="pwaInstallPrompt" class="pwa-install-prompt" style="display:none;">
  <span class="pwa-text" data-i18n="pwa.installHint">App installieren für Offline-Nutzung</span>
@@ -93,7 +125,7 @@
  </header>
 
  <!-- Modus-Weiche: Datenschutz vs. Textkorrektur -->
- <div class="mode-switch-section" role="navigation" aria-label="Modus wählen">
+ <div id="main-content" class="mode-switch-section" role="navigation" aria-label="Modus wählen">
  <h2 class="mode-switch-title">Was möchtest du prüfen?</h2>
  <div class="mode-switch-cards">
   <button class="mode-card active" id="modePrivacy" onclick="switchMode('privacy')" aria-pressed="true">
@@ -532,6 +564,36 @@
 
  <script>
  // ========================================
+ // Global Navigation Toggle
+ // ========================================
+ function toggleMobileNav() {
+  const hamburger = document.getElementById('navHamburger');
+  const overlay = document.getElementById('navMobileOverlay');
+  const isOpen = overlay.classList.contains('open');
+  overlay.classList.toggle('open');
+  hamburger.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', !isOpen);
+  hamburger.setAttribute('aria-label', isOpen ? 'Menü öffnen' : 'Menü schliessen');
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+ }
+
+ // ========================================
+ // Toast Notification System
+ // ========================================
+ function showToast(message, type = 'info', duration = 4000) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `<span>${message}</span><button class="toast-close" onclick="this.parentElement.remove()" aria-label="Schliessen">&times;</button>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+   toast.classList.add('toast-exit');
+   setTimeout(() => toast.remove(), 300);
+  }, duration);
+ }
+
+ // ========================================
  // Initialization
  // ========================================
  document.addEventListener('DOMContentLoaded', function() {
@@ -539,10 +601,72 @@
  initTextkorrekturMode();
  // Initialize privacy mode enhancements
  initPrivacyMode();
+ // Show onboarding for first-time visitors
+ initOnboarding();
 
  // Initialize spell-check options (legacy)
  if (typeof initSpellCheckOptions === 'function') initSpellCheckOptions();
  });
+
+ // ========================================
+ // Onboarding (First-time visitor)
+ // ========================================
+ function initOnboarding() {
+  if (localStorage.getItem('achtung_onboarding_done')) return;
+
+  const steps = [
+   { icon: '&#128274;', title: 'Willkommen bei achtung.live', text: 'Dein Airbag für digitale Kommunikation. Wir prüfen deine Texte auf sensible Daten, bevor du sie teilst.' },
+   { icon: '&#9998;', title: 'Zwei Modi', text: 'Datenschutz-Analyse erkennt sensible Daten. Textkorrektur verbessert Grammatik und Stil.' },
+   { icon: '&#128274;', title: 'Deine Daten bleiben privat', text: 'Kein Tracking, keine Speicherung. DSGVO-konform und transparent.' }
+  ];
+  let currentStep = 0;
+
+  function renderStep() {
+   const overlay = document.getElementById('onboardingOverlay');
+   if (!overlay) return;
+   const step = steps[currentStep];
+   overlay.querySelector('.onboarding-icon').innerHTML = step.icon;
+   overlay.querySelector('.onboarding-title').textContent = step.title;
+   overlay.querySelector('.onboarding-text').textContent = step.text;
+   overlay.querySelectorAll('.onboarding-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentStep);
+   });
+   const btnText = currentStep < steps.length - 1 ? 'Weiter' : 'Los geht\'s!';
+   overlay.querySelector('.onboarding-btn-primary').textContent = btnText;
+  }
+
+  const overlayHTML = `
+   <div class="onboarding-overlay" id="onboardingOverlay">
+    <div class="onboarding-card">
+     <div class="onboarding-step-indicator">
+      ${steps.map((_, i) => `<span class="onboarding-dot${i === 0 ? ' active' : ''}"></span>`).join('')}
+     </div>
+     <div class="onboarding-icon">${steps[0].icon}</div>
+     <div class="onboarding-title">${steps[0].title}</div>
+     <div class="onboarding-text">${steps[0].text}</div>
+     <div class="onboarding-actions">
+      <button class="onboarding-btn-skip" onclick="closeOnboarding()">Überspringen</button>
+      <button class="onboarding-btn-primary" onclick="nextOnboardingStep()">Weiter</button>
+     </div>
+    </div>
+   </div>`;
+  document.body.insertAdjacentHTML('beforeend', overlayHTML);
+
+  window.nextOnboardingStep = function() {
+   currentStep++;
+   if (currentStep >= steps.length) {
+    closeOnboarding();
+   } else {
+    renderStep();
+   }
+  };
+
+  window.closeOnboarding = function() {
+   const overlay = document.getElementById('onboardingOverlay');
+   if (overlay) overlay.remove();
+   localStorage.setItem('achtung_onboarding_done', 'true');
+  };
+ }
 
  // ========================================
  // API Konfiguration
@@ -629,6 +753,9 @@ const API_READABILITY_URL = `${API_BASE}/readability`;
  // ========================================
  // Modal Funktionen
  // ========================================
+ // Store the element that had focus before modal opened
+ let _modalTrigger = null;
+
  function openModal(id) {
  // Update privacy policy iframe based on current language
  if (id === 'datenschutzModal') {
@@ -638,11 +765,45 @@ const API_READABILITY_URL = `${API_BASE}/readability`;
  iframe.src = 'datenschutz-popup2' + langSuffix + '.html';
  }
  }
- document.getElementById(id).style.display = "block";
+ const modal = document.getElementById(id);
+ _modalTrigger = document.activeElement;
+ modal.style.display = "block";
+ modal.setAttribute('aria-modal', 'true');
+ modal.setAttribute('role', 'dialog');
+ // Focus the close button or first focusable element
+ const closeBtn = modal.querySelector('.close');
+ if (closeBtn) {
+  closeBtn.setAttribute('aria-label', 'Dialog schliessen');
+  closeBtn.focus();
+ }
+ // Trap focus inside the modal
+ modal.addEventListener('keydown', trapFocus);
  }
 
  function closeModal(id) {
- document.getElementById(id).style.display = "none";
+ const modal = document.getElementById(id);
+ modal.style.display = "none";
+ modal.removeAttribute('aria-modal');
+ modal.removeEventListener('keydown', trapFocus);
+ // Return focus to trigger element
+ if (_modalTrigger) {
+  _modalTrigger.focus();
+  _modalTrigger = null;
+ }
+ }
+
+ function trapFocus(e) {
+ if (e.key !== 'Tab') return;
+ const modal = e.currentTarget;
+ const focusable = modal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])');
+ if (focusable.length === 0) return;
+ const first = focusable[0];
+ const last = focusable[focusable.length - 1];
+ if (e.shiftKey) {
+  if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+ } else {
+  if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+ }
  }
 
  // Fallbeispiele Navigation
@@ -668,9 +829,25 @@ const API_READABILITY_URL = `${API_BASE}/readability`;
  <div class="dashboard-loading">
  <div class="loading-spinner"></div>
  <div class="loading-text">Analysiere deinen Text...</div>
+ <div style="padding: 20px;">
+  <div class="skeleton skeleton-line medium"></div>
+  <div class="skeleton skeleton-line"></div>
+  <div class="skeleton skeleton-line short"></div>
+ </div>
  </div>
  </div>
  `;
+ }
+
+ // Error with retry
+ function showErrorWithRetry(container, message, retryFn) {
+  container.innerHTML = `
+  <div class="error-retry">
+   <div class="error-retry-icon">&#9888;</div>
+   <div class="error-retry-message">${message}</div>
+   <div class="error-retry-hint">Prüfe deine Internetverbindung und versuche es erneut.</div>
+   <button class="error-retry-btn" onclick="(${retryFn.toString()})()">Erneut versuchen</button>
+  </div>`;
  }
 
  // Berechnet Risk Score aus Kategorien (Fallback wenn Backend alt)
@@ -1143,7 +1320,7 @@ const API_READABILITY_URL = `${API_BASE}/readability`;
 
  } catch (error) {
  console.error('Rewrite error:', error);
- alert('Fehler beim Rewrite: ' + error.message);
+ showToast('Fehler beim Rewrite: ' + error.message);
  } finally {
  // Reset button state
  btnText.style.display = 'inline';
@@ -1289,7 +1466,7 @@ const API_READABILITY_URL = `${API_BASE}/readability`;
 
  const texts = parseTexts(document.getElementById('batchTexts').value);
  if (texts.length === 0) {
- alert('Bitte mindestens einen Text eingeben.');
+ showToast('Bitte mindestens einen Text eingeben.', 'warning');
  return;
  }
 
@@ -1510,7 +1687,7 @@ async function checkSpelling() {
  const optionsDiv = document.getElementById('spellCheckOptions');
 
  if (!text || text.trim().length < 3) {
- alert('Bitte gib mindestens 3 Zeichen ein.');
+ showToast('Bitte gib mindestens 3 Zeichen ein.', 'warning');
  return;
  }
 
@@ -1836,7 +2013,7 @@ function initTcFileUpload() {
 function tcHandleFile(file) {
  const maxSize = 2 * 1024 * 1024; // 2MB
  if (file.size > maxSize) {
-  alert('Datei zu groß. Maximal 2 MB.');
+  showToast('Datei zu groß. Maximal 2 MB.', 'warning');
   return;
  }
 
@@ -1850,7 +2027,7 @@ function tcHandleFile(file) {
   reader.onload = (e) => {
    let text = e.target.result;
    if (text.length > 10000) {
-    alert('Text zu lang (' + text.length + ' Zeichen). Maximal 10.000 Zeichen. Text wird gekürzt.');
+    showToast('Text zu lang (' + text.length + ' Zeichen). Maximal 10.000 Zeichen. Text wird gekürzt.');
     text = text.substring(0, 10000);
    }
    textarea.value = text;
@@ -1863,7 +2040,7 @@ function tcHandleFile(file) {
   fileInfo.style.display = 'flex';
   fileName.textContent = file.name + ' - PDF-Extraktion wird nicht lokal unterstützt. Bitte Text manuell kopieren.';
  } else {
-  alert('Nicht unterstütztes Format. Bitte .txt, .md oder .rtf verwenden.');
+  showToast('Nicht unterstütztes Format. Bitte .txt, .md oder .rtf verwenden.', 'warning');
  }
 }
 
@@ -1880,6 +2057,19 @@ function tcRemoveFile() {
 let privacySensitivity = 'standard';
 
 function initPrivacyMode() {
+ // Session-based consent: pre-check if already consented this session
+ if (sessionStorage.getItem('achtung_privacy_consent') === 'true') {
+  const checkbox = document.getElementById('privacyPolicyDemo');
+  if (checkbox) checkbox.checked = true;
+ }
+ // Save consent to session when checked
+ const consentBox = document.getElementById('privacyPolicyDemo');
+ if (consentBox) {
+  consentBox.addEventListener('change', function() {
+   if (this.checked) sessionStorage.setItem('achtung_privacy_consent', 'true');
+  });
+ }
+
  // Character counter
  const demoText = document.getElementById('demoText');
  if (demoText) {
@@ -1928,7 +2118,7 @@ function initPrivacyFileUpload() {
 function privacyHandleFile(file) {
  const maxSize = 2 * 1024 * 1024;
  if (file.size > maxSize) {
-  alert('Datei zu groß. Maximal 2 MB.');
+  showToast('Datei zu groß. Maximal 2 MB.', 'warning');
   return;
  }
 
@@ -1942,7 +2132,7 @@ function privacyHandleFile(file) {
   reader.onload = (e) => {
    let text = e.target.result;
    if (text.length > 10000) {
-    alert('Text zu lang (' + text.length + ' Zeichen). Maximal 10.000 Zeichen. Text wird gekürzt.');
+    showToast('Text zu lang (' + text.length + ' Zeichen). Maximal 10.000 Zeichen. Text wird gekürzt.');
     text = text.substring(0, 10000);
    }
    textarea.value = text;
@@ -1955,7 +2145,7 @@ function privacyHandleFile(file) {
   fileInfo.style.display = 'flex';
   fileName.textContent = file.name + ' - PDF-Extraktion wird nicht lokal unterstützt. Bitte Text manuell kopieren.';
  } else {
-  alert('Nicht unterstütztes Format. Bitte .txt, .md oder .rtf verwenden.');
+  showToast('Nicht unterstütztes Format. Bitte .txt, .md oder .rtf verwenden.', 'warning');
  }
 }
 
@@ -1974,7 +2164,7 @@ async function runTextCorrection() {
  const resultsDiv = document.getElementById('tcCorrectResults');
 
  if (!text || text.trim().length < 3) {
-  alert('Bitte gib mindestens 3 Zeichen ein.');
+  showToast('Bitte gib mindestens 3 Zeichen ein.', 'warning');
   return;
  }
 
@@ -2233,7 +2423,7 @@ async function runTextImprove() {
  const resultsDiv = document.getElementById('tcImproveResults');
 
  if (!text || text.trim().length < 3) {
-  alert('Bitte gib mindestens 3 Zeichen ein.');
+  showToast('Bitte gib mindestens 3 Zeichen ein.', 'warning');
   return;
  }
 
@@ -2361,7 +2551,7 @@ async function runReadability() {
  const resultsDiv = document.getElementById('tcReadabilityResults');
 
  if (!text || text.trim().length < 10) {
-  alert('Bitte gib mindestens 10 Zeichen ein.');
+  showToast('Bitte gib mindestens 10 Zeichen ein.', 'warning');
   return;
  }
 
@@ -2907,13 +3097,13 @@ function getDistPct(count, total) {
  const isPdf = file.type === 'application/pdf';
 
  if (!isImage && !isPdf) {
- alert('Bitte nur Bilder (PNG, JPG) oder PDFs hochladen.');
+ showToast('Bitte nur Bilder (PNG, JPG) oder PDFs hochladen.', 'warning');
  return;
  }
 
  const maxSize = isImage ? maxImageSize : maxPdfSize;
  if (file.size > maxSize) {
- alert(`Datei zu groß. Maximum: ${maxSize / 1024 / 1024} MB`);
+ showToast(`Datei zu groß. Maximum: ${maxSize / 1024 / 1024} MB`, 'warning');
  return;
  }
 
@@ -2971,7 +3161,7 @@ function getDistPct(count, total) {
  e.preventDefault();
 
  if (!selectedDocument) {
- alert('Bitte zuerst ein Dokument auswählen.');
+ showToast('Bitte zuerst ein Dokument auswählen.', 'warning');
  return;
  }
 
@@ -3483,7 +3673,7 @@ function getDistPct(count, total) {
  displayPredictiveResults(result, options);
  } catch (error) {
  console.error('[Predictive] Error:', error);
- alert('Fehler bei der Analyse: ' + error.message);
+ showToast('Fehler bei der Analyse: ' + error.message);
  } finally {
  btnText.style.display = 'inline';
  btnLoading.style.display = 'none';
@@ -4426,7 +4616,7 @@ function getDistPct(count, total) {
  const phone = document.getElementById('footprintPhone').value.trim();
 
  if (!email) {
- alert('Bitte gib eine E-Mail-Adresse ein.');
+ showToast('Bitte gib eine E-Mail-Adresse ein.', 'warning');
  return;
  }
 
@@ -4467,7 +4657,7 @@ function getDistPct(count, total) {
 
  } catch (error) {
  console.error('Footprint scan error:', error);
- alert('Fehler beim Scan. Bitte versuche es erneut.');
+ showToast('Fehler beim Scan. Bitte versuche es erneut.', 'error');
  } finally {
  btn.querySelector('.btn-text').style.display = 'inline';
  btn.querySelector('.btn-loading').style.display = 'none';
@@ -4812,13 +5002,13 @@ function getDistPct(count, total) {
  }
 
  function startBulkOptout() {
- alert('Bulk Opt-out Feature wird in der nächsten Version verfügbar sein.');
+ showToast('Bulk Opt-out Feature wird in der nächsten Version verfügbar sein.', 'info');
  }
 
  function setupMonitoring() {
  const email = document.getElementById('footprintEmail').value;
  if (email) {
- alert(`Monitoring für ${email} wird eingerichtet. Du erhältst eine Bestätigungs-E-Mail.`);
+ showToast(`Monitoring für ${email} wird eingerichtet. Du erhältst eine Bestätigungs-E-Mail.`, 'success');
  }
  }
 
@@ -5642,7 +5832,7 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
  function exportCoachHistory() {
  if (coachConversation.length === 0) {
- alert('Keine Nachrichten zum Exportieren vorhanden.');
+ showToast('Keine Nachrichten zum Exportieren vorhanden.', 'warning');
  return;
  }
 
@@ -5857,7 +6047,7 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
  let url = document.getElementById('policyUrl').value.trim();
 
  if (!url) {
- alert('Bitte gib eine URL ein.');
+ showToast('Bitte gib eine URL ein.', 'warning');
  return;
  }
 
@@ -5874,12 +6064,12 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
  const text = document.getElementById('policyText').value.trim();
 
  if (!text) {
- alert('Bitte füge einen Text ein.');
+ showToast('Bitte füge einen Text ein.', 'warning');
  return;
  }
 
  if (text.length < 100) {
- alert('Der Text ist zu kurz für eine Analyse. Bitte füge die vollständige Datenschutzerklärung ein.');
+ showToast('Der Text ist zu kurz für eine Analyse. Bitte füge die vollständige Datenschutzerklärung ein.', 'warning');
  return;
  }
 
@@ -5926,7 +6116,7 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
  } catch (error) {
  console.error('Policy analysis error:', error);
- alert('Fehler bei der Analyse. Bitte versuche es erneut.');
+ showToast('Fehler bei der Analyse. Bitte versuche es erneut.', 'error');
  } finally {
  if (submitBtn) {
  submitBtn.querySelector('.btn-text').style.display = 'inline';
@@ -6370,7 +6560,7 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
 
  function showBetterAlternatives() {
  if (!lastPolicyResults || !lastPolicyResults.alternatives || lastPolicyResults.alternatives.length === 0) {
- alert('Keine alternativen Dienste bekannt. Nutze die Suchfunktion für datenschutzfreundliche Alternativen.');
+ showToast('Keine alternativen Dienste bekannt. Nutze die Suchfunktion für datenschutzfreundliche Alternativen.', 'warning');
  return;
  }
 
@@ -6395,7 +6585,7 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
  `;
  }, 100);
  } else {
- alert(`Empfohlene Alternativen: ${alternatives.join(', ')}`);
+ showToast(`Empfohlene Alternativen: ${alternatives.join(', ')}`, 'info');
  }
  }
 

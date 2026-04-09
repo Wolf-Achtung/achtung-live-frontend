@@ -53,12 +53,12 @@ if (analyzeButton && inputText && resultBox) {
     const consent = consentCheckbox ? consentCheckbox.checked : true;
 
     if (!text) {
-      alert("Bitte gib einen Text ein.");
+      if (typeof showToast === 'function') showToast("Bitte gib einen Text ein.", "warning"); else alert("Bitte gib einen Text ein.");
       return;
     }
 
     if (consentCheckbox && !consent) {
-      alert("Bitte stimme der Analyse zu.");
+      if (typeof showToast === 'function') showToast("Bitte stimme der Analyse zu.", "warning"); else alert("Bitte stimme der Analyse zu.");
       return;
     }
 
