@@ -239,10 +239,9 @@
  <!-- Login Form -->
  <div class="login-container" id="loginContainer">
  <h1>[achtung.live] Admin</h1>
- <div class="login-error" id="loginError">Falsches Passwort</div>
+ <div class="login-error" id="loginError">Ungültiges Admin-Token</div>
  <form class="login-form" onsubmit="handleLogin(event)">
- <input type="text" id="adminUser" placeholder="Benutzername" required>
- <input type="password" id="adminPass" placeholder="Passwort" required>
+ <input type="password" id="adminToken" placeholder="Admin-Token" required autocomplete="off">
  <button type="submit">Anmelden</button>
  </form>
  </div>
@@ -379,33 +378,38 @@
  </div>
 
  <script>
- // Simple admin authentication (in production: use proper backend auth)
- const ADMIN_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'; // 'admin' hashed
-
- async function sha256(message) {
- const msgBuffer = new TextEncoder().encode(message);
- const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
- const hashArray = Array.from(new Uint8Array(hashBuffer));
- return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+ // Der Admin-Token wird server-seitig in den Netlify Functions (admin-stats,
+ // admin-logs, admin-settings) gegen die ADMIN_SECRET-Umgebungsvariable geprüft.
+ // Dieses Formular speichert das eingegebene Token nur lokal und testet es mit
+ // einem echten API-Aufruf - es gibt keine clientseitige "Prüfung" mehr.
+ function adminHeaders() {
+ return { 'X-Admin-Token': sessionStorage.getItem('adminToken') || '' };
  }
 
  async function handleLogin(e) {
  e.preventDefault();
- const user = document.getElementById('adminUser').value;
- const pass = document.getElementById('adminPass').value;
- const hash = await sha256(pass);
+ const token = document.getElementById('adminToken').value;
 
- // In production: verify against backend
- if (user === 'admin' && hash === ADMIN_HASH) {
- sessionStorage.setItem('adminAuth', 'true');
+ try {
+ const response = await fetch('/.netlify/functions/admin-stats', {
+ headers: { 'X-Admin-Token': token }
+ });
+
+ if (response.ok) {
+ sessionStorage.setItem('adminToken', token);
+ document.getElementById('loginError').style.display = 'none';
  showDashboard();
  } else {
+ document.getElementById('loginError').style.display = 'block';
+ }
+ } catch (error) {
+ document.getElementById('loginError').textContent = 'Verbindung zum Server fehlgeschlagen.';
  document.getElementById('loginError').style.display = 'block';
  }
  }
 
  function handleLogout() {
- sessionStorage.removeItem('adminAuth');
+ sessionStorage.removeItem('adminToken');
  location.reload();
  }
 
@@ -425,7 +429,11 @@
  async function loadDashboardData() {
  try {
  // Load stats from API
- const response = await fetch('/.netlify/functions/admin-stats');
+ const response = await fetch('/.netlify/functions/admin-stats', { headers: adminHeaders() });
+ if (response.status === 401) {
+ handleLogout();
+ return;
+ }
  if (response.ok) {
  const data = await response.json();
  document.getElementById('statRequests').textContent = data.requestsToday || 0;
@@ -436,14 +444,14 @@
  }
 
  // Load activity logs
- const logsResponse = await fetch('/.netlify/functions/admin-logs');
+ const logsResponse = await fetch('/.netlify/functions/admin-logs', { headers: adminHeaders() });
  if (logsResponse.ok) {
  const logs = await logsResponse.json();
  renderActivityLogs(logs.activities || []);
  }
 
  // Load settings
- const settingsResponse = await fetch('/.netlify/functions/admin-settings');
+ const settingsResponse = await fetch('/.netlify/functions/admin-settings', { headers: adminHeaders() });
  if (settingsResponse.ok) {
  const settings = await settingsResponse.json();
  applySettings(settings);
@@ -511,11 +519,12 @@
  };
 
  try {
- await fetch('/.netlify/functions/admin-settings', {
+ const response = await fetch('/.netlify/functions/admin-settings', {
  method: 'POST',
- headers: { 'Content-Type': 'application/json' },
+ headers: { 'Content-Type': 'application/json', ...adminHeaders() },
  body: JSON.stringify(settings)
  });
+ if (response.status === 401) { handleLogout(); return; }
  alert('Einstellungen gespeichert!');
  } catch (error) {
  console.log('Settings saved locally');
@@ -531,11 +540,14 @@
  .filter(w => w.length > 0);
 
  try {
- await fetch('/.netlify/functions/admin-blacklist', {
+ // Es gibt keine eigene admin-blacklist-Function - die Blacklist ist Teil
+ // der admin-settings-Konfiguration und wird darüber gespeichert.
+ const response = await fetch('/.netlify/functions/admin-settings', {
  method: 'POST',
- headers: { 'Content-Type': 'application/json' },
+ headers: { 'Content-Type': 'application/json', ...adminHeaders() },
  body: JSON.stringify({ blacklist: words })
  });
+ if (response.status === 401) { handleLogout(); return; }
  alert('Blacklist gespeichert!');
  } catch (error) {
  localStorage.setItem('blacklist', JSON.stringify(words));
@@ -544,13 +556,13 @@
  }
 
  // Check auth on load
- if (sessionStorage.getItem('adminAuth') === 'true') {
+ if (sessionStorage.getItem('adminToken')) {
  showDashboard();
  }
 
  // Auto-refresh every 30 seconds
  setInterval(() => {
- if (sessionStorage.getItem('adminAuth') === 'true') {
+ if (sessionStorage.getItem('adminToken')) {
  loadDashboardData();
  }
  }, 30000);

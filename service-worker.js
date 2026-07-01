@@ -9,13 +9,14 @@ const PATTERNS_CACHE = `achtung-patterns-${CACHE_VERSION}`;
 // Static assets to cache on install
 const STATIC_ASSETS = [
   '/',
-  '/',
   '/style.css',
   '/auth.js',
   '/manifest.json',
   '/locales/de.json',
   '/locales/en.json',
   '/locales/fr.json',
+  '/locales/es.json',
+  '/locales/it.json',
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
   '/apple-touch-icon.png'

@@ -34,7 +34,11 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Try backend
+    // Verifizierung läuft ausschließlich über das Backend, das die echten
+    // Tokens hält (verificationTokens-Store in server.js). Es gibt keinen
+    // clientseitigen/Fallback-Ersatz mehr, der ein Token allein anhand seiner
+    // Länge als "verifiziert" durchwinkt - das wäre eine Umgehung der
+    // E-Mail-Besitzprüfung.
     try {
       const response = await fetch(`${API_BASE}/api/v2/alerts/verify/${token}`, {
         method: "GET",
@@ -56,33 +60,23 @@ exports.handler = async (event, context) => {
           })
         };
       }
-    } catch (apiError) {
-      console.log("Backend unavailable, using fallback");
-    }
 
-    // Fallback - simulate verification
-    // In production, this would validate against stored tokens
-    const isValidToken = token.length >= 20;
-
-    if (isValidToken) {
       return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          success: true,
-          message: "E-Mail-Adresse erfolgreich verifiziert",
-          email: "***@***.de",
-          subscriptionId: `sub_${Date.now()}`,
-          verifiedAt: new Date().toISOString()
-        })
-      };
-    } else {
-      return {
-        statusCode: 400,
+        statusCode: response.status,
         headers,
         body: JSON.stringify({
           success: false,
-          error: "Ungültiges Token-Format"
+          error: "Verifizierung fehlgeschlagen"
+        })
+      };
+    } catch (apiError) {
+      console.error("Backend unavailable:", apiError.message);
+      return {
+        statusCode: 503,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: "Verifizierungsdienst vorübergehend nicht erreichbar. Bitte versuche es später erneut."
         })
       };
     }

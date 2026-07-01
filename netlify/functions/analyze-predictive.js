@@ -113,7 +113,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(data)
+      body: JSON.stringify({ success: true, timestamp: new Date().toISOString(), ...data })
     };
 
   } catch (error) {
