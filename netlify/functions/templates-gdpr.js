@@ -227,7 +227,7 @@ exports.handler = async (event, context) => {
  try {
  // Try backend first
  try {
- const response = await fetch(`${API_BASE}/api/v2/templates/gdpr/${requestType}`, {
+ const response = await fetch(`${API_BASE}/api/v2/templates/gdpr/${encodeURIComponent(requestType)}`, {
  method: "GET",
  headers: { "Content-Type": "application/json" }
  });

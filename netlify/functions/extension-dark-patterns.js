@@ -156,7 +156,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(DARK_PATTERNS_DB)
+      body: JSON.stringify({ success: true, timestamp: new Date().toISOString(), ...DARK_PATTERNS_DB })
     };
 
   } catch (error) {

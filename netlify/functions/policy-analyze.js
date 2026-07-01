@@ -49,11 +49,21 @@ exports.handler = async (event, context) => {
       };
     }
 
+    const VALID_TYPES = ["url", "text"];
+
     if (!requestBody.type || !requestBody.value) {
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: "Bitte type (url/text) und value angeben" })
+      };
+    }
+
+    if (!VALID_TYPES.includes(requestBody.type)) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: `Ungültiger type. Erlaubt: ${VALID_TYPES.join(", ")}` })
       };
     }
 
@@ -93,7 +103,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(data)
+      body: JSON.stringify({ success: true, timestamp: new Date().toISOString(), ...data })
     };
 
   } catch (error) {

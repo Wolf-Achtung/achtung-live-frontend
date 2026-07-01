@@ -1,6 +1,20 @@
 // Netlify Function: Admin Settings Management
 // Manages moderation settings and blacklist
 
+const crypto = require('crypto');
+
+// Requires ADMIN_SECRET to be set in the Netlify environment. Fails closed
+// (denies access) if it isn't configured, rather than leaving the endpoint open.
+function isAuthorized(event) {
+  const expected = process.env.ADMIN_SECRET;
+  if (!expected) return false;
+  const provided = event.headers['x-admin-token'] || event.headers['X-Admin-Token'] || '';
+  const providedBuf = Buffer.from(provided);
+  const expectedBuf = Buffer.from(expected);
+  if (providedBuf.length !== expectedBuf.length) return false;
+  return crypto.timingSafeEqual(providedBuf, expectedBuf);
+}
+
 // Default settings (in production: store in database)
 let settings = {
   rateLimit: 30,
@@ -20,7 +34,7 @@ let settings = {
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Token',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Content-Type': 'application/json'
   };
@@ -29,12 +43,20 @@ exports.handler = async (event, context) => {
     return { statusCode: 200, headers, body: '' };
   }
 
+  if (!isAuthorized(event)) {
+    return {
+      statusCode: 401,
+      headers,
+      body: JSON.stringify({ success: false, error: 'Nicht autorisiert' })
+    };
+  }
+
   // GET: Retrieve current settings
   if (event.httpMethod === 'GET') {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(settings)
+      body: JSON.stringify({ success: true, timestamp: new Date().toISOString(), ...settings })
     };
   }
 

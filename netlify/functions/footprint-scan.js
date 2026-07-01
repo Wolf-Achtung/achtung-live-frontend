@@ -116,7 +116,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(data)
+      body: JSON.stringify({ success: true, timestamp: new Date().toISOString(), ...data })
     };
 
   } catch (error) {
@@ -125,6 +125,8 @@ exports.handler = async (event, context) => {
       statusCode: 502,
       headers,
       body: JSON.stringify({
+        success: false,
+        timestamp: new Date().toISOString(),
         error: "Verbindung zum Backend fehlgeschlagen",
         details: error.message,
         backend: API_FOOTPRINT_URL

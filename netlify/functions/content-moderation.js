@@ -255,6 +255,8 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         headers,
         body: JSON.stringify({
+          success: true,
+          timestamp: new Date().toISOString(),
           allowed: false,
           blocked: true,
           reason: 'content_policy',
@@ -281,6 +283,8 @@ exports.handler = async (event, context) => {
         statusCode: 200,
         headers,
         body: JSON.stringify({
+          success: true,
+          timestamp: new Date().toISOString(),
           allowed: false,
           flagged: true,
           reason: 'ai_moderation',
@@ -302,6 +306,8 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({
+        success: true,
+        timestamp: new Date().toISOString(),
         allowed: true,
         blocked: false,
         flagged: false,

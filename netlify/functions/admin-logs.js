@@ -1,20 +1,42 @@
 // Netlify Function: Admin Activity Logs
 // Returns activity and moderation logs
 
+const crypto = require('crypto');
+
 // In-memory logs (in production: use database)
 let activityLogs = [];
 let moderationLogs = [];
 
+// Requires ADMIN_SECRET to be set in the Netlify environment. Fails closed
+// (denies access) if it isn't configured, rather than leaving the endpoint open.
+function isAuthorized(event) {
+  const expected = process.env.ADMIN_SECRET;
+  if (!expected) return false;
+  const provided = event.headers['x-admin-token'] || event.headers['X-Admin-Token'] || '';
+  const providedBuf = Buffer.from(provided);
+  const expectedBuf = Buffer.from(expected);
+  if (providedBuf.length !== expectedBuf.length) return false;
+  return crypto.timingSafeEqual(providedBuf, expectedBuf);
+}
+
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Token',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Content-Type': 'application/json'
   };
 
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
+  }
+
+  if (!isAuthorized(event)) {
+    return {
+      statusCode: 401,
+      headers,
+      body: JSON.stringify({ success: false, error: 'Nicht autorisiert' })
+    };
   }
 
   // GET: Retrieve logs
@@ -28,6 +50,8 @@ exports.handler = async (event, context) => {
       statusCode: 200,
       headers,
       body: JSON.stringify({
+        success: true,
+        timestamp: new Date().toISOString(),
         activities: logs.slice(0, limit),
         total: logs.length,
         type: type

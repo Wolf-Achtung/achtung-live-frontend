@@ -245,7 +245,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(TRACKER_DATABASE)
+      body: JSON.stringify({ success: true, timestamp: new Date().toISOString(), ...TRACKER_DATABASE })
     };
 
   } catch (error) {
