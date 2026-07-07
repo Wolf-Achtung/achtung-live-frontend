@@ -207,7 +207,7 @@ exports.handler = async (event, context) => {
 
  // Try backend first
  try {
- const response = await fetch(`${API_BASE}/api/v2/templates/category/${categoryId}`, {
+ const response = await fetch(`${API_BASE}/api/v2/templates/category/${encodeURIComponent(categoryId)}`, {
  method: "GET",
  headers: { "Content-Type": "application/json" }
  });
@@ -244,6 +244,7 @@ exports.handler = async (event, context) => {
  headers,
  body: JSON.stringify({
  success: true,
+ timestamp: new Date().toISOString(),
  category: {
  id: categoryId,
  name: categoryNames[categoryId] || categoryId,

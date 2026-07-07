@@ -150,7 +150,7 @@ exports.handler = async (event, context) => {
  return {
  statusCode: 200,
  headers,
- body: JSON.stringify(FALLBACK_TOPICS)
+ body: JSON.stringify({ ...FALLBACK_TOPICS, timestamp: new Date().toISOString() })
  };
  }
 
@@ -168,7 +168,7 @@ exports.handler = async (event, context) => {
  return {
  statusCode: 200,
  headers,
- body: JSON.stringify(FALLBACK_TOPICS)
+ body: JSON.stringify({ ...FALLBACK_TOPICS, timestamp: new Date().toISOString() })
  };
  }
 };

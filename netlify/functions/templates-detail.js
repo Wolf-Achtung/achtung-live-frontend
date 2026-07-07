@@ -334,7 +334,7 @@ exports.handler = async (event, context) => {
 
  // Try backend first
  try {
- const response = await fetch(`${API_BASE}/api/v2/templates/${templateId}`, {
+ const response = await fetch(`${API_BASE}/api/v2/templates/${encodeURIComponent(templateId)}`, {
  method: "GET",
  headers: { "Content-Type": "application/json" }
  });
@@ -363,6 +363,7 @@ exports.handler = async (event, context) => {
  headers,
  body: JSON.stringify({
  success: true,
+ timestamp: new Date().toISOString(),
  template: template
  })
  };

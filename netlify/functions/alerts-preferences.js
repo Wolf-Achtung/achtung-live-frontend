@@ -58,6 +58,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
+        timestamp: new Date().toISOString(),
         preferences: DEFAULT_PREFERENCES
       })
     };
@@ -129,6 +130,7 @@ exports.handler = async (event, context) => {
         headers,
         body: JSON.stringify({
           success: true,
+          timestamp: new Date().toISOString(),
           message: "Einstellungen gespeichert",
           preferences: mergedPreferences,
           updatedAt: new Date().toISOString()

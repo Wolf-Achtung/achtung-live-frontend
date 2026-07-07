@@ -182,6 +182,7 @@ exports.handler = async (event, context) => {
  headers,
  body: JSON.stringify({
  success: true,
+ timestamp: new Date().toISOString(),
  tips: [randomTip],
  dailyChallenge: dailyChallenge
  })
@@ -208,6 +209,7 @@ exports.handler = async (event, context) => {
  headers,
  body: JSON.stringify({
  success: true,
+ timestamp: new Date().toISOString(),
  tips: [randomTip],
  dailyChallenge: dailyChallenge
  })

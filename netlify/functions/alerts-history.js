@@ -103,6 +103,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
+        timestamp: new Date().toISOString(),
         email: email.replace(/(.{2}).*@/, "$1***@"),
         history: HISTORY_FALLBACK,
         totalAlerts: HISTORY_FALLBACK.length,

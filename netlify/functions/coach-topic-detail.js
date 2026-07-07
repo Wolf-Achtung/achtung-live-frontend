@@ -233,7 +233,7 @@ exports.handler = async (event, context) => {
  };
  }
 
- const API_TOPIC_URL = `${API_BASE}/api/v2/coach/topic/${topicId}`;
+ const API_TOPIC_URL = `${API_BASE}/api/v2/coach/topic/${encodeURIComponent(topicId)}`;
 
  try {
  console.log("Fetching topic detail from:", API_TOPIC_URL);
@@ -250,7 +250,7 @@ exports.handler = async (event, context) => {
  return {
  statusCode: 200,
  headers,
- body: JSON.stringify(FALLBACK_TOPICS[topicId])
+ body: JSON.stringify({ ...FALLBACK_TOPICS[topicId], timestamp: new Date().toISOString() })
  };
  }
 
@@ -277,7 +277,7 @@ exports.handler = async (event, context) => {
  return {
  statusCode: 200,
  headers,
- body: JSON.stringify(FALLBACK_TOPICS[topicId])
+ body: JSON.stringify({ ...FALLBACK_TOPICS[topicId], timestamp: new Date().toISOString() })
  };
  }
 

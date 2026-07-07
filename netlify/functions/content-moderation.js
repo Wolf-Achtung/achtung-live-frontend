@@ -164,9 +164,10 @@ function logActivity(data) {
 
 // Get client IP from request
 function getClientIp(event) {
-  return event.headers['x-forwarded-for']?.split(',')[0]?.trim()
-    || event.headers['x-real-ip']
-    || event.headers['client-ip']
+  const headers = event.headers || {};
+  return headers['x-forwarded-for']?.split(',')[0]?.trim()
+    || headers['x-real-ip']
+    || headers['client-ip']
     || 'unknown';
 }
 

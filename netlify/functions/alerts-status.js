@@ -53,6 +53,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
+        timestamp: new Date().toISOString(),
         email: email,
         status: "not_subscribed",
         message: "Diese E-Mail ist noch nicht für Monitoring registriert",

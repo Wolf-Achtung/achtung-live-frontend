@@ -12,7 +12,7 @@ let moderationLogs = [];
 function isAuthorized(event) {
   const expected = process.env.ADMIN_SECRET;
   if (!expected) return false;
-  const provided = event.headers['x-admin-token'] || event.headers['X-Admin-Token'] || '';
+  const provided = (event.headers || {})['x-admin-token'] || (event.headers || {})['X-Admin-Token'] || '';
   const providedBuf = Buffer.from(provided);
   const expectedBuf = Buffer.from(expected);
   if (providedBuf.length !== expectedBuf.length) return false;

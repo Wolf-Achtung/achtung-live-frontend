@@ -40,7 +40,7 @@ exports.handler = async (event, context) => {
     // Länge als "verifiziert" durchwinkt - das wäre eine Umgehung der
     // E-Mail-Besitzprüfung.
     try {
-      const response = await fetch(`${API_BASE}/api/v2/alerts/verify/${token}`, {
+      const response = await fetch(`${API_BASE}/api/v2/alerts/verify/${encodeURIComponent(token)}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
       });
