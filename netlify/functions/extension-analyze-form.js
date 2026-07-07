@@ -131,6 +131,7 @@ exports.handler = async (event, context) => {
  headers,
  body: JSON.stringify({
  success: true,
+ timestamp: new Date().toISOString(),
  data: {
  formRiskScore,
  riskLevel: formRiskScore > 60 ? 'high' : formRiskScore > 30 ? 'medium' : 'low',

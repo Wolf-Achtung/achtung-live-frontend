@@ -184,7 +184,8 @@ exports.handler = async (event, context) => {
     const unknownServices = [];
 
     for (const serviceId of services) {
-      const data = SERVICE_DATA[serviceId.toLowerCase()];
+      const key = serviceId.toLowerCase();
+      const data = Object.prototype.hasOwnProperty.call(SERVICE_DATA, key) ? SERVICE_DATA[key] : undefined;
       if (data) {
         const avgScore = Math.round(
           Object.values(data.scores).reduce((a, b) => a + b, 0) / Object.keys(data.scores).length
@@ -234,6 +235,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
+        timestamp: new Date().toISOString(),
         comparison: comparison,
         scoreCategories: SCORE_CATEGORIES,
         categoryWinners: categoryWinners,

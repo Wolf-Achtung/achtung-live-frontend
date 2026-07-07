@@ -13,13 +13,24 @@ exports.handler = async (event, context) => {
     return { statusCode: 200, headers, body: "" };
   }
 
-  const sessionId = event.queryStringParameters?.sessionId ||
-                    (event.body ? JSON.parse(event.body).sessionId : null);
+  let parsedBody = null;
+  if (event.body) {
+    try {
+      parsedBody = JSON.parse(event.body);
+    } catch (e) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: "Ungültiges JSON im Request-Body" })
+      };
+    }
+  }
+  const sessionId = event.queryStringParameters?.sessionId || parsedBody?.sessionId || null;
 
   if (event.httpMethod === "GET") {
     // Get favorites
     try {
-      const response = await fetch(`${API_BASE}/api/v2/templates/favorites?sessionId=${sessionId}`, {
+      const response = await fetch(`${API_BASE}/api/v2/templates/favorites?sessionId=${encodeURIComponent(sessionId)}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
       });
@@ -38,6 +49,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
+        timestamp: new Date().toISOString(),
         favorites: [],
         note: "Favoriten werden lokal im Browser gespeichert"
       })
@@ -79,6 +91,7 @@ exports.handler = async (event, context) => {
         headers,
         body: JSON.stringify({
           success: true,
+          timestamp: new Date().toISOString(),
           message: action === "remove" ? "Favorit entfernt" : "Als Favorit gespeichert",
           templateId: templateId,
           note: "Speicherung erfolgt lokal im Browser"

@@ -400,6 +400,7 @@
  document.getElementById('loginError').style.display = 'none';
  showDashboard();
  } else {
+ document.getElementById('loginError').textContent = 'Ungültiges Admin-Token';
  document.getElementById('loginError').style.display = 'block';
  }
  } catch (error) {

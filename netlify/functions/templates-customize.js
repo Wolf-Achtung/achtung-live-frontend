@@ -123,6 +123,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
+        timestamp: new Date().toISOString(),
         result: {
           templateId: templateId,
           variantId: variantId,

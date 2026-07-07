@@ -69,6 +69,7 @@ exports.handler = async (event, context) => {
         headers,
         body: JSON.stringify({
           success: true,
+          timestamp: new Date().toISOString(),
           message: "Danke für dein Feedback! Es hilft mir, besser zu werden.",
           stored: "local"
         })
@@ -92,6 +93,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
+        timestamp: new Date().toISOString(),
         message: "Danke für dein Feedback!",
         stored: "local"
       })

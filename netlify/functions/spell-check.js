@@ -188,6 +188,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
+        timestamp: new Date().toISOString(),
         language: langCode,
         level: level,
         executiveSummary: executiveSummary,

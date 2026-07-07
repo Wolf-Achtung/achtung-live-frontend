@@ -130,6 +130,7 @@ exports.handler = async (event, context) => {
  headers,
  body: JSON.stringify({
  success: true,
+ timestamp: new Date().toISOString(),
  breaches: enrichedBreaches,
  lastUpdated: new Date().toISOString(),
  totalBreachesThisMonth: 12,

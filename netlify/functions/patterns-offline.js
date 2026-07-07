@@ -128,6 +128,7 @@ exports.handler = async (event) => {
     headers,
     body: JSON.stringify({
       success: true,
+      timestamp: new Date().toISOString(),
       ...selectedPatterns
     })
   };
