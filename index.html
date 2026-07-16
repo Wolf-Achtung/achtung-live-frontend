@@ -23,12 +23,11 @@
  <nav class="global-nav" role="navigation" aria-label="Hauptnavigation">
   <div class="global-nav-inner">
    <a href="index.html" class="nav-logo">[achtung.live]</a>
-   <ul class="nav-links nav-links-desktop">
-    <li><a href="index.html" class="active">Demo</a></li>
+      <ul class="nav-links nav-links-desktop">
+    <li><a href="index.html" class="active">Start</a></li>
+    <li><a href="tools.html">Werkzeuge</a></li>
     <li><a href="hilfe.html">Hilfe</a></li>
     <li><a href="gefahr.html">Risiken</a></li>
-    <li><a href="info.html">Über uns</a></li>
-    <li><a href="kontakt.html">Kontakt</a></li>
    </ul>
    <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menü öffnen" aria-expanded="false">
     <span class="nav-hamburger-line"></span>
@@ -36,12 +35,11 @@
   </div>
  </nav>
  <div class="nav-mobile-overlay" id="navMobileOverlay">
-  <ul class="nav-links">
-   <li><a href="index.html" onclick="toggleMobileNav()">Demo</a></li>
+    <ul class="nav-links">
+   <li><a href="index.html" class="active" onclick="toggleMobileNav()">Start</a></li>
+   <li><a href="tools.html" onclick="toggleMobileNav()">Werkzeuge</a></li>
    <li><a href="hilfe.html" onclick="toggleMobileNav()">Hilfe</a></li>
    <li><a href="gefahr.html" onclick="toggleMobileNav()">Risiken</a></li>
-   <li><a href="info.html" onclick="toggleMobileNav()">Über uns</a></li>
-   <li><a href="kontakt.html" onclick="toggleMobileNav()">Kontakt</a></li>
   </ul>
  </div>
 
@@ -113,9 +111,6 @@
  </div>
  </div>
  </div>
-
- <!-- Logout Button (nur sichtbar wenn eingeloggt) -->
- <button id="logoutBtn" class="logout-button" style="display:none;" onclick="achtungAuth.logout()" aria-label="Abmelden">Abmelden</button>
 
  <header role="banner">
  <h1><span class="achtung-logo">[achtung.live]</span></h1>
@@ -546,7 +541,7 @@
  </div>
 
  <nav class="footer-nav">
- <a href="index.html">Startseite</a> &bull;
+ <a href="index.html">Start</a> &bull;
  <a href="info.html">Über uns</a> &bull;
  <a href="gefahr.html">Risiken</a> &bull;
  <a href="datenschutz.html">Datenschutz</a> &bull;
@@ -597,6 +592,12 @@
  // Initialization
  // ========================================
  document.addEventListener('DOMContentLoaded', function() {
+ // Gespeicherte Sprachwahl wiederherstellen (wurde bisher nur gespeichert,
+ // aber beim Laden nie angewendet -> Auswahl ging bei jedem Reload verloren)
+ const savedLang = localStorage.getItem('achtung-lang');
+ if (savedLang && savedLang !== 'de' && ['en','fr','es','it'].includes(savedLang)) {
+  switchLanguage(savedLang);
+ }
  // Initialize textkorrektur mode (handles URL params too)
  initTextkorrekturMode();
  // Initialize privacy mode enhancements
@@ -7374,7 +7375,6 @@ Bis zu 20 Mio. € oder 4% des Jahresumsatzes!
  document.querySelectorAll('.auth-required').forEach(el => {
  el.style.display = 'none';
  });
- document.getElementById('logoutBtn').style.display = 'block';
  } else {
  achtungAuth.protectPage();
  }
